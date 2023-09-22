@@ -4,6 +4,7 @@ import girl from '../../assets/img/girl.png'
 import StarIcon from '../../assets/icons/star'
 import LinkArrowIcon from '../../assets/icons/link-arrow'
 import { useNavigate } from 'react-router-dom'
+import { Fade } from "react-awesome-reveal";
 
 function WorkTeamCard({ title, description, icon }) {
     return (
@@ -90,6 +91,7 @@ function HomeComp() {
             <div className='max-w-[1300px] mx-auto'>
 
                 {/* Section A */}
+                <Fade>
                 <div className='w-[1300px] h-[552px] relative flex bg-green-50 rounded-3xl mx-auto mt-6 pl-14'>
                     <div className='w-[672px] h-[318px] relative flex-col justify-start items-start gap-6 inline-flex'>
                         <div className="text-green-600 text-xl font-bold font-['SF Pro'] mt-16">
@@ -195,7 +197,11 @@ function HomeComp() {
                     />
                 </div>
 
+                </Fade>
+
                 {/* Section B */}
+                <Fade>
+
                 <div className='w-[595px] mt-[5.3rem] flex-col justify-start items-start gap-3 inline-flex'>
                     <div>
                         <span className="text-black text-[42px] font-bold font-['SF Pro Text'] leading-[50.40px]">
@@ -319,8 +325,11 @@ function HomeComp() {
                         />
                     </div>
                 </div>
+                </Fade>
 
                 {/* Section C */}
+                <Fade>
+
                 <div className='w-[1300px] h-[452px] relative bg-green-600 rounded-3xl mt-20 px-14 pt-[4.38rem]'>
                     <div className='absolute top-2 right-2'>
                         <svg
@@ -450,8 +459,11 @@ function HomeComp() {
                         </div>
                     </div>
                 </div>
+                </Fade>
 
                 {/* Section D */}
+                <Fade>
+
                 <div className='w-[1279.50px] h-[702px] justify-start items-center gap-[67px] inline-flex mt-20'>
                     <div className='w-[574.50px] h-[549px] relative'>
                         <img className='w-100 left-[1px] top-0 absolute ' src={girl} />
@@ -529,8 +541,11 @@ function HomeComp() {
                         </div>
                     </div>
                 </div>
+                </Fade>
 
                 {/* Section E */}
+                <Fade>
+
                 <div className='w-[1300px] h-[220px] relative flex items-center justify-between bg-green-600 rounded-3xl mt-36 py-[3.75rem] px-[3.75rem]'>
                     <div className='flex-col justify-start items-start gap-4 inline-flex'>
                         <div className="text-white text-[40px] font-['SF Pro']">
@@ -591,7 +606,10 @@ function HomeComp() {
                         </svg>
                     </div>
                 </div>
+                </Fade>
             </div>
+            <Fade>
+
             <div className='bg-green-50 mt-20'>
                 <div className='max-w-[1300px] mx-auto py-[3.75rem]'>
                     <div className='flex items-center justify-between'>
@@ -710,6 +728,9 @@ function HomeComp() {
                     </div>
                 </div>
             </div>
+            </Fade>
+
+            <Fade>
 
             <div className='max-w-[1300px] mx-auto mt-20'>
                 <div className='w-[595px] h-[102px] flex-col justify-start items-start '>
@@ -760,6 +781,8 @@ function HomeComp() {
                     />
                 </div>
             </div>
+            </Fade>
+
         </div>
     )
 }
