@@ -17,4 +17,4 @@ To run Bizzzy locally on your machine, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone [https://github.com/your-username/bizzzy-frontend.git](https://github.com/Bizzzywork/bizzzy-frontend)https://github.com/Bizzzywork/bizzzy-frontend
+   git clone https://github.com/Bizzzywork/bizzzy-frontend
