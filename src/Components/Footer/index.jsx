@@ -1,7 +1,9 @@
 import React from 'react'
 import LinkArrowIcon from '../../assets/icons/link-arrow'
+import { useNavigate } from 'react-router-dom'
 
 export const HomeFooter = () => {
+    const navigate = useNavigate()
     return (
         <div>
             <div className='bg-green-50 mt-20 py-[2.62rem]'>
@@ -19,7 +21,7 @@ export const HomeFooter = () => {
                         <div className='justify-start items-start gap-5 inline-flex'>
                             <div className='h-40 flex-col justify-between items-start inline-flex'>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate("/")}>
                                         Home
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -27,7 +29,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         About
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -35,7 +37,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Contact Us
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -43,7 +45,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         About
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -53,7 +55,7 @@ export const HomeFooter = () => {
                             </div>
                             <div className='h-40 flex-col justify-between items-start inline-flex'>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Casestudies
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -61,7 +63,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Blogs
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -69,7 +71,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Events
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -77,7 +79,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Community
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -87,7 +89,7 @@ export const HomeFooter = () => {
                             </div>
                             <div className='h-40 flex-col justify-between items-start inline-flex'>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         One Pager
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -95,7 +97,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Multi Pager
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -103,7 +105,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         E-commerce Pages
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -111,7 +113,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Dynamic Content Pages
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -121,7 +123,7 @@ export const HomeFooter = () => {
                             </div>
                             <div className='h-40 flex-col justify-between items-start inline-flex'>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Privacy
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -129,7 +131,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-start inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Terms & Conditions
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -137,7 +139,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Leadership
                                     </div>
                                     <div className='w-5 h-5 relative'>
@@ -145,7 +147,7 @@ export const HomeFooter = () => {
                                     </div>
                                 </div>
                                 <div className='w-[310px] justify-between items-center inline-flex'>
-                                    <div className="text-gray-700 text-lg font-normal font-['Lato']">
+                                    <div className="text-gray-700 text-lg font-normal font-['Lato'] cursor-pointer" onClick={() => navigate()}>
                                         Team
                                     </div>
                                     <div className='w-5 h-5 relative'>

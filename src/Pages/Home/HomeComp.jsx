@@ -3,6 +3,7 @@ import homesidbar from '../../assets/img/home-sidebar.png'
 import girl from '../../assets/img/girl.png'
 import StarIcon from '../../assets/icons/star'
 import LinkArrowIcon from '../../assets/icons/link-arrow'
+import { useNavigate } from 'react-router-dom'
 
 function WorkTeamCard({ title, description, icon }) {
     return (
@@ -83,9 +84,11 @@ function FAQCard({ question, answer }) {
 }
 
 function HomeComp() {
+    const navigate = useNavigate()
     return (
         <div>
             <div className='max-w-[1300px] mx-auto'>
+
                 {/* Section A */}
                 <div className='w-[1300px] h-[552px] relative flex bg-green-50 rounded-3xl mx-auto mt-6 pl-14'>
                     <div className='w-[672px] h-[318px] relative flex-col justify-start items-start gap-6 inline-flex'>
@@ -114,7 +117,7 @@ function HomeComp() {
                             </div>
                             <div className='flex items-center'>
                                 <div className='w-[194px] h-10 flex-col justify-start items-start gap-2.5 inline-flex'>
-                                    <div className='self-stretch h-10 px-3.5 py-2.5 bg-green-500 rounded-md shadow justify-center items-center gap-1 inline-flex'>
+                                    <div className='self-stretch h-10 px-3.5 py-2.5 bg-green-500 rounded-md shadow justify-center items-center gap-1 inline-flex cursor-pointer' onClick={() => navigate("/freelancersignup")}>
                                         <div className="text-white text-sm font-medium font-['SF Pro Text'] leading-tight">
                                             Become a Freelancer
                                         </div>
@@ -149,7 +152,7 @@ function HomeComp() {
                                     </div>
                                 </div>
                                 <div className='w-[168px] h-10 ml-4 flex-col justify-start items-start gap-2.5 inline-flex'>
-                                    <div className='self-stretch grow shrink basis-0 px-3.5 py-2.5 bg-gray-50 rounded-md shadow border border-gray-300 justify-center items-center gap-1 inline-flex'>
+                                    <div className='self-stretch grow shrink basis-0 px-3.5 py-2.5 bg-gray-50 rounded-md shadow border border-gray-300 justify-center items-center gap-1 inline-flex cursor-pointer' onClick={() => navigate("/clintsignup")}>
                                         <div className="text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
                                             Hire a Freelancer
                                         </div>
@@ -344,9 +347,9 @@ function HomeComp() {
 
                     <div className='w-[580px] h-[116px] relative overflow-hidden p-6 bg-white rounded-xl flex-col justify-center items-start gap-4 inline-flex mt-11'>
                         <div className="text-gray-700 text-[26px] font-semibold font-['SF Pro Text'] leading-7">
-                            Post a Job and Hire a Pro
+                            Get Hired by the best Clients
                         </div>
-                        <div className='justify-start items-center gap-3 inline-flex'>
+                        <div className='justify-start items-center gap-3 inline-flex cursor-pointer' onClick={() => navigate("/freelancersignup")}>
                             <div className="text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal">
                                 Become a Freelancer
                             </div>
@@ -398,9 +401,9 @@ function HomeComp() {
                         <div className="text-gray-700 text-[26px] font-semibold font-['SF Pro Text'] leading-7">
                             Post a Job and Hire a Pro
                         </div>
-                        <div className='justify-start items-center gap-3 inline-flex'>
-                            <div className="text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal">
-                                Become a Freelancer
+                        <div className='justify-start items-center gap-3 inline-flex cursor-pointer' onClick={() => navigate("/clintsignup")}>
+                            <div className="text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal" >
+                                Hire Now
                             </div>
                             <div className='w-5 h-5 relative'>
                                 <svg
@@ -537,7 +540,7 @@ function HomeComp() {
                             You can have the best people. Right now. Right here.
                         </div>
                     </div>
-                    <div className='w-[103px] h-10 flex-col justify-start items-start gap-2.5 inline-flex'>
+                    <div className='w-[103px] h-10 flex-col justify-start items-start gap-2.5 inline-flex cursor-pointer' onClick={() => navigate("/clintsignup")}>
                         <div className='self-stretch grow shrink basis-0 px-3.5 py-2.5 bg-gray-50 rounded-md shadow border border-gray-300 justify-center items-center gap-1 inline-flex'>
                             <div className="text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
                                 Join Us
@@ -572,7 +575,7 @@ function HomeComp() {
                             </div>
                         </div>
                     </div>
-                    <div className='absolute right-0'>
+                    <div className='absolute right-0' style={{zIndex: '-1'}}>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             width='462'

@@ -162,11 +162,13 @@ export const Header = () => {
                     </div>
                     <Box style={boxStyle} justifyContent={"space-between"} width={"210px"}>
                         <CTAButton
+                            onClick={() => navigate("/login")}
                             text={"Login"}
                             fontSize="1rem"
                             height="2.5rem"
-                        ></CTAButton>
+                            ></CTAButton>
                         <CTAButton
+                            onClick={() => navigate("/freelancersignup")}
                             text={"SignUp"}
                             bg={"#22C55E"}
                             color={"#ffff"}
@@ -227,8 +229,9 @@ export const AuthHeader = () => {
 };
 
 const NavItem = ({ title, noIcon }) => {
+    const navigate = useNavigate();
     return (
-        <div className="flex items-center gap-[8px] text-[#536e53]">
+        <div className="flex items-center gap-[8px] text-[#536e53] cursor-pointer">
             <p className="  text-[14px] font-[500] text-[#374151] ">{title}</p>
             {!noIcon && <BsChevronDown />}
         </div>
