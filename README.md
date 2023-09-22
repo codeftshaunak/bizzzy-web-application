@@ -18,3 +18,8 @@ To run Bizzzy locally on your machine, follow these steps:
 
    ```bash
    git clone https://github.com/Bizzzywork/bizzzy-frontend
+
+2. Live Website:
+
+   ```bash
+   git clone https://github.com/Bizzzywork/bizzzy-frontend
