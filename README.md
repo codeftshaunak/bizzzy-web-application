@@ -1,8 +1,20 @@
-# React + Vite
+# Bizzzy Freelancer Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bizzzy is a platform that connects freelancers and clients, making it easy to find the right talent for your projects.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Browse a wide range of freelance services.
+- Post your project and receive bids from talented freelancers.
+- Communicate and collaborate with freelancers through the platform.
+- Secure payment processing for freelance services.
+- User-friendly interface for both clients and freelancers.
+
+## Installation
+
+To run Bizzzy locally on your machine, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone [https://github.com/your-username/bizzzy-frontend.git](https://github.com/Bizzzywork/bizzzy-frontend)https://github.com/Bizzzywork/bizzzy-frontend
