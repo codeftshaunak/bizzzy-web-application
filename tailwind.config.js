@@ -64,36 +64,57 @@
 //   },
 // };
 
+// /** @type {import('tailwindcss').Config} */
+// module.exports = {
+//   content: ['./src/**/*.{js,jsx,ts,tsx}', "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",],
+//   theme: {
+//     extend: {
+//       colors: {
+//         'outline-active': '#22C55E',
+//         'outline-primary': '#D1D5DB',
+
+//         // BACKGROUND
+//         'bg-primary-hovered': '#F9FAFB',
+//         'bg-success': '#F0FDF4',
+
+//         // FOREGROUND
+//         'fg-disabled': '#D1D5DB',
+//         'fg-brand': '#16A34A',
+//         'primary': '#22C55E',
+//         'secondary': '#FFFFFF',
+//         'tertiary': '#D1D5DB',
+//         green: {
+//           200: '#F0FDF4',
+//           600: '#16A34A',
+//         },
+//         gray: {
+//           100: '#F9FAFB',
+//           200: '#9CA3AF',
+//           300: '#6B7280',
+//           400: '#374151',
+//           500: '#F5F6F7'
+//         },
+//       },
+//     },
+//   },
+//   plugins: [],
+// }
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: ['./src/**/*.{js,jsx,ts,tsx}', "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js"],
   theme: {
     extend: {
       colors: {
         'outline-active': '#22C55E',
         'outline-primary': '#D1D5DB',
-
-        // BACKGROUND
         'bg-primary-hovered': '#F9FAFB',
         'bg-success': '#F0FDF4',
-
-        // FOREGROUND
         'fg-disabled': '#D1D5DB',
         'fg-brand': '#16A34A',
-        'primary': '#22C55E',
-        'secondary': '#FFFFFF',
-        'tertiary': '#D1D5DB',
-        green: {
-          200: '#F0FDF4',
-          600: '#16A34A',
-        },
-        gray: {
-          100: '#F9FAFB',
-          200: '#9CA3AF',
-          300: '#6B7280',
-          400: '#374151',
-          500: '#F5F6F7'
-        },
+      },
+      backgroundColor: {
+        'datepicker-bg': '#fff',
       },
     },
   },

@@ -7,7 +7,11 @@ import { FcGoogle } from 'react-icons/fc';
 import { BiChevronDown } from 'react-icons/bi';
 import Divider from '../../Components/Divider/Divider';
 import OnbardingCardLayout from '../../Layouts/CardLayout/OnbardingCardLayout';
+import JoinCard from './JoinCard';
 
+export const SignUp = () => {
+    return <JoinCard />
+}
 
 export const FreelancerSignUp = () => {
     const iconsStyle = {
