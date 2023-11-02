@@ -166,9 +166,9 @@ export const Header = () => {
                             text={"Login"}
                             fontSize="1rem"
                             height="2.5rem"
-                            ></CTAButton>
+                        ></CTAButton>
                         <CTAButton
-                            onClick={() => navigate("/freelancersignup")}
+                            onClick={() => navigate("/signup")}
                             text={"SignUp"}
                             bg={"#22C55E"}
                             color={"#ffff"}
