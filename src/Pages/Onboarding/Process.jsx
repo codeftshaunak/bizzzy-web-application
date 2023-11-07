@@ -1,94 +1,502 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OnboardingProcess from '../../Layouts/CardLayout/OnboardingProcess';
-import { Box, Button, Checkbox, HStack, Input, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Checkbox, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, VStack, useDisclosure, useToast } from '@chakra-ui/react';
 import { CiUser } from 'react-icons/ci';
 import { TbClick, TbReceipt } from 'react-icons/tb';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import CTAButton from '../../Components/CTAButton';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import { getAllDetailsOfUser, updateFreelancerProfile } from '../../helpers/userApis';
+import { BsBack, BsBackspaceFill } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const Process = ({ setPageU }) => {
-    const [page, setPage] = useState(1);
+const animatedComponents = makeAnimated();
+
+
+const Process = () => {
+    const [page, setPage] = useState(0);
+    const toast = useToast();
+    const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [userDetails, setUserDetails] = useState([]);
+    const role = useSelector((state) => state.auth.role);
+    console.log(role);
+    console.log(userDetails);
+
+    const getUserInformation = async () => {
+        try {
+            const res = await getAllDetailsOfUser();
+            const data = res.body;
+            setUserDetails(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getUserInformation();
+    }, [page])
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const options = [
+        { value: 'programming', label: 'Programming' },
+        { value: 'markating', label: 'Digital Marketing' },
+        { value: 'design', label: 'Graphic Design' },
+        { value: 'design1', label: 'Graphic Design' },
+        { value: 'design2', label: 'Graphic Design' },
+        { value: 'design3', label: 'Graphic Design' },
+    ]
+
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [inputValues, setInputValues] = useState({
+        professional_role: "",
+        hourly_rate: "",
+        description: "",
+    });
+    const [experienceInput, setExperienceInput] = useState({
+        company_name: "",
+        position: "",
+        start_date: "",
+        end_date: "",
+        description: "",
+    });
+
+
+    const handleSelectChange = (selectedValues) => {
+        setSelectedOptions(selectedValues || []);
+    };
+
+    const handleSaveAndContinue = async (data) => {
+        try {
+            if (data === "category") {
+                if (selectedOptions.length <= 0) {
+                    toast({
+                        title: "Atleast Select A Category",
+                        status: "warning",
+                        duration: 3000,
+                        isClosable: true
+                    })
+                } else {
+                    const selectedCategories = selectedOptions.map((option) => ({
+                        category_name: option.value,
+                    }));
+                    const response = await updateFreelancerProfile({ categories: selectedCategories });
+                    console.log({ category: response });
+                    if (response.code === 405) {
+                        toast({
+                            title: response.msg,
+                            status: "warning",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                        setSelectedOptions([]);
+                        setPage(3);
+                    } else if (response.code === 200) {
+                        toast({
+                            title: "Category Added Successfully",
+                            status: "success",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                        setSelectedOptions([]);
+                        setPage(3);
+                    }
+                }
+            } else if (data === "info") {
+                if (inputValues.professional_role.length <= 0) {
+                    toast({
+                        title: "Add your professional role",
+                        status: "warning",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top"
+                    })
+                } else if (inputValues.hourly_rate.length <= 0) {
+                    toast({
+                        title: "Add your hourly rate",
+                        status: "warning",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top"
+                    })
+                } else if (inputValues.description.length <= 0) {
+                    toast({
+                        title: "Add your profile overview",
+                        status: "warning",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top"
+                    })
+                } else {
+                    const response = await updateFreelancerProfile({
+                        professional_role: inputValues.professional_role,
+                        hourly_rate: inputValues.hourly_rate,
+                        description: inputValues.description,
+                    });
+                    console.log({ info: response });
+                    if (response.code === 405) {
+                        toast({
+                            title: response.msg,
+                            status: "warning",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                        setPage(4);
+                    } else if (response.code === 200) {
+                        toast({
+                            title: "Basic Information Added Successfully",
+                            status: "success",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                        setPage(4);
+                    }
+                }
+
+
+
+            } else if (data == "skills") {
+                if (selectedOptions.length <= 0) {
+                    toast({
+                        title: "Select Minimum Five Skills",
+                        status: "warning",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top"
+                    })
+                } else {
+                    const selectedCategories = selectedOptions.map((option) => ({
+                        skill_name: option.value,
+                    }));
+                    const response = await updateFreelancerProfile({ skills: selectedCategories });
+                    console.log({ skills: response });
+                    if (response.code == 405) {
+                        toast({
+                            title: response.msg,
+                            status: "warning",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                        setSelectedOptions([]);
+                        navigate("/freelancer")
+                    } else if (response.code === 200) {
+                        toast({
+                            title: "Skils Added Successfully",
+                            status: "success",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                        setSelectedOptions([]);
+                        navigate("/freelancer")
+                    }
+                }
+
+                // } else if (data === "exprience") {
+                //     const response = await updateFreelancerProfile({
+                //         experience: {
+                //             company_name: experienceInput.company_name,
+                //             description: experienceInput.description,
+                //             start_date: experienceInput.start_date,
+                //             end_date: experienceInput.end_date,
+                //             position: experienceInput.position,
+                //         }
+                //     });
+                //     console.log(experienceInput);
+                //     console.log({ expr: response.msg });
+                //     if (response.code == 405 || response.code == 500) {
+                //         toast({
+                //             title: response.msg,
+                //             status: "warning",
+                //             duration: 3000,
+                //             isClosable: true,
+                //             position: "top-right",
+                //         });
+                //         setSelectedOptions([]);
+                //         setPage(5);
+                //     } else if (response.code === 200) {
+                //         // Handle category added successfully
+                //         toast({
+                //             title: "Exprience Added Successfully",
+                //             status: "success",
+                //             duration: 3000,
+                //             isClosable: true,
+                //             position: "top-right",
+                //         });
+
+                //         navigate("/freelancer")
+                //         setPage(5);
+                //     }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <OnboardingProcess>
-            {page === 1 && (
-                <VStack justifyContent="start" alignItems="start" width="530px" gap="10" color="var(--primarytext)">
-                    <Box>
-                        <Text fontSize="40px" fontWeight="500">Hey Jane. Ready for your next big opportunity?</Text>
+
+            { }
+
+            <>
+                {(page !== 0 || page != 1) && (
+                    <Box position={"absolute"} top={"-0px"} left={"50px"} cursor={"pointer"} display={page == 0 ? 'none' || page == 1 && 'none' : 'block'}>
+                        <BsBackspaceFill
+                            color='var(--primarycolor)'
+                            size={"1.2rem"}
+                            onClick={() => setPage(page === 0 ? 0 : page - 1)}
+                        />
                     </Box>
-                    <HStack>
-                        <CiUser color="var(--primarycolor)" fontSize="1.4rem" />
-                        <Text fontWeight="400" fontSize="1.2rem">Apply for open roles or list services for clients to buy</Text>
-                    </HStack>
-                    <HStack>
-                        <TbClick color="var(--primarycolor)" fontSize="1.4rem" />
-                        <Text fontWeight="400" fontSize="1.2rem">Apply for open roles or list services for clients to buy</Text>
-                    </HStack>
-                    <HStack>
-                        <TbReceipt color="var(--primarycolor)" fontSize="1.4rem" />
-                        <Text fontWeight="400" fontSize="1.2rem">Get paid safely and know we’re there to help</Text>
-                    </HStack>
-                    <Button fontWeight="500" color="#fff" fontSize="1rem" bg="var(--primarycolor)" height="2.5rem" transition={"0.3s ease-in-out"} _hover={{ border: "1px solid var(--primarycolor)", backgroundColor: "var(--primarysoftbg)", color: "var(--primarytext)" }} onClick={() => setPage(2)}>Get Started</Button>
-                </VStack>
-            )}
-            {page === 2 && (
-                <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">
-                    <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
-                    <Box>
-                        <Text fontSize="40px" fontWeight="500">How would you like to tell us about yourself?</Text>
-                    </Box>
-                    <Box>
-                        <Text fontSize="15px" fontWeight="400">
-                            We need to get a sense of your education, experience and skills. It’s quickest to import your information, you can edit it before your profile goes live.
-                        </Text>
-                    </Box>
-                    <HStack>
-                        <CTAButton fontWeight="500" text="Import from LinkedIn" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-                        <CTAButton fontWeight="500" text="Upload your Resume" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-                        <CTAButton fontWeight="500" text="Fill out manually (15mins)" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-                    </HStack>
-                    <Button fontWeight="500" color="#fff" fontSize="1rem" bg="var(--primarycolor)" height="2.5rem" transition={"0.3s ease-in-out"} _hover={{ border: "1px solid var(--primarycolor)", backgroundColor: "var(--primarysoftbg)", color: "var(--primarytext)" }} onClick={() => setPage(3)}>Save & Continue</Button>
-                </VStack>
-            )}
-            {page === 3 && (
-                <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">
-                    <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
-                    <Box>
-                        <Text fontSize="40px" fontWeight="500">Got it. Now, add a title to tell the world what you do.</Text>
-                    </Box>
-                    <Box>
-                        <Text fontSize="15px" fontWeight="400">
-                            It’s the very first thing clients see, so make it count. Stand out by describing your expertise in your words.
-                        </Text>
-                    </Box>
-                    <VStack width={"full"} alignItems={"start"}>
-                        <Text mb='0px'>{"Your Professional Role"}</Text>
-                        <Input variant='outline' placeholder='Professional Virtual Assistant' width={"100%"} />
-                    </VStack>
-                    <Button fontWeight="500" color="#fff" fontSize="1rem" bg="var(--primarycolor)" height="2.5rem" transition={"0.3s ease-in-out"} _hover={{ border: "1px solid var(--primarycolor)", backgroundColor: "var(--primarysoftbg)", color: "var(--primarytext)" }} onClick={() => setPage(4)}>Save & Continue</Button>
-                </VStack>
-            )}  {page === 4 && (
-                <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">
-                    <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
-                    <Box>
-                        <Text fontSize="40px" fontWeight="500">If you have relevant work experience, add it here.</Text>
-                    </Box>
-                    <Box>
-                        <Text fontSize="15px" fontWeight="400">
-                            Freelancers who add their experience are twice as likely to win work. But if you’re just starting out, you can still create a great profile. Just head on the next page.                        </Text>
-                    </Box>
-                    <HStack backgroundColor="var(--primarysoftbg)" padding="2.5rem 2rem" width="300px" borderRadius="5px" border="1px solid var(--primarycolor)">
-                        <IoIosAddCircleOutline />
-                        <Text>Add experience</Text>
-                    </HStack>
-                    <Checkbox colorScheme='green' >
-                        Nothing to add? Check the box and keep going.
-                    </Checkbox>
-                    <Button fontWeight="500" color="#fff" fontSize="1rem" bg="var(--primarycolor)" height="2.5rem" transition={"0.3s ease-in-out"} _hover={{ border: "1px solid var(--primarycolor)", backgroundColor: "var(--primarysoftbg)", color: "var(--primarytext)" }} onClick={() => setPageU(1)}>Save & Continue</Button>
-                </VStack>
-            )}
-        </OnboardingProcess>
+                )}
+
+                {
+                    (page === 0 || page === 1) && (
+                        <VStack justifyContent="start" alignItems="start" width="530px" gap="10" color="var(--primarytext)">
+                            <Box>
+                                <Text fontSize="40px" fontWeight="500">Hey Jane. Ready for your next big opportunity?</Text>
+                            </Box>
+                            <HStack>
+                                <CiUser color="var(--primarycolor)" fontSize="1.4rem" />
+                                <Text fontWeight="400" fontSize="1.2rem">Apply for open roles or list services for clients to buy</Text>
+                            </HStack>
+                            <HStack>
+                                <TbClick color="var(--primarycolor)" fontSize="1.4rem" />
+                                <Text fontWeight="400" fontSize="1.2rem">Apply for open roles or list services for clients to buy</Text>
+                            </HStack>
+                            <HStack>
+                                <TbReceipt color="var(--primarycolor)" fontSize="1.4rem" />
+                                <Text fontWeight="400" fontSize="1.2rem">Get paid safely and know we’re there to help</Text>
+                            </HStack>
+                            <Button fontWeight="500" color="#fff" fontSize="1rem" bg="var(--primarycolor)" height="2.5rem" transition={"0.3s ease-in-out"} _hover={{ border: "1px solid var(--primarycolor)", backgroundColor: "var(--primarysoftbg)", color: "var(--primarytext)" }} onClick={() => setPage(2)}>Get Started</Button>
+                        </VStack>
+                    )
+                }
+
+                {
+                    role === 1 && <>
+                        {
+                            page === 2 && (
+                                <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">
+                                    <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
+                                    <Box>
+                                        <Text fontSize="40px" fontWeight="500">How would you like to tell us about yourself?</Text>
+                                    </Box>
+                                    <Box>
+                                        <Text fontSize="15px" fontWeight="400">
+                                            We need to get a sense of your education, experience and categories. It’s quickest to import your information, you can edit it before your profile goes live.
+                                        </Text>
+                                    </Box>
+                                    <Select
+                                        placeholder="Select Your Category"
+                                        className="w-[400px]"
+                                        closeMenuOnSelect={false}
+                                        components={animatedComponents}
+                                        isMulti
+                                        options={options}
+                                        onChange={handleSelectChange}
+                                        value={selectedOptions}
+                                    />
+                                    <Button
+                                        fontWeight="500"
+                                        color="#fff"
+                                        fontSize="1rem"
+                                        bg="var(--primarycolor)"
+                                        height="2.5rem"
+                                        transition="0.3s ease-in-out"
+                                        _hover={{
+                                            border: "1px solid var(--primarycolor)",
+                                            backgroundColor: "var(--primarysoftbg)",
+                                            color: "var(--primarytext)",
+                                        }}
+                                        onClick={() => handleSaveAndContinue("category")}
+                                    >
+                                        Save & Continue
+                                    </Button>
+                                </VStack>
+                            )
+                        }
+                        {
+                            page === 3 && (
+                                <VStack justifyContent="start" alignItems="start" width="630px" gap="30px" color="var(--primarytext)">
+                                    <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
+                                    <Box>
+                                        <Text fontSize="40px" fontWeight="500">How would you like to tell us about yourself?</Text>
+                                    </Box>
+                                    <Box>
+                                        <Text fontSize="15px" fontWeight="400">
+                                            We need to get a sense of your education, experience and categories. It’s quickest to import your information, you can edit it before your profile goes live.
+                                        </Text>
+                                    </Box>
+                                    <VStack width={"full"} alignItems={"start"}>
+                                        <Text mb="0px">{"Your Professional Role"}</Text>
+                                        <Input
+                                            variant="outline"
+                                            required
+                                            placeholder="Professional Virtual Assistant"
+                                            width={"100%"}
+                                            value={inputValues.professional_role}
+                                            onChange={(e) =>
+                                                setInputValues({ ...inputValues, professional_role: e.target.value })
+                                            }
+                                        />
+                                    </VStack>
+                                    <VStack width={"full"} alignItems={"start"}>
+                                        <Text mb="0px">{"Your Hourly Rate"}</Text>
+                                        <Input
+                                            variant="outline"
+                                            placeholder="$ Your Hourly Rate"
+                                            width={"100%"}
+                                            type="number"
+                                            value={inputValues.hourly_rate}
+                                            onChange={(e) =>
+                                                setInputValues({ ...inputValues, hourly_rate: e.target.value })
+                                            }
+                                        />
+                                    </VStack>
+
+                                    <VStack width={"full"} alignItems={"start"}>
+                                        <Text mb="0px">{"Profile Overview"}</Text>
+                                        <Textarea
+                                            required
+                                            variant="outline"
+                                            placeholder="Write About Yourself"
+                                            width={"100%"}
+                                            style={{ resize: "none" }}
+                                            rows={5}
+                                            value={inputValues.description}
+                                            onChange={(e) =>
+                                                setInputValues({ ...inputValues, description: e.target.value })
+                                            }
+                                        />
+                                    </VStack>
+                                    <Button
+                                        fontWeight="500"
+                                        color="#fff"
+                                        fontSize="1rem"
+                                        bg="var(--primarycolor)"
+                                        height="2.5rem"
+                                        transition={"0.3s ease-in-out"}
+                                        _hover={{
+                                            border: "1px solid var(--primarycolor)",
+                                            backgroundColor: "var(--primarysoftbg)",
+                                            color: "var(--primarytext)",
+                                        }}
+                                        onClick={() => handleSaveAndContinue("info")}
+                                    >
+                                        Save & Continue
+                                    </Button>
+                                </VStack>
+                            )
+                        }
+                        {
+                            page === 4 && (
+                                <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">
+                                    <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
+                                    <Box>
+                                        <Text fontSize="40px" fontWeight="500">How would you like to tell us more about your skills.</Text>
+                                    </Box>
+                                    <Box>
+                                        <Text fontSize="15px" fontWeight="400">
+                                            We need to get a sense of your skills, experience and categories. It’s quickest to import your information, you can edit it before your profile goes live.
+                                        </Text>
+                                    </Box>
+                                    <Select
+                                        placeholder="Select Your Skills"
+                                        className="w-[400px]"
+                                        closeMenuOnSelect={false}
+                                        components={animatedComponents}
+                                        isMulti
+                                        options={options}
+                                        onChange={handleSelectChange}
+                                        value={selectedOptions} />
+                                    <Button
+                                        fontWeight="500"
+                                        color="#fff"
+                                        fontSize="1rem"
+                                        bg="var(--primarycolor)"
+                                        height="2.5rem"
+                                        transition="0.3s ease-in-out"
+                                        _hover={{
+                                            border: "1px solid var(--primarycolor)",
+                                            backgroundColor: "var(--primarysoftbg)",
+                                            color: "var(--primarytext)",
+                                        }}
+                                        onClick={() => handleSaveAndContinue("skills")}
+                                    >
+                                        Save & Continue
+                                    </Button>
+                                </VStack>
+                            )
+                        }
+                    </> || role === 2 && <>
+                        {
+                            page === 2 && (
+                                <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">
+                                    <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
+                                    <Box>
+                                        <Text fontSize="40px" fontWeight="500">How would you like to tell us about yourself?</Text>
+                                    </Box>
+                                    <Box>
+                                        <Text fontSize="15px" fontWeight="400">
+                                            We need to get a sense of your education, experience and categories. It’s quickest to import your information, you can edit it before your profile goes live.
+                                        </Text>
+                                    </Box>
+                                    <Select
+                                        placeholder="Select Your Category"
+                                        className="w-[400px]"
+                                        closeMenuOnSelect={false}
+                                        components={animatedComponents}
+                                        isMulti
+                                        options={options}
+                                        onChange={handleSelectChange}
+                                        value={selectedOptions}
+                                    />
+                                    <Button
+                                        fontWeight="500"
+                                        color="#fff"
+                                        fontSize="1rem"
+                                        bg="var(--primarycolor)"
+                                        height="2.5rem"
+                                        transition="0.3s ease-in-out"
+                                        _hover={{
+                                            border: "1px solid var(--primarycolor)",
+                                            backgroundColor: "var(--primarysoftbg)",
+                                            color: "var(--primarytext)",
+                                        }}
+                                        onClick={() => handleSaveAndContinue("category")}
+                                    >
+                                        Save & Continue
+                                    </Button>
+                                </VStack>
+                            )
+                        }
+                    </>
+                }
+
+            </>
+
+        </OnboardingProcess >
     )
 }
 
+
 export default Process;
+
+
+
+{/* <HStack>
+<CTAButton fontWeight="500" text="Import from LinkedIn" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
+<CTAButton fontWeight="500" text="Upload your Resume" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
+<CTAButton fontWeight="500" text="Fill out manually (15mins)" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
+</HStack> */}

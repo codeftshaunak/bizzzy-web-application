@@ -1,24 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { getJobById } from '../../helpers/jobApis';
 
-const JobDetails = ({ setPage }) => {
+const JobDetails = ({ setPage, setDetails }) => {
+    const { id } = useParams();
+    const [job, setJob] = useState();
+    console.log(job);
+    const getJobDetails = async () => {
+        try {
+            const getJob = await getJobById(id);
+            setJob(getJob);
+            setDetails(getJob);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getJobDetails();
+    }, [id])
+
     return (
-        <div>
-            <div className="py-2 px-40">
+        <div className="w-full">
+            <div className="py-2 px-40 w-full">
                 <div className="flex gap-2 py-6">
-                    <img src="icons/home.svg" alt="home" />
-                    <img src="icons/chevron-right.svg" alt="arrow right" />
-                    <div>Update our site design with a figma</div>
+                    <img src="/icons/home.svg" alt="home" />
+                    <img src="/icons/chevron-right.svg" alt="arrow right" />
+                    <div>{job?.title}</div>
                 </div>
                 <div className="w-full border border-tertiary rounded-2xl p-6 mb-4">
                     <div className="flex justify-between items-center">
                         <div className='flex flex-col gap-2'>
                             <div className='flex'>
-                                <div className="font-semibold mr-2">Update our site design with a figma </div>
+                                <div className="font-semibold mr-2">{job?.title} </div>
                                 <div className="text-gray-300">Posted 2mins ago</div>
                             </div>
                             <div className="flex gap-3">
-                                <div className="flex gap-2"><img src="icons/receipt.svg" alt="receipt" /> <div className='text-gray-300'>$100.00</div></div>
-                                <div className="flex gap-2"><img src="icons/user.svg" alt="user" /> <div className='text-gray-300'>Expert</div></div>
+                                <div className="flex gap-2"><img src="/icons/receipt.svg" alt="receipt" /> <div className='text-gray-300'>${job?.amount}</div></div>
+                                <div className="flex gap-2"><img src="/icons/user.svg" alt="user" /> <div className='text-gray-300'>{job?.experience}</div></div>
                             </div>
                         </div>
                         <button className="bg-primary text-secondary rounded h-[36px] px-4" onClick={() => setPage(2)}>Apply for this Job</button>
@@ -26,7 +45,7 @@ const JobDetails = ({ setPage }) => {
                 </div>
                 <div className="w-full flex justify-between">
                     <div className="w-[68%] border border-tertiary rounded-2xl p-6">
-                        We have a fully functional website with all the features in place.
+                        {/* We have a fully functional website with all the features in place.
                         Now, we're looking for a talented Logo and UI Designer to enhance the website's visual appeal and user-friendliness.
                         <br />
                         <br />
@@ -50,7 +69,8 @@ const JobDetails = ({ setPage }) => {
                         <br />
                         <br />
                         - This is not a coding job; the website and its features are already developed.
-                        - You will be responsible for the visual aspects and user experience improvements.
+                        - You will be responsible for the visual aspects and user experience improvements. */}
+                        {job?.description}
                     </div>
                     <div className="w-[30%] border border-tertiary rounded-2xl p-6">
                         <div className="font-semibold mb2">About the client</div>

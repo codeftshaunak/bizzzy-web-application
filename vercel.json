@@ -9,7 +9,7 @@
       { "src": "/apply-job", "dest": "/" },
       { "src": "/find-job", "dest": "/" },
       { "src": "/messages", "dest": "/" },
-      { "src": "/userprofile", "dest": "/" },
+      { "src": "/freelancer", "dest": "/" },
       { "src": "/userprofile-setting", "dest": "/" }
     ]
   }

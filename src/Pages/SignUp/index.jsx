@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const SignUp = () => {
     const [selectedOption, setSelectedOption] = useState(null);
+    const navigate = useNavigate();
     const [isFreelancer, setIsFreelancer] = useState(false);
     const [isClient, setIsClient] = useState(false);
     const handleOptionChange = (option) => {
@@ -241,7 +242,7 @@ export const SignUp = () => {
                         fontWeight="500" color="#fff" fontSize="1rem" bg="var(--primarycolor)" width="100%" height="2.5rem" onClick={() => selectedOption === "freelancer" && setIsFreelancer(true) || selectedOption === "client" && setIsClient(true)}>
                         {buttonText}
                     </Button>
-                    <Text fontWeight={"500"}>Already Have Account? <span className='text-[var(--primarytextcolor)] cursor-pointer'>Login</span></Text>
+                    <Text onClick={() => navigate("/login")} fontWeight={"500"}>Already Have Account? <span className='text-[var(--primarytextcolor)] cursor-pointer'>Login</span></Text>
                 </VStack>
             </OnbardingCardLayout>
         }
@@ -274,7 +275,7 @@ export const FreelancerSignUp = () => {
         email: '',
         password: '',
         country: '',
-        sendEmails: true,
+        sendEmails: false,
         has_accepted_terms: false,
         role: 1
     });
@@ -335,17 +336,6 @@ export const FreelancerSignUp = () => {
                                     Please check your email and click on the link provided to verify your address
                                 </Text>
                             </VStack>
-
-                            {/* <VStack gap={"5"}>
-                    <HStack color="var(--primarytextcolor)">
-                        <BsChevronDown />
-                        <Text>Change email</Text>
-                    </HStack>
-                    <HStack color="var(--primarytextcolor)">
-                        <BsChevronDown />
-                        <Text>I need help verifying my email</Text>
-                    </HStack>
-                </VStack> */}
                             <HStack justifyContent={"space-evenly"} width={"100%"} gap={"5"}>
                                 <CTAButton fontWeight="500" text="Resend Verification Email" color="var(--primarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" width="100%" height="2.5rem" />
                                 <CTAButton fontWeight="500" text="Go to Gmail Inbox" color="#fff" fontSize="1rem" bg="var(--primarycolor)" width="100%" height="2.5rem" />
@@ -466,56 +456,224 @@ export const FreelancerSignUp = () => {
 };
 
 export const ClientSignUp = () => {
-    const [show, setShow] = React.useState(false)
-    const handleClick = () => setShow(!show)
+    const navigate = useNavigate();
+    const [verifyShow, setVerifyShow] = useState(false);
+    const toast = useToast();
+    const iconsStyle = {
+        fontSize: "1.5rem",
+        padding: "0.4rem",
+        width: "110px",
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+        margin: "auto",
+        border: "1px solid var(--bordersecondary)",
+        borderRadius: "6px",
+        backgroundColor: "var(--secondarycolor)"
+    };
 
+    const [show, setShow] = React.useState(false);
+    const email = sessionStorage.getItem('email');
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        country: '',
+        sendEmails: false,
+        has_accepted_terms: false,
+        role: 2
+    });
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.sendEmails) {
+            toast({
+                title: "You've to agree with send mail",
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top-right'
+            })
+        } else if (!formData.has_accepted_terms) {
+            toast({
+                title: "You've accept the tarms and conditions",
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top-right'
+            })
+        } else {
+            const response = await signUp(formData);
+            if (response.code === 200) {
+                toast({
+                    title: response.msg,
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top-right'
+                })
+                setVerifyShow(true);
+                sessionStorage.setItem("email", response.body.email);
+            } else if (response.code === 403) {
+                toast({
+                    title: response.msg,
+                    status: 'warning',
+                    duration: 3000,
+                    isClosable: true,
+                    position: 'top-right'
+                })
+            }
+        }
+
+    };
+
+    const handleClick = () => {
+        setShow(!show);
+    };
     return (
-        <OnbardingCardLayout title="Sign up to hire talent" width="500px" gap="5">
-            <VStack gap={"5"}>
-                <HStack gap={"5"}>
-                    <Image src='./images/user.jpeg' width="50px" borderRadius="50%" />
-                    <Text fontWeight="600" color="var(--primarytextcolor)">John@me.com</Text>
-                </HStack>
-                <FormControl display={"grid"} gap={"5"} isRequired>
-                    <InputGroup gap={"5"}>
-                        <Input placeholder='First name' />
-                        <Input placeholder='Last name' />
-                    </InputGroup>
-                    {/* <Input placeholder='Email' />
-                    <InputGroup size='md'>
-                        <Input
-                            pr='4.5rem'
-                            type={show ? 'text' : 'password'}
-                            placeholder='Enter password'
-                        />
-                        <InputRightElement width='4.5rem'>
-                            <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                {show ? 'Hide' : 'Show'}
-                            </Button>
-                        </InputRightElement>
-                    </InputGroup> */}
-                    <InputGroup>
-                        <Input type='text' placeholder='United State' />
-                        <InputRightElement>
-                            <BiChevronDown color='green.500' fontSize={"1.4rem"} />
-                        </InputRightElement>
-                    </InputGroup>
-                    <Box display={"grid"} gap={"5"}>
-                        <Checkbox size='md' colorScheme='green' defaultChecked>
-                            Send me emails with on how find talent my feeds
-                        </Checkbox>
-                        <Checkbox size='md' colorScheme='green' defaultChecked>
-                            Yes, I understand & agree the Bizzzy <span className="font-[600] text-[var(--primarytextcolor)]"> Terms of Service </span>
-                        </Checkbox>
-                    </Box>
-                </FormControl>
+        <>
+            {
+                verifyShow ? <>
+                    <OnbardingCardLayout width="600px">
+                        <VStack gap={"5"}>
+                            <VStack gap={"5"}>
+                                <Box backgroundColor={"#F0FDF4"} padding={"1rem"} borderRadius={"50%"}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                                        <rect x="6" y="10" width="36" height="28" rx="2.66667" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M6 14L24 26L42 14" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </Box>
+                                <Text color={"var(--primarytext)"} fontSize={"25px"} fontWeight={"500"}>Verify your email to proceed</Text>
+                                <Text textAlign="center">
+                                    We just sent an email to the address <span className='font-bold text-[var(--primarytextcolor)]'>{email}</span><br />
+                                    Please check your email and click on the link provided to verify your address
+                                </Text>
+                            </VStack>
+                            <HStack justifyContent={"space-evenly"} width={"100%"} gap={"5"}>
+                                <CTAButton fontWeight="500" text="Resend Verification Email" color="var(--primarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" width="100%" height="2.5rem" />
+                                <CTAButton fontWeight="500" text="Go to Gmail Inbox" color="#fff" fontSize="1rem" bg="var(--primarycolor)" width="100%" height="2.5rem" />
+                            </HStack>
+                        </VStack>
+                    </OnbardingCardLayout>
+                </> : <form onSubmit={handleSubmit}>
+                    <OnbardingCardLayout title="Sign Up To Hire Talent" width="500px">
+                        <br />
+                        <VStack width="100%" gap={"8"}>
+                            <HStack justifyContent={"space-between"} width={"100%"}>
+                                <Box style={iconsStyle} color="#3789f4">
+                                    <BsFacebook />
+                                </Box>
+                                <Box style={iconsStyle}>
+                                    <FcGoogle />
+                                </Box>
+                                <Box style={iconsStyle}>
+                                    <BsApple />
+                                </Box>
+                            </HStack>
+                            <Divider text="Or" dwidth="180px" />
+                            <FormControl display={"grid"} gap={"5"} isRequired>
+                                <InputGroup gap={"5"}>
+                                    <Input
+                                        name="firstName"
+                                        value={formData.firstName}
+                                        onChange={handleChange}
+                                        placeholder='First name'
+                                    />
+                                    <Input
+                                        name="lastName"
+                                        value={formData.lastName}
+                                        onChange={handleChange}
+                                        placeholder='Last name'
+                                    />
+                                </InputGroup>
+                                <Input
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder='Email'
+                                />
+                                <InputGroup size='md'>
+                                    <Input
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        pr='4.5rem'
+                                        type={show ? 'text' : 'password'}
+                                        placeholder='Enter password'
+                                    />
+                                    <InputRightElement width='4.5rem'>
+                                        <Button h='1.75rem' size='sm' onClick={() => handleClick()}>
+                                            {show ? 'Hide' : 'Show'}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
+                                <InputGroup>
+                                    <Input
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleChange}
+                                        type='text'
+                                        placeholder='United State'
+                                    />
+                                    <InputRightElement>
+                                        <BiChevronDown color='green.500' fontSize={"1.4rem"} />
+                                    </InputRightElement>
+                                </InputGroup>
+                                <Box display={"grid"} gap={"5"}>
+                                    <Checkbox
+                                        name="sendEmails"
+                                        checked={formData.sendEmails}
+                                        onChange={handleChange}
+                                        size='md'
+                                        colorScheme='green'
+                                    >
+                                        Send me emails with on how to find talent my feeds
+                                    </Checkbox>
+                                    <Checkbox
+                                        name="has_accepted_terms"
+                                        checked={formData.has_accepted_terms}
+                                        onChange={handleChange}
+                                        size='md'
+                                        colorScheme='green'
+                                    >
+                                        Yes, I understand & agree to the Bizzzy{' '}
+                                        <span className="font-[600] text-[var(--primarytextcolor)]">
+                                            Terms of Service
+                                        </span>
+                                    </Checkbox>
+                                </Box>
+                            </FormControl>
+                            <VStack width={"100%"} gap={"5"}>
+                                <CTAButton
+                                    type="submit"
+                                    fontWeight="500"
+                                    text="Create Account"
+                                    color="#fff"
+                                    fontSize="1rem"
+                                    bg="var(--primarycolor)"
+                                    width="100%"
+                                    height="2.5rem"
+                                />
+                                <Text fontWeight={"500"}>
+                                    Already Have an Account?{' '}
+                                    <span className='text-[var(--primarytextcolor)]'>Login</span>
+                                </Text>
+                            </VStack>
+                        </VStack>
+                    </OnbardingCardLayout>
+                </form>
+            }
 
-                <VStack width={"100%"} gap={"5"}>
-                    <CTAButton fontWeight="500" text="Create Account" color="#fff" fontSize="1rem" bg="var(--primarycolor)" width="100%" height="2.5rem" />
-                    <Text fontWeight={"500"}>Already Have Account? <span className='text-[var(--primarytextcolor)]'>Login</span></Text>
-                </VStack>
-            </VStack>
-        </OnbardingCardLayout>
+        </>
     )
 }
 

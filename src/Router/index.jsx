@@ -23,10 +23,12 @@ const Router = () => {
                 <Route exact path="/onboarding" element={<Onboarding />} />
                 <Route exact path="/create-job" element={<JobPost />} />
                 <Route exact path="/find-job" element={<FindJob />} />
-                <Route exact path="/apply-job" element={<ApplyJob />} />
+                <Route exact path="/find-job/:id" element={<ApplyJob />} />
+                {/* <Route exact path="/apply-job" element={<ApplyJob />} /> */}
                 <Route exact path="/verify-email" element={<VerifySuccess />} />
                 <Route exact path="/messages" element={<Message />} />
-                <Route exact path="/userprofile" element={<Profile />} />
+                <Route exact path="/freelancer" element={<Profile />} />
+                <Route exact path="/freelancer/:id" element={<Profile />} />
                 <Route exact path="/userprofile-setting" element={<ProfileSetting />} />
                 <Route exact path='/tracker' element={<TimeTracker />} />
             </Routes>
