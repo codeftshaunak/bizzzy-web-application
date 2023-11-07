@@ -2,14 +2,20 @@
     "routes": [
       { "src": "/", "dest": "/" },
       { "src": "/login", "dest": "/" },
-      { "src": "/clintsignup", "dest": "/" },
-      { "src": "/freelancersignup", "dest": "/" },
+      { "src": "/signup", "dest": "/" },
       { "src": "/onboarding", "dest": "/" },
       { "src": "/create-job", "dest": "/" },
       { "src": "/apply-job", "dest": "/" },
       { "src": "/find-job", "dest": "/" },
       { "src": "/messages", "dest": "/" },
+
       { "src": "/freelancer", "dest": "/" },
       { "src": "/userprofile-setting", "dest": "/" }
+
+      {"src":"/verify-email", "dest":"/"},
+      {
+        "src": "/verify-email",
+        "dest": "/verify-email?id=:id&token=:token"
+      }
     ]
   }
