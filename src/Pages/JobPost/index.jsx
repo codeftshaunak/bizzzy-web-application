@@ -1,9 +1,11 @@
-import { useToast } from "@chakra-ui/react";
+import { HStack, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Complete from "../../Components/JobCreate/Completed";
 import FinalStep from "../../Components/JobCreate/FinalStep";
 import FirstStep from "../../Components/JobCreate/FirstStep";
+import Preview from "../../Components/JobCreate/Preview";
 import SecondStep from "../../Components/JobCreate/SecondStep";
+import Steps from "../../Components/JobCreate/Steps";
 import { FormStateProvider } from "../../Contexts/FormContext";
 import HomeLayout from "../../Layouts/HomeLayout";
 import { createJob } from "../../helpers/jobApis";
@@ -38,10 +40,18 @@ const JobPost = () => {
   return (
     <HomeLayout displaydir="row">
       <FormStateProvider>
-        {step === 1 && <FirstStep setStep={setStep} />}
-        {step === 2 && <SecondStep setStep={setStep} />}
-        {step === 3 && <FinalStep setStep={setStep} onCallback={onSubmit} />}
-        {step === 4 && <Complete setStep={setStep} />}
+        <HStack
+          justifyContent={"space-around"}
+          width={"full"}
+          alignItems={"flex-start"}
+        >
+          <Steps step={step} setStep={setStep} />
+          {step === 1 && <FirstStep setStep={setStep} />}
+          {step === 2 && <SecondStep setStep={setStep} />}
+          {step === 3 && <FinalStep setStep={setStep} onCallback={onSubmit} />}
+          {step === 4 && <Complete setStep={setStep} />}
+          <Preview />
+        </HStack>
       </FormStateProvider>
     </HomeLayout>
   );
