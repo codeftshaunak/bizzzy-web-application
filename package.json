@@ -14,11 +14,8 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-<<<<<<< HEAD
     "@hookform/resolvers": "^3.3.2",
-=======
     "@reduxjs/toolkit": "^1.9.7",
->>>>>>> da4f5abb9974020c973708cb933417f06869c6c2
     "axios": "^1.6.0",
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",
