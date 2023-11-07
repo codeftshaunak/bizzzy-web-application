@@ -1,6 +1,9 @@
 import { HStack } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useFormState } from "../../Contexts/FormContext";
 
 function Step({ step, description, active, finalStep }) {
   return (
@@ -27,11 +30,30 @@ function Step({ step, description, active, finalStep }) {
   );
 }
 
+const schema = z.object({
+  title: z.string(),
+  description: z.string(),
+  tags: z.string(),
+  type: z.string(),
+  amount: z.string().transform((v) => parseInt(v)),
+});
+
 function FirstStep({ setStep }) {
-  const { register } = useFormContext();
+  const { insertToFormState, formState } = useFormState();
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (v) => {
+    insertToFormState(v);
+    setStep(2);
+  };
 
   return (
-    // <HomeLayout displaydir="row">
     <HStack
       justifyContent={"space-around"}
       width={"full"}
@@ -42,7 +64,10 @@ function FirstStep({ setStep }) {
         <Step step={2} description={"Experience"} />
         <Step step={3} description={"Scope of your Work"} finalStep />
       </div>
-      <div className="w-[530px] h-[716px] flex-col justify-start items-start gap-9 inline-flex">
+      <form
+        className="w-[530px] h-[716px] flex-col justify-start items-start gap-9 inline-flex"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div>
           <div className="w-max-[440px] text-black text-3xl font-medium font-['SF Pro Text'] leading-9">
             Let's start with a strong title.
@@ -63,7 +88,11 @@ function FirstStep({ setStep }) {
             type="text"
             {...register("title")}
           />
+          {errors?.title ? (
+            <p className="text-sm text-red-500">{errors.title.message}</p>
+          ) : null}
         </div>
+
         <div>
           <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
             Description
@@ -74,6 +103,9 @@ function FirstStep({ setStep }) {
             rows={2}
             {...register("description")}
           />
+          {errors?.description ? (
+            <p className="text-sm text-red-500">{errors.description.message}</p>
+          ) : null}
         </div>
 
         <div>
@@ -93,41 +125,49 @@ function FirstStep({ setStep }) {
             <option value={"React JS"}>React</option>
             <option value={"Node Js"}>Node Js</option>
           </select>
+          {errors?.tags ? (
+            <p className="text-sm text-red-500">{errors.tags.message}</p>
+          ) : null}
         </div>
 
-        <div className="flex items-center">
+        <div>
           <div className="flex items-center">
-            <input
-              id="default-radio-1"
-              type="radio"
-              value="Fixed Budget"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("type")}
-            />
-            <label
-              htmlFor="default-radio-1"
-              className="ml-2 text-sm font-medium text-gray-900 "
-            >
-              Fixed Budget
-            </label>
+            <div className="flex items-center">
+              <input
+                id="default-radio-1"
+                type="radio"
+                value="Fixed Budget"
+                name="default-radio"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
+                {...register("type")}
+              />
+              <label
+                htmlFor="default-radio-1"
+                className="ml-2 text-sm font-medium text-gray-900 "
+              >
+                Fixed Budget
+              </label>
+            </div>
+            <div className="flex items-center ml-3">
+              <input
+                id="default-radio-2"
+                type="radio"
+                value="Hourly"
+                name="default-radio"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
+                {...register("type")}
+              />
+              <label
+                htmlFor="default-radio-2"
+                className="ml-2 text-sm font-medium text-gray-900 "
+              >
+                Hourly
+              </label>
+            </div>
           </div>
-          <div className="flex items-center ml-3">
-            <input
-              id="default-radio-2"
-              type="radio"
-              value="Hourly"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("type")}
-            />
-            <label
-              htmlFor="default-radio-2"
-              className="ml-2 text-sm font-medium text-gray-900 "
-            >
-              Hourly
-            </label>
-          </div>
+          {errors?.type ? (
+            <p className="text-sm text-red-500">{errors.type.message}</p>
+          ) : null}
         </div>
 
         <div>
@@ -178,6 +218,9 @@ function FirstStep({ setStep }) {
               </div>
             </div>
           </div>
+          {errors?.amount ? (
+            <p className="text-sm text-red-500">{errors.amount.message}</p>
+          ) : null}
         </div>
 
         <div>
@@ -194,9 +237,9 @@ function FirstStep({ setStep }) {
                   id="Path"
                   d="M14.9997 7.00045L8.4997 13.5005C7.67128 14.3289 7.67128 15.672 8.4997 16.5005C9.32813 17.3289 10.6713 17.3289 11.4997 16.5005L17.9997 10.0005C19.6566 8.3436 19.6566 5.65731 17.9997 4.00045C16.3428 2.3436 13.6566 2.3436 11.9997 4.00045L5.4997 10.5005C3.01442 12.9857 3.01442 17.0152 5.4997 19.5005C7.98498 21.9857 12.0144 21.9857 14.4997 19.5005L20.9997 13.0005"
                   stroke="#16A34A"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </g>
             </svg>
@@ -211,8 +254,7 @@ function FirstStep({ setStep }) {
 
         <button
           className="w-[136px] h-9 flex-col justify-start items-start gap-2.5 inline-flex"
-          type="button"
-          onClick={() => setStep(2)}
+          type="submit"
         >
           <div className="self-stretch h-9 px-3 py-2 bg-green-500 rounded-md shadow justify-center items-center gap-1 inline-flex">
             <div className="text-center text-white text-sm font-medium font-['SF Pro Text'] leading-tight">
@@ -220,7 +262,7 @@ function FirstStep({ setStep }) {
             </div>
           </div>
         </button>
-      </div>
+      </form>
 
       <div className="w-[310px] h-[124px] flex-col justify-start items-start gap-2 inline-flex">
         <div className="flex items-center w-full">
@@ -243,17 +285,17 @@ function FirstStep({ setStep }) {
                         id="Path"
                         d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
                         stroke="#6B7280"
-                        stroke-width="1.25"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         id="Path_2"
                         d="M9 4.33301L11.6667 6.99967"
                         stroke="#6B7280"
-                        stroke-width="1.25"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </g>
                   </svg>
@@ -275,41 +317,41 @@ function FirstStep({ setStep }) {
                         id="Path"
                         d="M9.33333 7.33301V11.333"
                         stroke="#6B7280"
-                        stroke-width="1.25"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         id="Path_2"
                         d="M6.66634 7.33301V11.333"
                         stroke="#6B7280"
-                        stroke-width="1.25"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         id="Path_3"
                         d="M2.66699 4.66634H13.3337"
                         stroke="#6B7280"
-                        stroke-width="1.25"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         id="Path_4"
                         d="M3.33301 4.66699L3.99967 12.667C3.99967 13.4034 4.59663 14.0003 5.33301 14.0003H10.6663C11.4027 14.0003 11.9997 13.4034 11.9997 12.667L12.6663 4.66699"
                         stroke="#6B7280"
-                        stroke-width="1.25"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         id="Path_5"
                         d="M6 4.66667V2.66667C6 2.29848 6.29848 2 6.66667 2H9.33333C9.70152 2 10 2.29848 10 2.66667V4.66667"
                         stroke="#6B7280"
-                        stroke-width="1.25"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </g>
                   </svg>
@@ -327,7 +369,6 @@ function FirstStep({ setStep }) {
         </div>
       </div>
     </HStack>
-    // </HomeLayout>
   );
 }
 
