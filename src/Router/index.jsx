@@ -12,8 +12,7 @@ import Message from "../Pages/Message";
 import TimeTracker from "../Pages/TimeTracker";
 import { SignUp } from "../Pages/SignUp";
 import { VerifySuccess } from "../Pages/Success";
-import ClientJobPostView from "../Pages/clientJobPostView";
-import ClientDashboard1 from "../Pages/ClientDashboard";
+import ClientJobPostView from "../Pages/ClientJobPostView";
 import ClientDashboard from "../Pages/ClientDashboard";
 
 const Router = () => {
