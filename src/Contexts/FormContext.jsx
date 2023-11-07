@@ -11,8 +11,10 @@ export const FormStateProvider = ({ children }) => {
   const [formState, setFormState] = useState({});
 
   const insertToFormState = (v) => {
-    if (!v) return;
-    setFormState((prev) => ({ ...prev, ...v }));
+    if (!v) return formState;
+    const newState = { ...formState, ...v };
+    setFormState(newState);
+    return newState;
   };
 
   const value = useMemo(

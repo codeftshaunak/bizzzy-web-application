@@ -2,6 +2,7 @@ import { HStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { TagsInput } from "react-tag-input-component";
 import { z } from "zod";
 import { useFormState } from "../../Contexts/FormContext";
 
@@ -31,22 +32,29 @@ function Step({ step, description, active, finalStep }) {
 }
 
 const schema = z.object({
-  title: z.string(),
-  description: z.string(),
-  tags: z.string(),
-  type: z.string(),
-  amount: z.string().transform((v) => parseInt(v)),
+  title: z.string().min(1),
+  description: z.string().min(5),
+  tags: z.array(z.string()).min(1),
+  budget: z.enum(["FIXED_BUDGET", "HOURLY"]),
+  amount: z.coerce.number().transform((v) => Number(v)),
 });
 
 function FirstStep({ setStep }) {
-  const { insertToFormState, formState } = useFormState();
+  const { insertToFormState } = useFormState();
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
+    setValue,
+    getValues,
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      tags: [],
+    },
   });
+
+  const tags = getValues("tags");
 
   const onSubmit = (v) => {
     insertToFormState(v);
@@ -109,22 +117,21 @@ function FirstStep({ setStep }) {
         </div>
 
         <div>
-          <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
+          <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight mb-1">
             Add Tags
           </div>
-          <select
-            className="border mt-1 h-9 text-gray-400 border-outline-primary rounded-md shadow-sm w-full font-['SF Pro Text'] text-sm py-1 px-3"
-            placeholder="Select Skills"
-            {...register("tags")}
-            defaultValue={"SELECT_SKILLS"}
-          >
-            <option disabled value={"SELECT_SKILLS"}>
-              Select Skills
-            </option>
-            <option value={"JavaScript"}>JavaScript</option>
-            <option value={"React JS"}>React</option>
-            <option value={"Node Js"}>Node Js</option>
-          </select>
+
+          <TagsInput
+            value={tags}
+            onChange={(tags) => setValue("tags", tags)}
+            name="tags"
+            placeHolder="Enter tags"
+            classNames={{
+              input: "bg-transparent py-1",
+              tag: "",
+            }}
+          />
+
           {errors?.tags ? (
             <p className="text-sm text-red-500">{errors.tags.message}</p>
           ) : null}
@@ -136,10 +143,10 @@ function FirstStep({ setStep }) {
               <input
                 id="default-radio-1"
                 type="radio"
-                value="Fixed Budget"
-                name="default-radio"
+                value="FIXED_BUDGET"
+                name="budget"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-                {...register("type")}
+                {...register("budget")}
               />
               <label
                 htmlFor="default-radio-1"
@@ -152,10 +159,10 @@ function FirstStep({ setStep }) {
               <input
                 id="default-radio-2"
                 type="radio"
-                value="Hourly"
-                name="default-radio"
+                value="HOURLY"
+                name="budget"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-                {...register("type")}
+                {...register("budget")}
               />
               <label
                 htmlFor="default-radio-2"
@@ -165,8 +172,8 @@ function FirstStep({ setStep }) {
               </label>
             </div>
           </div>
-          {errors?.type ? (
-            <p className="text-sm text-red-500">{errors.type.message}</p>
+          {errors?.budget ? (
+            <p className="text-sm text-red-500">{errors.budget.message}</p>
           ) : null}
         </div>
 

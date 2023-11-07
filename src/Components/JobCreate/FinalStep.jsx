@@ -68,12 +68,14 @@ function FinalStep({ setStep, onCallback = () => {} }) {
     handleSubmit,
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      duration: "Less than 1 Month",
+    },
   });
 
   const onSubmit = (v) => {
-    insertToFormState(v);
-    onCallback();
-    setStep(4);
+    const value = insertToFormState(v);
+    onCallback(value);
   };
 
   return (

@@ -57,7 +57,7 @@ function Step({ step, description, active, finalStep, complete }) {
 }
 
 const schema = z.object({
-  experience: z.string(),
+  experience: z.enum(["ENTRY", "INTERMEDIATE", "EXPERT"]),
 });
 
 function SecondStep({ setStep }) {
@@ -68,6 +68,9 @@ function SecondStep({ setStep }) {
     handleSubmit,
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      experience: "EXPERT",
+    },
   });
 
   const onSubmit = (v) => {
@@ -108,7 +111,7 @@ function SecondStep({ setStep }) {
             <input
               id="default-radio-1"
               type="radio"
-              value="Entry"
+              value="ENTRY"
               name="default-radio"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
               {...register("experience")}
@@ -127,7 +130,7 @@ function SecondStep({ setStep }) {
             <input
               id="default-radio-1"
               type="radio"
-              value="Intermediate"
+              value="INTERMEDIATE"
               name="default-radio"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
               {...register("experience")}
@@ -147,7 +150,7 @@ function SecondStep({ setStep }) {
               checked
               id="default-radio-1"
               type="radio"
-              value="Expert"
+              value="EXPERT"
               name="default-radio"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
               {...register("experience")}
