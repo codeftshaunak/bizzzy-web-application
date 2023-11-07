@@ -60,6 +60,24 @@ const schema = z.object({
   experience: z.enum(["ENTRY", "INTERMEDIATE", "EXPERT"]),
 });
 
+const options = [
+  {
+    key: "ENTRY",
+    title: "Entry",
+    text: "Looking somerelatively new to this field",
+  },
+  {
+    key: "INTERMEDIATE",
+    title: "Intermediate",
+    text: "Looking some relatively good in this field",
+  },
+  {
+    key: "EXPERT",
+    title: "Expert",
+    text: "Looking some relatively expert to this field",
+  },
+];
+
 function SecondStep({ setStep }) {
   const { insertToFormState } = useFormState();
   const {
@@ -107,63 +125,28 @@ function SecondStep({ setStep }) {
             <p className="text-sm text-red-500">{errors.experience.message}</p>
           ) : null}
 
-          <div className="flex p-5 items-center border border-outline-primary w-[446px] h-[88px] rounded-xl">
-            <input
-              id="default-radio-1"
-              type="radio"
-              value="ENTRY"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("experience")}
-            />
-            <label htmlFor="default-radio-1" className="ml-4">
-              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
-                Entry
-              </div>
-              <div className="w-[375px] text-neutral-500 text-sm font-normal font-['SF Pro Text'] leading-tight">
-                Looking somerelatively new to this field
-              </div>
-            </label>
-          </div>
-
-          <div className="flex p-5 items-center border border-outline-primary w-[446px] h-[88px] rounded-xl">
-            <input
-              id="default-radio-1"
-              type="radio"
-              value="INTERMEDIATE"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("experience")}
-            />
-            <label htmlFor="default-radio-1" className="ml-4">
-              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
-                Intermediate
-              </div>
-              <div className="w-[375px] text-neutral-500 text-sm font-normal font-['SF Pro Text'] leading-tight">
-                Looking some relatively good in this field
-              </div>
-            </label>
-          </div>
-
-          <div className="flex bg-bg-success p-5 items-center border-2 border-outline-active w-[446px] h-[88px] rounded-xl">
-            <input
-              checked
-              id="default-radio-1"
-              type="radio"
-              value="EXPERT"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("experience")}
-            />
-            <label htmlFor="default-radio-1" className="ml-4">
-              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
-                Expert
-              </div>
-              <div className="w-[375px] text-neutral-500 text-sm font-normal font-['SF Pro Text'] leading-tight">
-                Looking some relatively expert to this field
-              </div>
-            </label>
-          </div>
+          {options.map((option) => (
+            <div
+              className={`flex p-5 items-center  w-[446px] h-[88px] rounded-xl border border-outline-primary active-checkbox`}
+              key={option.key}
+            >
+              <input
+                id={option.key}
+                type="radio"
+                value={option.key}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                {...register("experience")}
+              />
+              <label htmlFor="default-radio-1" className="ml-4">
+                <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
+                  {option.title}
+                </div>
+                <div className="w-[375px] text-neutral-500 text-sm font-normal font-['SF Pro Text'] leading-tight">
+                  {option.text}
+                </div>
+              </label>
+            </div>
+          ))}
 
           <button
             className="w-[136px] h-9 flex-col justify-start items-start gap-2.5 inline-flex"

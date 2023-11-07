@@ -60,6 +60,21 @@ const schema = z.object({
   duration: z.string(),
 });
 
+const options = [
+  {
+    key: "3 to 6 Months",
+    title: "3 to 6 Months",
+  },
+  {
+    key: "1 to 3 Months",
+    title: "1 to 3 Months",
+  },
+  {
+    key: "Less than 1 Month",
+    title: "Less than 1 Month",
+  },
+];
+
 function FinalStep({ setStep, onCallback = () => {} }) {
   const { insertToFormState } = useFormState();
   const {
@@ -107,54 +122,25 @@ function FinalStep({ setStep, onCallback = () => {} }) {
             ) : null}
           </div>
 
-          <div className="flex p-[1.12rem] items-center border border-outline-primary w-[446px] rounded-xl">
-            <input
-              id="default-radio-1"
-              type="radio"
-              value="3 to 6 Months"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("duration")}
-            />
-            <label htmlFor="default-radio-1" className="ml-4">
-              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
-                3 to 6 Months
-              </div>
-            </label>
-          </div>
-
-          <div className="flex p-[1.12rem] items-center border border-outline-primary w-[446px] rounded-xl">
-            <input
-              id="default-radio-1"
-              type="radio"
-              value="1 to 3 Months"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("duration")}
-            />
-            <label htmlFor="default-radio-1" className="ml-4">
-              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
-                1 to 3 Months
-              </div>
-            </label>
-          </div>
-
-          <div className="flex bg-bg-success p-[1.12rem] items-center border-2 border-outline-active w-[446px] rounded-xl">
-            <input
-              checked
-              id="default-radio-1"
-              type="radio"
-              value="Less than 1 Month"
-              name="default-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
-              {...register("duration")}
-            />
-            <label htmlFor="default-radio-1" className="ml-4">
-              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
-                Less than 1 Month
-              </div>
-            </label>
-          </div>
+          {options.map((option) => (
+            <div
+              key={option.key}
+              className="flex p-[1.12rem] items-center border border-outline-primary w-[446px] rounded-xl active-checkbox"
+            >
+              <input
+                id={option.key}
+                type="radio"
+                value={option.key}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
+                {...register("duration")}
+              />
+              <label htmlFor="default-radio-1" className="ml-4">
+                <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
+                  {option.title}
+                </div>
+              </label>
+            </div>
+          ))}
 
           <button
             className="w-[136px] h-9 flex-col justify-start items-start gap-2.5 inline-flex"

@@ -3,11 +3,17 @@
 @tailwind utilities;
 
 :root {
-    --primarycolor: #22C55E;
-    --primarytextcolor: #16A34A;
-    --primarysoftbg: #DCFCE7;
-    --primarytext: #374151;
-    --bordersecondary: #D1D5DB;
-    --secondarycolor: #F9FAFB;
-    --secondarytext: #6B7280;
+  --primarycolor: #22c55e;
+  --primarytextcolor: #16a34a;
+  --primarysoftbg: #dcfce7;
+  --primarytext: #374151;
+  --bordersecondary: #d1d5db;
+  --secondarycolor: #f9fafb;
+  --secondarytext: #6b7280;
+}
+
+@layer components {
+  .active-checkbox:has(input:checked) {
+    @apply bg-bg-success border-outline-active border-2;
+  }
 }
