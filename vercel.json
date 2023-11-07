@@ -8,8 +8,10 @@
       { "src": "/apply-job", "dest": "/" },
       { "src": "/find-job", "dest": "/" },
       { "src": "/messages", "dest": "/" },
-      { "src": "/userprofile", "dest": "/" },
-      { "src": "/userprofile-setting", "dest": "/" },
+
+      { "src": "/freelancer", "dest": "/" },
+      { "src": "/userprofile-setting", "dest": "/" }
+
       {"src":"/verify-email", "dest":"/"},
       {
         "src": "/verify-email",
