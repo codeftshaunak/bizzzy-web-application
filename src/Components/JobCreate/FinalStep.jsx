@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useFormState } from "../../Contexts/FormContext";
@@ -24,17 +24,27 @@ const options = [
 ];
 
 function FinalStep({ setStep, onCallback = () => {} }) {
-  const { insertToFormState } = useFormState();
+  const { insertToFormState, formState } = useFormState();
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       duration: "Less than 1 Month",
     },
   });
+
+  useEffect(() => {
+    if (formState) {
+      const values = {};
+      values.duration = formState?.duration || "Less than 1 Month";
+
+      reset(values);
+    }
+  }, [formState]);
 
   const onSubmit = (v) => {
     const value = insertToFormState(v);

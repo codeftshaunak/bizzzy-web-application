@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TagsInput } from "react-tag-input-component";
 import { z } from "zod";
@@ -39,13 +39,14 @@ const schema = z.object({
 });
 
 function FirstStep({ setStep }) {
-  const { insertToFormState } = useFormState();
+  const { insertToFormState, formState } = useFormState();
   const {
     register,
     formState: { errors },
     handleSubmit,
     setValue,
     getValues,
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -59,6 +60,19 @@ function FirstStep({ setStep }) {
     insertToFormState(v);
     setStep(2);
   };
+
+  useEffect(() => {
+    if (formState) {
+      const values = {};
+      if (formState.title) values.title = formState.title;
+      if (formState.description) values.description = formState.description;
+      if (formState.tags) values.tags = formState.tags;
+      if (formState.budget) values.budget = formState.budget;
+      if (formState.amount) values.amount = formState.amount;
+
+      reset(values);
+    }
+  }, [formState]);
 
   return (
     <form
@@ -111,7 +125,7 @@ function FirstStep({ setStep }) {
         </div>
 
         <TagsInput
-          value={tags}
+          value={tags || []}
           onChange={(tags) => setValue("tags", tags)}
           name="tags"
           placeHolder="Enter tags"

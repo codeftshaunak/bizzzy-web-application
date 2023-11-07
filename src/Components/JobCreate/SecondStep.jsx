@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useFormState } from "../../Contexts/FormContext";
@@ -78,11 +78,12 @@ const options = [
 ];
 
 function SecondStep({ setStep }) {
-  const { insertToFormState } = useFormState();
+  const { insertToFormState, formState } = useFormState();
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -94,6 +95,15 @@ function SecondStep({ setStep }) {
     insertToFormState(v);
     setStep(3);
   };
+
+  useEffect(() => {
+    if (formState) {
+      const values = {};
+      values.experience = formState?.experience || "EXPERT";
+
+      reset(values);
+    }
+  }, [formState]);
 
   return (
     <>
