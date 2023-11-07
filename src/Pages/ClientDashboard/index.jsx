@@ -1,8 +1,8 @@
 import React from "react";
 import HomeLayout from "../../Layouts/HomeLayout";
-import ClientDashboardComponent from "../../Components/ClientJobPostViewUi";
+import ClientDashboardComponent from "../../Components/ClientDashboardUi";
 
-const ClientDashboard = () => {
+const ClientDashBoard = () => {
   return (
     <>
       <HomeLayout>
@@ -12,4 +12,4 @@ const ClientDashboard = () => {
   );
 };
 
-export default ClientDashboard;
+export default ClientDashBoard;

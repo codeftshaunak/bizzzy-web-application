@@ -13,8 +13,10 @@ import TimeTracker from "../Pages/TimeTracker";
 import { SignUp } from "../Pages/SignUp";
 import { VerifySuccess } from "../Pages/Success";
 import ClientJobPostView from "../Pages/ClientJobPostView";
-import ClientDashboard from "../Pages/ClientDashboard";
-
+import ClientDashBoard from "../Pages/ClientDashBoard";
+import ClientDashboardInviteFreelancer from "../Pages/ClientDashboardInviteFreelancers";
+import ReviewProposal from "../Pages/ReviewProposal";
+import ClientHiring from "../Pages/ClientHiring";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -31,8 +33,11 @@ const Router = () => {
         <Route exact path="/userprofile" element={<Profile />} />
         <Route exact path="/userprofile-setting" element={<ProfileSetting />} />
         <Route exact path="/tracker" element={<TimeTracker />} />
-        <Route exact path="/client-dashboard" element={<ClientDashboard />} />
+        <Route exact path="/client-dashboard" element={<ClientDashBoard />} />
         <Route exact path="/client-job-post-view" element={<ClientJobPostView />} />
+        <Route exact path="/client-dashboard-invite-freelancers" element={<ClientDashboardInviteFreelancer />} />
+        <Route exact path="/client-review-proposal" element={<ReviewProposal />} />
+        <Route exact path="/client-hire" element={<ClientHiring />} />
       </Routes>
     </BrowserRouter>
   );
