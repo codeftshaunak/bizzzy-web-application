@@ -10,7 +10,7 @@
       { "src": "/messages", "dest": "/" },
 
       { "src": "/freelancer", "dest": "/" },
-      { "src": "/userprofile-setting", "dest": "/" }
+      { "src": "/userprofile-setting", "dest": "/" },
 
       {"src":"/verify-email", "dest":"/"},
       {
