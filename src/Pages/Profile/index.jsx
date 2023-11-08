@@ -1,5 +1,5 @@
 import React from 'react'
-import UserProfile from '../../Components/Profile';
+import { UserProfile } from '../../Components/Profile';
 import UserProfileSetting from '../../Components/Profile/UserProfileSetting';
 import HomeLayout from '../../Layouts/HomeLayout';
 

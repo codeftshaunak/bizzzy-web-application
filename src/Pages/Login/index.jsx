@@ -9,10 +9,13 @@ import { VStack, Flex, Box, Input, HStack, IconButton, InputGroup, InputRightEle
 import OnbardingCardLayout from '../../Layouts/CardLayout/OnbardingCardLayout';
 import { signIn } from '../../helpers/apiRequest';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAuthData } from '../../redux/authSlice/authSlice'; // Import your actions
 
 const Login = ({ setPage }) => {
     const toast = useToast();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const iconsStyle = {
         fontSize: '1.5rem',
@@ -47,35 +50,39 @@ const Login = ({ setPage }) => {
         e.preventDefault();
         const response = await signIn(formData);
         if (response.code === 200) {
+            const { role, token } = response.body;
+            dispatch(setAuthData({ role, token })); // Dispatch the action to set the role and token
+            localStorage.setItem("token", token);
             toast({
                 title: response.msg,
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
-                position: 'top-right'
-            })
-            navigate("/userprofile")
+                position: 'top-right',
+            });
+            navigate("/onboarding");
         } else if (response.code === 403) {
             toast({
                 title: response.msg,
                 status: 'warning',
                 duration: 3000,
                 isClosable: true,
-                position: 'top-right'
-            })
+                position: 'top-right',
+            });
             // navigate("/login")
-        }
-        else if (response.code === 405) {
+        } else if (response.code === 405) {
             toast({
                 title: response.msg,
                 status: 'warning',
                 duration: 3000,
                 isClosable: true,
-                position: 'top-right'
-            })
-            navigate("/login")
+                position: 'top-right',
+            });
+            navigate("/login");
         }
     };
+
+
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -161,7 +168,7 @@ const Login = ({ setPage }) => {
             <div>
                 <Divider text="Don't have a Bizzzy account?" dwidth="60px" />
                 <br />
-                <CTAButton text="Sign Up" border="1px solid var(--bordersecondary)" bg="var(--secondarycolor)" width="100%" />
+                <CTAButton fontSize="1rem" text="Sign Up" border="1px solid var(--bordersecondary)" bg="var(--secondarycolor)" width="100%" onClick={() => navigate("/signup")} />
             </div>
         </OnbardingCardLayout>
     );

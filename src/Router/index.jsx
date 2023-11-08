@@ -18,29 +18,31 @@ import ClientDashboardInviteFreelancer from "../Pages/ClientDashboardInviteFreel
 import ReviewProposal from "../Pages/ReviewProposal";
 import ClientHiring from "../Pages/ClientHiring";
 const Router = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/signup" element={<SignUp />} />
-        <Route exact path="/onboarding" element={<Onboarding />} />
-        <Route exact path="/create-job" element={<JobPost />} />
-        <Route exact path="/find-job" element={<FindJob />} />
-        <Route exact path="/apply-job" element={<ApplyJob />} />
-        <Route exact path="/verify-email" element={<VerifySuccess />} />
-        <Route exact path="/messages" element={<Message />} />
-        <Route exact path="/userprofile" element={<Profile />} />
-        <Route exact path="/userprofile-setting" element={<ProfileSetting />} />
-        <Route exact path="/tracker" element={<TimeTracker />} />
-        <Route exact path="/client-dashboard" element={<ClientDashBoard />} />
-        <Route exact path="/client-job-post-view" element={<ClientJobPostView />} />
-        <Route exact path="/client-dashboard-invite-freelancers" element={<ClientDashboardInviteFreelancer />} />
-        <Route exact path="/client-review-proposal" element={<ReviewProposal />} />
-        <Route exact path="/client-hire" element={<ClientHiring />} />
-      </Routes>
-    </BrowserRouter>
-  );
-};
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route exact path="/login" element={<Login />} />
+                <Route exact path="/signup" element={<SignUp />} />
+                <Route exact path="/onboarding" element={<Onboarding />} />
+                <Route exact path="/create-job" element={<JobPost />} />
+                <Route exact path="/find-job" element={<FindJob />} />
+                <Route exact path="/find-job/:id" element={<ApplyJob />} />
+                {/* <Route exact path="/apply-job" element={<ApplyJob />} /> */}
+                <Route exact path="/verify-email" element={<VerifySuccess />} />
+                <Route exact path="/messages" element={<Message />} />
+                <Route exact path="/freelancer" element={<Profile />} />
+                <Route exact path="/freelancer/:id" element={<Profile />} />
+                <Route exact path="/userprofile-setting" element={<ProfileSetting />} />
+                <Route exact path='/tracker' element={<TimeTracker />} />
+                <Route exact path="/client-dashboard" element={<ClientDashBoard />} />
+                <Route exact path="/client-job-post-view" element={<ClientJobPostView />} />
+                <Route exact path="/client-dashboard-invite-freelancers" element={<ClientDashboardInviteFreelancer />} />
+                <Route exact path="/client-review-proposal" element={<ReviewProposal />} />
+                <Route exact path="/client-hire" element={<ClientHiring />} />
+            </Routes>
+        </BrowserRouter>
+    )
+}
 
 export default Router;

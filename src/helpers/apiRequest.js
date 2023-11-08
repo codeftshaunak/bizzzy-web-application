@@ -54,6 +54,7 @@ export const signIn = async (data) => {
     const response = await API.post("/login", data, {
       headers: { "Access-Control-Allow-Credentials": true },
     });
+    console.log(response.data.body.token);
     return response.data;
   } catch (error) {
     return error.response.data;
