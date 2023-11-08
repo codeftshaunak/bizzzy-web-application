@@ -53,6 +53,7 @@ const Login = ({ setPage }) => {
             const { role, token } = response.body;
             dispatch(setAuthData({ role, token })); // Dispatch the action to set the role and token
             localStorage.setItem("token", token);
+            localStorage.setItem("role", role)
             toast({
                 title: response.msg,
                 status: 'success',
