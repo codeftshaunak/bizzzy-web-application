@@ -13,14 +13,14 @@ const ClientProfileCard = () => {
 
       <VStack gap={"0"}>
         <Text fontSize="1.2rem" marginBottom={"2"} fontWeight={"bold"}>
-          Sasheen M.
+        Joe Doe
         </Text>
-        <Text marginBottom={"0"} textAlign={"center"} fontSize={"small"}>
-          Customer Experience Consultant
+        <Text px={10} marginBottom={"0"} textAlign={"center"} fontSize={"sm"}>
+        Customer Experience Consultant
         </Text>
       </VStack>
       <VStack gap={"0"} w="100%">
-        <Button colorScheme="green" size="sm" isFullWidth w={"100%"}>
+        <Button colorScheme="16A34A" bg={'#16A34A'} color={'#fff'} size="sm" isFullWidth fontSize={'sm'} w={"100%"}>
           Message
         </Button>
       </VStack>
