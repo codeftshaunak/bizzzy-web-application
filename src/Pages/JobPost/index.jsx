@@ -6,11 +6,12 @@ import FirstStep from "../../Components/JobCreate/FirstStep";
 import Preview from "../../Components/JobCreate/Preview";
 import SecondStep from "../../Components/JobCreate/SecondStep";
 import Steps from "../../Components/JobCreate/Steps";
-import { FormStateProvider } from "../../Contexts/FormContext";
+import { FormStateProvider, useFormState } from "../../Contexts/FormContext";
 import HomeLayout from "../../Layouts/HomeLayout";
 import { createJob } from "../../helpers/jobApis";
 
 const JobPost = () => {
+  const { clearFormState } = useFormState();
   const toast = useToast();
   const [step, setStep] = useState(1);
 
@@ -39,6 +40,7 @@ const JobPost = () => {
         position: "top-right",
       });
       setStep(4);
+      clearFormState();
     } else {
       toast({
         title: "Failed to create job post!",
