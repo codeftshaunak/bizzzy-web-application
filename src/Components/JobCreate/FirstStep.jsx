@@ -9,9 +9,8 @@ function Step({ step, description, active, finalStep }) {
   return (
     <div className="flex relative mb-[55px]">
       <div
-        className={`w-8 h-8 rounded-full border-2 ${
-          active ? "border-outline-active" : "border-fg-disabled"
-        } flex justify-center items-center`}
+        className={`w-8 h-8 rounded-full border-2 ${active ? "border-outline-active" : "border-fg-disabled"
+          } flex justify-center items-center`}
       >
         {active && <div className="w-2.5 h-2.5 bg-green-500 rounded-full" />}
       </div>

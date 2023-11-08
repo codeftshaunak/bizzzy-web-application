@@ -20,12 +20,10 @@ const Process = () => {
     console.log({ "page": page });
     const toast = useToast();
     const navigate = useNavigate();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    // const { isOpen, onOpen, onClose } = useDisclosure();
     const [userDetails, setUserDetails] = useState([]);
     const role = useSelector((state) => state.auth.role);
-    console.log(role);
-    console.log(userDetails);
 
     const getUserInformation = async () => {
         try {
@@ -39,11 +37,12 @@ const Process = () => {
 
     useEffect(() => {
         getUserInformation();
+        autoProcess();
     }, [page])
 
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
+    // const openModal = () => {
+    //     setIsModalOpen(true);
+    // };
 
     const options = [
         { value: 'programming', label: 'Programming' },
@@ -64,228 +63,212 @@ const Process = () => {
         business_name: "",
         brief_description: ""
     });
-    const [experienceInput, setExperienceInput] = useState({
-        company_name: "",
-        position: "",
-        start_date: "",
-        end_date: "",
-        description: "",
-    });
 
 
     const handleSelectChange = (selectedValues) => {
         setSelectedOptions(selectedValues || []);
     };
 
+    const autoProcess = () => {
+        if (userDetails?.categories?.length > 0 && userDetails?.skills?.length > 0 && userDetails?.professional_role?.length > 0) {
+            navigate("/freelancer")
+        }
+        if (userDetails?.categories?.length == 0) {
+            setPage(2);
+        }
+        if (userDetails?.professional_role?.length == 0) {
+            setPage(3);
+        }
+        if (userDetails?.skills?.length == 0) {
+            setPage(4);
+        }
+    };
+
+
     const handleSaveAndContinue = async (data) => {
+        autoProcess();
         try {
-            if (data === "category") {
-                if (selectedOptions.length <= 0) {
-                    toast({
-                        title: "Atleast Select A Category",
-                        status: "warning",
-                        duration: 3000,
-                        isClosable: true
-                    })
-                } else {
-                    const selectedCategories = selectedOptions.map((option) => ({
-                        category_name: option.value,
-                    }));
-                    const response = await updateFreelancerProfile({ categories: selectedCategories });
-                    console.log({ category: response });
-                    if (response.code === 405) {
+            if (role == 1) {
+                if (data === "category") {
+                    if (selectedOptions.length <= 0) {
                         toast({
-                            title: response.msg,
+                            title: "Atleast Select A Category",
+                            status: "warning",
+                            duration: 3000,
+                            isClosable: true
+                        })
+                    } else {
+                        const selectedCategories = selectedOptions.map((option) => ({
+                            category_name: option.value,
+                        }));
+                        const response = await updateFreelancerProfile({ categories: selectedCategories });
+                        console.log({ category: response });
+                        if (response.code === 405) {
+                            toast({
+                                title: response.msg,
+                                status: "warning",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                            setSelectedOptions([]);
+                            setPage(3);
+                        } else if (response.code === 200) {
+                            toast({
+                                title: "Category Added Successfully",
+                                status: "success",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                            setSelectedOptions([]);
+                            setPage(3);
+                        }
+                    }
+                } else if (data === "info") {
+                    if (inputValues.professional_role.length <= 0) {
+                        toast({
+                            title: "Add your professional role",
                             status: "warning",
                             duration: 3000,
                             isClosable: true,
-                            position: "top-right",
-                        });
-                        setSelectedOptions([]);
-                        setPage(3);
-                    } else if (response.code === 200) {
+                            position: "top"
+                        })
+                    } else if (inputValues.hourly_rate.length <= 0) {
                         toast({
-                            title: "Category Added Successfully",
-                            status: "success",
-                            duration: 3000,
-                            isClosable: true,
-                            position: "top-right",
-                        });
-                        setSelectedOptions([]);
-                        setPage(3);
-                    }
-                }
-            } else if (data === "info") {
-                if (inputValues.professional_role.length <= 0) {
-                    toast({
-                        title: "Add your professional role",
-                        status: "warning",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top"
-                    })
-                } else if (inputValues.hourly_rate.length <= 0) {
-                    toast({
-                        title: "Add your hourly rate",
-                        status: "warning",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top"
-                    })
-                } else if (inputValues.description.length <= 0) {
-                    toast({
-                        title: "Add your profile overview",
-                        status: "warning",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top"
-                    })
-                } else {
-                    const response = await updateFreelancerProfile({
-                        professional_role: inputValues.professional_role,
-                        hourly_rate: inputValues.hourly_rate,
-                        description: inputValues.description,
-                    });
-                    console.log({ info: response });
-                    if (response.code === 405) {
-                        toast({
-                            title: response.msg,
+                            title: "Add your hourly rate",
                             status: "warning",
                             duration: 3000,
                             isClosable: true,
-                            position: "top-right",
-                        });
-                        setPage(4);
-                    } else if (response.code === 200) {
+                            position: "top"
+                        })
+                    } else if (inputValues.description.length <= 0) {
                         toast({
-                            title: "Basic Information Added Successfully",
-                            status: "success",
-                            duration: 3000,
-                            isClosable: true,
-                            position: "top-right",
-                        });
-                        setPage(4);
-                    }
-                }
-
-
-
-            } else if (data == "skills") {
-                if (selectedOptions.length <= 0) {
-                    toast({
-                        title: "Select Minimum Five Skills",
-                        status: "warning",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top"
-                    })
-                } else {
-                    const selectedCategories = selectedOptions.map((option) => ({
-                        skill_name: option.value,
-                    }));
-                    const response = await updateFreelancerProfile({ skills: selectedCategories });
-                    console.log({ skills: response });
-                    if (response.code == 405) {
-                        toast({
-                            title: response.msg,
+                            title: "Add your profile overview",
                             status: "warning",
                             duration: 3000,
                             isClosable: true,
-                            position: "top-right",
+                            position: "top"
+                        })
+                    } else {
+                        const response = await updateFreelancerProfile({
+                            professional_role: inputValues.professional_role,
+                            hourly_rate: inputValues.hourly_rate,
+                            description: inputValues.description,
                         });
-                        setSelectedOptions([]);
-                        navigate("/freelancer")
-                    } else if (response.code === 200) {
-                        toast({
-                            title: "Skils Added Successfully",
-                            status: "success",
-                            duration: 3000,
-                            isClosable: true,
-                            position: "top-right",
-                        });
-                        setSelectedOptions([]);
-                        navigate("/freelancer")
+                        console.log({ info: response });
+                        if (response.code === 405) {
+                            toast({
+                                title: response.msg,
+                                status: "warning",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                            setPage(4);
+                        } else if (response.code === 200) {
+                            toast({
+                                title: "Basic Information Added Successfully",
+                                status: "success",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                            setPage(4);
+                        }
                     }
-                }
 
-                // } else if (data === "exprience") {
-                //     const response = await updateFreelancerProfile({
-                //         experience: {
-                //             company_name: experienceInput.company_name,
-                //             description: experienceInput.description,
-                //             start_date: experienceInput.start_date,
-                //             end_date: experienceInput.end_date,
-                //             position: experienceInput.position,
-                //         }
-                //     });
-                //     console.log(experienceInput);
-                //     console.log({ expr: response.msg });
-                //     if (response.code == 405 || response.code == 500) {
-                //         toast({
-                //             title: response.msg,
-                //             status: "warning",
-                //             duration: 3000,
-                //             isClosable: true,
-                //             position: "top-right",
-                //         });
-                //         setSelectedOptions([]);
-                //         setPage(5);
-                //     } else if (response.code === 200) {
-                //         // Handle category added successfully
-                //         toast({
-                //             title: "Exprience Added Successfully",
-                //             status: "success",
-                //             duration: 3000,
-                //             isClosable: true,
-                //             position: "top-right",
-                //         });
-
-                //         navigate("/freelancer")
-                //         setPage(5);
-                //     }
-            }
-            else if (data === "business_details") {
-                if (businessDetails.business_name.length <= 0) {
-                    toast({
-                        title: "Add your business name please",
-                        status: "warning",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top"
-                    })
-                } else if (businessDetails.brief_description.length <= 0) {
-                    toast({
-                        title: "Add your business details",
-                        status: "warning",
-                        duration: 3000,
-                        isClosable: true,
-                        position: "top"
-                    })
-                } else {
-                    const response = await updateFreelancerProfile({
-                        business_name: businessDetails.business_name,
-                        brief_description: businessDetails.brief_description,
-                    });
-                    console.log({ businessDetails: response });
-                    if (response.code === 405) {
+                } else if (data == "skills") {
+                    if (selectedOptions.length <= 0) {
                         toast({
-                            title: response.msg,
+                            title: "Select Minimum Five Skills",
                             status: "warning",
                             duration: 3000,
                             isClosable: true,
-                            position: "top-right",
-                        });
-                    } else if (response.code === 200) {
-                        toast({
-                            title: "Your Details Added Successfully",
-                            status: "success",
-                            duration: 3000,
-                            isClosable: true,
-                            position: "top-right",
-                        });
-                        navigate("/client-dashboard")
+                            position: "top"
+                        })
+                    } else {
+                        const selectedCategories = selectedOptions.map((option) => ({
+                            skill_name: option.value,
+                        }));
+                        const response = await updateFreelancerProfile({ skills: selectedCategories });
+                        console.log({ skills: response });
+                        if (response.code == 405) {
+                            toast({
+                                title: response.msg,
+                                status: "warning",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                            setSelectedOptions([]);
+                            navigate("/freelancer")
+                        } else if (response.code === 200) {
+                            toast({
+                                title: "Skils Added Successfully",
+                                status: "success",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                            setSelectedOptions([]);
+                            navigate("/freelancer")
+                        }
                     }
                 }
+
+            } else if (role == 2) {
+                if (data === "business_details") {
+                    if (businessDetails.business_name.length <= 0) {
+                        toast({
+                            title: "Add your business name please",
+                            status: "warning",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top"
+                        })
+                    } else if (businessDetails.brief_description.length <= 0) {
+                        toast({
+                            title: "Add your business details",
+                            status: "warning",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top"
+                        })
+                    } else {
+                        const response = await updateFreelancerProfile({
+                            business_name: businessDetails.business_name,
+                            brief_description: businessDetails.brief_description,
+                        });
+                        console.log({ businessDetails: response });
+                        if (response.code === 405) {
+                            toast({
+                                title: response.msg,
+                                status: "warning",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                        } else if (response.code === 200) {
+                            toast({
+                                title: "Your Details Added Successfully",
+                                status: "success",
+                                duration: 3000,
+                                isClosable: true,
+                                position: "top-right",
+                            });
+                            navigate("/client-dashboard")
+                        }
+                    }
+                }
+            } else {
+                toast({
+                    title: "You're Login Expire Kinldy Login Again!",
+                    status: "warning",
+                    duration: 3000,
+                    isClosable: true
+                })
+                navigate("/login")
             }
         } catch (error) {
             console.log(error);
@@ -329,7 +312,7 @@ const Process = () => {
                 }
 
                 {
-                    role === 1 && <>
+                    role == 1 && <>
                         {
                             page === 2 && (
                                 <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">

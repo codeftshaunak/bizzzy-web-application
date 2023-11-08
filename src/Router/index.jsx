@@ -33,6 +33,8 @@ const Router = () => {
                 <Route exact path="/messages" element={<Message />} />
                 <Route exact path="/freelancer" element={<Profile />} />
                 <Route exact path="/freelancer/:id" element={<Profile />} />
+                <Route exact path="/client" element={<Profile />} />
+                <Route exact path="/client/:id" element={<Profile />} />
                 <Route exact path="/userprofile-setting" element={<ProfileSetting />} />
                 <Route exact path='/tracker' element={<TimeTracker />} />
                 <Route exact path="/client-dashboard" element={<ClientDashBoard />} />

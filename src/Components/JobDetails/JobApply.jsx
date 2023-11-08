@@ -1,28 +1,49 @@
-import { Box, HStack } from '@chakra-ui/react';
+import { Box, HStack, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react'
+import { applyJob } from '../../helpers/jobApis';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const JobApply = ({ setPage, details }) => {
     console.log({ "---detailspage": details });
-    const [bidAmount, setBidAmount] = useState('');
-    const [customeBidAmount, setCustomBidAmount] = useState(0);
+    const [bidAmount, setBidAmount] = useState(null);
+    const [customeBidAmount, setCustomBidAmount] = useState(null);
     const [coverLetter, setCoverLetter] = useState('');
     const [selectedBudgetType, setSelectedBudgetType] = useState(details?.budget === 1 ? 'project' : 'milestone');
-
+    const { id } = useParams();
+    const toast = useToast();
+    const navigate = useNavigate();
     const handleBudgetTypeChange = (e) => {
         setSelectedBudgetType(e.target.value);
     };
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // Handle form submission
         console.log('Selected Budget Type:', selectedBudgetType);
         console.log('Bid Amount:', bidAmount);
         console.log('Cover Letter:', coverLetter);
 
+        console.log(id);
+
         try {
-
+            const response = await applyJob({
+                jobId: id,
+                desiredPrice: bidAmount && bidAmount || customeBidAmount && customeBidAmount,
+                jobType: selectedBudgetType,
+                coverLetter: coverLetter
+            });
+            if (response.code == 200) {
+                toast({
+                    title: "Job Applied Successfully",
+                    position: "top",
+                    status: "success",
+                    isClosable: true,
+                    duration: 2000
+                })
+                navigate("/find-job")
+            }
         } catch (error) {
-
+            console.log(error);
         }
 
         // You can perform further actions, such as sending data to an API
@@ -132,7 +153,7 @@ const JobApply = ({ setPage, details }) => {
                                                 <input type="file" name="file_upload" className="hidden" />
                                             </label>
                                         </div>
-                                        <button className="bg-primary text-secondary rounded h-[36px] px-4 mt-4" onClick={handleSubmit}>
+                                        <button className="bg-primary text-secondary rounded h-[36px] px-4 mt-4" onClick={() => handleSubmit()}>
                                             Submit Proposal
                                         </button>
                                     </div>

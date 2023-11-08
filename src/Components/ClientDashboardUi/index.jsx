@@ -1,10 +1,11 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { Button, Progress, VStack } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ClientProfileCard from "./ClientProfileCard";
 
 const ClientDashboardComponent = () => {
+  const navigate = useNavigate();
   return (
     <div className=" max-w-screen-xl mx-auto">
       <div className=" grid grid-cols-12 gap-4">
@@ -114,7 +115,9 @@ const ClientDashboardComponent = () => {
         </div>
         <div className=" col-span-12 md:col-span-3">
           <VStack gap={"5"} w="100%">
-            <Button colorScheme="green" size="sm" isFullWidth w={"100%"}>
+            <Button colorScheme="green" size="sm" isFullWidth w={"100%"} onClick={() => {
+              navigate("/create-job")
+            }}>
               Post a new job
             </Button>
             <div className=" w-full border border-gray-200 rounded-md p-2 h-[700px]">
@@ -123,15 +126,15 @@ const ClientDashboardComponent = () => {
                 <Progress value={60} colorScheme="green" size={"sm"} />
               </div>
               <div className=" flex items-center justify-between border border-gray-200 rounded-md py-2 px-4 mb-4">
-              <img src="images/dashboard/proposals.png" alt="proposals" />
+                <img src="images/dashboard/proposals.png" alt="proposals" />
                 <p>Invite talent to apply</p>
               </div>
               <div className=" flex items-center justify-between border border-gray-200 rounded-md py-2 px-4 mb-4">
-              <img src="images/dashboard/proposals.png" alt="proposals" />
+                <img src="images/dashboard/proposals.png" alt="proposals" />
                 <p>Add Billing method</p>
               </div>
               <div className=" flex items-center justify-between border border-gray-200 rounded-md py-2 px-4 mb-4">
-              <img src="images/dashboard/proposals.png" alt="proposals" />
+                <img src="images/dashboard/proposals.png" alt="proposals" />
                 <p>Review proposals</p>
               </div>
             </div>

@@ -7,8 +7,10 @@ import { SixteenChevronDown } from "../../assets/icons/SixteenChevronDown";
 import { TwentyBell1 } from "../../assets/icons/TwentyBell1";
 import { TwentySend1 } from "../../assets/icons/TwentySend1";
 import { Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export const ClientDashboardInviteFreelancersComponent = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white flex flex-row justify-center w-full">
       <div className="bg-[color:var(--brand-colors-background-bg-primary)] w-[1440px] h-[1168px] relative">
@@ -133,15 +135,15 @@ export const ClientDashboardInviteFreelancersComponent = () => {
                           Moyez.k
                         </div>
                         <Button
-                        className="!px-[22px] !py-[4px] !absolute !flex !left-[621px] !w-[93px] !top-0"
-                        colorScheme="#16A34A"
-                        variant="outline"
-                        size={"sm"}
-                        bg={"#16A34A"}
-                        color={"#fff"}
-                      >
-                        Invite to Job
-                      </Button>
+                          className="!px-[22px] !py-[4px] !absolute !flex !left-[621px] !w-[93px] !top-0"
+                          colorScheme="#16A34A"
+                          variant="outline"
+                          size={"sm"}
+                          bg={"#16A34A"}
+                          color={"#fff"}
+                        >
+                          Invite to Job
+                        </Button>
                       </div>
                       <Buttons
                         buttonBaseDivClassName="!mt-[-1.00px] !text-[color:var(--primitive-colors-don-t-use-these-or-edit-these-lime-green-600)] !tracking-[var(--xs-regular-letter-spacing)] !text-[length:var(--xs-regular-font-size)] ![font-style:var(--xs-regular-font-style)] !font-[number:var(--xs-regular-font-weight)] !font-xs-regular !leading-[var(--xs-regular-line-height)]"
@@ -349,7 +351,9 @@ export const ClientDashboardInviteFreelancersComponent = () => {
               </div>
               <div className="inline-flex items-center gap-[20px] relative flex-[0_0_auto]">
                 <div className="inline-flex items-center gap-[9px] relative flex-[0_0_auto]">
-                  <div className="relative w-fit mt-[-1.00px] font-sm-medium font-[number:var(--sm-medium-font-weight)] text-brand-colors-foreground-fg-primary text-[length:var(--sm-medium-font-size)] tracking-[var(--sm-medium-letter-spacing)] leading-[var(--sm-medium-line-height)] whitespace-nowrap [font-style:var(--sm-medium-font-style)]">
+                  <div className="relative w-fit mt-[-1.00px] font-sm-medium font-[number:var(--sm-medium-font-weight)] text-brand-colors-foreground-fg-primary text-[length:var(--sm-medium-font-size)] tracking-[var(--sm-medium-letter-spacing)] leading-[var(--sm-medium-line-height)] whitespace-nowrap [font-style:var(--sm-medium-font-style)]" onClick={() => {
+                    navigate("/find-job")
+                  }}>
                     Find Work
                   </div>
                   <SixteenChevronDown className="!relative !w-[16px] !h-[16px]" />

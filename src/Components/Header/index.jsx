@@ -139,7 +139,7 @@ export const Header = () => {
                 <div className="flex w-full items-baseline gap-[40px] justify-start">
                     <p className=" text-[22px] font-bold text-green-500 cursor-pointer" onClick={() => navigate("/")}>Bizzzy</p>
                     <div className="flex gap-[20px]">
-                        <NavItem title={"Find Work"} />
+                        <NavItem title={"Find Work"} onClick={() => navigate("/find-job")} />
                         <NavItem title={"My Jobs"} />
                         <NavItem title={"Reports"} />
                         {/* <NavItem noIcon={true} title={"Messages"} /> */}
@@ -228,11 +228,11 @@ export const AuthHeader = () => {
     );
 };
 
-const NavItem = ({ title, noIcon }) => {
+const NavItem = ({ title, noIcon, onClick }) => {
     const navigate = useNavigate();
     return (
         <div className="flex items-center gap-[8px] text-[#536e53] cursor-pointer">
-            <p className="  text-[14px] font-[500] text-[#374151] ">{title}</p>
+            <p className="  text-[14px] font-[500] text-[#374151]" onClick={onClick}>{title}</p>
             {!noIcon && <BsChevronDown />}
         </div>
     );

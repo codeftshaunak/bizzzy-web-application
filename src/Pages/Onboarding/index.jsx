@@ -6,13 +6,9 @@ import Process from './Process';
 
 const Onboarding = () => {
     return (
-
-
         <HomeLayout>
             <Process />
         </HomeLayout>
-
-
     )
 }
 
