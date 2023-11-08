@@ -13,7 +13,7 @@ import TimeTracker from "../Pages/TimeTracker";
 import { SignUp } from "../Pages/SignUp";
 import { VerifySuccess } from "../Pages/Success";
 import ClientJobPostView from "../Pages/ClientJobPostView";
-import ClientDashBoard from "../Pages/ClientDashBoard";
+import ClientDashBoard from "../Pages/ClientDashboard";
 import ClientDashboardInviteFreelancer from "../Pages/ClientDashboardInviteFreelancers";
 import ReviewProposal from "../Pages/ReviewProposal";
 import ClientHiring from "../Pages/ClientHiring";

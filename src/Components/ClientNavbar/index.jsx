@@ -15,14 +15,14 @@ export const ClientNavbar = () => {
           </div>
         </div>
         <div className="col-span-2">
-          <div className="border rounded-lg bg-[#F0FDF4] hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center">
+          <div className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center">
             <p>
               Review Proposals <span>(13)</span>
             </p>
           </div>
         </div>
         <div className="col-span-2">
-          <div className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center">
+          <div className="border rounded-lg bg-[#F0FDF4] hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center">
             <p>
               Hire <span>(0)</span>
             </p>
