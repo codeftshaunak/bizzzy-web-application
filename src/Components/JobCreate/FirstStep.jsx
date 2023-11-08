@@ -39,15 +39,11 @@ function FirstStep({ setStep }) {
     if (formState?.description) values.description = formState.description;
     if (formState?.tags) values.tags = formState.tags;
     if (formState?.skills) values.skills = formState.skills;
-    if (formState?.budget) values.budget = formState.budget;
+    if (formState?.budget) values.budget = `${formState.budget}`;
     if (formState?.amount) values.amount = formState.amount;
     if (formState?.file) values.file = formState.file;
 
     reset(values);
-
-    () => {
-      reset({});
-    };
   }, [formState]);
 
   return (
@@ -65,6 +61,7 @@ function FirstStep({ setStep }) {
         </div>
       </div>
 
+      {/* TITLE FIELD */}
       <div>
         <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
           Title
@@ -80,6 +77,7 @@ function FirstStep({ setStep }) {
         ) : null}
       </div>
 
+      {/* DESCRIPTION FIELD */}
       <div>
         <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
           Description
@@ -95,6 +93,7 @@ function FirstStep({ setStep }) {
         ) : null}
       </div>
 
+      {/* TAGS FIELD */}
       <div>
         <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight mb-1">
           Add Tags
@@ -116,6 +115,7 @@ function FirstStep({ setStep }) {
         ) : null}
       </div>
 
+      {/* SKILLS FIELD */}
       <div>
         <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight mb-1">
           Add Skills
@@ -137,6 +137,7 @@ function FirstStep({ setStep }) {
         ) : null}
       </div>
 
+      {/* BUDGET FIELD */}
       <div>
         <div className="flex items-center">
           <div className="flex items-center">
@@ -175,6 +176,7 @@ function FirstStep({ setStep }) {
         ) : null}
       </div>
 
+      {/* AMOUNT FIELD */}
       <div>
         <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
           Add Amount
@@ -228,6 +230,7 @@ function FirstStep({ setStep }) {
         ) : null}
       </div>
 
+      {/* FILE FIELD */}
       <div>
         <Controller
           control={control}
