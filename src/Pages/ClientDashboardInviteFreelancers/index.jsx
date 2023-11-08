@@ -1,6 +1,6 @@
 import React from "react";
 import HomeLayout from "../../Layouts/HomeLayout";
-import ClientDashboardInviteFreelancersComponent from "../../Components/ClientDashboardInviteFreelancersUI";
+import ClientDashboardInviteFreelancersComponent from "../../Components/ClientDashboardInviteFreelancersUi";
 
 const ClientDashboardInviteFreelancer = () => {
   return (

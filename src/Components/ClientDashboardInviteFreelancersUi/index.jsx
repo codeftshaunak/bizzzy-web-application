@@ -286,6 +286,9 @@ export const ClientDashboardInviteFreelancersComponent = () => {
                       stateProp="active"
                       type="tertiary"
                     />
+
+                    <div className="text-gray-500 text-xs font-normal font-['SF Pro Text'] leading-none">Mobile App Design</div>
+
                   </div>
                 </div>
               </div>
