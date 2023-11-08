@@ -1,12 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useFormState } from "../../Contexts/FormContext";
-
-const schema = z.object({
-  duration: z.string(),
-});
+import { thirdStepSchema } from "../../Schema/job-create-schema";
 
 const options = [
   {
@@ -23,7 +19,7 @@ const options = [
   },
 ];
 
-function FinalStep({ setStep, onCallback = () => {} }) {
+function FinalStep({ onCallback = () => {} }) {
   const { insertToFormState, formState } = useFormState();
   const {
     register,
@@ -31,21 +27,22 @@ function FinalStep({ setStep, onCallback = () => {} }) {
     handleSubmit,
     reset,
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(thirdStepSchema),
     defaultValues: {
       duration: "Less than 1 Month",
     },
   });
 
+  // if there any values in form state context then push this to the form
   useEffect(() => {
     if (formState) {
       const values = {};
       values.duration = formState?.duration || "Less than 1 Month";
-
       reset(values);
     }
   }, [formState]);
 
+  // on form submit assign values to the context and call the callback
   const onSubmit = (v) => {
     const value = insertToFormState(v);
     onCallback(value);
