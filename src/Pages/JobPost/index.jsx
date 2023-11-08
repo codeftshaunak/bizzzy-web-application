@@ -49,18 +49,23 @@ const JobPost = () => {
   return (
     <HomeLayout displaydir="row">
       <FormStateProvider>
-        <HStack
-          justifyContent={"space-around"}
-          width={"full"}
-          alignItems={"flex-start"}
-        >
-          <Steps step={step} setStep={setStep} />
-          {step === 1 && <FirstStep setStep={setStep} />}
-          {step === 2 && <SecondStep setStep={setStep} />}
-          {step === 3 && <FinalStep setStep={setStep} onCallback={onSubmit} />}
-          {step === 4 && <Complete setStep={setStep} />}
-          <Preview />
-        </HStack>
+        {step < 4 ? (
+          <HStack
+            justifyContent={"space-around"}
+            width={"full"}
+            alignItems={"flex-start"}
+          >
+            <Steps step={step} setStep={setStep} />
+            {step === 1 && <FirstStep setStep={setStep} />}
+            {step === 2 && <SecondStep setStep={setStep} />}
+            {step === 3 && (
+              <FinalStep setStep={setStep} onCallback={onSubmit} />
+            )}
+            <Preview />
+          </HStack>
+        ) : null}
+
+        {step === 4 && <Complete setStep={setStep} />}
       </FormStateProvider>
     </HomeLayout>
   );
