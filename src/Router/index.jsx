@@ -1,18 +1,22 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Onboarding from '../Pages/Onboarding';
-import Login from '../Pages/Login';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Onboarding from "../Pages/Onboarding";
+import Login from "../Pages/Login";
 // import { ClientSignUp, FreelancerSignUp } from '../Pages/SignUp';
-import Home from '../Pages/Home';
-import JobPost from '../Pages/JobPost';
-import ApplyJob from '../Pages/ApplyJob';
-import { Profile, ProfileSetting } from '../Pages/Profile';
-import FindJob from '../Pages/FindJob';
-import Message from '../Pages/Message';
-import TimeTracker from '../Pages/TimeTracker';
-import { SignUp } from '../Pages/SignUp';
-import { VerifySuccess } from '../Pages/Success';
-
+import Home from "../Pages/Home";
+import JobPost from "../Pages/JobPost";
+import ApplyJob from "../Pages/ApplyJob";
+import { Profile, ProfileSetting } from "../Pages/Profile";
+import FindJob from "../Pages/FindJob";
+import Message from "../Pages/Message";
+import TimeTracker from "../Pages/TimeTracker";
+import { SignUp } from "../Pages/SignUp";
+import { VerifySuccess } from "../Pages/Success";
+import ClientJobPostView from "../Pages/ClientJobPostView";
+import ClientDashBoard from "../Pages/ClientDashboard";
+import ClientDashboardInviteFreelancer from "../Pages/ClientDashboardInviteFreelancers";
+import ReviewProposal from "../Pages/ReviewProposal";
+import ClientHiring from "../Pages/ClientHiring";
 const Router = () => {
     return (
         <BrowserRouter>
@@ -31,6 +35,11 @@ const Router = () => {
                 <Route exact path="/freelancer/:id" element={<Profile />} />
                 <Route exact path="/userprofile-setting" element={<ProfileSetting />} />
                 <Route exact path='/tracker' element={<TimeTracker />} />
+                <Route exact path="/client-dashboard" element={<ClientDashBoard />} />
+                <Route exact path="/client-job-post-view" element={<ClientJobPostView />} />
+                <Route exact path="/client-dashboard-invite-freelancers" element={<ClientDashboardInviteFreelancer />} />
+                <Route exact path="/client-review-proposal" element={<ReviewProposal />} />
+                <Route exact path="/client-hire" element={<ClientHiring />} />
             </Routes>
         </BrowserRouter>
     )
