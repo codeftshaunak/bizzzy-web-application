@@ -17,6 +17,7 @@ const animatedComponents = makeAnimated();
 
 const Process = () => {
     const [page, setPage] = useState(0);
+    console.log({ "page": page });
     const toast = useToast();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,6 +59,10 @@ const Process = () => {
         professional_role: "",
         hourly_rate: "",
         description: "",
+    });
+    const [businessDetails, setBusinessDetails] = useState({
+        business_name: "",
+        brief_description: ""
     });
     const [experienceInput, setExperienceInput] = useState({
         company_name: "",
@@ -239,6 +244,49 @@ const Process = () => {
                 //         setPage(5);
                 //     }
             }
+            else if (data === "business_details") {
+                if (businessDetails.business_name.length <= 0) {
+                    toast({
+                        title: "Add your business name please",
+                        status: "warning",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top"
+                    })
+                } else if (businessDetails.brief_description.length <= 0) {
+                    toast({
+                        title: "Add your business details",
+                        status: "warning",
+                        duration: 3000,
+                        isClosable: true,
+                        position: "top"
+                    })
+                } else {
+                    const response = await updateFreelancerProfile({
+                        business_name: businessDetails.business_name,
+                        brief_description: businessDetails.brief_description,
+                    });
+                    console.log({ businessDetails: response });
+                    if (response.code === 405) {
+                        toast({
+                            title: response.msg,
+                            status: "warning",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                    } else if (response.code === 200) {
+                        toast({
+                            title: "Your Details Added Successfully",
+                            status: "success",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top-right",
+                        });
+                        navigate("/client-dashboard")
+                    }
+                }
+            }
         } catch (error) {
             console.log(error);
         }
@@ -246,9 +294,6 @@ const Process = () => {
 
     return (
         <OnboardingProcess>
-
-            { }
-
             <>
                 {(page !== 0 || page != 1) && (
                     <Box position={"absolute"} top={"-0px"} left={"50px"} cursor={"pointer"} display={page == 0 ? 'none' || page == 1 && 'none' : 'block'}>
@@ -439,10 +484,10 @@ const Process = () => {
                                 </VStack>
                             )
                         }
-                    </> || role === 2 && <>
+                    </> || <>
                         {
-                            page === 2 && (
-                                <VStack justifyContent="start" alignItems="start" width="630px" gap="10" color="var(--primarytext)">
+                            role == 2 && page == 2 && (
+                                <VStack justifyContent="start" alignItems="start" width="630px" gap="30px" color="var(--primarytext)">
                                     <Box backgroundColor="var(--primarysoftbg)" color="var(--primarytextcolor)" padding="0rem 0.8rem" borderRadius="5px">Create your Profile</Box>
                                     <Box>
                                         <Text fontSize="40px" fontWeight="500">How would you like to tell us about yourself?</Text>
@@ -452,29 +497,48 @@ const Process = () => {
                                             We need to get a sense of your education, experience and categories. It’s quickest to import your information, you can edit it before your profile goes live.
                                         </Text>
                                     </Box>
-                                    <Select
-                                        placeholder="Select Your Category"
-                                        className="w-[400px]"
-                                        closeMenuOnSelect={false}
-                                        components={animatedComponents}
-                                        isMulti
-                                        options={options}
-                                        onChange={handleSelectChange}
-                                        value={selectedOptions}
-                                    />
+                                    <VStack width={"full"} alignItems={"start"}>
+                                        <Text mb="0px">{"Write Your Business Name"}</Text>
+                                        <Input
+                                            variant="outline"
+                                            required
+                                            placeholder="Write Your Business Name"
+                                            width={"100%"}
+                                            value={businessDetails?.business_name}
+                                            onChange={(e) =>
+                                                setBusinessDetails({ ...businessDetails, business_name: e.target.value })
+                                            }
+                                        />
+                                    </VStack>
+
+                                    <VStack width={"full"} alignItems={"start"}>
+                                        <Text mb="0px">{"Write Your Business Details"}</Text>
+                                        <Textarea
+                                            required
+                                            variant="outline"
+                                            placeholder="Write Your Business Details"
+                                            width={"100%"}
+                                            style={{ resize: "none" }}
+                                            rows={5}
+                                            value={businessDetails?.brief_description}
+                                            onChange={(e) =>
+                                                setBusinessDetails({ ...businessDetails, brief_description: e.target.value })
+                                            }
+                                        />
+                                    </VStack>
                                     <Button
                                         fontWeight="500"
                                         color="#fff"
                                         fontSize="1rem"
                                         bg="var(--primarycolor)"
                                         height="2.5rem"
-                                        transition="0.3s ease-in-out"
+                                        transition={"0.3s ease-in-out"}
                                         _hover={{
                                             border: "1px solid var(--primarycolor)",
                                             backgroundColor: "var(--primarysoftbg)",
                                             color: "var(--primarytext)",
                                         }}
-                                        onClick={() => handleSaveAndContinue("category")}
+                                        onClick={() => handleSaveAndContinue("business_details")}
                                     >
                                         Save & Continue
                                     </Button>

@@ -15,9 +15,21 @@ const JobPost = () => {
   const [step, setStep] = useState(1);
 
   const onSubmit = async (data) => {
-    const response = await createJob(data);
+    // format data for sending to the server
+    const formData = new FormData();
+    for (const key in data) {
+      // if data is an array then format like this
+      if (data[key] instanceof Array) {
+        data[key].forEach((item) => formData.append(`${key}[]`, item));
+        continue;
+      }
 
-    if (response.code === 200) {
+      formData.append(key, data[key]);
+    }
+
+    // create the job using form state
+    const response = await createJob(formData);
+    if (response.success) {
       toast({
         title: "Job post created successfully",
         status: "success",
@@ -25,6 +37,7 @@ const JobPost = () => {
         isClosable: true,
         position: "top-right",
       });
+
       setStep(4);
     } else {
       toast({
@@ -40,18 +53,22 @@ const JobPost = () => {
   return (
     <HomeLayout displaydir="row">
       <FormStateProvider>
-        <HStack
-          justifyContent={"space-around"}
-          width={"full"}
-          alignItems={"flex-start"}
-        >
-          <Steps step={step} setStep={setStep} />
-          {step === 1 && <FirstStep setStep={setStep} />}
-          {step === 2 && <SecondStep setStep={setStep} />}
-          {step === 3 && <FinalStep setStep={setStep} onCallback={onSubmit} />}
-          {step === 4 && <Complete setStep={setStep} />}
-          <Preview />
-        </HStack>
+        {step < 4 ? (
+          <HStack
+            justifyContent={"space-around"}
+            width={"full"}
+            alignItems={"flex-start"}
+          >
+            <Steps step={step} setStep={setStep} />
+            {step === 1 && <FirstStep setStep={setStep} />}
+            {step === 2 && <SecondStep setStep={setStep} />}
+            {step === 3 && (
+              <FinalStep setStep={setStep} onCallback={onSubmit} />
+            )}
+            <Preview />
+          </HStack>
+        ) : null}
+        {step === 4 && <Complete setStep={setStep} />}
       </FormStateProvider>
     </HomeLayout>
   );

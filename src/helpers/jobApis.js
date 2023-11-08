@@ -50,16 +50,16 @@ export const applyJob = async (data) => {
   }
 };
 
-export const createJob = async (data) => {
+export const createJob = async (formData) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await API.post("/job/create", data, {
+    const response = await API.post("/job/create", formData, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": `multipart/form-data`,
         token: `${token}`,
       },
     });
-    return response.data.data;
+    return response.data;
   } catch (error) {
     return error;
   }
