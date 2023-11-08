@@ -20,7 +20,9 @@ export const FormStateProvider = ({ children }) => {
   };
 
   // clear the state
-  const clearFormState = () => setFormState({});
+  const clearFormState = () => {
+    setFormState({});
+  };
 
   const value = useMemo(
     () => ({
@@ -30,6 +32,8 @@ export const FormStateProvider = ({ children }) => {
     }),
     [formState]
   );
+
+  // console.log(value);
 
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };

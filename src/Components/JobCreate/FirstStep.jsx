@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { BiX } from "react-icons/bi";
 import { TagsInput } from "react-tag-input-component";
 import { useFormState } from "../../Contexts/FormContext";
 import { firstStepSchema } from "../../Schema/job-create-schema";
@@ -23,6 +24,7 @@ function FirstStep({ setStep }) {
   });
 
   const tags = getValues("tags");
+  const skills = getValues("skills");
 
   // on form submit assign values to the context and go to next step
   const onSubmit = (v) => {
@@ -32,17 +34,20 @@ function FirstStep({ setStep }) {
 
   // if there any values in form state context then push this to the form
   useEffect(() => {
-    if (formState) {
-      const values = {};
-      if (formState.title) values.title = formState.title;
-      if (formState.description) values.description = formState.description;
-      if (formState.tags) values.tags = formState.tags;
-      if (formState.budget) values.budget = formState.budget;
-      if (formState.amount) values.amount = formState.amount;
-      if (formState.file) values.file = formState.file;
+    const values = {};
+    if (formState?.title) values.title = formState.title;
+    if (formState?.description) values.description = formState.description;
+    if (formState?.tags) values.tags = formState.tags;
+    if (formState?.skills) values.skills = formState.skills;
+    if (formState?.budget) values.budget = formState.budget;
+    if (formState?.amount) values.amount = formState.amount;
+    if (formState?.file) values.file = formState.file;
 
-      reset(values);
-    }
+    reset(values);
+
+    () => {
+      reset({});
+    };
   }, [formState]);
 
   return (
@@ -108,6 +113,27 @@ function FirstStep({ setStep }) {
 
         {errors?.tags ? (
           <p className="text-sm text-red-500">{errors.tags.message}</p>
+        ) : null}
+      </div>
+
+      <div>
+        <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight mb-1">
+          Add Skills
+        </div>
+
+        <TagsInput
+          value={skills || []}
+          onChange={(skills) => setValue("skills", skills)}
+          name="skills"
+          placeHolder="Enter Skills"
+          classNames={{
+            input: "bg-transparent py-1",
+            tag: "",
+          }}
+        />
+
+        {errors?.skills ? (
+          <p className="text-sm text-red-500">{errors.skills.message}</p>
         ) : null}
       </div>
 
@@ -208,36 +234,46 @@ function FirstStep({ setStep }) {
           name="file"
           render={({ field: { value, onChange, ...field } }) => {
             return (
-              <label className="flex items-center" id="file">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <g id="24/Attachment">
-                    <path
-                      id="Path"
-                      d="M14.9997 7.00045L8.4997 13.5005C7.67128 14.3289 7.67128 15.672 8.4997 16.5005C9.32813 17.3289 10.6713 17.3289 11.4997 16.5005L17.9997 10.0005C19.6566 8.3436 19.6566 5.65731 17.9997 4.00045C16.3428 2.3436 13.6566 2.3436 11.9997 4.00045L5.4997 10.5005C3.01442 12.9857 3.01442 17.0152 5.4997 19.5005C7.98498 21.9857 12.0144 21.9857 14.4997 19.5005L20.9997 13.0005"
-                      stroke="#16A34A"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                </svg>
-                <div className="text-center ml-3 text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal">
-                  {value?.name || "Attachments"}
-                </div>
-                <input
-                  {...field}
-                  type="file"
-                  id="file"
-                  className="hidden"
-                  onChange={(e) => onChange(e.target.files[0])}
-                />
-              </label>
+              <div className="flex items-center justify-between w-full">
+                <label className="flex items-center" id="file">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <g id="24/Attachment">
+                      <path
+                        id="Path"
+                        d="M14.9997 7.00045L8.4997 13.5005C7.67128 14.3289 7.67128 15.672 8.4997 16.5005C9.32813 17.3289 10.6713 17.3289 11.4997 16.5005L17.9997 10.0005C19.6566 8.3436 19.6566 5.65731 17.9997 4.00045C16.3428 2.3436 13.6566 2.3436 11.9997 4.00045L5.4997 10.5005C3.01442 12.9857 3.01442 17.0152 5.4997 19.5005C7.98498 21.9857 12.0144 21.9857 14.4997 19.5005L20.9997 13.0005"
+                        stroke="#16A34A"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </g>
+                  </svg>
+                  <div className="text-center ml-3 text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal">
+                    {value?.name || "Attachments"}
+                  </div>
+                  <input
+                    {...field}
+                    type="file"
+                    id="file"
+                    className="hidden"
+                    onChange={(e) => onChange(e.target.files[0])}
+                  />
+                </label>
+
+                {/* Delete Added File */}
+                {!!value ? (
+                  <BiX
+                    onClick={() => onChange(undefined)}
+                    className="text-lg text-red-500"
+                  />
+                ) : null}
+              </div>
             );
           }}
         />

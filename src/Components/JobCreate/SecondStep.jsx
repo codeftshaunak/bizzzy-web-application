@@ -46,7 +46,7 @@ function SecondStep({ setStep }) {
   useEffect(() => {
     if (formState) {
       const values = {};
-      values.experience = formState?.experience;
+      values.experience = formState?.experience || "Expert";
       reset(values);
     }
   }, [formState]);
