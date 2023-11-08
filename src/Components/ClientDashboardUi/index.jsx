@@ -1,10 +1,12 @@
 import { Button, Progress, VStack } from "@chakra-ui/react";
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { PiDotsThreeBold } from "react-icons/pi";
-import { Link } from "react-router-dom";
+
 import ClientProfileCard from "./ClientProfileCard";
 
 const ClientDashboardComponent = () => {
+  const navigate = useNavigate();
   return (
     <div className=" max-w-screen-xl mx-auto">
       <div className=" grid grid-cols-12 gap-4">
@@ -114,8 +116,10 @@ const ClientDashboardComponent = () => {
         </div>
 
         <div className=" col-span-12 md:col-span-3">
-          <VStack gap={"5"} w="100%" >
-            <Button colorScheme="16A34A" bg={'#16A34A'} color={'#fff'} size="md" isFullWidth fontSize={'lg'} w={"100%"}>
+          <VStack gap={"5"} w="100%">
+            <Button colorScheme="green" size="sm" isFullWidth w={"100%"} onClick={() => {
+              navigate("/create-job")
+            }}>
               Post a new job
             </Button>
             <div className=" w-full border border-[#D1D5DB] rounded-md p-4 h-[700px]">
@@ -123,7 +127,6 @@ const ClientDashboardComponent = () => {
               <div className=" my-6">
                 <Progress value={60} colorScheme="green" size={"sm"} />
               </div>
-
               <div className=" flex items-center justify-between border border-[#D1D5DB] rounded-md py-2 px-4 mb-4">
                 <div className="w-[42px] h-[42px] bg-[#F0FDF4] rounded-lg">
                   <img src="images/dashboard/proposals.png" alt="proposals" />
