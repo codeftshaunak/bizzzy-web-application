@@ -1,77 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useFormState } from "../../Contexts/FormContext";
-
-function Step({ step, description, active, finalStep, complete }) {
-  return (
-    <div className="flex relative mb-[55px]">
-      <div
-        className={`w-8 h-8 rounded-full border-2 ${
-          active ? "border-outline-active" : "border-fg-disabled"
-        } ${
-          complete ? "border-outline-active bg-outline-active" : ""
-        } flex justify-center items-center`}
-      >
-        {active && <div className="w-2.5 h-2.5 bg-green-500 rounded-full" />}
-        {complete && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <g id="Icons/24px/Check">
-              <path
-                id="Path"
-                d="M5 12L10 17L20 7"
-                stroke="white"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </g>
-          </svg>
-        )}
-      </div>
-      <div className="ml-2">
-        <div className=" text-green-600 text-sm font-medium font-['SF Pro Text'] leading-tight">
-          Step {step}
-        </div>
-        <div className="text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
-          {description}
-        </div>
-      </div>
-      {!finalStep && (
-        <div
-          className={`h-[58px] w-0.5 absolute top-8 left-[15px] ${
-            complete ? "bg-outline-active" : "bg-gray-300"
-          }`}
-        />
-      )}
-    </div>
-  );
-}
-
-const schema = z.object({
-  experience: z.enum(["ENTRY", "INTERMEDIATE", "EXPERT"]),
-});
+import { secondStepSchema } from "../../Schema/job-create-schema";
 
 const options = [
   {
-    key: "ENTRY",
+    key: "Entry",
     title: "Entry",
     text: "Looking somerelatively new to this field",
   },
   {
-    key: "INTERMEDIATE",
+    key: "Intermediate",
     title: "Intermediate",
     text: "Looking some relatively good in this field",
   },
   {
-    key: "EXPERT",
+    key: "Expert",
     title: "Expert",
     text: "Looking some relatively expert to this field",
   },
@@ -85,22 +30,23 @@ function SecondStep({ setStep }) {
     handleSubmit,
     reset,
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(secondStepSchema),
     defaultValues: {
-      experience: "EXPERT",
+      experience: "Expert",
     },
   });
 
+  // on form submit assign values to the context and go to next step
   const onSubmit = (v) => {
     insertToFormState(v);
     setStep(3);
   };
 
+  // if there any values in form state context then push this to the form
   useEffect(() => {
     if (formState) {
       const values = {};
-      values.experience = formState?.experience || "EXPERT";
-
+      values.experience = formState?.experience;
       reset(values);
     }
   }, [formState]);

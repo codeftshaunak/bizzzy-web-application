@@ -15,9 +15,18 @@ const JobPost = () => {
   const [step, setStep] = useState(1);
 
   const onSubmit = async (data) => {
-    const response = await createJob(data);
+    // format data for sending to the server
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
 
-    if (response.code === 200) {
+    // create the job using form state
+    const response = await createJob(formData);
+
+    console.log(response);
+
+    if (response) {
       toast({
         title: "Job post created successfully",
         status: "success",
