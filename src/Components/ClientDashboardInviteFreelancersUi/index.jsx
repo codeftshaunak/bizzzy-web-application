@@ -22,7 +22,7 @@ import {
 import { Link } from "react-router-dom";
 
 export const ClientDashboardInviteFreelancersComponent = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <div className="w-full md:px-8 md:py-6">
       <div className="flex flex-col items-center md:flex-row md:justify-between">
