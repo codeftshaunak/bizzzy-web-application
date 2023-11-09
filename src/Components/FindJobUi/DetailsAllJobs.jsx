@@ -59,12 +59,12 @@ const DetailsAllJobs = () => {
                             <img src="/images/user.jpeg" alt="avatar" className="h-[90px] w-[90px] rounded-full border-4 border-tertiary" />
                             <div className="text-2xl font-medium">Sasheen M.</div>
                             <div className="text-sm text-gray-300">Customer Experience Consultant</div>
-                            <div class="flex items-center">
-                                <div class="star-filled"></div>
-                                <div class="star-filled"></div>
-                                <div class="star-filled"></div>
-                                <div class="star-filled"></div>
-                                <div class="star-filled"></div>
+                            <div className="flex items-center">
+                                <div className="star-filled"></div>
+                                <div className="star-filled"></div>
+                                <div className="star-filled"></div>
+                                <div className="star-filled"></div>
+                                <div className="star-filled"></div>
                                 <div className="text-sm font-medium">5.0 of 4 Reviews</div>
                             </div>
                         </div>

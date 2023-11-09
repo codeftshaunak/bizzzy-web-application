@@ -98,9 +98,7 @@ const Process = () => {
                             isClosable: true
                         })
                     } else {
-                        const selectedCategories = selectedOptions.map((option) => ({
-                            category_name: option.value,
-                        }));
+                        const selectedCategories = selectedOptions.map((option) => option.value);
                         const response = await updateFreelancerProfile({ categories: selectedCategories });
                         console.log({ category: response });
                         if (response.code === 405) {
@@ -188,9 +186,7 @@ const Process = () => {
                             position: "top"
                         })
                     } else {
-                        const selectedCategories = selectedOptions.map((option) => ({
-                            skill_name: option.value,
-                        }));
+                        const selectedCategories = selectedOptions.map((option) => option.value);
                         const response = await updateFreelancerProfile({ skills: selectedCategories });
                         console.log({ skills: response });
                         if (response.code == 405) {

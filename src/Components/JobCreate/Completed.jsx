@@ -96,7 +96,7 @@ function Complete({ setStep }) {
             <div className="w-[191px] h-9 flex-col justify-start items-start gap-2.5 inline-flex">
               <div
                 className="self-stretch h-9 px-3 py-2 bg-green-500 rounded-md shadow justify-center items-center gap-1 inline-flex cursor-pointer"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/client-dashboard")}
               >
                 <div className="text-center text-white text-sm font-medium font-['SF Pro Text'] leading-tight">
                   Back to Home

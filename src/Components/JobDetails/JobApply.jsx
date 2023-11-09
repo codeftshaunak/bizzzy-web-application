@@ -1,52 +1,56 @@
-import { Box, HStack, useToast } from '@chakra-ui/react';
+import { Box, HStack, Select, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import { applyJob } from '../../helpers/jobApis';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const JobApply = ({ setPage, details }) => {
-    console.log({ "---detailspage": details });
-    const [bidAmount, setBidAmount] = useState(null);
-    const [customeBidAmount, setCustomBidAmount] = useState(null);
     const [coverLetter, setCoverLetter] = useState('');
-    const [selectedBudgetType, setSelectedBudgetType] = useState(details?.budget === 1 ? 'project' : 'milestone');
-    const { id } = useParams();
-    const toast = useToast();
-    const navigate = useNavigate();
-    const handleBudgetTypeChange = (e) => {
-        setSelectedBudgetType(e.target.value);
+    const [bidDetails, setBidDetails] = useState({
+        amount: details?.amount,
+        type: details?.budget === 1 ? 'milestone' : 'project',
+        customBidAmount: null,
+        coverLetter: '',
+    });
+
+    const handleBudgetTypeChange = (value) => {
+        setBidDetails((prev) => ({
+            ...prev,
+            type: value,
+            customBidAmount: value === 'milestone' ? null : prev.customBidAmount,
+        }));
     };
 
 
+    const calculateServiceFee = () => {
+        const bidAmount = bidDetails.type === 'project' ? bidDetails.amount : bidDetails.customBidAmount;
+        return bidAmount - (bidAmount * 0.1);
+    };
+    const { id } = useParams();
+    const toast = useToast();
+    const navigate = useNavigate();
+
     const handleSubmit = async () => {
-        // Handle form submission
-        console.log('Selected Budget Type:', selectedBudgetType);
-        console.log('Bid Amount:', bidAmount);
-        console.log('Cover Letter:', coverLetter);
-
-        console.log(id);
-
         try {
             const response = await applyJob({
                 jobId: id,
-                desiredPrice: bidAmount && bidAmount || customeBidAmount && customeBidAmount,
-                jobType: selectedBudgetType,
-                coverLetter: coverLetter
+                desiredPrice: bidDetails.type === 'project' ? bidDetails.amount : bidDetails.customBidAmount,
+                jobType: bidDetails.type,
+                coverLetter: coverLetter,
             });
-            if (response.code == 200) {
+
+            if (response.code === 200) {
                 toast({
-                    title: "Job Applied Successfully",
-                    position: "top",
-                    status: "success",
+                    title: 'Job Applied Successfully',
+                    position: 'top',
+                    status: 'success',
                     isClosable: true,
-                    duration: 2000
-                })
-                navigate("/find-job")
+                    duration: 2000,
+                });
+                navigate('/find-job');
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
-
-        // You can perform further actions, such as sending data to an API
     };
 
     return (
@@ -72,63 +76,36 @@ const JobApply = ({ setPage, details }) => {
                         </div>
                     </div>
                     <div className="w-full">
-
-                        {
-                            details?.budget == 1 &&
+                        {details?.budget == 1 &&
                             <div className="w-full flex justify-between">
                                 <div className="w-full">
                                     <div className="border border-tertiary rounded-2xl p-6 mb-4">
                                         <div className="font-semibold mb-2">Select Budget Type</div>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                value="project"
-                                                onChange={handleBudgetTypeChange}
-                                                checked={selectedBudgetType === 'project'}
-                                            />
-                                            <label className="text-base font-medium">Project</label>
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                value="milestone"
-                                                onChange={handleBudgetTypeChange}
-                                                checked={selectedBudgetType === 'milestone'}
-                                            />
-                                            <label className="text-base font-medium">Milestone</label>
-                                        </div>
-
+                                        <Select value={bidDetails.type} onChange={(e) => handleBudgetTypeChange(e.target.value)}>
+                                            <option value="project">Project</option>
+                                            <option value="milestone">Milestone</option>
+                                        </Select>
                                     </div>
-                                    {/* Render sections based on the selected budget type */}
-                                    {selectedBudgetType === 'milestone' && (
-                                        <div className="border border-tertiary rounded-2xl p-6 mb-4">
-                                            <div className="font-semibold mb-2">Write Your Amount For Milestone.</div>
-                                            <p className="mb-2">Client Budget: ${details?.amount}</p>
-                                            <input className="rounded-md border border-tertiary p-1 w-full" type="number" placeholder="$100.00" onChange={(e) => setBidAmount(e.target.value)} />
-                                            <HStack margin={"5px 0"} justifyContent={"space-between"}>
-                                                <div className="font-semibold">10% Freelancer Service Fee</div>
-                                                <div className="font-semibold">-$10.00</div>
-                                            </HStack>
-                                            <HStack marginBottom={"5px"} justifyContent={"space-between"}>
-                                                <div className="font-semibold">You'll recieve</div>
-                                                <div className="font-semibold">${bidAmount - (bidAmount * 10) / 100}</div>
-                                            </HStack>
-                                        </div>
+                                    {bidDetails.type === 'milestone' && (
+                                        <BidDetailsSection
+                                            label="Write Your Amount For Milestone."
+                                            placeholder="$100.00"
+                                            details={details}
+                                            bidAmount={bidDetails.customBidAmount}
+                                            setBidAmount={(value) => setBidDetails((prev) => ({ ...prev, customBidAmount: value }))}
+                                            serviceFee={calculateServiceFee()}
+                                        />
                                     )}
-                                    {selectedBudgetType === 'project' && (
-                                        <div className="border border-tertiary rounded-2xl p-6 mb-4">
-                                            <div className="font-semibold mb-2">Write Desire Bid Amount If You Want.</div>
-                                            <input className="rounded-md border border-tertiary p-1 w-full" type="number" placeholder="$100.00" defaultValue={details?.amount} onChange={(e) => setCustomBidAmount(e.target.value)} />
-                                            <HStack margin={"5px 0"} justifyContent={"space-between"}>
-                                                <div className="font-semibold">10% Freelancer Service Fee</div>
-                                                <div className="font-semibold">-$10.00</div>
-                                            </HStack>
-                                            <HStack marginBottom={"5px"} justifyContent={"space-between"}>
-                                                <div className="font-semibold">You'll recieve</div>
-                                                <div className="font-semibold">${customeBidAmount === 0 ? (details?.amount - (details?.amount * 10) / 100) : customeBidAmount - (customeBidAmount * 10) / 100}</div>
-                                            </HStack>
-                                        </div>
 
+                                    {bidDetails.type === 'project' && (
+                                        <BidDetailsSection
+                                            label="Write Desire Bid Amount If You Want."
+                                            placeholder="$100.00"
+                                            bidAmount={bidDetails.amount}
+                                            setBidAmount={(value) => setBidDetails((prev) => ({ ...prev, amount: value }))}
+                                            details={details}
+                                            serviceFee={calculateServiceFee()}
+                                        />
                                     )}
                                     <div className="border border-tertiary rounded-2xl p-6">
                                         <div className="font-semibold mb-2">Additional details</div>
@@ -139,6 +116,7 @@ const JobApply = ({ setPage, details }) => {
                                             value={coverLetter}
                                             onChange={(e) => setCoverLetter(e.target.value)}
                                         />
+
                                         <div className="text-right text-gray-300">(0/500)</div>
                                         <div className="font-semibold mt-4">Attachments</div>
                                         <div className="max-w-xl">
@@ -184,24 +162,22 @@ const JobApply = ({ setPage, details }) => {
                                     <textarea rows="10" className="border border-tertiary w-full rounded"></textarea>
                                     <div className="text-right text-gray-300">(0/500)</div>
                                     <div className="font-semibold mt-4">Attachments</div>
-                                    <div class="max-w-xl">
+                                    <div className="max-w-xl">
                                         <label
-                                            class="flex justify-center w-full h-20 px-4 transition bg-green-200 border-2 border-green-600 border-dashed rounded-md appearance-none cursor-pointer">
-                                            <span class="flex items-center space-x-2">
+                                            className="flex justify-center w-full h-20 px-4 transition bg-green-200 border-2 border-green-600 border-dashed rounded-md appearance-none cursor-pointer">
+                                            <span className="flex items-center space-x-2">
                                                 <span>
                                                     Drag or&nbsp;
-                                                    <span class="text-green-600 underline">upload</span>
+                                                    <span className="text-green-600 underline">upload</span>
                                                     &nbsp;project files
                                                 </span>
                                             </span>
-                                            <input type="file" name="file_upload" class="hidden" />
+                                            <input type="file" name="file_upload" className="hidden" />
                                         </label>
                                     </div>
                                     <button className="bg-primary text-secondary rounded h-[36px] px-4 mt-4" onClick={() => setPage(1)}>Submit Proposal</button>
                                 </div>
                             </>
-
-
                         }
 
                     </div>
@@ -211,5 +187,28 @@ const JobApply = ({ setPage, details }) => {
         </div>
     )
 }
+
+const BidDetailsSection = ({ label, placeholder, bidAmount, setBidAmount, serviceFee, details }) => (
+    <div className="border border-tertiary rounded-2xl p-6 mb-4">
+        {console.log({ bidAmount, serviceFee })}
+        <div className="font-semibold mb-2">{label}</div>
+        <p className="mb-2">Client Budget: ${details?.amount}</p>
+        <input
+            className="rounded-md border border-tertiary p-1 w-full"
+            type="number"
+            placeholder={placeholder}
+            value={bidAmount}
+            onChange={(e) => setBidAmount(e.target.value)}
+        />
+        <HStack margin="5px 0" justifyContent="space-between">
+            <div className="font-semibold">10% Freelancer Service Fee</div>
+            <div className="font-semibold">-${(bidAmount - serviceFee).toFixed(2)}</div>
+        </HStack>
+        <HStack marginBottom="5px" justifyContent="space-between">
+            <div className="font-semibold">You'll receive</div>
+            <div className="font-semibold">${(serviceFee).toFixed(2)}</div>
+        </HStack>
+    </div>
+);
 
 export default JobApply

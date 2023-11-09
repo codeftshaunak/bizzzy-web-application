@@ -31,12 +31,10 @@ const customStyles = {
 
 export const UserProfile = () => {
     const role = useSelector((state) => state.auth.role);
-    console.log(role);
     return (
         <div>
             {
                 role == 1 && <FreelancerProfilePage /> || role == 2 && <ClientProfilePage />
-
             }
         </div>
     )
@@ -81,11 +79,6 @@ export const ClientProfilePage = () => {
     useEffect(() => {
         getProfileInformation();
     }, [])
-
-    //   function afterOpenModal() {
-    //     // references are now sync'd and can be accessed.
-    //     subtitle.style.color = "#f00";
-    //   }
 
     function closeModal() {
         setModalIsOpen(false);
@@ -931,9 +924,7 @@ const ProfileModal = ({ modalIsOpen, closeModal, modalPage }) => {
         try {
             if (data === "category") {
                 // Handle saving categories
-                const selectedCategories = selectedOptions.map((option) => ({
-                    category_name: option.value,
-                }));
+                const selectedCategories = selectedOptions.map((option) => option.value);
                 const response = await updateFreelancerProfile({ categories: selectedCategories });
                 if (response.code === 405) {
                     toast({

@@ -1,4 +1,4 @@
-import { Button, Progress, VStack } from "@chakra-ui/react";
+import { Button, HStack, Progress, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PiDotsThreeBold } from "react-icons/pi";
@@ -37,35 +37,42 @@ const ClientDashboardComponent = () => {
               </div>
             </div>
             <div className=" p-4">
-              <div className=" flex items-center justify-between mb-4">
-                <h5 className="text-lg text-[#374151] font-medium">
-                  NFT artist (2D, 3D, or pixel art)
-                </h5>
-                <div>
-                  <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" />
-                </div>
-              </div>
-              <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-4 text-sm text-[#6B7280]">
-                  <div className="mb-1 text-[#6B7280] ">Public - Hourly</div>
-                  <div>Posted 14 hours ago by you</div>
-                </div>
-                <div className="col-span-8">
-                  <div className=" grid grid-cols-12 gap-4 text-sm text-[#6B7280]">
-                    <div className="col-span-4">
-                      <div className=" text-fg-brand mb-1">(14) New</div>
-                      <div className="text-[#6B7280]">Proposals</div>
-                    </div>
-                    <div className="col-span-4 text-sm text-[#6B7280]">
-                      <div className=" text-fg-brand mb-1">2</div>
-                      <div className="text-[#6B7280]">Messaged</div>
-                    </div>
-                    <div className="col-span-4 text-sm text-[#6B7280]">
-                      <div className=" mb-1">0</div>
-                      <div className="text-[#6B7280]">Hired</div>
-                    </div>
+              <div className="flex items-center justify-between">
+                <VStack alignItems={"start"} justifyContent={"center"}>
+                  <h5 className="text-lg text-[#374151] font-medium">
+                    NFT artist (2D, 3D, or pixel art)
+                  </h5>
+                  <div className="text-sm text-[#6B7280]">
+                    <div className="mb-1 text-[#6B7280] ">Public - Hourly</div>
+                    <div>Posted 14 hours ago by you</div>
                   </div>
-                </div>
+                </VStack>
+
+                <VStack width={"200px"} justifyContent={"space-between"} alignItems={"end"}>
+                  <HStack>
+                    <div className=" text-[#6B7280] font-bold text-base">(14) New</div>
+                    <div className=" text-[#6B7280] text-base font-bold">Applicants</div>
+                  </HStack>
+                  {/* <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" /> */}
+                  <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                    bg: '#16A34A',
+                    color: "#fff"
+                  }}>
+                    Go to job post
+                  </Button>
+                  <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                    bg: '#16A34A',
+                    color: "#fff"
+                  }}>
+                    Find Applicants
+                  </Button>
+                  <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                    bg: '#16A34A',
+                    color: "#fff"
+                  }}>
+                    Delete job post
+                  </Button>
+                </VStack>
               </div>
             </div>
           </div>
@@ -92,13 +99,13 @@ const ClientDashboardComponent = () => {
                   </p>
                 </div>
                 <div>
-                <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" />
+                  <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" />
                 </div>
               </div>
             </div>
             <div className=" p-4 border-b border-[#D1D5DB]">
               <div className=" flex items-center justify-between ">
-              <div className="space-y-2">
+                <div className="space-y-2">
                   <h5 className="text-lg text-[#374151] font-medium">
                     NFT artist (2D, 3D, or pixel art)
                   </h5>
@@ -107,7 +114,7 @@ const ClientDashboardComponent = () => {
                   </p>
                 </div>
                 <div>
-                <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" />
+                  <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" />
                 </div>
               </div>
             </div>
@@ -117,7 +124,7 @@ const ClientDashboardComponent = () => {
 
         <div className=" col-span-12 md:col-span-3">
           <VStack gap={"5"} w="100%">
-            <Button colorScheme="green" size="sm" isFullWidth w={"100%"} onClick={() => {
+            <Button colorScheme="green" size="sm" w={"100%"} onClick={() => {
               navigate("/create-job")
             }}>
               Post a new job
@@ -132,7 +139,7 @@ const ClientDashboardComponent = () => {
                   <img src="images/dashboard/proposals.png" alt="proposals" />
                 </div>
                 <p>Invite talent to apply</p>
-              </div>    
+              </div>
               <div className=" flex items-center justify-between border border-[#D1D5DB] rounded-md py-2 px-4 mb-4">
                 <div className="w-[42px] h-[42px] bg-[#F0FDF4] rounded-lg">
                   <img src="images/dashboard/proposals.png" alt="proposals" />
@@ -149,7 +156,7 @@ const ClientDashboardComponent = () => {
           </VStack>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -75,12 +75,12 @@ const JobDetails = ({ setPage, setDetails }) => {
                     <div className="w-[30%] border border-tertiary rounded-2xl p-6">
                         <div className="font-semibold mb2">About the client</div>
                         <div className="font-semibold">Payment method verified</div>
-                        <div class="flex items-center mb-4">
-                            <div class="star-filled"></div>
-                            <div class="star-filled"></div>
-                            <div class="star-filled"></div>
-                            <div class="star-filled"></div>
-                            <div class="star-filled"></div>
+                        <div className="flex items-center mb-4">
+                            <div className="star-filled"></div>
+                            <div className="star-filled"></div>
+                            <div className="star-filled"></div>
+                            <div className="star-filled"></div>
+                            <div className="star-filled"></div>
                             5.0 of 30 reviews
                         </div>
                         <div className="font-semibold">United States</div>
