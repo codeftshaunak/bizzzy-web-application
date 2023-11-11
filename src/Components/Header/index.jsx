@@ -799,7 +799,7 @@ const NavItem = ({ title, noIcon }) => {
 //             </HStack>
 //         </FullContainer>
 //     );
-// };
+// }; 
 
 // export default Header;
 
