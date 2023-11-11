@@ -65,12 +65,18 @@ const ClientDashboardComponent = () => {
                 </Link>
               </div>
             </div>
-            <div className="px-4 pt-6" >
+            <div className="px-4" >
               {
                 jobs?.slice()?.reverse().map((job, index) => {
+                  getProposalsDetails(job._id);
                   const formattedDate = formatDistanceToNow(new Date(job?.created_at), { addSuffix: true });
-                  return <div className="flex items-center justify-between mb-8" key={index}>
-                    <VStack alignItems={"start"} justifyContent={"center"}>
+                  return <div className="flex items-center justify-between" key={index} style={{
+                    borderBottom: "0.1px solid #6b7280",
+                    padding: "20px"
+                  }}>
+                    <VStack alignItems={"start"} justifyContent={"center"} cursor={"pointer"} onClick={() => {
+                      navigate(`/client-jobdetails/${job?._id}`)
+                    }}>
                       <h5 className="text-lg text-[#374151] font-medium capitalize">
                         {job?.title}
                       </h5>

@@ -85,8 +85,16 @@ const Process = () => {
     };
 
 
+    const autoProcessClient = () => {
+        if (userDetails?.briefDescription?.length > 0 && userDetails?.businessName?.length > 0) {
+            navigate("/client")
+        }
+    };
+
+
     const handleSaveAndContinue = async (data) => {
         autoProcess();
+        autoProcessClient();
         try {
             if (role == 1) {
                 if (data === "category") {

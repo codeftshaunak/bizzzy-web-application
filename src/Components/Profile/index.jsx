@@ -43,7 +43,7 @@ export const ClientProfilePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalPage, setModalPage] = useState("");
     const [details, setDetails] = useState([]);
-    const { firstName, lastName, location, professional_role, hourly_rate, description, skills, experience } = details || [];
+    const { firstName, lastName, location, professional_role, hourly_rate, description, skills, experience, briefDescription, businessName } = details || [];
     const [localTime, setLocalTime] = useState();
 
     function openModal() {
@@ -86,7 +86,7 @@ export const ClientProfilePage = () => {
 
     return (
         <ProfileContainer>
-            <div className="w-full flex flex-col gap-[24px] ">
+            <div className="w-[1000px] flex flex-col gap-[24px]">
                 <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
                     <div className="flex gap-[14px] items-center">
                         <div style={{ position: "relative", padding: "10px" }}>
@@ -124,7 +124,7 @@ export const ClientProfilePage = () => {
 
                         <div className="flex flex-col justify-start gap-[10px]">
                             <p className="text-[24px] text-[#374151] font-semibold">
-                                Business Name
+                                {businessName}
                             </p>
                             <HStack className="text-[16px] text-[#374151] font-[400]">
                                 <CiLocationOn /> <p className='capitalize'> {location}, {localTime} local time</p>
@@ -205,8 +205,8 @@ export const ClientProfilePage = () => {
                                     </svg>
                                 </div>
                             </div>
-                            <p className="text-[14px] text-[#374151] font-[400]">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus cupiditate iste unde qui at eligendi in tenetur laudantium quos, porro quod voluptate sint, odio saepe dolore ea, nostrum animi. Qui velit aut fuga ut tempora harum et neque voluptatem unde ipsa quos, autem quas. Veniam rerum, excepturi sequi reiciendis corrupti sit velit.
+                            <p className="text-[14px] text-[#374151] font-[400] w-[400px]">
+                                {briefDescription}
                             </p>
                             <p className="text-[14px] text-[#16A34A] font-[600] cursor-pointer">
                                 View More

@@ -21,7 +21,7 @@ const FindJob = () => {
     return (
         <HomeLayout>
             {/* Only render AllJobs if the user is a freelancer */}
-            {role === 1 && (
+            {role == 1 && (
                 <VStack padding={"0 2rem"}>
                     <AllJobs />
                 </VStack>

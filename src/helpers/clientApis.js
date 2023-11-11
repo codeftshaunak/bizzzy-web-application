@@ -29,8 +29,23 @@ export const getProposals = async (data) => {
                 token: `${token}`,
             },
         });
-        return response.data.data;
+        return response.data.body;
     } catch (error) {
         return error;
+    }
+}
+
+export const deleteJob = async(data)=>{
+    try {
+        const token = localStorage.getItem("token");
+        const response = await API.post(`job/delete/${data}`,{
+            headers: {
+                "Content-Type": "application/json",
+                token: `${token}`,
+            },
+        })
+        return response.data;
+    } catch (error) {
+        
     }
 }

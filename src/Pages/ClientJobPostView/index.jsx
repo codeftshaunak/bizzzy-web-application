@@ -1,6 +1,6 @@
 import React from "react";
 import HomeLayout from "../../Layouts/HomeLayout";
-import ClientJobPostViewComponent from "../../Components/ClientJobPostViewUi";
+import { ClientJobPostViewComponent } from "../../Components/ClientJobPostViewUi";
 
 const ClientJobPostView = () => {
   return (
