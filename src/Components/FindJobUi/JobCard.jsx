@@ -8,7 +8,7 @@ const JobCard = ({ jobs }) => {
         <div>
             {
                 jobs?.length > 0 ?
-                    jobs?.map((job, index) => {
+                    jobs?.slice().reverse().map((job, index) => {
                         return <div key={index}>
                             <div className="p-4 border-b border-tertiary">
                                 <div className="text-gray-300 text-sm">{job?.budget == 1 && " Fixed Budget " || job?.budget == 2 && "Hourly"}/ {job?.experience} / Est. Budget:<span className='text-black'>${job?.amount}</span>  / {job?.created_at}</div>

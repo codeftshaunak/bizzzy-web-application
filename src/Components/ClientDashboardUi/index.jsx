@@ -1,12 +1,41 @@
 import { Button, HStack, Progress, VStack } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PiDotsThreeBold } from "react-icons/pi";
-
+import { formatDistanceToNow } from 'date-fns';
 import ClientProfileCard from "./ClientProfileCard";
+import { getClientJobs, getProposals } from "../../helpers/clientApis";
 
 const ClientDashboardComponent = () => {
   const navigate = useNavigate();
+  const [jobs, setJobs] = useState([]);
+
+  const getClientPostedJob = async () => {
+    try {
+      const respoonse = await getClientJobs();
+      setJobs(respoonse)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getProposalsDetails = async (id) => {
+    try {
+      const response = await getProposals(id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleDelete = async (id) => {
+    console.log(id);
+  }
+
+  useEffect(() => {
+    getClientPostedJob();
+  }, []);
+
   return (
     <div className=" max-w-screen-xl mx-auto">
       <div className=" grid grid-cols-12 gap-4">
@@ -36,44 +65,56 @@ const ClientDashboardComponent = () => {
                 </Link>
               </div>
             </div>
-            <div className=" p-4">
-              <div className="flex items-center justify-between">
-                <VStack alignItems={"start"} justifyContent={"center"}>
-                  <h5 className="text-lg text-[#374151] font-medium">
-                    NFT artist (2D, 3D, or pixel art)
-                  </h5>
-                  <div className="text-sm text-[#6B7280]">
-                    <div className="mb-1 text-[#6B7280] ">Public - Hourly</div>
-                    <div>Posted 14 hours ago by you</div>
-                  </div>
-                </VStack>
+            <div className="px-4" >
+              {
+                jobs?.slice()?.reverse().map((job, index) => {
+                  getProposalsDetails(job._id);
+                  const formattedDate = formatDistanceToNow(new Date(job?.created_at), { addSuffix: true });
+                  return <div className="flex items-center justify-between" key={index} style={{
+                    borderBottom: "0.1px solid #6b7280",
+                    padding: "20px"
+                  }}>
+                    <VStack alignItems={"start"} justifyContent={"center"} cursor={"pointer"} onClick={() => {
+                      navigate(`/client-jobdetails/${job?._id}`)
+                    }}>
+                      <h5 className="text-lg text-[#374151] font-medium capitalize">
+                        {job?.title}
+                      </h5>
+                      <div className="text-sm text-[#6B7280]">
+                        <div className="mb-1 text-[#6B7280] ">Public - {job?.budget == 1 ? "Fixed" : "Hourly"}</div>
+                        <div>Posted {formattedDate} ago by you</div>
+                      </div>
+                    </VStack>
 
-                <VStack width={"200px"} justifyContent={"space-between"} alignItems={"end"}>
-                  <HStack>
-                    <div className=" text-[#6B7280] font-bold text-base">(14) New</div>
-                    <div className=" text-[#6B7280] text-base font-bold">Applicants</div>
-                  </HStack>
-                  {/* <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" /> */}
-                  <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
-                    bg: '#16A34A',
-                    color: "#fff"
-                  }}>
-                    Go to job post
-                  </Button>
-                  <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
-                    bg: '#16A34A',
-                    color: "#fff"
-                  }}>
-                    Find Applicants
-                  </Button>
-                  <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
-                    bg: '#16A34A',
-                    color: "#fff"
-                  }}>
-                    Delete job post
-                  </Button>
-                </VStack>
-              </div>
+                    <VStack width={"200px"} justifyContent={"space-between"} alignItems={"end"}>
+                      <HStack>
+                        <div className=" text-[#6B7280] font-bold text-base">(14) New</div>
+                        <div className=" text-[#6B7280] text-base font-bold">Applicants</div>
+                      </HStack>
+                      {/* <PiDotsThreeBold className="w-[24px] h-[26px] border border-black rounded-full" /> */}
+                      <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                        bg: '#16A34A',
+                        color: "#fff"
+                      }}>
+                        Go to job post
+                      </Button>
+                      <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                        bg: '#16A34A',
+                        color: "#fff"
+                      }}>
+                        Find Applicants
+                      </Button>
+                      <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                        bg: '#16A34A',
+                        color: "#fff"
+                      }} onClick={() => handleDelete(job._id)}>
+                        Delete job post
+                      </Button>
+                    </VStack>
+                  </div>
+                })
+              }
+
             </div>
           </div>
           {/* end position */}
