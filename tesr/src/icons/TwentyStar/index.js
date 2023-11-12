@@ -1,1 +1,0 @@
-export { TwentyStar } from "./TwentyStar";

@@ -139,9 +139,9 @@ export const Header = () => {
     { href: "", label: "Office Login" },
   ];
   const navigation = [
-    { title: "Find Work", href: "/find-a-dentist" },
-    { title: "My Jobs", href: "/pick-your-plan" },
-    { title: "Reports", href: "/faq" },
+    { title: "Find Work", href: "/find-job" },
+    { title: "My Jobs", href: "/freelancer" },
+    { title: "Reports", href: "/report" },
   ];
 
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
@@ -238,9 +238,9 @@ export const Header = () => {
 
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-5">
-                <NavItem title={"Find Work"} />
-                <NavItem title={"My Jobs"} />
-                <NavItem title={"Reports"} />
+                {navigation && navigation.length>0&& navigation.map((item,i)=>(
+                    <NavItem key={i} title={item.title} url={item.href} />
+                ))}
               </div>
             </div>
           </div>
@@ -321,9 +321,9 @@ export const Header = () => {
                 <path
                   d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
                   stroke="#000000"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 />
               </svg>
             </button>
@@ -567,9 +567,9 @@ export const AuthHeader = () => {
                     <path
                       d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
                       stroke="#000000"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     />
                   </svg>
                 </button>
@@ -635,13 +635,16 @@ export const AuthHeader = () => {
   );
 };
 
-const NavItem = ({ title, noIcon }) => {
+const NavItem = ({ title, noIcon,url }) => {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center gap-[8px] text-[#536e53] cursor-pointer">
-      <p className="text-[14px] font-[500] text-[#374151] ">{title}</p>
-      {!noIcon && <BsChevronDown />}
-    </div>
+    <Link to={url}  >
+      <div className="flex items-center gap-[8px] text-[#536e53] cursor-pointer">
+        <p className="text-[14px] font-[500] text-[#374151] ">{title}</p>
+        {!noIcon && <BsChevronDown />}
+      </div>
+
+    </Link>
   );
 };
 
