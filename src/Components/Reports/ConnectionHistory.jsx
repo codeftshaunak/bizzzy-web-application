@@ -1,7 +1,5 @@
 import {
   Button,
-  Card,
-  CardBody,
   Image,
   Select,
   Table,
@@ -14,52 +12,95 @@ import {
 } from "@chakra-ui/react";
 
 const ConnectionHistory = () => {
+  const tableDummyData = [
+    {
+      date: "Today",
+      title: "UX/UI designer marketing expert brand identity home page design",
+      job_title: "Applied for Job",
+      contact: "-16",
+    },
+    {
+      date: "Sep 21, 2023",
+      title: "UX/UI designer marketing expert brand identity home page design",
+      job_title: "Applied for Job",
+      contact: "-16",
+    },
+    {
+      date: "Sep 18, 2023",
+      title: "UX/UI designer marketing expert brand identity home page design",
+      job_title: "Applied for Job",
+      contact: "-16",
+    },
+    {
+      date: "Aug 05, 2023",
+      title: "UX/UI designer marketing expert brand identity home page design",
+      job_title: "Applied for Job",
+      contact: "-16",
+    },
+    {
+      date: "Dec 12, 2023",
+      title: "UX/UI designer marketing expert brand identity home page design",
+      job_title: "Applied for Job",
+      contact: "-16",
+    },
+  ];
   return (
-    <div className="my-3">
-      <Card>
-        <div className="w-full ">
-          <h2 className="my-3 text-[24px] font-semibold">Connect History</h2>
-          <div className="grid grid-cols-12">
-            <div className="md:col-span-6 gap-2 col-span-12 bg-gray-50 rounded-[9px] w-[640px] h-[209px] border border-neutral-200">
-              <h2 className=" text-[20px] font-semibold  ml-6 mt-3">My Balance</h2>
-               <h2 className=" text-[20px] font-semibold  ml-6 mt-3">106 Connects</h2>
-              <div className="text-[20px] font-semibold">
-                <Button
-                  colorScheme="16A34A"
-                  className="ml-6 mt-3"
-                  bg={"#16A34A"}
-                  color={"#fff"}
-                  border={"1px solid #16A34A"}
-                  size="sm"
-                  fontSize={"sm"}
-                  w={"10rem"}
-                  textTransform={"capitalize"}
-                  transition={"0.3s ease-in-out"}
-                >
-                  Buy Connects
-                </Button>
+    <div className="my-3 space-y-4">
+      <h2 className="my-3 text-2xl font-medium text-[#374151]">
+        Connect History
+      </h2>
 
-              </div>
-              <Image
-                    src="./images/report_card.png"
-                    alt="user"
-                    width="120px"
-                    borderRadius="100%"
-                    className="ml-auto mt-[-10] mr-10"
-                  />
-                                
-            </div>
-            <div className="md:col-span-4 col-span-12">
-              <h2 className="my-3 text-[18px] font-semibold">
-                Statement Period
+      <div className="grid grid-cols-12 gap-10">
+        <div className="col-span-12 md:col-span-8">
+          <div className="flex justify-between p-6 bg-[#DFDFDF] rounded-lg">
+            <div className="space-y-6">
+              <h2 className="text-xl font-medium text-[#374151]">My Balance</h2>
+              <h2 className="text-2xl font-medium text-[#374151]">
+                106 Connects
               </h2>
-              <Select placeholder="Select option">
+              <Button
+                colorScheme="16A34A"
+                bg={"#16A34A"}
+                color={"#fff"}
+                size="sm"
+              >
+                Buy Connects
+              </Button>
+            </div>
+            <div className="mt-auto">
+              <div className="w-[120px] h-[110px]">
+                <Image
+                  src="./images/report_card.png"
+                  alt="user"
+                  width="100%"
+                  height={"100%"}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-span-12 md:col-span-4 my-auto">
+          <div className="space-y-3">
+            <div className="">
+              <label className="text-sm font-medium"> Statement Period </label>
+              <Select
+                placeholder="Select option"
+                size={"sm"}
+                borderRadius={"lg"}
+              >
                 <option value="option1">Option 1</option>
                 <option value="option2">Option 2</option>
                 <option value="option3">Option 3</option>
               </Select>
-              <h2 className="my-3 text-[18px] font-semibold">Day Period</h2>
-              <Select placeholder="Select option" className="mb-2">
+            </div>
+            <div className="">
+              <label className="text-sm font-medium">Day Period</label>
+              <Select
+                placeholder="Select option"
+                className="mb-2"
+                size={"sm"}
+                borderRadius={"lg"}
+              >
                 <option value="option1">Last 7 Days</option>
                 <option value="option2">Last 20</option>
                 <option value="option3">Last 30 Days</option>
@@ -67,78 +108,33 @@ const ConnectionHistory = () => {
             </div>
           </div>
         </div>
-      </Card>
+      </div>
 
-      <Card>
-        <CardBody>
-          <div className="md:flex my-3 justify-between">
-            <h2 className="font-semibold text-[20px]">
-              Timesheet for sep 18 - 24 (this Week )in progress
-            </h2>
-            <p className="font-semibold text-[#16A34A]">
-              When will I get paid?
-            </p>
-          </div>
-          <p className="text-end">
-            This timesheet includes 0:00 hrs manual time ?
-          </p>
-          {/* table */}
-          <div className="my-5">
-            <Card>
-              <CardBody>
-                <TableContainer>
-                  <Table variant="simple">
-                    <Thead>
-                      <Tr>
-                        <Th>Job</Th>
-                        <Th>Mon 9/18</Th>
-                        <Th>Tue9/18</Th>
-                        <Th isNumeric>Hours</Th>
-                        <Th isNumeric>Rate</Th>
-                        <Th isNumeric>Amount</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      <Tr>
-                        <Td className="text-[#16A34A]">
-                          Netsome Gmbh - UI Designer for mobile application
-                        </Td>
-                        <Td>-</Td>
-                        <Td>-</Td>
-                        <Td isNumeric>-</Td>
-                        <Td isNumeric>$5.00/hr</Td>
-                        <Td isNumeric>$5.00/hr</Td>
-                      </Tr>
-                      <Tr>
-                        <Td className="text-[#16A34A]">
-                          Optimum- UX/UI Designer With Service Design for
-                          Startups
-                        </Td>
-                        <Td>-</Td>
-                        <Td isNumeric>-</Td>
-                        <Td isNumeric>-</Td>
-                        <Td isNumeric>$5.00/hr</Td>
-                        <Td isNumeric>$5.00/hr</Td>
-                      </Tr>
-                      <Tr>
-                        <Td></Td>
-                        <Td></Td>
-                        <Td isNumeric></Td>
-                        <Td isNumeric>0.00</Td>
-                        <Td isNumeric>$5.00/hr</Td>
-                        <Td isNumeric>$5.00/hr</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-                <h2 className="my-3 font-semibold text-[20px]">
-                  Timesheet for sep 18 - 24 (this Week )in progress
-                </h2>
-              </CardBody>
-            </Card>
-          </div>
-        </CardBody>
-      </Card>
+      <div className="my-5">
+        <TableContainer>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th className="capitalize" >Date</Th>
+                <Th className="capitalize" >Action</Th>
+                <Th className="capitalize" >Contacts</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {tableDummyData?.map((item, index) => (
+                <Tr key={index}>
+                  <Td className="text-2xl font-normal text-[#6B7280]">{item.date}</Td>
+                  <Td>
+                    <div className="text-[#6B7280]">{item.job_title}</div>
+                    <div  className="text-[#16A34A] text-lg font-medium">{item.title}</div>
+                  </Td>
+                  <Td className="text-[#6B7280] font-normal text-lg">{item.contact}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 };

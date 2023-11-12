@@ -1,17 +1,16 @@
-import BillingEarning from './BillingEarning'
+import MyReports from './MyReports'
 import ConnectionHistory from './ConnectionHistory'
-import TransactionHistory from './TransactionHistory'
 import Status from './Status'
-import TimeSheet from './Timesheet'
-
+import TimeSheet from './TimeSheet'
 const index = () => {
   return (
     <div className='w-full mx-auto'>
-         {/* <Status /> 
-         <TimeSheet />  */}
+         <Status /> 
+         <TimeSheet/> 
           {/* <TransactionHistory/> */}
         {/* <BillingEarning />  */}
-        <ConnectionHistory/>
+        {/* <ConnectionHistory />
+        <MyReports /> */}
     </div>
   )
 }
