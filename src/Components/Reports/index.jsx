@@ -5,12 +5,12 @@ import TimeSheet from './TimeSheet'
 const index = () => {
   return (
     <div className='w-full mx-auto'>
-         <Status /> 
-         <TimeSheet/> 
+         {/* <Status />  */}
+         {/* <TimeSheet/>  */}
           {/* <TransactionHistory/> */}
         {/* <BillingEarning />  */}
-        {/* <ConnectionHistory />
-        <MyReports /> */}
+         <ConnectionHistory />
+        {/* <MyReports />  */}
     </div>
   )
 }
