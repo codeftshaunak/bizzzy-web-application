@@ -1,7 +1,6 @@
 import MyReports from './MyReports'
 import ConnectionHistory from './ConnectionHistory'
 import Status from './Status'
-import TimeSheet from './TimeSheet'
 const index = () => {
   return (
     <div className='w-full mx-auto'>
