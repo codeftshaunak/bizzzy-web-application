@@ -22,6 +22,7 @@ import {
 } from "react-icons/bs";
 import { useState } from "react";
 
+
 // export const Header = () => {
 //     const navigate = useNavigate();
 //     const [isHeaderFixed, setIsHeaderFixed] = useState(false);
@@ -245,7 +246,7 @@ export const Header = () => {
             </div>
           </div>
           <div className="right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div className="hidden sm:hidden md:flex whitespace-no-wrap inline-flex items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
+            <div className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
               <div className="flex w-[350px]">
                 <div className="flex w-[350px] items-center  rounded-lg border-[#D1D5DB] border-[1px] py-1 px-2 justify-between">
                   <div className="flex items-center gap-4">
@@ -261,7 +262,7 @@ export const Header = () => {
                 </div>
               </div>
               <Box
-                className="hidden sm:hidden md:flex whitespace-no-wrap inline-flex items-center justify-center my-2 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:shadow-outline-indigo  transition ease-in-out duration-150"
+                className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:shadow-outline-indigo  transition ease-in-out duration-150"
                 width={"210px"}
               >
                 <CTAButton
@@ -497,7 +498,7 @@ export const AuthHeader = () => {
             </div>
           </div>
           <div className=" right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div className="hidden sm:hidden md:flex whitespace-no-wrap inline-flex items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
+            <div className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
               <div className="flex w-[350px] mr-3">
                 <div className="flex w-[350px] items-center  rounded-lg border-[#D1D5DB] border-[1px] py-1 px-2 justify-between">
                   <div className="flex items-center gap-4">
@@ -552,28 +553,28 @@ export const AuthHeader = () => {
             </div>
           </div>
           <div className="md:hidden">
-                <button
-                  onClick={() => {
-                    setOpenSearch(!openSearch);
-                  }}
-                >
-                  <svg
-                    width="30px"
-                    height="30px"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                      stroke="#000000"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-            </div>
+            <button
+              onClick={() => {
+                setOpenSearch(!openSearch);
+              }}
+            >
+              <svg
+                width="30px"
+                height="30px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                  stroke="#000000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
