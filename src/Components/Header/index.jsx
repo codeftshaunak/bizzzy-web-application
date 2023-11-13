@@ -22,6 +22,7 @@ import {
 } from "react-icons/bs";
 import { useState } from "react";
 
+
 // export const Header = () => {
 //     const navigate = useNavigate();
 //     const [isHeaderFixed, setIsHeaderFixed] = useState(false);
@@ -245,7 +246,7 @@ export const Header = () => {
             </div>
           </div>
           <div className="right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div className="hidden sm:hidden md:flex whitespace-no-wrap inline-flex items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
+            <div className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
               <div className="flex w-[350px]">
                 <div className="flex w-[350px] items-center  rounded-lg border-[#D1D5DB] border-[1px] py-1 px-2 justify-between">
                   <div className="flex items-center gap-4">
@@ -261,7 +262,7 @@ export const Header = () => {
                 </div>
               </div>
               <Box
-                className="hidden sm:hidden md:flex whitespace-no-wrap inline-flex items-center justify-center my-2 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:shadow-outline-indigo  transition ease-in-out duration-150"
+                className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:shadow-outline-indigo  transition ease-in-out duration-150"
                 width={"210px"}
               >
                 <CTAButton
@@ -497,7 +498,7 @@ export const AuthHeader = () => {
             </div>
           </div>
           <div className=" right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div className="hidden sm:hidden md:flex whitespace-no-wrap inline-flex items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
+            <div className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
               <div className="flex w-[350px] mr-3">
                 <div className="flex w-[350px] items-center  rounded-lg border-[#D1D5DB] border-[1px] py-1 px-2 justify-between">
                   <div className="flex items-center gap-4">
@@ -552,6 +553,7 @@ export const AuthHeader = () => {
             </div>
           </div>
           <div className="md:hidden">
+
                 <button
                   onClick={() => {
                     setOpenSearch(!openSearch);
