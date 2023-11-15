@@ -7,7 +7,7 @@ import Home from "../Pages/Home";
 import JobPost from "../Pages/JobPost";
 import ApplyJob from "../Pages/ApplyJob";
 import { Profile, ProfileSetting } from "../Pages/Profile";
-import FindJob from "../Pages/FindJob";
+import { FindJob, SearchPage } from "../Pages/FindJob";
 import Message from "../Pages/Message";
 import TimeTracker from "../Pages/TimeTracker";
 import { SignUp } from "../Pages/SignUp";
@@ -30,6 +30,7 @@ const Router = () => {
                 <Route exact path="/find-job" element={<FindJob />} />
                 <Route exact path="/find-job/:id" element={<ApplyJob />} />
                 {/* <Route exact path="/apply-job" element={<ApplyJob />} /> */}
+                <Route exact path="/search-job" element={<SearchPage />} />
                 <Route exact path="/verify-email" element={<VerifySuccess />} />
                 <Route exact path="/messages" element={<Message />} />
                 <Route exact path="/freelancer" element={<Profile />} />

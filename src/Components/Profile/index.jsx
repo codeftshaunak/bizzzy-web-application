@@ -789,7 +789,7 @@ export const FreelancerProfilePage = () => {
                             <div className="grid grid-cols-3 gap-4">
                                 {
                                     skills?.length > 0 && skills?.map((skill) => {
-                                        return <SkillCard title={skill.skill_name} />
+                                        return <SkillCard title={skill} />
 
                                     })
                                 }

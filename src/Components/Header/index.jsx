@@ -21,6 +21,10 @@ import {
   BsSend,
 } from "react-icons/bs";
 import { useState } from "react";
+import { AiFillSetting } from "react-icons/ai";
+import { BiExit } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { clearAuthData } from "../../redux/authSlice/authSlice";
 
 
 // export const Header = () => {
@@ -125,6 +129,8 @@ import { useState } from "react";
 //         </FullContainer>
 //     );
 // };
+
+
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -232,15 +238,18 @@ export const Header = () => {
                   className="text-[22px] font-bold text-green-500 cursor-pointer text-right"
                   onClick={() => navigate("/")}
                 >
-                  Bizzzy
+                  <img src="/images/bizzzy_logo.png" style={{
+                    width: "80px",
+                    marginTop: "3px"
+                  }} />
                 </p>
               </div>
             </div>
 
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-5">
-                {navigation && navigation.length>0&& navigation.map((item,i)=>(
-                    <NavItem key={i} title={item.title} url={item.href} />
+                {navigation && navigation.length > 0 && navigation.map((item, i) => (
+                  <NavItem key={i} title={item.title} url={item.href} />
                 ))}
               </div>
             </div>
@@ -381,6 +390,19 @@ export const Header = () => {
 
 export const AuthHeader = () => {
   const [openSearch, setOpenSearch] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
+
+  const handleProfileButton = () => {
+    setOpenInfo(!openInfo)
+  }
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(clearAuthData()); // Dispatch the clearAuthData action to reset the state
+  };
+
+
   const navigate = useNavigate();
   const boxStyle = {
     display: "flex",
@@ -485,12 +507,15 @@ export const AuthHeader = () => {
                 className="text-[22px] font-bold text-green-500 cursor-pointer text-right"
                 onClick={() => navigate("/")}
               >
-                Bizzzy
+                <img src="/images/bizzzy_logo.png" style={{
+                  width: "80px",
+                  marginTop: "3px"
+                }} />
               </p>
             </div>
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-5">
-                <NavItem title={"Find Work"} />
+                <NavItem title={"Find Work"} url={"/find-job"} />
                 <NavItem title={"My Jobs"} />
                 <NavItem title={"Reports"} />
                 <NavItem noIcon={true} title={"Messages"} />
@@ -513,7 +538,7 @@ export const AuthHeader = () => {
                   <BsCommand />
                 </div>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 relative">
                 <div className=" flex items-center justify-center w-[36px] h-[36px] bg-slate-100 rounded-md ">
                   <BsSend width={"20px"} height={"20px"} />
                 </div>
@@ -521,12 +546,28 @@ export const AuthHeader = () => {
                   <BsBell width={"20px"} height={"20px"} />
                 </div>
                 <div
-                  className="flex items-center justify-center rounded-full w-[36px] h-[36px] "
+                  className="flex items-center justify-center rounded-full w-[36px] h-[36px] cursor-pointer"
                   style={{
                     background: `url(${"./images/user.jpeg"})`,
                     backgroundSize: "contain",
                   }}
+                  onClick={() => handleProfileButton()}
                 ></div>
+
+                {
+                  openInfo && <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
+                    <div className="flex justify-around items-center w-full cursor-pointer mt-3">
+                      <AiFillSetting />
+                      <p className="text-sm">Setting</p>
+                    </div>
+
+                    <div className="flex justify-around items-center w-full cursor-pointer my-3" onClick={() => handleLogout()}>
+                      <BiExit />
+                      <p className="text-sm">Logout</p>
+                    </div>
+                  </div>
+                }
+
               </div>
             </div>
 
@@ -554,28 +595,28 @@ export const AuthHeader = () => {
           </div>
           <div className="md:hidden">
 
-                <button
-                  onClick={() => {
-                    setOpenSearch(!openSearch);
-                  }}
-                >
-                  <svg
-                    width="30px"
-                    height="30px"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                      stroke="#000000"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
-            </div>
+            <button
+              onClick={() => {
+                setOpenSearch(!openSearch);
+              }}
+            >
+              <svg
+                width="30px"
+                height="30px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                  stroke="#000000"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -637,13 +678,13 @@ export const AuthHeader = () => {
   );
 };
 
-const NavItem = ({ title, noIcon,url }) => {
+const NavItem = ({ title, noIcon, url, onClick }) => {
   const navigate = useNavigate();
   return (
-    <Link to={url}  >
+    <Link to={url}>
       <div className="flex items-center gap-[8px] text-[#536e53] cursor-pointer">
         <p className="text-[14px] font-[500] text-[#374151] ">{title}</p>
-        {!noIcon && <BsChevronDown />}
+        {/* {!noIcon && <BsChevronDown />} */}
       </div>
 
     </Link>

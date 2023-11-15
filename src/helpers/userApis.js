@@ -7,11 +7,11 @@ export const API = axios.create({
 
 export const updateFreelancerProfile = async (data) => {
     try {
-        const token = localStorage.getItem("token");
+        const authtoken = localStorage.getItem("authtoken");
         const response = await API.post(`/profile-details`, data, {
             headers: {
                 "Content-Type": "application/json",
-                "token": `${token}`
+                "token": `${authtoken}`
             }
         });
         return response.data;
@@ -22,11 +22,11 @@ export const updateFreelancerProfile = async (data) => {
 
 export const getAllDetailsOfUser = async()=>{
     try {
-        const token = localStorage.getItem("token");
+        const authtoken = localStorage.getItem("authtoken");
         const response = await API.get('/get-user-profile',{
             headers: {
                 "Content-Type": "application/json",
-                "token": `${token}`
+                "token": `${authtoken}`
             }
         })
         return response.data;

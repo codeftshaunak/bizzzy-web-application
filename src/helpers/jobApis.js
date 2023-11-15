@@ -7,11 +7,11 @@ export const API = axios.create({
 
 export const getAllJobs = async () => {
   try {
-    const token = localStorage.getItem("token");
+    const authtoken = localStorage.getItem("authtoken");
     const response = await API.get("/job/get-all", {
       headers: {
         "Content-Type": "application/json",
-        token: `${token}`,
+        token: `${authtoken}`,
       },
     });
     return response.data.data;
@@ -22,11 +22,11 @@ export const getAllJobs = async () => {
 
 export const getJobById = async (data) => {
   try {
-    const token = localStorage.getItem("token");
+    const authtoken = localStorage.getItem("authtoken");
     const response = await API.get(`/job/get-job/${data}`, {
       headers: {
         "Content-Type": "application/json",
-        token: `${token}`,
+        token: `${authtoken}`,
       },
     });
     return response.data.data;
@@ -37,11 +37,11 @@ export const getJobById = async (data) => {
 
 export const applyJob = async (data) => {
   try {
-    const token = localStorage.getItem("token");
+    const authtoken = localStorage.getItem("authtoken");
     const response = await API.post(`/job-proposal`, data, {
       headers: {
         "Content-Type": "application/json",
-        token: `${token}`,
+        token: `${authtoken}`,
       },
     });
     return response.data;
@@ -52,11 +52,11 @@ export const applyJob = async (data) => {
 
 export const createJob = async (formData) => {
   try {
-    const token = localStorage.getItem("token");
+    const authtoken = localStorage.getItem("authtoken");
     const response = await API.post("/job/create", formData, {
       headers: {
         "Content-Type": `multipart/form-data`,
-        token: `${token}`,
+        token: `${authtoken}`,
       },
     });
     return response.data;
