@@ -37,7 +37,7 @@ const JobApply = ({ setPage, details }) => {
                 jobType: bidDetails.type,
                 coverLetter: coverLetter,
             });
-
+            console.log(response);
             if (response.code === 200) {
                 toast({
                     title: 'Job Applied Successfully',

@@ -6,31 +6,23 @@ export const API = axios.create({
 });
 
 API.interceptors.request.use(function (config) {
-  let token = null;
-  if (typeof window !== "undefined") {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      token = user.token;
-    }
-  }
-  config.headers.Authorization = token ? `Bearer ${token}` : "";
+  const user = JSON.parse(localStorage.getItem('user')) || {};
+  const authtoken = user.authtoken || '';
+
+  config.headers.Authorization = authtoken ? `Bearer ${authtoken}` : '';
   return config;
 });
 
 API.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error?.response?.status === 401) {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-        // store.dispatch(logout());
-        setTimeout(() => {
-          window.location.replace("/login");
-        }, 500);
-      }
+      localStorage.removeItem('user');
+      localStorage.removeItem('authtoken');
+      store.dispatch(logout());
+      setTimeout(() => {
+        window.location.replace('/login');
+      }, 500);
     }
     return Promise.reject(error);
   }
@@ -70,3 +62,5 @@ export const verifyMail = async (data) => {
     return error.response.data;
   }
 };
+
+export default API;

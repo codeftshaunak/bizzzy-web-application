@@ -7,11 +7,11 @@ export const API = axios.create({
 
 export const getClientJobs = async () => {
     try {
-        const token = localStorage.getItem("token");
+        const authtoken = localStorage.getItem("authtoken");
         const response = await API.get("/job/client/jobs", {
             headers: {
                 "Content-Type": "application/json",
-                token: `${token}`,
+                token: `${authtoken}`,
             },
         });
         return response.data.data;
@@ -22,11 +22,11 @@ export const getClientJobs = async () => {
 
 export const getProposals = async (data) => {
     try {
-        const token = localStorage.getItem("token");
+        const authtoken = localStorage.getItem("authtoken");
         const response = await API.get(`/job/${data}/proposal`, {
             headers: {
                 "Content-Type": "application/json",
-                token: `${token}`,
+                token: `${authtoken}`,
             },
         });
         return response.data.body;
@@ -37,11 +37,11 @@ export const getProposals = async (data) => {
 
 export const deleteJob = async(data)=>{
     try {
-        const token = localStorage.getItem("token");
+        const authtoken = localStorage.getItem("authtoken");
         const response = await API.post(`job/delete/${data}`,{
             headers: {
                 "Content-Type": "application/json",
-                token: `${token}`,
+                token: `${authtoken}`,
             },
         })
         return response.data;

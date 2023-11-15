@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import HomeLayout from '../../Layouts/HomeLayout';
-import { AllJobs } from '../../Components/FindJobUi';
+import { AllJobs, SearchJobPage } from '../../Components/FindJobUi';
 import { VStack } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const FindJob = () => {
+export const FindJob = () => {
     const role = useSelector((state) => state.auth.role);
     const navigate = useNavigate();
 
@@ -20,7 +20,6 @@ const FindJob = () => {
 
     return (
         <HomeLayout>
-            {/* Only render AllJobs if the user is a freelancer */}
             {role == 1 && (
                 <VStack padding={"0 2rem"}>
                     <AllJobs />
@@ -30,4 +29,14 @@ const FindJob = () => {
     );
 };
 
-export default FindJob;
+export const SearchPage = () => {
+    const role = useSelector((state) => state.auth.role);
+    return <HomeLayout>
+        {role == 1 && (
+            <VStack padding={"0 2rem"} width={"full"}>
+                <SearchJobPage />
+            </VStack>
+        )}
+    </HomeLayout>
+}
+
