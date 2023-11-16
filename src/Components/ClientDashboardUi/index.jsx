@@ -9,11 +9,13 @@ import { getClientJobs, getProposals } from "../../helpers/clientApis";
 const ClientDashboardComponent = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
+  console.log({ "Job": jobs });
 
   const getClientPostedJob = async () => {
     try {
       const respoonse = await getClientJobs();
-      setJobs(respoonse)
+      setJobs(respoonse);
+      console.log(respoonse);
     } catch (error) {
       console.log(error);
     }
@@ -101,7 +103,7 @@ const ClientDashboardComponent = () => {
                       <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
                         bg: '#16A34A',
                         color: "#fff"
-                      }}>
+                      }} onClick={() => { navigate(`/client-jobdetails/${job._id}`) }}>
                         Find Applicants
                       </Button>
                       <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
