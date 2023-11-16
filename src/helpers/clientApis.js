@@ -14,7 +14,7 @@ export const getClientJobs = async () => {
                 token: `${authtoken}`,
             },
         });
-        return response.data.data;
+        return response.data.body;
     } catch (error) {
         return error;
     }

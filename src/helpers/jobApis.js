@@ -14,6 +14,8 @@ export const getAllJobs = async () => {
         token: `${authtoken}`,
       },
     });
+
+    console.log(response);
     return response.data.data;
   } catch (error) {
     return error;
