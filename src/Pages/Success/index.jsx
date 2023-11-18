@@ -15,32 +15,34 @@ export const VerifySuccess = () => {
     const verifyMailAddress = async () => {
         setLoading(true);
         try {
-            const response = await verifyMail({
-                id: id,
-                token: token
+          const response = await verifyMail({
+            id: id,
+            token: token,
+          });
+          setLoading(false);
+          if (response.code === 200) {
+            toast({
+              title: response.msg,
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
             });
-            setLoading(false);
-            if (response.code === 200) {
-                toast({
-                    title: response.msg,
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top-right'
-                })
-                navigate("/login")
-            } else if (response.code === 401) {
-                toast({
-                    title: response.msg,
-                    status: 'warning',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top-right'
-                })
-            }
-            console.log(response);
+            navigate("/login");
+          } else if (response.code === 401) {
+            toast({
+              title: response.msg,
+              status: "warning",
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
+            });
+          }
+          console.log(response);
         } catch (error) {
-            console.log(error);
+          console.log(error);
+        } finally {
+          setLoading(false); 
         }
     }
 

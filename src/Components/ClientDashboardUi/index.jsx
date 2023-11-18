@@ -103,7 +103,9 @@ const ClientDashboardComponent = () => {
                       <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
                         bg: '#16A34A',
                         color: "#fff"
-                      }} onClick={() => { navigate(`/client-jobdetails/${job._id}`) }}>
+                      }} onClick={() => { navigate(`/client-jobdetails/${job._id}`, {
+                        state: { jobDetails: job },
+                      }); }}>
                         Find Applicants
                       </Button>
                       <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
