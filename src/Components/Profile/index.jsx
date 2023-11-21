@@ -11,10 +11,12 @@ import {
   getAllDetailsOfUser,
   updateFreelancerProfile,
   updateFreelancer,
+  uploadImage,
 } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const customStyles = {
   content: {
@@ -290,6 +292,7 @@ export const FreelancerProfilePage = () => {
   const {
     firstName,
     lastName,
+    profile_image,
     location,
     professional_role,
     hourly_rate,
@@ -301,7 +304,7 @@ export const FreelancerProfilePage = () => {
   } = details || [];
   const [localTime, setLocalTime] = useState();
 
-  // console.log(education);
+  console.log(details);
   function openModal() {
     setModalIsOpen(true);
   }
@@ -366,6 +369,10 @@ export const FreelancerProfilePage = () => {
                     height="16"
                     viewBox="0 0 16 16"
                     fill="none"
+                    onClick={() => {
+                      setModalPage("editProfile");
+                      openModal();
+                    }}
                   >
                     <path
                       d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
@@ -386,7 +393,10 @@ export const FreelancerProfilePage = () => {
               </div>
               <div
                 className="flex items-center justify-center rounded-full w-[70px] h-[70px] "
-                style={{ background: `url(${bg})`, backgroundSize: "contain" }}
+                style={{
+                  background: `url(${profile_image})`,
+                  backgroundSize: "contain",
+                }}
               ></div>
             </div>
 
@@ -458,7 +468,6 @@ export const FreelancerProfilePage = () => {
                     cursor={"pointer"}
                     onClick={() => {
                       setModalPage("education");
-                      selectedEducation(selectedEducation);
                       openModal();
                     }}
                   />
@@ -477,6 +486,7 @@ export const FreelancerProfilePage = () => {
                           className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                           onClick={() => {
                             openEditModal(edu);
+                            selectedEducation(selectedEducation);
                           }}
                         >
                           <svg
@@ -889,6 +899,31 @@ const ProfileModal = ({
     hourly_rate: "",
     description: "",
   });
+
+  const [editProfileInput, setEditProfileInput] = useState({
+    profile_image: null,
+  });
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setEditProfileInput({
+      profile_image: file,
+    });
+  };
+
+  const uploadProfileImage = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("profile_image", editProfileInput.profile_image);
+
+      const response = await uploadImage(formData);
+      console.log(response);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+
   const [experienceInput, setExperienceInput] = useState({
     company_name: "",
     position: "",
@@ -897,13 +932,14 @@ const ProfileModal = ({
     job_description: "",
     job_location: "",
   });
+
   const [educationInput, setEducationInput] = useState({
     degree_name: "",
     institution: "",
     start_date: "",
     end_date: "",
   });
-  
+
   const [updateEducationInput, setUpdateEducationInput] = useState({
     _id: selectedEducation?._id || "",
     degree_name: selectedEducation?.degree_name || "",
@@ -920,7 +956,7 @@ const ProfileModal = ({
       [name]: value,
     }));
   };
-  console.log(updateEducationInput);
+
   const [portfolioInput, setPortfolioInput] = useState({
     project_name: "",
     project_description: "",
@@ -931,7 +967,6 @@ const ProfileModal = ({
     setSelectedOptions(selectedValues || []);
   };
 
-  
   const handleSaveAndContinue = async (data) => {
     try {
       if (data === "category") {
@@ -1104,6 +1139,39 @@ const ProfileModal = ({
           });
           closeModal();
         }
+      } else if (data == "editProfile") {
+        const response = await updateFreelancer({
+          editProfile: {
+            profile_image: editProfileInput.profile_image,
+          },
+        });
+
+        if (response.code == 405 || response.code == 500) {
+          toast({
+            title: response.msg,
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+          setEditProfileInput({
+            profile: "",
+          });
+          closeModal();
+        } else if (response.code === 200) {
+          // Handle category added successfully
+          toast({
+            title: "Profile Edited Successfully",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            position: "top-right",
+          });
+          setEditProfileInput({
+            profile: "",
+          });
+          closeModal();
+        }
       } else if (data == "education") {
         const response = await updateFreelancerProfile({
           education: {
@@ -1146,10 +1214,6 @@ const ProfileModal = ({
           closeModal();
         }
       } else if (data == "educationUpdate") {
-        if (!selectedEducation) {
-          console.error("selectedEducation is not set.");
-          return;
-        }
         setUpdateEducationInput({
           _id: selectedEducation._id,
           degree_name: selectedEducation.degree_name,
@@ -1199,7 +1263,6 @@ const ProfileModal = ({
           closeModal();
         }
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -1642,6 +1705,32 @@ const ProfileModal = ({
               <button
                 className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md "
                 onClick={() => handleSaveAndContinue("experience")}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        )}
+
+        {modalPage === "editProfile" && (
+          <div className="flex flex-col gap-[16px]">
+            <div className="flex flex-col px-[24px] pb">
+              <div className="flex flex-col gap-[2px]">
+                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                  <input
+                    type="file"
+                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                    placeholder="Your Company Name"
+                    name="profile_image"
+                    onChange={(e) => handleFileChange(e)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+              <button
+                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md "
+                onClick={() => uploadProfileImage()}
               >
                 Submit
               </button>

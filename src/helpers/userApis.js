@@ -19,20 +19,38 @@ export const updateFreelancerProfile = async (data) => {
         return error.response.data;
     }
 }
-export const updateFreelancer = async (data) => {
+export const uploadImage = async (data) => {
     try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.put(`/edit-profile`, data, {
-          headers: {
-            "Content-Type": "application/json",
-            token: `${authtoken}`,
-          },
-        });
-        return response.data;
+      const authtoken = localStorage.getItem("authtoken");  
+      const response = await API.post(`/user-profile-image`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          token: `${authtoken}`,
+        },
+      });
+
+      return response.data;
     } catch (error) {
         return error.response.data;
     }
 }
+
+export const updateFreelancer = async (data) => {
+    try {
+      const authtoken = localStorage.getItem("authtoken");  
+      const response = await API.put(`/edit-profile`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          token: `${authtoken}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
 
 export const getAllDetailsOfUser = async()=>{
     try {
