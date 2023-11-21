@@ -47,6 +47,14 @@ const JobApply = ({ setPage, details }) => {
                     duration: 2000,
                 });
                 navigate('/find-job');
+            } else {
+                toast({
+                    title: response.message,
+                    position: 'top',
+                    status: 'success',
+                    isClosable: true,
+                    duration: 2000,
+                });
             }
         } catch (error) {
             console.error(error);

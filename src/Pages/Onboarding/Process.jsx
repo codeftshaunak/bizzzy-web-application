@@ -73,6 +73,9 @@ const Process = () => {
         if (userDetails?.categories?.length > 0 && userDetails?.skills?.length > 0 && userDetails?.professional_role?.length > 0) {
             navigate("/freelancer")
         }
+        if (userDetails?.briefDescription?.length > 0 && userDetails?.businessName?.length > 0) {
+            navigate("/client");
+        }
         if (userDetails?.categories?.length == 0) {
             setPage(2);
         }
@@ -85,16 +88,10 @@ const Process = () => {
     };
 
 
-    const autoProcessClient = () => {
-        if (userDetails?.briefDescription?.length > 0 && userDetails?.businessName?.length > 0) {
-            navigate("/client")
-        }
-    };
 
 
     const handleSaveAndContinue = async (data) => {
         autoProcess();
-        autoProcessClient();
         try {
             if (role == 1) {
                 if (data === "category") {
