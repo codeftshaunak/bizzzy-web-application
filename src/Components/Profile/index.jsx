@@ -920,12 +920,7 @@ const ProfileModal = ({
       console.error("Error uploading image:", error);
     }
   };
-
-  const uploadProfileImage = async () => {
-
-  };
-
-
+ 
 
   const [experienceInput, setExperienceInput] = useState({
     company_name: "",
