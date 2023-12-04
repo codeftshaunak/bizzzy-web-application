@@ -13,6 +13,7 @@ import {
   updateFreelancer,
   uploadImage,
 } from "../../helpers/userApis";
+import { Spinner } from '@chakra-ui/react'
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { useSelector } from "react-redux";
@@ -91,7 +92,7 @@ export const ClientProfilePage = () => {
 
   useEffect(() => {
     getProfileInformation();
-  }, []);
+  }, [modalIsOpen]);
 
   function closeModal() {
     setModalIsOpen(false);
@@ -304,7 +305,7 @@ export const FreelancerProfilePage = () => {
   } = details || [];
   const [localTime, setLocalTime] = useState();
 
-  console.log(details);
+  console.log(details,"freelancerrrrr");
   function openModal() {
     setModalIsOpen(true);
   }
@@ -338,7 +339,7 @@ export const FreelancerProfilePage = () => {
 
   useEffect(() => {
     getProfileInformation();
-  }, []);
+  }, [modalIsOpen]);
 
   //   function afterOpenModal() {
   //     // references are now sync'd and can be accessed.
@@ -894,6 +895,7 @@ const ProfileModal = ({
   ];
 
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isLoader,setIsLoader] = useState(false)
   const [inputValues, setInputValues] = useState({
     professional_role: "",
     hourly_rate: "",
@@ -902,15 +904,19 @@ const ProfileModal = ({
 
   const [editProfileInput, setEditProfileInput] = useState(null);
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files && e.target.files[0];
+  const uploadProfileImage = async () => {
+    setIsLoader(true)
     try {
       const formData = new FormData();
-      formData.append("profile_image", file);
-      const response = await uploadImage({ profile_image: file });
+      formData.append("file", editProfileInput.profile_image);
+
+      const response = await uploadImage(formData);
+      setIsLoader(false)
+      closeModal();
       console.log(response);
       console.log('Upload Response:', response);
     } catch (error) {
+      setIsLoader(false)
       console.error("Error uploading image:", error);
     }
   };
@@ -1726,10 +1732,10 @@ const ProfileModal = ({
             </div>
             <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
               <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md "
+                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md min-w-[100px]"
                 onClick={() => uploadProfileImage()}
               >
-                Submit
+               {isLoader ? <Spinner size='sm' color='white.500' />:'Submit' }
               </button>
             </div>
           </div>

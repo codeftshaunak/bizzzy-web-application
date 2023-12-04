@@ -52,6 +52,8 @@ export const signIn = async (data) => {
   }
 };
 
+
+
 export const verifyMail = async (data) => {
   try {
     const response = await API.post("/verify-email", data, {

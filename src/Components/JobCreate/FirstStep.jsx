@@ -265,7 +265,10 @@ function FirstStep({ setStep }) {
                     type="file"
                     id="file"
                     className="hidden"
-                    onChange={(e) => onChange(e.target.files[0])}
+                    onChange={(e) => {
+                      console.log(e.target.files,"ttt")
+                      onChange(e.target.files[0])
+                    }}
                   />
                 </label>
 
