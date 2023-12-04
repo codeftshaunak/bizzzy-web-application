@@ -380,6 +380,7 @@ export const InviteFreelancer = () => {
           let result = await dispatch(clientService(formData));
           if (result?.code == 200) {
             setOpen(false);
+            closeModal();
             setMessage("");
             toast({
               title: "Invite send",
