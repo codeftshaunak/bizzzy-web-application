@@ -49,3 +49,19 @@ export const deleteJob = async(data)=>{
         
     }
 }
+
+
+export const inviteToJob = async(data)=>{
+    try {
+        const authtoken = localStorage.getItem("authtoken");
+        const response = await API.post(`invitation-send`,{
+            headers: {
+                "Content-Type": "application/json",
+                token: `${authtoken}`,
+            },
+        })
+        return response.data;
+    } catch (error) {
+        
+    }
+}

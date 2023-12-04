@@ -27,6 +27,7 @@ const JobPost = () => {
       formData.append(key, data[key]);
     }
 
+
     // create the job using form state
     const response = await createJob(formData);
     if (response.success) {
