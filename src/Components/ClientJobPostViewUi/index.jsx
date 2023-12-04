@@ -11,6 +11,8 @@ import {
   Box,
   Text,
   useToast,
+  HStack,
+  Image
 } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
@@ -117,7 +119,7 @@ export const ClientJobPostViewComponent = () => {
 
 export const JobPostView = () => {
   const location = useLocation();
-  const jobDetails = location.state && location.state.jobDetails;
+  const jobDetails = location.state && location?.state?.jobDetails;
   const {
     amount,
     budget,
@@ -131,7 +133,7 @@ export const JobPostView = () => {
     tags,
     title,
     updated_at,
-  } = jobDetails;
+  } = jobDetails || [];
 
   const createdAtAgo =
     jobDetails &&
@@ -415,7 +417,8 @@ export const InviteFreelancer = () => {
             >
               Invited freelancer
             </Tab>
-            <Tab className="px-0 text-black">My Hire</Tab>
+            {/* <Tab className="px-0 text-black">My Hire</Tab> */}
+
           </TabList>
           <TabIndicator
             height="2px"
@@ -712,9 +715,9 @@ export const InviteFreelancer = () => {
                 </div>
               </TabPanel>
             </TabPanel>
-            <TabPanel>
+            {/* <TabPanel>
               <p>My Hire!</p>
-            </TabPanel>
+            </TabPanel> */}
           </TabPanels>
         </Tabs>
       </div>
@@ -745,7 +748,7 @@ export const ReviewProposal = () => {
           <TabList className="px-6 pt-4 border-b">
             <Tab className="px-0 text-black">All Proposals</Tab>
             <Tab>Messaged</Tab>
-            <Tab>Archived</Tab>
+            {/* <Tab>Archived</Tab> */}
           </TabList>
           <TabIndicator
             height="2px"
@@ -800,6 +803,7 @@ export const ReviewProposal = () => {
                               </Stack>
                             </div>
                           </div>
+
                           <div>
                             <p className="text-sm font-medium text-[#6B7280]">
                               {details?.country}
@@ -814,6 +818,7 @@ export const ReviewProposal = () => {
                             </p>
                             <p className="text-sm font-medium text-[#6B7280] border-b-2 block border-fg-brand">
                               100% job success
+                              {details?.professional_role}
                             </p>
                           </div>
                           <div>
@@ -879,12 +884,47 @@ export const ReviewProposal = () => {
                                 Button text
                               </Button>
                             </Stack>
-                            <div>
-                              <IoIosArrowForward
-                                size={24}
-                                className="text-fg-brand"
-                              />
-                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-[#6B7280]">
+                            {details?.country}
+                          </p>
+                        </div>
+                        <div className="flex gap-10">
+                          <p className="text-sm font-medium text-[#6B7280]">
+                            ${proposals?.[0]?.desiredPrice}
+                          </p>
+                          <p className="text-sm font-medium text-[#6B7280]">
+                            $3M+ earned
+                          </p>
+                          <p className="text-sm font-medium text-[#6B7280] border-b-2 block border-fg-brand">
+                            100% job success
+                          </p>
+                        </div>
+                        <div>
+                          <h6 className="text-sm font-medium text-[#6B7280]">
+                            Cover letter
+                          </h6>
+                          <p className="mt-1 text-sm font-normal leading-6">
+                            {proposals?.[0]?.coverLetter}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <Stack spacing={4} direction="row" align="center">
+                            {
+                              details?.skills?.map((skill) => {
+                                return <Button size="sm" colorScheme="gray" color={"#6B7280"}>
+                                  {skill}
+                                </Button>
+                              })
+                            }
+                          </Stack>
+                          <div>
+                            <IoIosArrowForward
+                              size={24}
+                              className="text-fg-brand"
+                            />
                           </div>
                         </div>
                       </div>
@@ -900,9 +940,9 @@ export const ReviewProposal = () => {
             <TabPanel>
               <p>Messaged!</p>
             </TabPanel>
-            <TabPanel>
+            {/* <TabPanel>
               <p>Archived!</p>
-            </TabPanel>
+            </TabPanel> */}
           </TabPanels>
         </Tabs>
       </div>

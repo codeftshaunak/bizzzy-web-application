@@ -53,7 +53,7 @@ const ClientDashboardComponent = () => {
           {/* start position  */}
           <div className=" mt-6 border border-[#D1D5DB]  rounded-md">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
-              <div className=" text-2xl font-medium text-[#374151]">Your Postings</div>
+              <div className=" text-2xl font-medium text-[#374151]">Your Job Postings</div>
               <div>
                 <Link to="#" className=" text-lg font-medium text-fg-brand">
                   See All Postings
@@ -107,12 +107,12 @@ const ClientDashboardComponent = () => {
                         }}>
                           Find Applicants
                         </Button>
-                        <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                        {/* <Button colorScheme="16A34A" color={'#000'} border={"1px solid #16A34A"} size="sm" fontSize={'sm'} w={"10rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
                           bg: '#16A34A',
                           color: "#fff"
                         }} onClick={() => handleDelete(job._id)}>
                           Delete job post
-                        </Button>
+                        </Button> */}
                       </VStack>
                     </div>
                   })
@@ -124,7 +124,7 @@ const ClientDashboardComponent = () => {
           {/* end position */}
 
           {/* start draft  */}
-          <div className=" mt-6 border border-[#D1D5DB]  rounded-md">
+          {/* <div className=" mt-6 border border-[#D1D5DB]  rounded-md">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
               <div className=" text-2xl font-medium text-[#374151]">Your Drafts</div>
               <div>
@@ -163,7 +163,7 @@ const ClientDashboardComponent = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* end draft */}
         </div>
 

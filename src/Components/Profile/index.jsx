@@ -100,7 +100,7 @@ export const ClientProfilePage = () => {
 
   return (
     <ProfileContainer>
-      <div className="w-[1000px] flex flex-col gap-[24px]">
+      <div className="w-full flex flex-col gap-[24px]">
         <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
@@ -902,16 +902,7 @@ const ProfileModal = ({
     description: "",
   });
 
-  const [editProfileInput, setEditProfileInput] = useState({
-    profile_image: null,
-  });
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setEditProfileInput({
-      profile_image: file,
-    });
-  };
+  const [editProfileInput, setEditProfileInput] = useState(null);
 
   const uploadProfileImage = async () => {
     setIsLoader(true)
@@ -923,11 +914,17 @@ const ProfileModal = ({
       setIsLoader(false)
       closeModal();
       console.log(response);
+      console.log('Upload Response:', response);
     } catch (error) {
       setIsLoader(false)
       console.error("Error uploading image:", error);
     }
   };
+
+  const uploadProfileImage = async () => {
+
+  };
+
 
 
   const [experienceInput, setExperienceInput] = useState({
