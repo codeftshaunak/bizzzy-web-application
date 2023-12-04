@@ -9,7 +9,9 @@ import {
   TabPanels,
   Tabs,
   Box,
-  Text
+  Text,
+  HStack,
+  Image
 } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
@@ -105,7 +107,7 @@ export const ClientJobPostViewComponent = () => {
 
 export const JobPostView = () => {
   const location = useLocation();
-  const jobDetails = location.state && location.state.jobDetails;
+  const jobDetails = location.state && location?.state?.jobDetails;
   const {
     amount,
     budget,
@@ -119,7 +121,7 @@ export const JobPostView = () => {
     tags,
     title,
     updated_at,
-  } = jobDetails;
+  } = jobDetails || [];
 
   const createdAtAgo =
     jobDetails &&
@@ -249,7 +251,7 @@ export const InviteFreelancer = () => {
           <TabList className="pt-4 border-b">
             <Tab className="px-0 text-black">Search</Tab>
             <Tab className="px-0 text-black">Invited freelancer</Tab>
-            <Tab className="px-0 text-black">My Hire</Tab>
+            {/* <Tab className="px-0 text-black">My Hire</Tab> */}
           </TabList>
           <TabIndicator
             height="2px"
@@ -385,9 +387,9 @@ export const InviteFreelancer = () => {
             <TabPanel>
               <p>Invited freelancer!</p>
             </TabPanel>
-            <TabPanel>
+            {/* <TabPanel>
               <p>My Hire!</p>
-            </TabPanel>
+            </TabPanel> */}
           </TabPanels>
         </Tabs>
       </div>
@@ -418,7 +420,7 @@ export const ReviewProposal = () => {
           <TabList className="px-6 pt-4 border-b">
             <Tab className="px-0 text-black">All Proposals</Tab>
             <Tab>Messaged</Tab>
-            <Tab>Archived</Tab>
+            {/* <Tab>Archived</Tab> */}
           </TabList>
           <TabIndicator
             height="2px"
@@ -433,13 +435,10 @@ export const ReviewProposal = () => {
                   const details = proposals?.[0].user_details?.[0];
                   return <div className="h-auto px-8 pt-8 pb-4 border-b-2 ">
                     <div className="flex gap-4">
-                      <div className="w-[90px] h-[85px]  border-4 border-[#D1D5DB] rounded-full">
-                        <img
-                          src={AvatarImg}
-                          className="w-full h-full rounded-full"
-                          alt=""
-                        />
-                      </div>
+                      <HStack width={"70px"} height={"70px"} borderRadius={"50%"}>
+                        <Image src={details?.profile_image ? details?.profile_image : AvatarImg} borderRadius={"50%"} />
+                      </HStack>
+
                       <div className="w-full space-y-3 ">
                         <div className="flex justify-between ">
                           <div>
@@ -447,7 +446,7 @@ export const ReviewProposal = () => {
                               {details?.firstName + " " + details?.lastName}
                             </h2>
                             <p className="text-sm font-medium text-[#6B7280]">
-                              Skilled UI/UX Product Designer
+                              {details?.professional_role}
                             </p>
                           </div>
                           <div>
@@ -493,35 +492,18 @@ export const ReviewProposal = () => {
                             Cover letter
                           </h6>
                           <p className="mt-1 text-sm font-normal leading-6">
-                            Hello there, are you seeking a talented UX/UI designer?
-                            to refine and optimize our existing platform's user
-                            experience and visuals. Previous experience preferred.
-                            Share your portfolio
+                            {proposals?.[0]?.coverLetter}
                           </p>
                         </div>
                         <div className="flex items-center justify-between">
                           <Stack spacing={4} direction="row" align="center">
-                            <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                              Web design
-                            </Button>
-                            <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                              Mobile App Design
-                            </Button>
-                            <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                              Button text
-                            </Button>
-                            <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                              Button text
-                            </Button>
-                            <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                              Button text
-                            </Button>
-                            <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                              Button text
-                            </Button>
-                            <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                              Button text
-                            </Button>
+                            {
+                              details?.skills?.map((skill) => {
+                                return <Button size="sm" colorScheme="gray" color={"#6B7280"}>
+                                  {skill}
+                                </Button>
+                              })
+                            }
                           </Stack>
                           <div>
                             <IoIosArrowForward
@@ -542,9 +524,9 @@ export const ReviewProposal = () => {
             <TabPanel>
               <p>Messaged!</p>
             </TabPanel>
-            <TabPanel>
+            {/* <TabPanel>
               <p>Archived!</p>
-            </TabPanel>
+            </TabPanel> */}
           </TabPanels>
         </Tabs>
       </div>

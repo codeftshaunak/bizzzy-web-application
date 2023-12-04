@@ -388,7 +388,7 @@ export const Header = () => {
   );
 };
 
-export const AuthHeader = () => {
+export const AuthHeader = ({ role }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
 
@@ -515,9 +515,11 @@ export const AuthHeader = () => {
             </div>
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-5">
-                <NavItem title={"Find Work"} url={"/find-job"} />
-                <NavItem title={"My Jobs"} />
-                <NavItem title={"Reports"} />
+                <NavItem title={role == 1 ? "Find Work" : "Dashboard"} url={role == 1 ? "/find-job" : "/client-dashboard"} />
+                {
+                  role == 1 && <NavItem title={"My Jobs"} />
+                }
+                <NavItem title={"Reports"} url="/reports" />
                 <NavItem noIcon={true} title={"Messages"} />
               </div>
             </div>
