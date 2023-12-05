@@ -22,6 +22,22 @@ export const getAllJobs = async () => {
   }
 };
 
+export const searchJobs = async (searchQuery) => {
+  const authToken = localStorage.getItem("authtoken");
+  try {
+    const response = await API.post('/job/search', searchQuery, {
+      headers: {
+        "Content-Type": "application/json",
+        token: authToken,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("API Error:", error.message);
+    throw error;
+  }
+};
+
 export const getSearchFreelancer = async (keywords) => {
   try {
     const authToken = localStorage.getItem("authtoken");

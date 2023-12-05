@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import { getAllJobs } from '../../helpers/jobApis'
+import { getAllJobs, searchJobs } from '../../helpers/jobApis';
 import JobCard from './JobCard';
 import { useNavigate } from 'react-router-dom'
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack } from '@chakra-ui/react';
@@ -108,19 +108,98 @@ export const AllJobs = () => {
 
 export const SearchJobPage = () => {
     const [jobs, setJobs] = useState([]);
-    const navigate = useNavigate();
+    const [allJobs, setAllJobs] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [category, setCategory] = useState('');
+    const [experience, setExperience] = useState([]);
+    const [contractType, setContractType] = useState([]);
+
+    const handleSearch = () => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const filteredJobs = jobs.filter(job => {
+            const titleMatch = job.title.toLowerCase().includes(lowerCaseSearchTerm);
+            const tagsMatch = job.tags.some(tag => tag.toLowerCase().includes(lowerCaseSearchTerm));
+            const skillsMatch = job.skills.some(skill => skill.toLowerCase().includes(lowerCaseSearchTerm));
+
+            return titleMatch || tagsMatch || skillsMatch;
+        });
+
+        setJobs(filteredJobs);
+
+    };
+
     const getAllJobList = async () => {
         try {
-            const response = await getAllJobs();
-            setJobs(response);
+            const fetchedJobs = await getAllJobs();
+            setAllJobs(fetchedJobs);
+            setJobs(fetchedJobs);
         } catch (error) {
             console.error("Error fetching job list:", error);
         }
-    }
+    };
 
     useEffect(() => {
         getAllJobList();
     }, []);
+
+    useEffect(() => {
+        const applyFilters = () => {
+            let filteredJobs = allJobs;
+
+            // Filter by Search Term
+            if (searchTerm) {
+                const lowerCaseSearchTerm = searchTerm.toLowerCase();
+                filteredJobs = filteredJobs.filter(job => {
+                    const titleMatch = job.title.toLowerCase().includes(lowerCaseSearchTerm);
+                    const tagsMatch = job.tags.some(tag => tag.toLowerCase().includes(lowerCaseSearchTerm));
+                    const skillsMatch = job.skills.some(skill => skill.toLowerCase().includes(lowerCaseSearchTerm));
+                    return titleMatch || tagsMatch || skillsMatch;
+                });
+            }
+
+            if (category) {
+                filteredJobs = filteredJobs.filter(job => job.category === category);
+            }
+
+            if (experience.length > 0) {
+                filteredJobs = filteredJobs.filter(job => experience.includes(job.experience));
+            }
+
+            if (contractType.length > 0) {
+                filteredJobs = filteredJobs.filter(job => contractType.includes(job.contractType));
+            }
+
+            setJobs(filteredJobs);
+        };
+
+        applyFilters();
+    }, [searchTerm, category, experience, contractType, allJobs]);
+
+
+
+    const handleCategoryChange = (e) => {
+        setCategory(e.target.value);
+    };
+
+    const handleExperienceChange = (experienceLevel) => {
+        setExperience(prev => {
+            const updatedExperience = prev.includes(experienceLevel)
+                ? prev.filter(level => level !== experienceLevel)
+                : [...prev, experienceLevel];
+            return updatedExperience;
+        });
+    };
+
+    const handleContractTypeChange = (contractTypeValue) => {
+        setContractType(prev => {
+            const updatedContractType = prev.includes(contractTypeValue)
+                ? prev.filter(type => type !== contractTypeValue)
+                : [...prev, contractTypeValue];
+            return updatedContractType;
+        });
+    };
+
+
 
     return (
         <div className='w-full mx-auto'>
@@ -144,7 +223,11 @@ export const SearchJobPage = () => {
                             <button className="bg-primary text-secondary rounded h-[36px] w-full">View Your Profile</button>
                         </div>
                     </div>
-                    <Filter />
+                    <Filter
+                        handleCategoryChange={handleCategoryChange}
+                        handleContractTypeChange={handleContractTypeChange}
+                        handleExperienceChange={handleExperienceChange}
+                    />
                     <div className="mt-6 relative">
                         <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
                         <div className="flex flex-col gap-3 absolute bottom-3 left-3">
@@ -160,11 +243,17 @@ export const SearchJobPage = () => {
                     </HStack>
                     <div className="text-xl font-semibold mb-4">Search For Your Next Job</div>
                     <HStack width={"100%"} justifyContent={"space-evenly"} marginX={"auto"} marginBottom={"0.9rem"}>
-                        <Input placeholder='Search for open positions...' />
-                        ,<Box fontWeight={"800"} fontSize={"1.5rem"} border={"1px solid var(--primarycolor)"} padding={"5px 10px"} borderRadius={"5px"} backgroundColor={"var(--primarycolor)"} cursor={"pointer"} color={"white"} transition={"0.3s ease-in-out"} _hover={{
+                        <Input
+                            placeholder='Search for open positions...'
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchTerm}
+                        />
+                        <Box fontWeight={"800"} fontSize={"1.5rem"} border={"1px solid var(--primarycolor)"} padding={"5px 10px"} borderRadius={"5px"} backgroundColor={"var(--primarycolor)"} cursor={"pointer"} color={"white"} transition={"0.3s ease-in-out"} _hover={{
                             backgroundColor: "#fff",
                             color: "#000"
-                        }}>
+                        }}
+                            onClick={handleSearch}
+                        >
                             <BiSearchAlt />
                         </Box>
                     </HStack>
@@ -179,40 +268,71 @@ export const SearchJobPage = () => {
 }
 
 
-export const Filter = () => {
-    return <VStack marginTop={"1rem"} alignItems={"start"} padding={"0.5rem"} gap={"5"}>
-        <Text fontWeight={"500"} fontSize={"1.5rem"}>Search Filters</Text>
+// export const Filter = ({ handleContractTypeChange, handleExperienceChange, handleCategoryChange }) => {
 
-        <VStack alignItems={"flex-start"} w={"full"}>
-            <Text fontWeight={"600"}>Category</Text>
-            <Select placeholder='Search By Category'>
-                <option value='option1'>Option 1</option>
-                <option value='option2'>Option 2</option>
-                <option value='option3'>Option 3</option>
-            </Select>
-        </VStack>
 
-        <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
-            <Text fontWeight={"600"}>Experience Required</Text>
-            <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-                <Checkbox >Entry Lavel</Checkbox>
-                <Checkbox >Intermediate</Checkbox>
-                <Checkbox >Expert</Checkbox>
+//     return <VStack marginTop={"1rem"} alignItems={"start"} padding={"0.5rem"} gap={"5"}>
+//         <Text fontWeight={"500"} fontSize={"1.5rem"}>Search Filters</Text>
+
+//         <VStack alignItems={"flex-start"} w={"full"}>
+//             <Text fontWeight={"600"}>Category</Text>
+//             <Select placeholder='Search By Category'>
+//                 <option value='option1'>Option 1</option>
+//                 <option value='option2'>Option 2</option>
+//                 <option value='option3'>Option 3</option>
+//             </Select>
+//         </VStack>
+
+//         <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
+//             <Text fontWeight={"600"}>Experience Required</Text>
+//             <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
+//                 <Checkbox >Entry Lavel</Checkbox>
+//                 <Checkbox >Intermediate</Checkbox>
+//                 <Checkbox >Expert</Checkbox>
+//             </VStack>
+//         </VStack>
+
+//         <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
+//             <Text fontWeight={"600"}>Contract Type</Text>
+//             <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
+//                 <Checkbox>Hourly Rate</Checkbox>
+//                 <Checkbox>Fixed Price</Checkbox>
+//             </VStack>
+//         </VStack>
+//     </VStack>
+// }
+
+
+export const Filter = ({ handleContractTypeChange, handleExperienceChange, handleCategoryChange }) => {
+    return (
+        <VStack marginTop={"1rem"} alignItems={"start"} padding={"0.5rem"} gap={"5"}>
+            <Text fontWeight={"500"} fontSize={"1.5rem"}>Search Filters</Text>
+
+            <VStack alignItems={"flex-start"} w={"full"}>
+                <Text fontWeight={"600"}>Category</Text>
+                <Select placeholder='Search By Category' onChange={handleCategoryChange}>
+                    <option value='option1'>Option 1</option>
+                    <option value='option2'>Option 2</option>
+                    <option value='option3'>Option 3</option>
+                </Select>
+            </VStack>
+
+            <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
+                <Text fontWeight={"600"}>Experience Required</Text>
+                <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
+                    <Checkbox onChange={() => handleExperienceChange('Entry Level')}>Entry Level</Checkbox>
+                    <Checkbox onChange={() => handleExperienceChange('Intermediate')}>Intermediate</Checkbox>
+                    <Checkbox onChange={() => handleExperienceChange('Expert')}>Expert</Checkbox>
+                </VStack>
+            </VStack>
+
+            <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
+                <Text fontWeight={"600"}>Contract Type</Text>
+                <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
+                    <Checkbox onChange={() => handleContractTypeChange('Hourly Rate')}>Hourly Rate</Checkbox>
+                    <Checkbox onChange={() => handleContractTypeChange('Fixed Price')}>Fixed Price</Checkbox>
+                </VStack>
             </VStack>
         </VStack>
-
-        <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
-            <Text fontWeight={"600"}>Contract Type</Text>
-            <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-                <Checkbox>Hourly Rate</Checkbox>
-                <Checkbox>Fixed Price</Checkbox>
-            </VStack>
-        </VStack>
-    </VStack>
-}
-
-
-
-
-
-
+    );
+};
