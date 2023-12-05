@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from 'moment';
 import ProfileContainer from "./ProfileContainer";
 import SkillCard from "./SkillCard";
 import bg from "../../assets/avatar.jpeg";
@@ -18,7 +19,6 @@ import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
 const customStyles = {
   content: {
     top: "50%",
@@ -31,7 +31,6 @@ const customStyles = {
     borderRadius: "12px",
   },
 };
-
 export const UserProfile = () => {
   const role = useSelector((state) => state.auth.role);
   return (
@@ -58,11 +57,9 @@ export const ClientProfilePage = () => {
     businessName,
   } = details || [];
   const [localTime, setLocalTime] = useState();
-
   function openModal() {
     setModalIsOpen(true);
   }
-
   async function getCurrentTimeAndLocation() {
     try {
       const currentDate = new Date();
@@ -76,11 +73,9 @@ export const ClientProfilePage = () => {
       return error;
     }
   }
-
   setTimeout(() => {
     getCurrentTimeAndLocation();
   }, 1000);
-
   const getProfileInformation = async () => {
     try {
       const resp = await getAllDetailsOfUser();
@@ -97,10 +92,9 @@ export const ClientProfilePage = () => {
   function closeModal() {
     setModalIsOpen(false);
   }
-
   return (
     <ProfileContainer>
-      <div className="w-full flex flex-col gap-[24px]">
+      <div className="w-[1000px] flex flex-col gap-[24px]">
         <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
@@ -131,11 +125,11 @@ export const ClientProfilePage = () => {
                 </div>
               </div>
               <div
-                className="flex items-center justify-center rounded-full w-[70px] h-[70px] "
-                style={{ background: `url(${bg})`, backgroundSize: "contain" }}
+                className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-cover bg-top"
+                style={{ background: `url(${bg})`, backgroundSize:"cover",
+                backgroundPosition:"top", }}
               ></div>
             </div>
-
             <div className="flex flex-col justify-start gap-[10px]">
               <p className="text-[24px] text-[#374151] font-semibold">
                 {businessName}
@@ -197,7 +191,6 @@ export const ClientProfilePage = () => {
                     Client Description
                   </p>
                 </div>
-
                 <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +223,6 @@ export const ClientProfilePage = () => {
                 View More
               </p>
             </div>
-
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
                 <p className="text-[16px] text-[#374151] font-[600]">
@@ -284,7 +276,6 @@ export const ClientProfilePage = () => {
     </ProfileContainer>
   );
 };
-
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalPage, setModalPage] = useState("");
@@ -305,11 +296,9 @@ export const FreelancerProfilePage = () => {
   } = details || [];
   const [localTime, setLocalTime] = useState();
 
-  console.log(details,"freelancerrrrr");
   function openModal() {
     setModalIsOpen(true);
   }
-
   async function getCurrentTimeAndLocation() {
     try {
       const currentDate = new Date();
@@ -323,11 +312,9 @@ export const FreelancerProfilePage = () => {
       return error;
     }
   }
-
   setTimeout(() => {
     getCurrentTimeAndLocation();
   }, 1000);
-
   const getProfileInformation = async () => {
     try {
       const resp = await getAllDetailsOfUser();
@@ -337,6 +324,7 @@ export const FreelancerProfilePage = () => {
     }
   };
 
+
   useEffect(() => {
     getProfileInformation();
   }, [modalIsOpen]);
@@ -345,17 +333,25 @@ export const FreelancerProfilePage = () => {
   //     // references are now sync'd and can be accessed.
   //     subtitle.style.color = "#f00";
   //   }
-
   function closeModal() {
     setModalIsOpen(false);
   }
-
   const [selectedEducation, setSelectedEducation] = useState(null);
   const openEditModal = (edu) => {
     setSelectedEducation(edu);
     setModalPage("educationEdit");
     openModal();
   };
+
+//delete selected education 
+  const HandleDeleteEducation=(id)=>{
+// try{
+
+// } catch((error)=>{
+
+// })
+  }
+
   return (
     <ProfileContainer>
       <div className="w-full flex flex-col gap-[24px] ">
@@ -393,14 +389,13 @@ export const FreelancerProfilePage = () => {
                 </div>
               </div>
               <div
-                className="flex items-center justify-center rounded-full w-[70px] h-[70px] "
+                className="flex items-center justify-center rounded-full w-[70px] h-[70px] !bg-cover !bg-top"
                 style={{
                   background: `url(${profile_image})`,
-                  backgroundSize: "contain",
+              
                 }}
               ></div>
             </div>
-
             <div className="flex flex-col justify-start gap-[10px]">
               <p className="text-[24px] text-[#374151] font-semibold">
                 {firstName + (lastName ? " " + lastName.split(" ")[0] : "")}
@@ -455,7 +450,6 @@ export const FreelancerProfilePage = () => {
               </div>
             </div>
             {/* ==================== Freelance Stats ====================== */}
-
             {/* ==================== Education ====================== */}
             <div className="flex  flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
@@ -474,7 +468,6 @@ export const FreelancerProfilePage = () => {
                   />
                 </div>
               </div>
-
               {education?.length > 0 &&
                 education?.map((edu) => (
                   <div className="flex flex-col gap-[8px]" key={edu?._id}>
@@ -487,7 +480,7 @@ export const FreelancerProfilePage = () => {
                           className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                           onClick={() => {
                             openEditModal(edu);
-                            selectedEducation(selectedEducation);
+                            
                           }}
                         >
                           <svg
@@ -513,7 +506,8 @@ export const FreelancerProfilePage = () => {
                             />
                           </svg>
                         </div>
-                        <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
+                        <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]" 
+                        onClick={()=>HandleDeleteEducation(edu._id)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -570,7 +564,6 @@ export const FreelancerProfilePage = () => {
                 ))}
             </div>
             {/* ==================== Education ====================== */}
-
             {/* ==================== Experience ====================== */}
             <div className="flex flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
@@ -877,7 +870,6 @@ export const FreelancerProfilePage = () => {
     </ProfileContainer>
   );
 };
-
 const ProfileModal = ({
   modalIsOpen,
   closeModal,
@@ -901,27 +893,32 @@ const ProfileModal = ({
     hourly_rate: "",
     description: "",
   });
-
-  const [editProfileInput, setEditProfileInput] = useState(null);
+  const [editProfileInput, setEditProfileInput] = useState({
+    profile_image: null,
+  });
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setEditProfileInput({
+      profile_image: file,
+    });
+  };
 
   const uploadProfileImage = async () => {
     setIsLoader(true)
     try {
       const formData = new FormData();
+      // formData.append("profile_image", editProfileInput.profile_image);
       formData.append("file", editProfileInput.profile_image);
 
       const response = await uploadImage(formData);
       setIsLoader(false)
       closeModal();
       console.log(response);
-      console.log('Upload Response:', response);
     } catch (error) {
       setIsLoader(false)
       console.error("Error uploading image:", error);
     }
   };
- 
-
   const [experienceInput, setExperienceInput] = useState({
     company_name: "",
     position: "",
@@ -930,7 +927,6 @@ const ProfileModal = ({
     job_description: "",
     job_location: "",
   });
-
   const [educationInput, setEducationInput] = useState({
     degree_name: "",
     institution: "",
@@ -942,29 +938,28 @@ const ProfileModal = ({
     _id: selectedEducation?._id || "",
     degree_name: selectedEducation?.degree_name || "",
     institution: selectedEducation?.institution || "",
-    start_date: selectedEducation?.start_date || "",
-    end_date: selectedEducation?.end_date || "",
+    start_date: moment(selectedEducation?.start_date).format('YYYY/MM/DD') || "",
+    end_date: moment(selectedEducation?.end_date).format('YYYY/MM/DD') || "",
   });
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     console.log(`Setting ${name} to ${value}`);
     setUpdateEducationInput((prevInput) => ({
       ...prevInput,
+      ...selectedEducation,
       [name]: value,
     }));
   };
-
   const [portfolioInput, setPortfolioInput] = useState({
     project_name: "",
     project_description: "",
     technologies: "",
   });
-
   const handleSelectChange = (selectedValues) => {
     setSelectedOptions(selectedValues || []);
   };
 
+  console.log(updateEducationInput,"updateEducationInputupdateEducationInput")
   const handleSaveAndContinue = async (data) => {
     try {
       if (data === "category") {
@@ -1002,7 +997,6 @@ const ProfileModal = ({
           hourly_rate: inputValues.hourly_rate,
           description: inputValues.description,
         });
-
         if (response.code === 405) {
           toast({
             title: response.msg,
@@ -1143,7 +1137,6 @@ const ProfileModal = ({
             profile_image: editProfileInput.profile_image,
           },
         });
-
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -1220,7 +1213,7 @@ const ProfileModal = ({
           end_date: selectedEducation.end_date,
         });
         const response = await updateFreelancer({
-          educationUpdate: {
+          education: {
             educationId: updateEducationInput._id,
             degree_name: updateEducationInput.degree_name,
             institution: updateEducationInput.institution,
@@ -1265,7 +1258,6 @@ const ProfileModal = ({
       console.log(error);
     }
   };
-
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -1366,7 +1358,6 @@ const ProfileModal = ({
                 </div>
                 <br />
               </div>
-
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Technologies
@@ -1396,7 +1387,6 @@ const ProfileModal = ({
             </div>
           </div>
         )}
-
         {modalPage === "education" && (
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col px-[24px]  pb ">
@@ -1489,7 +1479,6 @@ const ProfileModal = ({
             </div>
           </div>
         )}
-
         {modalPage === "educationEdit" && selectedEducation && (
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col px-[24px]  pb ">
@@ -1503,10 +1492,9 @@ const ProfileModal = ({
                     className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                     placeholder="Degree"
                     name="degree_name"
-                    value={selectedEducation.degree_name}
+                    defaultValue={selectedEducation.degree_name}
                     onChange={handleInputChange}
                   />
-
                   <input
                     type="hidden"
                     name="_id"
@@ -1526,7 +1514,7 @@ const ProfileModal = ({
                     className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                     placeholder="Institution"
                     name="institution"
-                    value={updateEducationInput.institution}
+                    defaultValue={selectedEducation.institution}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -1541,9 +1529,9 @@ const ProfileModal = ({
                     <input
                       type="date"
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="State date"
+                      placeholder="Start date"
                       name="start_date"
-                      value={updateEducationInput.start_date}
+                      defaultValue={selectedEducation.start_date}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1559,7 +1547,7 @@ const ProfileModal = ({
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                       placeholder="End Date"
                       name="end_date"
-                      value={updateEducationInput.end_date}
+                      defaultValue={selectedEducation.end_date}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -1577,7 +1565,6 @@ const ProfileModal = ({
             </div>
           </div>
         )}
-
         {modalPage === "exprience" && (
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col px-[24px] pb">
@@ -1709,7 +1696,6 @@ const ProfileModal = ({
             </div>
           </div>
         )}
-
         {modalPage === "editProfile" && (
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col px-[24px] pb">
