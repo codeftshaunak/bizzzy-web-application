@@ -145,8 +145,7 @@ export const SearchJobPage = () => {
     useEffect(() => {
         const applyFilters = () => {
             let filteredJobs = allJobs;
-
-            // Filter by Search Term
+ 
             if (searchTerm) {
                 const lowerCaseSearchTerm = searchTerm.toLowerCase();
                 filteredJobs = filteredJobs.filter(job => {
@@ -162,11 +161,11 @@ export const SearchJobPage = () => {
             }
 
             if (experience.length > 0) {
-                filteredJobs = filteredJobs.filter(job => experience.includes(job.experience));
+                filteredJobs = filteredJobs.filter(job => experience.includes(job?.experience));
             }
 
             if (contractType.length > 0) {
-                filteredJobs = filteredJobs.filter(job => contractType.includes(job.contractType));
+                filteredJobs = filteredJobs.filter(job => contractType.includes(job?.budget));
             }
 
             setJobs(filteredJobs);
@@ -174,8 +173,6 @@ export const SearchJobPage = () => {
 
         applyFilters();
     }, [searchTerm, category, experience, contractType, allJobs]);
-
-
 
     const handleCategoryChange = (e) => {
         setCategory(e.target.value);
@@ -268,41 +265,6 @@ export const SearchJobPage = () => {
 }
 
 
-// export const Filter = ({ handleContractTypeChange, handleExperienceChange, handleCategoryChange }) => {
-
-
-//     return <VStack marginTop={"1rem"} alignItems={"start"} padding={"0.5rem"} gap={"5"}>
-//         <Text fontWeight={"500"} fontSize={"1.5rem"}>Search Filters</Text>
-
-//         <VStack alignItems={"flex-start"} w={"full"}>
-//             <Text fontWeight={"600"}>Category</Text>
-//             <Select placeholder='Search By Category'>
-//                 <option value='option1'>Option 1</option>
-//                 <option value='option2'>Option 2</option>
-//                 <option value='option3'>Option 3</option>
-//             </Select>
-//         </VStack>
-
-//         <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
-//             <Text fontWeight={"600"}>Experience Required</Text>
-//             <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-//                 <Checkbox >Entry Lavel</Checkbox>
-//                 <Checkbox >Intermediate</Checkbox>
-//                 <Checkbox >Expert</Checkbox>
-//             </VStack>
-//         </VStack>
-
-//         <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
-//             <Text fontWeight={"600"}>Contract Type</Text>
-//             <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-//                 <Checkbox>Hourly Rate</Checkbox>
-//                 <Checkbox>Fixed Price</Checkbox>
-//             </VStack>
-//         </VStack>
-//     </VStack>
-// }
-
-
 export const Filter = ({ handleContractTypeChange, handleExperienceChange, handleCategoryChange }) => {
     return (
         <VStack marginTop={"1rem"} alignItems={"start"} padding={"0.5rem"} gap={"5"}>
@@ -329,8 +291,8 @@ export const Filter = ({ handleContractTypeChange, handleExperienceChange, handl
             <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
                 <Text fontWeight={"600"}>Contract Type</Text>
                 <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-                    <Checkbox onChange={() => handleContractTypeChange('Hourly Rate')}>Hourly Rate</Checkbox>
-                    <Checkbox onChange={() => handleContractTypeChange('Fixed Price')}>Fixed Price</Checkbox>
+                    <Checkbox onChange={() => handleContractTypeChange('2')}>Hourly Rate</Checkbox>
+                    <Checkbox onChange={() => handleContractTypeChange('1')}>Fixed Price</Checkbox>
                 </VStack>
             </VStack>
         </VStack>
