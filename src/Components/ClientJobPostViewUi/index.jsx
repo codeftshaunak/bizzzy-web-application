@@ -37,7 +37,6 @@ export const ClientJobPostViewComponent = () => {
   const [page, setPage] = useState(0);
 
   const jobDetails = location.state && location.state.jobDetails;
-  console.log({ x: jobDetails });
   return (
     <div className="w-full md:px-8 md:py-6">
       <div className="flex flex-col items-center md:flex-row md:justify-between">
@@ -240,6 +239,7 @@ export const InviteFreelancer = () => {
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isHire, setIsHire] = useState(false);
+  const [isUserId,setIsUserId] = useState('')
 
   const toast = useToast();
 
@@ -311,7 +311,8 @@ export const InviteFreelancer = () => {
     }
   };
 
-  const HandleOpenModal = (item) => {
+  const HandleOpenModal = (item,id) => {
+    setIsUserId(id)
     if (item === "hire") {
       setIsHire(true);
     } else {
@@ -329,16 +330,15 @@ export const InviteFreelancer = () => {
       setErrorMessage("Please enter a message.");
     } else {
       setErrorMessage("");
-      console.log("Sending message:", message);
     }
     setMessage(e.target.value);
   };
 
-  const handleSend = async (userId) => {
+  const handleSend = async () => {
     if (isHire) {
       //call hire api
       const formData = {
-        freelencer_id: userId,
+        freelencer_id: isUserId,
         job_id: id,
         budget:"$55"
       }
@@ -372,7 +372,7 @@ export const InviteFreelancer = () => {
         setErrorMessage("Please enter a message.");
       } else {
         const formData = {
-          receiver_id: userId,
+          receiver_id: isUserId,
           message: message,
           job_id: id,
         };
@@ -440,7 +440,7 @@ export const InviteFreelancer = () => {
                 )}
 
                 {!loading &&
-                  searchResults.map((searchResult) => (
+                  searchResults?.map((searchResult) => (
                     <div key={searchResult?._id}>
                       <div className="flex gap-8 pb-5">
                         <div className="w-[200px] h-[150px]">
@@ -487,7 +487,8 @@ export const InviteFreelancer = () => {
                                   bg={"#16A34A"}
                                   color={"#fff"}
                                   // onClick={()=>HandleInviteToJob(searchResult.user_id)}
-                                  onClick={() => HandleOpenModal("inviteToJob")}
+                                  onClick={() => HandleOpenModal("inviteToJob",searchResult.user_id
+                                  )}
                                 >
                                   Invite to Job
                                 </Button>
@@ -594,8 +595,8 @@ export const InviteFreelancer = () => {
                                   </button>
                                   <button
                                     className="px-4 bg-fg-brand py-2 rounded-lg text-white hover:bg-fg-brand"
-                                    onClick={() =>
-                                      handleSend(searchResult.user_id)
+                                    onClick={
+                                      handleSend
                                     }
                                   >
                                     {isHire ? "Sure" : "Send"}
