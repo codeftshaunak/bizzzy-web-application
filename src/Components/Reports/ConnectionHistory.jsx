@@ -10,8 +10,11 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { getAllJobsProposal } from "../../helpers/jobProposalApi";
 
 const ConnectionHistory = () => {
+  const [jobProposal, setJobProposal] = useState(null)
   const tableDummyData = [
     {
       date: "Today",
@@ -44,6 +47,23 @@ const ConnectionHistory = () => {
       contact: "-16",
     },
   ];
+
+  const getAllJobProposalList = async () => {
+    try {
+      const response = await getAllJobsProposal();
+      setJobProposal(response);
+    } catch (error) {
+      console.error("Error fetching job list:", error);
+    }
+  }
+
+  useEffect(() => {
+    getAllJobProposalList();
+  }, []);
+
+  console.log(jobProposal, "jobProposal+++")
+
+
   return (
     <div className="my-3 space-y-4">
       <h2 className="my-3 text-2xl font-medium text-[#374151]">
@@ -121,16 +141,28 @@ const ConnectionHistory = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {tableDummyData?.map((item, index) => (
-                <Tr key={index}>
-                  <Td className="text-2xl font-normal text-[#6B7280]">{item.date}</Td>
-                  <Td>
-                    <div className="text-[#6B7280]">{item.job_title}</div>
-                    <div  className="text-[#16A34A] text-lg font-medium">{item.title}</div>
-                  </Td>
-                  <Td className="text-[#6B7280] font-normal text-lg">{item.contact}</Td>
-                </Tr>
-              ))}
+              {jobProposal?.map((item, index) => {
+                const { createdAt, jobId } = item;
+                const dateObject = new Date(createdAt);
+ 
+                const formattedDate = dateObject.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                });
+
+
+                return (
+                  <Tr key={index}>
+                    <Td className="text-2xl font-normal text-[#6B7280]">{formattedDate}</Td>
+                    <Td>
+                      <div className="text-[#6B7280]">{item.job_title}</div>
+                      <div className="text-[#16A34A] text-lg font-medium">{jobId?.title}</div>
+                    </Td>
+                    <Td className="text-[#6B7280] font-normal text-lg">{-16}</Td>
+                  </Tr>
+                )
+              })}
             </Tbody>
           </Table>
         </TableContainer>

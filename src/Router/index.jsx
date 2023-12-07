@@ -42,7 +42,7 @@ const Router = () => {
                 <Route exact path="/client-dashboard" element={<ClientDashBoard />} />
                 <Route exact path="/client-jobdetails" element={<ClientJobPostView />} />
                 <Route exact path="/client-jobdetails/:id" element={<ClientJobPostView />} />
-                <Route exact path="/report" element={<Report />} />
+                <Route exact path="/reports" element={<Report />} />
                 {/* <Route exact path="/client-dashboard-invite-freelancers" element={<ClientDashboardInviteFreelancer />} /> */}
                 {/* <Route exact path="/client-review-proposal" element={<ReviewProposal />} /> */}
                 {/* <Route exact path="/client-hire" element={<ClientHiring />} /> */}
