@@ -519,8 +519,8 @@ export const AuthHeader = ({ role }) => {
                 {
                   role == 1 && <NavItem title={"My Jobs"} />
                 }
-                <NavItem title={"Reports"} url="/reports" />
-                <NavItem noIcon={true} title={"Messages"} />
+                <NavItem title={"Reports"} url="/report" />
+                <NavItem noIcon={true} title={"Messages"} url="/message" />
               </div>
             </div>
           </div>

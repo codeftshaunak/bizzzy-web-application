@@ -32,7 +32,7 @@ const Router = () => {
                 {/* <Route exact path="/apply-job" element={<ApplyJob />} /> */}
                 <Route exact path="/search-job" element={<SearchPage />} />
                 <Route exact path="/verify-email" element={<VerifySuccess />} />
-                <Route exact path="/messages" element={<Message />} />
+                <Route exact path="/message" element={<Message />} />
                 <Route exact path="/freelancer" element={<Profile />} />
                 <Route exact path="/freelancer/:id" element={<Profile />} />
                 <Route exact path="/client" element={<Profile />} />
