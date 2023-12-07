@@ -19,7 +19,7 @@ export const customStyles = {
     transform: "translate(-50%, -50%)",
     padding: " 0",
     borderRadius: "12px",
-    overflow:"visible"
+    overflow: "visible"
   },
 };
 
@@ -41,8 +41,8 @@ export const ProfileModal = ({
     { value: "design3", label: "Graphic Design" },
   ];
 
-  console.log(modalPage,"modalPagemodalPagemodalPage")
- 
+  console.log(modalPage, "modalPagemodalPagemodalPage")
+
   const selectStyle = {
     multiValue: (styles) => ({
       ...styles,
@@ -164,7 +164,7 @@ export const ProfileModal = ({
   };
 
   const handleSaveAndContinue = async (data) => {
-    console.log(data,"datadatadata")
+    console.log(data, "datadatadata")
     try {
       if (data === "category") {
         // Handle saving categories
@@ -221,11 +221,12 @@ export const ProfileModal = ({
           });
           closeModal();
         }
-      } else if (data === "skills") {
-        const selectedCategories = selectedOptions?.map((option) => ({
-          skill_name: option.value,
+
+      } else if (data == "skills") {
+        const selectedCategories = selectedOptions.map((option) => ({
+          skill_name: option?.value,
         }));
-        console.log(selectedCategories,"selectedCategories")
+        console.log(selectedCategories, "selectedCategories")
         const response = await updateFreelancerProfile({
           skills: selectedCategories,
         });
@@ -613,8 +614,8 @@ export const ProfileModal = ({
               />
             </div>
             <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md" 
-              onClick={() => handleSaveAndContinue("skills")}>
+              <button className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md"
+                onClick={() => handleSaveAndContinue("skills")}>
                 Submit
               </button>
             </div>

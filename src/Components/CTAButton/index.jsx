@@ -15,7 +15,7 @@ const CTAButton = (props) => {
             _hover={{
                 background: props.hoverbg ? props.hoverbg : "white",
                 border: props.hoverborder ? props.hoverborder : "1px solid #22C55E",
-                color: "#374151"
+                color: props.hovercolor ? props.hovercolor : "#374151"
             }}
             onClick={props.action}
             disabled={props.disabled}
