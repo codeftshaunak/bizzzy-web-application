@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import moment from "moment";
+import React, { useState } from "react";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
 import { HStack, useToast } from "@chakra-ui/react";
 import {
@@ -8,7 +9,19 @@ import {
   uploadImage,
 } from "../../helpers/userApis";
 import { Spinner } from "@chakra-ui/react";
-import { customStyles } from ".";
+export const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    padding: " 0",
+    borderRadius: "12px",
+    overflow:"visible"
+  },
+};
 
 export const ProfileModal = ({
   modalIsOpen,
@@ -18,17 +31,59 @@ export const ProfileModal = ({
   inputChange,
 }) => {
   const toast = useToast();
+  const animatedComponents = makeAnimated();
   const options = [
-    { value: "programming", label: "Programming" },
-    { value: "markating", label: "Digital Marketing" },
+    { value: "Reactjs", label: "React js" },
+    { value: "Nodejs", label: "Node js" },
     { value: "design", label: "Graphic Design" },
-    { value: "design1", label: "Graphic Design" },
-    { value: "design2", label: "Graphic Design" },
+    { value: "java", label: "Java" },
+    { value: "python", label: "Python" },
     { value: "design3", label: "Graphic Design" },
   ];
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  console.log(modalPage,"modalPagemodalPagemodalPage")
+ 
+  const selectStyle = {
+    multiValue: (styles) => ({
+      ...styles,
+      backgroundColor: '#16A34A',
+      color: '#fff',
+    }),
+    multiValueLabel: (styles) => ({
+      ...styles,
+      color: '#fff',
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: state.isFocused ? '#16A34A' : provided.borderColor,
+      boxShadow: state.isFocused ? '0 0 0 1px #16A34A' : provided.boxShadow,
+      '&:hover': {
+        borderColor: state.isFocused ? '#16A34A' : provided.borderColor,
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? '#d1f3dd' : null,
+      ':hover': {
+        ...provided[':hover'],
+        backgroundColor: '#d1f3dd', // Change to your desired hover background color
+        color: 'colorForTextOnGreen', // Change text color for better visibility if needed
+      },
+    }),
+    // Add any other style customizations here
+  };
+
+  const [selectedOptions, setSelectedOptions] = useState([
+    { value: 'Reactjs', label: 'React js' },
+    { value: 'Nodejs', label: 'Node js' },
+  ]);
   const [isLoader, setIsLoader] = useState(false);
+
+  const handleChange = (selected) => {
+    setSelectedOptions(selected);
+  };
+
+
   const [inputValues, setInputValues] = useState({
     professional_role: "",
     hourly_rate: "",
@@ -109,6 +164,7 @@ export const ProfileModal = ({
   };
 
   const handleSaveAndContinue = async (data) => {
+    console.log(data,"datadatadata")
     try {
       if (data === "category") {
         // Handle saving categories
@@ -165,10 +221,11 @@ export const ProfileModal = ({
           });
           closeModal();
         }
-      } else if (data == "skills") {
-        const selectedCategories = selectedOptions.map((option) => ({
+      } else if (data === "skills") {
+        const selectedCategories = selectedOptions?.map((option) => ({
           skill_name: option.value,
         }));
+        console.log(selectedCategories,"selectedCategories")
         const response = await updateFreelancerProfile({
           skills: selectedCategories,
         });
@@ -458,7 +515,7 @@ export const ProfileModal = ({
           });
           closeModal();
         }
-      } else if (data == "basicInformation"){
+      } else if (data == "basicInformation") {
         inputChange({
           // _id: selectedEducation._id,
           professional_role: selectedEducation.professional_role,
@@ -466,12 +523,10 @@ export const ProfileModal = ({
           description: selectedEducation.description,
         });
         const response = await updateFreelancer({
-          
-            // educationId: selectedEducation?._id,
-            professional_role: selectedEducation?.professional_role,
-            hourly_rate: selectedEducation?.hourly_rate,
-            description: selectedEducation?.description,
-          
+          // educationId: selectedEducation?._id,
+          professional_role: selectedEducation?.professional_role,
+          hourly_rate: selectedEducation?.hourly_rate,
+          description: selectedEducation?.description,
         });
         if (response.code == 405 || response.code == 500) {
           toast({
@@ -545,26 +600,25 @@ export const ProfileModal = ({
           </svg>
         </div>
         {modalPage === "skills" && (
-          <form className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]  pb ">
-              <div className="w-[100%] py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                <select
-                  className="w-full  text-[14px] text-[#000] font-[400] border-[#D1D5DB] rounded-"
-                  placeholder="Select Skill"
-                >
-                  <option>Select Skills</option>
-                </select>{" "}
-              </div>
+          <div className="flex flex-col gap-[16px]">
+            <div className="flex flex-col px-[24px]">
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                options={options}
+                value={selectedOptions}
+                onChange={handleChange}
+                styles={selectStyle}
+              />
             </div>
             <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {/* <button className="text-[14px] text-[#374151] font-[500] border-[1px] border-[#D1D5DB] py-[4px] px-[20px] rounded-md">
-                                      Cancel
-                                  </button> */}
-              <button className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md ">
+              <button className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md" 
+              onClick={() => handleSaveAndContinue("skills")}>
                 Submit
               </button>
             </div>
-          </form>
+          </div>
         )}
         {modalPage === "portfolio" && (
           <div className="flex flex-col gap-[16px]">

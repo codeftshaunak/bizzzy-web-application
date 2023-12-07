@@ -16,7 +16,7 @@ export const FreelancerProfilePage = () => {
   const [modalPage, setModalPage] = useState("");
   const [details, setDetails] = useState([]);
   const [deleteModalPage, setDeleteModalPage] = useState("");
-  const [deleteModalOpen,setDeleteModalOpen] = useState(false)
+  const [deleteModalOpen,setDeleteModalOpen] = useState(false);
   const [id, setId] = useState({id:'',type:''});
   const {
     firstName,
@@ -94,8 +94,14 @@ export const FreelancerProfilePage = () => {
     setModalPage("experienceUpdated");
     openModal();
   };
+  //===edit skills handle
+  const openEditSkills=()=>{
+    setSelectedEducation('');
+    setModalPage("skills");
+    openModal();
+  }
 
-  //delete selected education
+  //===delete selected education
   const HandleDeleteEducation = (id,type) => {
     setId({id,type});
     setDeleteModalPage("exprience");
@@ -494,7 +500,7 @@ export const FreelancerProfilePage = () => {
                 }}
               >
                 <p className="text-[16px] text-[#374151] font-[600]">Skills</p>
-                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
+                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer" onClick={()=>openEditSkills()}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -521,8 +527,8 @@ export const FreelancerProfilePage = () => {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 {skills?.length > 0 &&
-                  skills?.map((skill) => {
-                    return <SkillCard title={skill} />;
+                  skills?.map((skill,idx) => {
+                    return <SkillCard title={skill} key={idx} />;
                   })}
               </div>
             </div>
