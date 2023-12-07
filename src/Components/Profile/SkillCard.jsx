@@ -27,7 +27,7 @@ const SkillCard = ({ title }) => {
           />
         </svg>
       </div>
-      <p className="text-[16px] text-[#374151]] font-[600] capitalize">{title}</p>
+      <p className="text-[16px] text-[#374151]] font-[600] capitalize">{title?.skill_name}</p>
     </div>
   );
 };
