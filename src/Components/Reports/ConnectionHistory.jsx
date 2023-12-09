@@ -61,9 +61,7 @@ const ConnectionHistory = () => {
     getAllJobProposalList();
   }, []);
 
-  console.log(jobProposal, "jobProposal+++")
-
-
+ 
   return (
     <div className="my-3 space-y-4">
       <h2 className="my-3 text-2xl font-medium text-[#374151]">
@@ -130,7 +128,7 @@ const ConnectionHistory = () => {
         </div>
       </div>
 
-      <div className="my-5">
+      {/* <div className="my-5">
         <TableContainer>
           <Table variant="simple">
             <Thead>
@@ -166,7 +164,7 @@ const ConnectionHistory = () => {
             </Tbody>
           </Table>
         </TableContainer>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -147,7 +147,7 @@ export const Header = () => {
   ];
   const navigation = [
     { title: "Find Work", href: "/find-job" },
-    { title: "My Jobs", href: "/freelancer" },
+    { title: "My Jobs", href: "/my-jobs" },
     { title: "Reports", href: "/report" },
   ];
 
@@ -417,7 +417,7 @@ export const AuthHeader = ({ role }) => {
   ];
   const navigation = [
     { title: "Find Work", href: "/find-a-dentist" },
-    { title: "My Jobs", href: "/pick-your-plan" },
+    { title: "My Jobs", href: "/my-jobs" },
     { title: "Reports", href: "/faq" },
     { title: "Message", href: "/faq" },
   ];
@@ -847,7 +847,7 @@ const NavItem = ({ title, noIcon, url, onClick }) => {
 //             </HStack>
 //         </FullContainer>
 //     );
-// }; 
+// };
 
 // export default Header;
 

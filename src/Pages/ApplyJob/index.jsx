@@ -13,7 +13,6 @@ const ApplyJob = () => {
                 page === 1 && <JobDetails setPage={setPage} setDetails={setDetails} />
             }{
                 page === 2 && <JobApply setPage={setPage} details={details} />
-
             }
         </HomeLayout>
     )

@@ -15,6 +15,7 @@ import { VerifySuccess } from "../Pages/Success";
 import ClientJobPostView from "../Pages/ClientJobPostView";
 import ClientDashBoard from "../Pages/ClientDashboard";
 import Report from "../Pages/Reports";
+import MyJobPage from "../Pages/MyJobs";
 // import ClientDashboardInviteFreelancer from "../Pages/ClientDashboardInviteFreelancers";
 // import ReviewProposal from "../Pages/ReviewProposal";
 // import ClientHiring from "../Pages/ClientHiring";
@@ -43,6 +44,8 @@ const Router = () => {
                 <Route exact path="/client-jobdetails" element={<ClientJobPostView />} />
                 <Route exact path="/client-jobdetails/:id" element={<ClientJobPostView />} />
                 <Route exact path="/reports" element={<Report />} />
+                <Route exact path="/my-jobs" element={<MyJobPage />} />
+
                 {/* <Route exact path="/client-dashboard-invite-freelancers" element={<ClientDashboardInviteFreelancer />} /> */}
                 {/* <Route exact path="/client-review-proposal" element={<ReviewProposal />} /> */}
                 {/* <Route exact path="/client-hire" element={<ClientHiring />} /> */}
