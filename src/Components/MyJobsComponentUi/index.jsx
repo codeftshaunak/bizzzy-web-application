@@ -1,4 +1,3 @@
-import React from "react";
 import ActiveJobSlider from "./ActiveJobSlider";
 import ApplyedJobs from "./ApplyedJobs/ApplyedJobs";
 
