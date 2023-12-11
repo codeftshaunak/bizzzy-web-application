@@ -1,4 +1,3 @@
-import React from "react";
 import ActiveJobSlider from "./ActiveJobSlider";
 import ApplyedJobs from "./ApplyedJobs/ApplyedJobs";
 
@@ -8,7 +7,7 @@ const MyJobsComponentUi = () => {
             <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-12 md:col-span-12">
                     <div>
-                        <h2 className=" text-[25px] mb-2 font-semibold">Active Jobs</h2>
+                        <h2 className="my-3 text-2xl font-medium text-[#374151]">Active Jobs</h2>
                     </div>
                     <div className="my-4">
                         <ActiveJobSlider />
