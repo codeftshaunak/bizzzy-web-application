@@ -51,6 +51,7 @@ const Router = () => {
                 <Route exact path="/invitation" element={<Invitation />} />
             </Routes>
         </BrowserRouter>
-    )};
+    )
+};
 
 export default Router;
