@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { getMessageDetails, getMessageList } from '../../helpers/freelancerApis';
-import Avatar from 'react-avatar';
 import { useToast, Box } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-
+import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 const MessageComp = () => {
     const [messageUsers, setMessageUsers] = useState([]);
     const [messageDetails, setMessageDetails] = useState();
@@ -47,8 +46,8 @@ const MessageComp = () => {
                         console.log(user.user_details);
                         return <div className="h-[90px] border border-primary rounded-2xl bg-green-100 mt-2 cursor-pointer" key={index} onClick={() => getMessagesList(user?.user_details?.userId ? user?.user_details?.userId : user?.user_details?.user_id)}>
                             <div className="flex items-center justify-between py-2 px-4">
-                                <Box width={"60px"}>
-                                    {user?.user_details?.profile_image ? <Avatar size='40' round="20px" name={user?.user_details?.firstName} /> : <img src={user?.user_details?.profile_image} className="h-[40px] w-[40px]" alt="img" />}
+                                <Box width={"85px"}>
+                                    {user?.user_details?.profile_image ? <Avatar size='md' round="20px" name={user?.user_details?.firstName} /> : <img src={user?.user_details?.profile_image} className="h-[40px] w-[40px]" alt="img" />}
                                 </Box>
                                 <Box width={"full"}>
                                     <div className="flex justify-between">
