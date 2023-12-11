@@ -1,21 +1,44 @@
-import axios from "axios";
-import { BASE_URL } from "./proxy";
+import { API } from './proxy';
+import { useApiErrorHandling } from './proxy';
 
-export const API = axios.create({
-    baseURL: BASE_URL,
-});
+const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}) => {
+    const authtoken = localStorage.getItem("authtoken");
 
-export const getClientJobs = async () => {
+    const headers = {
+        "Content-Type": "application/json",
+        token: authtoken,
+        ...customHeaders, // Allow for custom headers
+    };
+
+    const config = {
+        method,
+        url: endpoint,
+        headers,
+        data,
+    };
+
     try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.get("/job/client/jobs", {
-            headers: {
-                "Content-Type": "application/json",
-                token: `${authtoken}`,
-            },
-        });
-        return response.data.body;
+        const response = await API(config);
+        return response.data;
     } catch (error) {
-        return error;
+        // Use the error handling hook
+        const { handleApiError } = useApiErrorHandling();
+        const { path, message, isError } = handleApiError(error);
+        return { path, message, isError };
     }
-}
+};
+
+export const getClientJobs = async () =>
+    makeApiRequest('get', '/job/client/jobs');
+
+export const acceptInvitation = async (data) =>
+    makeApiRequest('put', '/invitation-status-update', data);
+
+export const invitationDetails = async (invite_id) =>
+    makeApiRequest('get', `/freelancer-invitation-details?invitation_id=${invite_id}`)
+
+export const getMessageList = async () =>
+    makeApiRequest('get', '/user-chat-list');
+
+export const getMessageDetails = async (data) =>
+    makeApiRequest('get', `/message-list?receiver_id=${data}`)

@@ -27,49 +27,49 @@ function Complete({ setStep }) {
                   id="Path"
                   d="M15.6002 32.4004L11.2002 36.8004"
                   stroke="#16A34A"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   id="Path_2"
                   d="M24 24L42 30L34 34L30 42L24 24"
                   stroke="#16A34A"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   id="Path_3"
                   d="M6 24H12"
                   stroke="#16A34A"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   id="Path_4"
                   d="M32.4004 15.6002L36.8004 11.2002"
                   stroke="#16A34A"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   id="Path_5"
                   d="M15.6002 15.6002L11.2002 11.2002"
                   stroke="#16A34A"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   id="Path_6"
                   d="M24 6V12"
                   stroke="#16A34A"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </g>
             </svg>

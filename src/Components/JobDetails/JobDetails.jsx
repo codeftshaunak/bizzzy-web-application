@@ -22,7 +22,7 @@ const JobDetails = ({ setPage, setDetails }) => {
 
     return (
         <div className="w-full">
-            <div className="py-2 px-40 w-full">
+            <div className="py-2 w-full">
                 <div className="flex gap-2 py-6">
                     <img src="/icons/home.svg" alt="home" />
                     <img src="/icons/chevron-right.svg" alt="arrow right" />

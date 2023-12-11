@@ -70,7 +70,9 @@ const ClientDashboardComponent = () => {
                       padding: "20px"
                     }}>
                       <VStack alignItems={"start"} justifyContent={"center"} cursor={"pointer"} onClick={() => {
-                        navigate(`/client-jobdetails/${job?._id}`)
+                        navigate(`/client-jobdetails/${job?._id}`, {
+                          state: { jobDetails: job },
+                        })
                       }}>
                         <h5 className="text-lg text-[#374151] font-medium capitalize">
                           {job?.title}

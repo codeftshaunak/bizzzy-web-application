@@ -587,16 +587,16 @@ export const ProfileModal = ({
             <path
               d="M18 6L6 18"
               stroke="#6B7280"
-              stroke-width="1.75"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M6 6L18 18"
               stroke="#6B7280"
-              stroke-width="1.75"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>

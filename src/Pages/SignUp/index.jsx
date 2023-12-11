@@ -326,8 +326,8 @@ export const FreelancerSignUp = () => {
                             <VStack gap={"5"}>
                                 <Box backgroundColor={"#F0FDF4"} padding={"1rem"} borderRadius={"50%"}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                                        <rect x="6" y="10" width="36" height="28" rx="2.66667" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M6 14L24 26L42 14" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <rect x="6" y="10" width="36" height="28" rx="2.66667" stroke="#16A34A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M6 14L24 26L42 14" stroke="#16A34A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </Box>
                                 <Text color={"var(--primarytext)"} fontSize={"25px"} fontWeight={"500"}>Verify your email to proceed</Text>
@@ -548,8 +548,8 @@ export const ClientSignUp = () => {
                             <VStack gap={"5"}>
                                 <Box backgroundColor={"#F0FDF4"} padding={"1rem"} borderRadius={"50%"}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                                        <rect x="6" y="10" width="36" height="28" rx="2.66667" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M6 14L24 26L42 14" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <rect x="6" y="10" width="36" height="28" rx="2.66667" stroke="#16A34A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M6 14L24 26L42 14" stroke="#16A34A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </Box>
                                 <Text color={"var(--primarytext)"} fontSize={"25px"} fontWeight={"500"}>Verify your email to proceed</Text>
@@ -684,8 +684,8 @@ export const verifyMail = async () => {
                 <VStack gap={"5"}>
                     <Box backgroundColor={"#F0FDF4"} padding={"1rem"} borderRadius={"50%"}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                            <rect x="6" y="10" width="36" height="28" rx="2.66667" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M6 14L24 26L42 14" stroke="#16A34A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <rect x="6" y="10" width="36" height="28" rx="2.66667" stroke="#16A34A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M6 14L24 26L42 14" stroke="#16A34A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </Box>
                     <Text color={"var(--primarytext)"} fontSize={"25px"} fontWeight={"500"}>Verify your email to proceed</Text>

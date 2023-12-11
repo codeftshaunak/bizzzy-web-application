@@ -31,16 +31,16 @@ function WorkTeamCard({ title, description, icon }) {
                         <path
                             d='M36.6066 26H15.3934'
                             stroke='white'
-                            stroke-width='2.625'
-                            stroke-linecap='round'
-                            stroke-linejoin='round'
+                            strokeWidth='2.625'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
                         />
                         <path
                             d='M27.0605 16.4541L36.6065 26L27.0605 35.546'
                             stroke='white'
-                            stroke-width='2.625'
-                            stroke-linecap='round'
-                            stroke-linejoin='round'
+                            strokeWidth='2.625'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
                         />
                     </svg>
                 </div>
@@ -136,17 +136,17 @@ function HomeComp() {
                                                             id='Path'
                                                             d='M14.1673 5.83337L5.83398 14.1667'
                                                             stroke='white'
-                                                            stroke-width='1.75'
-                                                            stroke-linecap='round'
-                                                            stroke-linejoin='round'
+                                                            strokeWidth='1.75'
+                                                            strokeLinecap='round'
+                                                            strokeLinejoin='round'
                                                         />
                                                         <path
                                                             id='Path_2'
                                                             d='M6.66602 5.83337H14.166V13.3334'
                                                             stroke='white'
-                                                            stroke-width='1.75'
-                                                            stroke-linecap='round'
-                                                            stroke-linejoin='round'
+                                                            strokeWidth='1.75'
+                                                            strokeLinecap='round'
+                                                            strokeLinejoin='round'
                                                         />
                                                     </g>
                                                 </svg>
@@ -171,17 +171,17 @@ function HomeComp() {
                                                             id='Path'
                                                             d='M14.1673 5.83337L5.83398 14.1667'
                                                             stroke='#374151'
-                                                            stroke-width='1.75'
-                                                            stroke-linecap='round'
-                                                            stroke-linejoin='round'
+                                                            strokeWidth='1.75'
+                                                            strokeLinecap='round'
+                                                            strokeLinejoin='round'
                                                         />
                                                         <path
                                                             id='Path_2'
                                                             d='M6.66602 5.83337H14.166V13.3334'
                                                             stroke='#374151'
-                                                            stroke-width='1.75'
-                                                            stroke-linecap='round'
-                                                            stroke-linejoin='round'
+                                                            strokeWidth='1.75'
+                                                            strokeLinecap='round'
+                                                            strokeLinejoin='round'
                                                         />
                                                     </g>
                                                 </svg>
@@ -375,17 +375,17 @@ function HomeComp() {
                                                 id='Path'
                                                 d='M14.1673 5.83337L5.83398 14.1667'
                                                 stroke='#16a34a'
-                                                stroke-width='1.75'
-                                                stroke-linecap='round'
-                                                stroke-linejoin='round'
+                                                strokeWidth='1.75'
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
                                             />
                                             <path
                                                 id='Path_2'
                                                 d='M6.66602 5.83337H14.166V13.3334'
                                                 stroke='#16a34a'
-                                                stroke-width='1.75'
-                                                stroke-linecap='round'
-                                                stroke-linejoin='round'
+                                                strokeWidth='1.75'
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
                                             />
                                         </g>
                                     </svg>
@@ -427,17 +427,17 @@ function HomeComp() {
                                                 id='Path'
                                                 d='M14.1673 5.83337L5.83398 14.1667'
                                                 stroke='#16a34a'
-                                                stroke-width='1.75'
-                                                stroke-linecap='round'
-                                                stroke-linejoin='round'
+                                                strokeWidth='1.75'
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
                                             />
                                             <path
                                                 id='Path_2'
                                                 d='M6.66602 5.83337H14.166V13.3334'
                                                 stroke='#16a34a'
-                                                stroke-width='1.75'
-                                                stroke-linecap='round'
-                                                stroke-linejoin='round'
+                                                strokeWidth='1.75'
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
                                             />
                                         </g>
                                     </svg>
@@ -573,17 +573,17 @@ function HomeComp() {
                                                 id='Path'
                                                 d='M14.6663 5.83344L6.33301 14.1668'
                                                 stroke='#374151'
-                                                stroke-width='1.75'
-                                                stroke-linecap='round'
-                                                stroke-linejoin='round'
+                                                strokeWidth='1.75'
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
                                             />
                                             <path
                                                 id='Path_2'
                                                 d='M7.16699 5.83344H14.667V13.3334'
                                                 stroke='#374151'
-                                                stroke-width='1.75'
-                                                stroke-linecap='round'
-                                                stroke-linejoin='round'
+                                                strokeWidth='1.75'
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
                                             />
                                         </g>
                                     </svg>
@@ -646,25 +646,25 @@ function HomeComp() {
                                                     id='Vector'
                                                     d='M6.66699 16H25.3337'
                                                     stroke='#16A34A'
-                                                    stroke-width='2'
-                                                    stroke-linecap='round'
-                                                    stroke-linejoin='round'
+                                                    strokeWidth='2'
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
                                                 />
                                                 <path
                                                     id='Vector_2'
                                                     d='M6.66699 16L12.0003 21.3333'
                                                     stroke='#16A34A'
-                                                    stroke-width='2'
-                                                    stroke-linecap='round'
-                                                    stroke-linejoin='round'
+                                                    strokeWidth='2'
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
                                                 />
                                                 <path
                                                     id='Vector_3'
                                                     d='M6.66699 16.0001L12.0003 10.6667'
                                                     stroke='#16A34A'
-                                                    stroke-width='2'
-                                                    stroke-linecap='round'
-                                                    stroke-linejoin='round'
+                                                    strokeWidth='2'
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
                                                 />
                                             </g>
                                             <defs>
@@ -690,25 +690,25 @@ function HomeComp() {
                                                     id='Vector'
                                                     d='M6.66699 16H25.3337'
                                                     stroke='#FFFFFF'
-                                                    stroke-width='2'
-                                                    stroke-linecap='round'
-                                                    stroke-linejoin='round'
+                                                    strokeWidth='2'
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
                                                 />
                                                 <path
                                                     id='Vector_2'
                                                     d='M6.66699 16L12.0003 21.3333'
                                                     stroke='#FFFFFF'
-                                                    stroke-width='2'
-                                                    stroke-linecap='round'
-                                                    stroke-linejoin='round'
+                                                    strokeWidth='2'
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
                                                 />
                                                 <path
                                                     id='Vector_3'
                                                     d='M6.66699 16.0001L12.0003 10.6667'
                                                     stroke='#FFFFFF'
-                                                    stroke-width='2'
-                                                    stroke-linecap='round'
-                                                    stroke-linejoin='round'
+                                                    strokeWidth='2'
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
                                                 />
                                             </g>
                                             <defs>
