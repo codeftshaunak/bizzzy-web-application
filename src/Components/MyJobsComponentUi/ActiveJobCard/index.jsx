@@ -1,12 +1,10 @@
-import { Button, Image, Text, VStack } from "@chakra-ui/react";
-import React from "react";
 import { IoBagOutline } from "react-icons/io5";
 
 const ActiveJobCard = ({ job }) => {
   const { jobtitle, budget, jobtype } = job;
 
   return (
-    <div className="border p-4 m-2 rounded">
+    <div className="border p-4 m-2 rounded h-[150px]">
       <div className="flex items-center justify-center">
         <IoBagOutline className="text-[1.8rem]" />
       </div>
