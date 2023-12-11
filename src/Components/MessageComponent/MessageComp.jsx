@@ -31,7 +31,6 @@ const MessageComp = () => {
         }
     }
 
-
     return (
         <div className="flex p-6 w-full">
             <div className="w-[30%]">
