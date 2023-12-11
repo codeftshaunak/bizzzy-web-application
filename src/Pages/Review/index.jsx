@@ -1,13 +1,12 @@
-import React from 'react';
-import { Box, HStack, Text } from '@chakra-ui/react'
-import HomeLayout from '../../Layouts/HomeLayout';
+import HomeLayout from "../../Layouts/HomeLayout";
+import ReviewComponentUi from "../../Components/ReviewComponentUi";
 
 const Review = () => {
-    return (
-        <HomeLayout>
-
-        </HomeLayout>
-    )
-}
+  return (
+    <HomeLayout>
+      <ReviewComponentUi />
+    </HomeLayout>
+  );
+};
 
 export default Review;
