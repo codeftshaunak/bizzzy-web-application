@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Onboarding from "../Pages/Onboarding";
 import Login from "../Pages/Login";
@@ -15,11 +14,11 @@ import { VerifySuccess } from "../Pages/Success";
 import ClientJobPostView from "../Pages/ClientJobPostView";
 import ClientDashBoard from "../Pages/ClientDashboard";
 import Report from "../Pages/Reports";
+import MyJobPage from "../Pages/MyJobs";
 import Invitation from "../Pages/Invitation";
 import Review from '../Pages/Review';
-// import ClientDashboardInviteFreelancer from "../Pages/ClientDashboardInviteFreelancers";
-// import ReviewProposal from "../Pages/ReviewProposal";
-// import ClientHiring from "../Pages/ClientHiring";
+import ActiveJobDetails from "../Pages/MyJobs/ActiveJobDetails/ActiveJobDetails";
+
 const Router = () => {
     return (
         <BrowserRouter>
@@ -47,9 +46,11 @@ const Router = () => {
                 <Route exact path="/report" element={<Report />} />
                 <Route exact path="/message/invitation" element={<Invitation />} />
                 <Route exact path="/client-review" element={<Review />} />
+                <Route exact path="/my-jobs" element={<MyJobPage />} />
+                <Route exact path="/active-job/:id" element={<ActiveJobDetails />} />
+                <Route exact path="/invitation" element={<Invitation />} />
             </Routes>
         </BrowserRouter>
-    )
-}
+    )};
 
 export default Router;
