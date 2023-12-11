@@ -1,5 +1,5 @@
 import React from "react";
-import SkillCard from "./SkillCard";
+// import SkillCard from "./SkillCard";
 import ProfileSettingTemplate from "./ProfileSettingTemplate";
 
 const UserProfileSetting = () => {
@@ -45,14 +45,14 @@ const UserProfileSetting = () => {
         <div className="flex flex-col gap-[8px] py-[20px] px-[24px] ">
           <p className="text-[14px] text-[#374151] font-[600]">Skills</p>
 
-          <div className="grid grid-cols-3 gap-4">
+          {/* <div className="grid grid-cols-3 gap-4">
             <SkillCard title={"Design"} />
             <SkillCard title={"Development"} />
             <SkillCard title={"Animator"} />
             <SkillCard title={"Sales"} />
             <SkillCard title={"Marketing"} />
             <SkillCard title={"Virtual Asst."} />
-          </div>
+          </div> */}
         </div>
         <hr className=" border-t-[green]" />
         <div className="flex flex-col gap-[8px] py-[20px] px-[24px] ">

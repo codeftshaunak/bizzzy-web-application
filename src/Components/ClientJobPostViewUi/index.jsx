@@ -25,7 +25,7 @@ import { TbFileDollar } from "react-icons/tb";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import AvatarImg from "../../assets/img/avatar-placeholder.jpg";
 import CTAButton from "../CTAButton";
-import { getSearchFreelancer } from "../../helpers/jobApis";
+import { getInvitedFreelancer, getSearchFreelancer } from "../../helpers/jobApis";
 import { getProposals } from "../../helpers/clientApis";
 import { useDispatch } from "react-redux";
 import { clientService } from "../../redux/clientSlice/clientService";
@@ -37,7 +37,6 @@ export const ClientJobPostViewComponent = () => {
   const [page, setPage] = useState(0);
 
   const jobDetails = location.state && location.state.jobDetails;
-  console.log({ x: jobDetails });
   return (
     <div className="w-full md:px-8 md:py-6">
       <div className="flex flex-col items-center md:flex-row md:justify-between">
@@ -234,12 +233,14 @@ export const JobPostView = () => {
 
 export const InviteFreelancer = () => {
   const [searchResults, setSearchResults] = useState([]);
-  const [invitedFreelancers, setinvitedFreelancers] = useState([]);
+  const [allFreelancers, setAllFreelancers] = useState([]);
+  const [invitedFreelancers,setinvitedFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isHire, setIsHire] = useState(false);
+  const [isUserId,setIsUserId] = useState('')
 
   const toast = useToast();
 
@@ -263,12 +264,12 @@ export const InviteFreelancer = () => {
     }
   };
 
-  const invitedFreelancer = async () => {
+  const getFreelancer = async () => {
     try {
       setLoading(true);
       const response = await getSearchFreelancer([""]);
       if (response && response) {
-        setinvitedFreelancers(response);
+        setAllFreelancers(response);
       } else {
         console.error("API Response body is undefined");
       }
@@ -280,7 +281,26 @@ export const InviteFreelancer = () => {
   };
   useEffect(() => {
     fetchData();
+    getFreelancer();
   }, []);
+
+  const invitedFreelancer=async()=>{
+    try {
+      setLoading(true);
+      const response = await getInvitedFreelancer();
+      if (response && response) {
+        setinvitedFreelancers(response);
+      } else {
+        console.error("API Response body is undefined");
+      }
+    } catch (error) {
+      console.error("Error fetching invited results:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
 
   const HandleInviteToJob = async (userId) => {
     const formData = {
@@ -290,7 +310,8 @@ export const InviteFreelancer = () => {
     };
     try {
       let result = await dispatch(clientService(formData));
-      if (result?.code == 200) {
+      if (result?.code === 200) {
+        // getSearchFreelancer([""])
         toast({
           title: "Invite send",
           position: "top-right",
@@ -311,7 +332,8 @@ export const InviteFreelancer = () => {
     }
   };
 
-  const HandleOpenModal = (item) => {
+  const HandleOpenModal = (item,id) => {
+    setIsUserId(id)
     if (item === "hire") {
       setIsHire(true);
     } else {
@@ -329,16 +351,15 @@ export const InviteFreelancer = () => {
       setErrorMessage("Please enter a message.");
     } else {
       setErrorMessage("");
-      console.log("Sending message:", message);
     }
     setMessage(e.target.value);
   };
 
-  const handleSend = async (userId) => {
+  const handleSend = async () => {
     if (isHire) {
       //call hire api
       const formData = {
-        freelencer_id: userId,
+        freelencer_id: isUserId,
         job_id: id,
         budget:"$55"
       }
@@ -372,14 +393,16 @@ export const InviteFreelancer = () => {
         setErrorMessage("Please enter a message.");
       } else {
         const formData = {
-          receiver_id: userId,
+          receiver_id: isUserId,
           message: message,
           job_id: id,
         };
         try {
           let result = await dispatch(clientService(formData));
           if (result?.code == 200) {
+            fetchData()
             setOpen(false);
+            closeModal();
             setMessage("");
             toast({
               title: "Invite send",
@@ -410,10 +433,10 @@ export const InviteFreelancer = () => {
       <div className="overflow-hidden border rounded-lg basis-full md:basis-4/5 border-slate-300">
         <Tabs variant="unstyled">
           <TabList className="pt-4 border-b">
-            <Tab className="px-0 text-black">Search</Tab>
+            <Tab className="px-0 text-black" onClick={() => getFreelancer()}>Search</Tab>
             <Tab
               className="px-0 text-black"
-              onClick={() => invitedFreelancer()}
+              onClick={()=>invitedFreelancer()}
             >
               Invited freelancer
             </Tab>
@@ -439,7 +462,7 @@ export const InviteFreelancer = () => {
                 )}
 
                 {!loading &&
-                  searchResults.map((searchResult) => (
+                  searchResults?.map((searchResult) => (
                     <div key={searchResult?._id}>
                       <div className="flex gap-8 pb-5">
                         <div className="w-[200px] h-[150px]">
@@ -475,7 +498,7 @@ export const InviteFreelancer = () => {
                                   colorScheme="#16A34A"
                                   variant="outline"
                                   color={"#16A34A"}
-                                  onClick={() => HandleOpenModal("hire")}
+                                  onClick={() => HandleOpenModal("hire",searchResult?.user_id)}
                                 >
                                   Hire
                                 </Button>
@@ -485,10 +508,10 @@ export const InviteFreelancer = () => {
                                   size={"sm"}
                                   bg={"#16A34A"}
                                   color={"#fff"}
-                                  // onClick={()=>HandleInviteToJob(searchResult.user_id)}
-                                  onClick={() => HandleOpenModal("inviteToJob")}
+                                  onClick={() => HandleOpenModal("inviteToJob",searchResult?.user_id
+                                  )}
                                 >
-                                  Invite to Job
+                                 {searchResult?.invitation_status === 0 ? "Invited" : "Invite to Job" }
                                 </Button>
                               </Stack>
                             </div>
@@ -530,7 +553,7 @@ export const InviteFreelancer = () => {
 
                           <div className="flex items-center justify-between">
                             <Stack spacing={4} direction="row" align="center">
-                              {searchResult.skills.map((skill, idx) => (
+                              {searchResult.length > 0 && searchResult?.skills.map((skill, idx) => (
                                 <Button
                                   key={idx}
                                   size="sm"
@@ -593,8 +616,8 @@ export const InviteFreelancer = () => {
                                   </button>
                                   <button
                                     className="px-4 bg-fg-brand py-2 rounded-lg text-white hover:bg-fg-brand"
-                                    onClick={() =>
-                                      handleSend(searchResult.user_id)
+                                    onClick={
+                                      handleSend
                                     }
                                   >
                                     {isHire ? "Sure" : "Send"}
@@ -622,7 +645,7 @@ export const InviteFreelancer = () => {
                     />
                   )}
                   {!loading &&
-                    invitedFreelancers.map((searchResult) => (
+                    invitedFreelancers?.map((searchResult) => (
                       <div key={searchResult?._id}>
                         <div className="flex gap-8 pb-5">
                           <div className="w-[200px] h-[150px]">
@@ -690,7 +713,7 @@ export const InviteFreelancer = () => {
 
                             <div className="flex items-center justify-between">
                               <Stack spacing={4} direction="row" align="center">
-                                {searchResult.skills.map((skill, idx) => (
+                                {searchResult.length > 0 && searchResult?.skills?.map((skill, idx) => (
                                   <Button
                                     key={idx}
                                     size="sm"
@@ -980,3 +1003,16 @@ export const ClientHire = () => {
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
