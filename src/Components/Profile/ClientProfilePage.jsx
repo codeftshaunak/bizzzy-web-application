@@ -48,9 +48,9 @@ export const ClientProfilePage = () => {
   useEffect(() => {
     getProfileInformation();
   }, [modalIsOpen]);
-  const handleInputChange=(name,value)=>{
-    selectedEducation(pre=>({...pre,[name]:value}))
-      }
+  const handleInputChange = (name, value) => {
+    selectedEducation(pre => ({ ...pre, [name]: value }))
+  }
   function closeModal() {
     setModalIsOpen(false);
   }
@@ -72,15 +72,15 @@ export const ClientProfilePage = () => {
                     <path
                       d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
                       stroke="#6B7280"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round" />
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                      strokeLinejoin="round" />
                     <path
                       d="M9 4.33301L11.6667 6.99967"
                       stroke="#6B7280"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round" />
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                      strokeLinejoin="round" />
                   </svg>
                 </div>
               </div>
@@ -164,15 +164,15 @@ export const ClientProfilePage = () => {
                     <path
                       d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
                       stroke="#6B7280"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round" />
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                      strokeLinejoin="round" />
                     <path
                       d="M9 4.33301L11.6667 6.99967"
                       stroke="#6B7280"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round" />
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                      strokeLinejoin="round" />
                   </svg>
                 </div>
               </div>
@@ -199,15 +199,15 @@ export const ClientProfilePage = () => {
                     <path
                       d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
                       stroke="#6B7280"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round" />
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                      strokeLinejoin="round" />
                     <path
                       d="M9 4.33301L11.6667 6.99967"
                       stroke="#6B7280"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round" />
+                      strokeWidth="1.25"
+                      strokeLinecap="round"
+                      strokeLinejoin="round" />
                   </svg>
                 </div>
               </div>
@@ -229,8 +229,8 @@ export const ClientProfilePage = () => {
       <ProfileModal
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
-        modalPage={modalPage} 
-        handleInputChange={handleInputChange}/>
+        modalPage={modalPage}
+        handleInputChange={handleInputChange} />
     </ProfileContainer>
   );
 };

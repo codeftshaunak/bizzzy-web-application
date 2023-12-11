@@ -48,12 +48,15 @@ const Login = ({ setPage }) => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        console.log("HWL");
         const response = await signIn(formData);
+        console.log(response);
         if (response.code === 200) {
             const { role, token } = response.body;
             dispatch(setAuthData({ role: role, authtoken: token })); // Dispatch the action to set the role and token
             localStorage.setItem("authtoken", token);
-            localStorage.setItem("role", role)
+            localStorage.setItem("role", role);
+            localStorage.setItem("bizzzy_user", JSON.stringify(response.body));
             toast({
                 title: response.msg,
                 status: 'success',

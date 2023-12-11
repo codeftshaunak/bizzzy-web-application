@@ -16,6 +16,7 @@ import ClientJobPostView from "../Pages/ClientJobPostView";
 import ClientDashBoard from "../Pages/ClientDashboard";
 import Report from "../Pages/Reports";
 import Invitation from "../Pages/Invitation";
+import Review from '../Pages/Review';
 // import ClientDashboardInviteFreelancer from "../Pages/ClientDashboardInviteFreelancers";
 // import ReviewProposal from "../Pages/ReviewProposal";
 // import ClientHiring from "../Pages/ClientHiring";
@@ -43,14 +44,9 @@ const Router = () => {
                 <Route exact path="/client-dashboard" element={<ClientDashBoard />} />
                 <Route exact path="/client-jobdetails" element={<ClientJobPostView />} />
                 <Route exact path="/client-jobdetails/:id" element={<ClientJobPostView />} />
-                <Route exact path="/reports" element={<Report />} />
-
                 <Route exact path="/report" element={<Report />} />
-                <Route exact path="/invitation" element={<Invitation />} />
-
-                {/* <Route exact path="/client-dashboard-invite-freelancers" element={<ClientDashboardInviteFreelancer />} /> */}
-                {/* <Route exact path="/client-review-proposal" element={<ReviewProposal />} /> */}
-                {/* <Route exact path="/client-hire" element={<ClientHiring />} /> */}
+                <Route exact path="/message/invitation" element={<Invitation />} />
+                <Route exact path="/client-review" element={<Review />} />
             </Routes>
         </BrowserRouter>
     )

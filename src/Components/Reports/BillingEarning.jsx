@@ -55,22 +55,20 @@ const BillingEarning = () => {
                 <Tab
                   onClick={() => setActiveTab(0)}
                   type="button"
-                  className={` font-medium text-lg py-3 border-b-4  ${
-                    activeTab === 0
-                      ? "border-primary text-primary"
-                      : "border-transparent text-gray-300"
-                  }`}
+                  className={` font-medium text-lg py-3 border-b-4  ${activeTab === 0
+                    ? "border-primary text-primary"
+                    : "border-transparent text-gray-300"
+                    }`}
                 >
                   Billing & Earning
                 </Tab>
                 <Tab
                   onClick={() => setActiveTab(1)}
                   type="button"
-                  className={` font-medium text-lg py-3 border-b-4  ${
-                    activeTab === 1
-                      ? "border-primary text-primary"
-                      : "border-transparent text-gray-300"
-                  }`}
+                  className={` font-medium text-lg py-3 border-b-4  ${activeTab === 1
+                    ? "border-primary text-primary"
+                    : "border-transparent text-gray-300"
+                    }`}
                 >
                   Lifetime billed
                 </Tab>
@@ -117,44 +115,44 @@ const BillingEarning = () => {
                                 height="13.3333"
                                 rx="1.33333"
                                 stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M9.16699 12.4999H10.0003"
                                 stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M9.99967 12.5V15"
                                 stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M3.33301 9.16667H16.6663"
                                 stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M13.3337 2.5V5.83333"
                                 stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M6.66667 2.5V5.83333"
                                 stroke="#6B7280"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                             </svg>
                           </span>
@@ -173,9 +171,9 @@ const BillingEarning = () => {
                             <path
                               d="M5 7.5L10 12.5L15 7.5"
                               stroke="#6B7280"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                           </svg>
                         </span>
@@ -210,44 +208,44 @@ const BillingEarning = () => {
                                           height="13.3333"
                                           rx="1.33333"
                                           stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeWidth="1.5"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                         <path
                                           d="M9.16699 12.4999H10.0003"
                                           stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeWidth="1.5"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                         <path
                                           d="M9.99967 12.5V15"
                                           stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeWidth="1.5"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                         <path
                                           d="M3.33301 9.16667H16.6663"
                                           stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeWidth="1.5"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                         <path
                                           d="M13.3337 2.5V5.83333"
                                           stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeWidth="1.5"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                         <path
                                           d="M6.66667 2.5V5.83333"
                                           stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeWidth="1.5"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                       </svg>
                                     </span>
@@ -276,51 +274,46 @@ const BillingEarning = () => {
                       <div className="lg:w-[250px] w-full py-10 px-6 flex lg:flex-col lg:items-start lg:border-r lg:space-y-3 space-x-3 lg:space-x-0 flex-wrap lg:flex-nowrap">
                         <Tab
                           onClick={() => setUserActiveTab(0)}
-                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${
-                            userActiveTab === 0
-                              ? "bg-primary text-white"
-                              : " bg-transparent text-gray-300"
-                          }`}
+                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${userActiveTab === 0
+                            ? "bg-primary text-white"
+                            : " bg-transparent text-gray-300"
+                            }`}
                         >
                           Anthony Media Group
                         </Tab>
                         <Tab
                           onClick={() => setUserActiveTab(1)}
-                          className={`hover:bg-primary hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${
-                            userActiveTab === 1
-                              ? "bg-primary text-white"
-                              : " bg-transparent text-gray-300"
-                          }`}
+                          className={`hover:bg-primary hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${userActiveTab === 1
+                            ? "bg-primary text-white"
+                            : " bg-transparent text-gray-300"
+                            }`}
                         >
                           Benji Hochberg
                         </Tab>
                         <Tab
                           onClick={() => setUserActiveTab(2)}
-                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${
-                            userActiveTab === 2
-                              ? "bg-primary text-white"
-                              : " bg-transparent text-gray-300"
-                          }`}
+                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${userActiveTab === 2
+                            ? "bg-primary text-white"
+                            : " bg-transparent text-gray-300"
+                            }`}
                         >
                           Eduardo Manetas
                         </Tab>
                         <Tab
                           onClick={() => setUserActiveTab(3)}
-                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${
-                            userActiveTab === 3
-                              ? "bg-primary text-white"
-                              : " bg-transparent text-gray-300"
-                          }`}
+                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${userActiveTab === 3
+                            ? "bg-primary text-white"
+                            : " bg-transparent text-gray-300"
+                            }`}
                         >
                           Izhar Ali
                         </Tab>
                         <Tab
                           onClick={() => setUserActiveTab(4)}
-                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${
-                            userActiveTab === 4
-                              ? "bg-primary text-white"
-                              : " bg-transparent text-gray-300"
-                          }`}
+                          className={`hover:bg-primary  hover:text-white leading-5 px-2.5 py-[6px] rounded-md hover:font-normal font-medium transition duration-300 ease-in-out ${userActiveTab === 4
+                            ? "bg-primary text-white"
+                            : " bg-transparent text-gray-300"
+                            }`}
                         >
                           Majid Tahir
                         </Tab>

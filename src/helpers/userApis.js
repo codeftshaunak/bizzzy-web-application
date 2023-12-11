@@ -1,68 +1,43 @@
-import { BASE_URL } from "./proxy";
-import axios from "axios";
+import { API } from './proxy';
+import { useApiErrorHandling } from './proxy';
 
-export const API = axios.create({
-    baseURL: BASE_URL,
-});
+const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}) => {
+    const authtoken = localStorage.getItem("authtoken");
 
-export const updateFreelancerProfile = async (data) => {
+    const headers = {
+        "Content-Type": "application/json",
+        token: authtoken,
+        ...customHeaders, // Allow for custom headers
+    };
+
+    const config = {
+        method,
+        url: endpoint,
+        headers,
+        data,
+    };
+
     try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.post(`/profile-details`, data, {
-            headers: {
-                "Content-Type": "application/json",
-                "token": `${authtoken}`
-            }
-        });
+        const response = await API(config);
         return response.data;
     } catch (error) {
+        // Use the error handling hook
+        const { handleApiError } = useApiErrorHandling();
+        handleApiError(error);
         return error.response.data;
     }
-}
-export const uploadImage = async (data) => {
-    try {
-      const authtoken = localStorage.getItem("authtoken");  
-      const response = await API.post(`/user-profile-image`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          token: `${authtoken}`,
-        },
-      });
+};
 
-      return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
-}
+export const updateFreelancerProfile = async (data) =>
+    makeApiRequest('post', '/profile-details', data);
 
-export const updateFreelancer = async (data) => {
-    try {
-      const authtoken = localStorage.getItem("authtoken");  
-      const response = await API.put(`/edit-profile`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          token: `${authtoken}`,
-        },
-      });
+export const uploadImage = async (data) =>
+    makeApiRequest('post', '/user-profile-image', data, {
+        "Content-Type": "multipart/form-data",
+    });
 
-      return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
-}
+export const updateFreelancer = async (data) =>
+    makeApiRequest('put', '/edit-profile', data);
 
-
-export const getAllDetailsOfUser = async()=>{
-    try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.get('/get-user-profile',{
-            headers: {
-                "Content-Type": "application/json",
-                "token": `${authtoken}`
-            }
-        })
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
-}
+export const getAllDetailsOfUser = async () =>
+    makeApiRequest('get', '/get-user-profile');
