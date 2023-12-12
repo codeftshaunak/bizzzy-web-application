@@ -1,18 +1,19 @@
 import axios from "axios";
 import { BASE_URL } from "../../helpers/proxy";
+import {axiosInstance} from "../../Interceptor/Interceptor.jsx"
 
-const axiosInstance = axios.create({
-  baseURL: BASE_URL, // Adjust the base URL as needed
-});
+// const axiosInstance = axios.create({
+//   baseURL: BASE_URL, // Adjust the base URL as needed
+// });
 
-// For Getting Token
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authtoken");
-  if (token) {
-    config.headers.token = token;
-  }
-  return config;
-});
+// // For Getting Token
+// axiosInstance.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("authtoken");
+//   if (token) {
+//     config.headers.token = token;
+//   }
+//   return config;
+// });
 
 export const clientService = (data) => (dispatch) => {
   return new Promise(async(resolve, reject) => {

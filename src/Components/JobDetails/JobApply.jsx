@@ -1,7 +1,8 @@
-import { Box, HStack, Select, useToast } from '@chakra-ui/react';
+import { Box, HStack, Select } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import { applyJob } from '../../helpers/jobApis';
 import { useNavigate, useParams } from 'react-router-dom';
+import useCustomToast from '../../hooks/useCustomToast';
 
 const JobApply = ({ setPage, details }) => {
     const [coverLetter, setCoverLetter] = useState('');
@@ -26,7 +27,7 @@ const JobApply = ({ setPage, details }) => {
         return bidAmount - (bidAmount * 0.1);
     };
     const { id } = useParams();
-    const toast = useToast();
+    const showToast = useCustomToast();
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
@@ -39,22 +40,30 @@ const JobApply = ({ setPage, details }) => {
             });
             console.log(response);
             if (response.code === 200) {
-                toast({
+                showToast({
                     title: 'Job Applied Successfully',
-                    position: 'top',
-                    status: 'success',
-                    isClosable: true,
-                    duration: 2000,
-                });
+                    status: "success", // or 'error', 'info', etc.
+                  });
+                // toast({
+                //     title: 'Job Applied Successfully',
+                //     position: 'top',
+                //     status: 'success',
+                //     isClosable: true,
+                //     duration: 2000,
+                // });
                 navigate('/find-job');
             } else {
-                toast({
+                showToast({
                     title: response.message,
-                    position: 'top',
-                    status: 'success',
-                    isClosable: true,
-                    duration: 2000,
-                });
+                    status: "error", // or 'error', 'info', etc.
+                  });
+                // toast({
+                //     title: response.message,
+                //     position: 'top',
+                //     status: 'success',
+                //     isClosable: true,
+                //     duration: 2000,
+                // });
             }
         } catch (error) {
             console.error(error);
