@@ -10,7 +10,8 @@ import makeAnimated from 'react-select/animated';
 import { getAllDetailsOfUser, updateFreelancerProfile } from '../../helpers/userApis';
 import { BsBack, BsBackspaceFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileDetails } from '../../redux/profileSlice/profileSlice';
 
 const animatedComponents = makeAnimated();
 
@@ -20,6 +21,7 @@ const Process = () => {
     console.log({ "page": page });
     const toast = useToast();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     // const [isModalOpen, setIsModalOpen] = useState(false);
     // const { isOpen, onOpen, onClose } = useDisclosure();
     const [userDetails, setUserDetails] = useState([]);
@@ -29,6 +31,9 @@ const Process = () => {
         try {
             const res = await getAllDetailsOfUser();
             const data = res.body;
+            localStorage.setItem("profile",JSON.stringify(data))
+            dispatch(getProfileDetails(data));
+
             setUserDetails(data);
         } catch (error) {
             console.log(error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
@@ -29,19 +29,19 @@ export const ProfileModal = ({
   modalPage,
   selectedEducation,
   inputChange,
+  skills
 }) => {
   const toast = useToast();
   const animatedComponents = makeAnimated();
   const options = [
-    { value: "Reactjs", label: "React js" },
-    { value: "Nodejs", label: "Node js" },
-    { value: "design", label: "Graphic Design" },
-    { value: "java", label: "Java" },
-    { value: "python", label: "Python" },
-    { value: "design3", label: "Graphic Design" },
+    { value: "Reactjs", label: "Reactjs" },
+    { value: "Nodejs", label: "Nodejs" },
+    { value: "Graphic Design", label: "Graphic Design" },
+    { value: "Java", label: "Java" },
+    { value: "Python", label: "Python" },
+    { value: "React Native", label: "React Native" },
+    { value: "Data Science", label: "Data Science" },
   ];
-
-  console.log(modalPage, "modalPagemodalPagemodalPage")
 
   const selectStyle = {
     multiValue: (styles) => ({
@@ -73,16 +73,16 @@ export const ProfileModal = ({
     // Add any other style customizations here
   };
 
-  const [selectedOptions, setSelectedOptions] = useState([
-    { value: 'Reactjs', label: 'React js' },
-    { value: 'Nodejs', label: 'Node js' },
-  ]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
 
   const handleChange = (selected) => {
     setSelectedOptions(selected);
   };
-
+  useMemo(()=>{
+    const initialSelectedOptions = skills?.map(skill =>  ({ value: skill?.skill_name, label: skill?.skill_name }));
+    setSelectedOptions(initialSelectedOptions)
+  },[skills])
 
   const [inputValues, setInputValues] = useState({
     professional_role: "",
@@ -98,7 +98,6 @@ export const ProfileModal = ({
       profile_image: file,
     });
   };
-
   const uploadProfileImage = async () => {
     setIsLoader(true);
     try {
@@ -136,24 +135,7 @@ export const ProfileModal = ({
       ...prevInput,
       [name]: value,
     }));
-    // console.log(`Setting ${name} to ${value}`);
-    // setUpdateEducationInput((prevInput) => ({
-    //   ...prevInput,
-    //   [name]: value,
-    // }));
   };
-  // useMemo(() => {
-  //   console.log(selectedEducation, updateEducationInput, "setting useeffect");
-  //   setUpdateEducationInput((pre)=>({
-  //     ...pre,
-  //     _id: selectedEducation?._id || "",
-  //     degree_name: selectedEducation?.degree_name || "",
-  //     institution: selectedEducation?.institution || "",
-  //     start_date:
-  //       moment(selectedEducation?.start_date).format("YYYY/MM/DD") || "",
-  //     end_date: moment(selectedEducation?.end_date).format("YYYY/MM/DD") || "",
-  //   }));
-  // }, [selectedEducation]);
   const [portfolioInput, setPortfolioInput] = useState({
     project_name: "",
     project_description: "",
@@ -164,7 +146,6 @@ export const ProfileModal = ({
   };
 
   const handleSaveAndContinue = async (data) => {
-    console.log(data, "datadatadata")
     try {
       if (data === "category") {
         // Handle saving categories
@@ -226,7 +207,6 @@ export const ProfileModal = ({
         const selectedCategories = selectedOptions.map((option) => ({
           skill_name: option?.value,
         }));
-        console.log(selectedCategories, "selectedCategories")
         const response = await updateFreelancerProfile({
           skills: selectedCategories,
         });
@@ -242,6 +222,8 @@ export const ProfileModal = ({
           closeModal();
           setSelectedOptions([]);
         } else if (response.code === 200) {
+
+          setSelectedOptions(response?.body?.skills)
           toast({
             title: "Skils Added Successfully",
             status: "success",
@@ -564,6 +546,7 @@ export const ProfileModal = ({
       console.log(error);
     }
   };
+
   return (
     <Modal
       isOpen={modalIsOpen}
