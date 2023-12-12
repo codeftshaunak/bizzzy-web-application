@@ -1,6 +1,5 @@
 import axios from "axios";
 import { BASE_URL } from "./proxy";
-import axiosInstance from "../Interceptor/Interceptor";
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -31,7 +30,7 @@ API.interceptors.response.use(
 
 export const signUp = async (data) => {
   try {
-    const response = await axiosInstance.post("/register", data, {
+    const response = await API.post("/register", data, {
       headers: { "Access-Control-Allow-Credentials": true },
     });
     return response.data;
@@ -43,7 +42,7 @@ export const signUp = async (data) => {
 
 export const signIn = async (data) => {
   try {
-    const response = await axiosInstance.post("/login", data, {
+    const response = await API.post("/login", data, {
       headers: { "Access-Control-Allow-Credentials": true },
     });
     console.log(response.data.body.token);
@@ -57,7 +56,7 @@ export const signIn = async (data) => {
 
 export const verifyMail = async (data) => {
   try {
-    const response = await axiosInstance.post("/verify-email", data, {
+    const response = await API.post("/verify-email", data, {
       headers: { "Access-Control-Allow-Credentials": true },
     });
     return response.data;

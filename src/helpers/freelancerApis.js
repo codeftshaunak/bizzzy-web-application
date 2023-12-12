@@ -42,20 +42,3 @@ export const getMessageList = async () =>
 
 export const getMessageDetails = async (data) =>
     makeApiRequest('get', `/message-list?receiver_id=${data}`)
-
-
-    // import axios from "axios";
-    // import { BASE_URL } from "./proxy";
-    // import axiosInstance from "../Interceptor/Interceptor";
-    
-    // // export const API = axios.create({
-    // //     baseURL: BASE_URL,
-    // // });
-    // const authtoken = localStorage.getItem("authtoken");
-    //     const response = await axiosInstance.get("/job/client/jobs", {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             token: `${authtoken}`,
-    //         },
-    //     });
-    //     return response.data.body;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useToast } from '@chakra-ui/react';
-export const BASE_URL = `http://localhost:8001/api/v1`;
+export const BASE_URL = `http://localhost:5002/api/v1`;
 export const socketURL = 'http://localhost:5002/'
 
 // export const BASE_URL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/api/v1`;

@@ -1,16 +1,13 @@
 import axios from "axios";
-import { BASE_URL } from "../helpers/proxy";
 
-export const axiosInstance = axios.create({
-    baseURL: BASE_URL,
-});
+const AxiosInstance = axios.create();
 
-axiosInstance.interceptors.request.use(
+AxiosInstance.interceptors.request.use(
     config => {
         const token = localStorage.getItem('authtoken')
         
         if(token){
-            config.headers['Token'] = token
+            config.headers['Authorization'] = 'Bearer' + token
         }
         config.headers['Content-Type'] = 'application/json';
         return config
@@ -20,7 +17,7 @@ axiosInstance.interceptors.request.use(
         Promise.reject(error)
     }
 )
-axiosInstance.interceptors.response.use(
+AxiosInstance.interceptors.response.use(
     function(response){
         return response;
     },
@@ -28,7 +25,7 @@ axiosInstance.interceptors.response.use(
     const access_token = localStorage.getItem('authtoken');
     if(error.response.status === 401 && access_token){
         localStorage.clear();
-        // window.location.replace('/')
+        window.location.replace('/')
     }else{
         console.log(error)
     }
@@ -36,4 +33,4 @@ axiosInstance.interceptors.response.use(
 }
 );
 
-export default axiosInstance;
+export default AxiosInstance;

@@ -10,8 +10,6 @@ import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
-import { getProfileDetails } from "../../redux/profileSlice/profileSlice";
-import { useDispatch } from "react-redux";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -19,7 +17,7 @@ export const FreelancerProfilePage = () => {
   const [details, setDetails] = useState([]);
   const [deleteModalPage, setDeleteModalPage] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [id, setId] = useState({ id: "", type: "" });
+  const [id, setId] = useState({ id: '', type: '' });
   const {
     firstName,
     lastName,
@@ -34,7 +32,6 @@ export const FreelancerProfilePage = () => {
     portfolio,
   } = details || [];
   const [localTime, setLocalTime] = useState();
-  const dispatch = useDispatch();
 
   function openModal() {
     setModalIsOpen(true);
@@ -58,8 +55,6 @@ export const FreelancerProfilePage = () => {
   const getProfileInformation = async () => {
     try {
       const resp = await getAllDetailsOfUser();
-      dispatch(getProfileDetails(resp.body));
-    localStorage.setItem("profile",JSON.stringify(resp.body))
       setDetails(resp.body);
     } catch (error) {
       console.log(error);
@@ -87,12 +82,12 @@ export const FreelancerProfilePage = () => {
     const selectedEducationData = {
       professional_role: title,
       hourly_rate: rate,
-      description: desc,
+      description: desc
     };
     setSelectedEducation(selectedEducationData);
     setModalPage("basicInformation");
     openModal();
-  };
+  }
 
   const openExperienceEditModal = (edu) => {
     setSelectedEducation(edu);
@@ -101,10 +96,10 @@ export const FreelancerProfilePage = () => {
   };
   //===edit skills handle
   const openEditSkills = () => {
-    setSelectedEducation("");
+    setSelectedEducation('');
     setModalPage("skills");
     openModal();
-  };
+  }
 
   //===delete selected education
   const HandleDeleteEducation = (id, type) => {
@@ -112,7 +107,6 @@ export const FreelancerProfilePage = () => {
     setDeleteModalPage("exprience");
     setDeleteModalOpen(true);
   };
-  console.log(skills,"demo")
 
   return (
     <ProfileContainer>
@@ -153,7 +147,7 @@ export const FreelancerProfilePage = () => {
               <div
                 className="flex items-center justify-center rounded-full w-[70px] h-[70px] !bg-cover !bg-top"
                 style={{
-                  background: `url(${profile_image!=="null"?profile_image:"./images/user.jpeg"})`,
+                  background: `url(${profile_image})`,
                 }}
               ></div>
             </div>
@@ -268,9 +262,7 @@ export const FreelancerProfilePage = () => {
                         </div>
                         <div
                           className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                          onClick={() =>
-                            HandleDeleteEducation(edu._id, "education")
-                          }
+                          onClick={() => HandleDeleteEducation(edu._id, "education")}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -327,6 +319,7 @@ export const FreelancerProfilePage = () => {
                   </div>
                 ))}
             </div>
+            {/* ==================== Education ====================== */}
             {/* ==================== Experience ====================== */}
             <div className="flex flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
@@ -449,8 +442,8 @@ export const FreelancerProfilePage = () => {
                   );
                 })}
             </div>
+            {/* ==================== Basic info ====================== */}
           </div>
-          {/* ==================== Basic info ====================== */}
           <div className="flex-[2] flex flex-col gap-[24px]">
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex gap-[16px] justify-between">
@@ -462,16 +455,10 @@ export const FreelancerProfilePage = () => {
                 <p className="text-[20px] text-[#374151] font-[600]">
                   ${hourly_rate}/hr
                 </p>
-                <div
-                  className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                   onClick={() => {
-                    openEditBasicModal(
-                      professional_role,
-                      hourly_rate,
-                      description
-                    );
-                  }}
-                >
+                    openEditBasicModal(professional_role, hourly_rate, description);
+                  }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -513,10 +500,7 @@ export const FreelancerProfilePage = () => {
                 }}
               >
                 <p className="text-[16px] text-[#374151] font-[600]">Skills</p>
-                <div
-                  className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                  onClick={() => openEditSkills()}
-                >
+                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer" onClick={() => openEditSkills()}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -647,18 +631,8 @@ export const FreelancerProfilePage = () => {
         modalPage={modalPage}
         selectedEducation={selectedEducation}
         inputChange={setSelectedEducation}
-        skills={skills}
       />
-      {deleteModalOpen ? (
-        <AlertDeleteDialog
-          modalIsOpen={setDeleteModalOpen}
-          id={id}
-          deleteModalPage={modalPage}
-          setModalIsOpen={setDeleteModalOpen}
-        />
-      ) : (
-        <></>
-      )}
+      {deleteModalOpen ? <AlertDeleteDialog modalIsOpen={setDeleteModalOpen} id={id} deleteModalPage={modalPage} setModalIsOpen={setDeleteModalOpen} /> : <></>}
     </ProfileContainer>
   );
 };

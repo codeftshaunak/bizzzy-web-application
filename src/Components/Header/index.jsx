@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   HStack,
@@ -24,8 +23,9 @@ import {
 import { useState } from "react";
 import { AiFillSetting } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { clearAuthData } from "../../redux/authSlice/authSlice";
+
 
 // export const Header = () => {
 //     const navigate = useNavigate();
@@ -129,6 +129,8 @@ import { clearAuthData } from "../../redux/authSlice/authSlice";
 //         </FullContainer>
 //     );
 // };
+
+
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -236,24 +238,19 @@ export const Header = () => {
                   className="text-[22px] font-bold text-green-500 cursor-pointer text-right"
                   onClick={() => navigate("/")}
                 >
-                  <img
-                    src="/images/bizzzy_logo.png"
-                    style={{
-                      width: "80px",
-                      marginTop: "3px",
-                    }}
-                  />
+                  <img src="/images/bizzzy_logo.png" style={{
+                    width: "80px",
+                    marginTop: "3px"
+                  }} />
                 </p>
               </div>
             </div>
 
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-5">
-                {navigation &&
-                  navigation.length > 0 &&
-                  navigation.map((item, i) => (
-                    <NavItem key={i} title={item.title} url={item.href} />
-                  ))}
+                {navigation && navigation.length > 0 && navigation.map((item, i) => (
+                  <NavItem key={i} title={item.title} url={item.href} />
+                ))}
               </div>
             </div>
           </div>
@@ -394,17 +391,17 @@ export const Header = () => {
 export const AuthHeader = ({ role }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
-  // const  profileDetail  = useSelector((state) => state.profile.profileDetail);
-  let profileDetail = JSON.parse(localStorage.getItem('profile'))
+
   const handleProfileButton = () => {
-    setOpenInfo(!openInfo);
-  };
+    setOpenInfo(!openInfo)
+  }
 
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(clearAuthData()); // Dispatch the clearAuthData action to reset the state
   };
+
 
   const navigate = useNavigate();
   const boxStyle = {
@@ -510,22 +507,18 @@ export const AuthHeader = ({ role }) => {
                 className="text-[22px] font-bold text-green-500 cursor-pointer text-right"
                 onClick={() => navigate("/")}
               >
-                <img
-                  src="/images/bizzzy_logo.png"
-                  style={{
-                    width: "80px",
-                    marginTop: "3px",
-                  }}
-                />
+                <img src="/images/bizzzy_logo.png" style={{
+                  width: "80px",
+                  marginTop: "3px"
+                }} />
               </p>
             </div>
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-5">
-                <NavItem
-                  title={role == 1 ? "Find Work" : "Dashboard"}
-                  url={role == 1 ? "/find-job" : "/client-dashboard"}
-                />
-                {role == 1 && <NavItem title={"My Jobs"} />}
+                <NavItem title={role == 1 ? "Find Work" : "Dashboard"} url={role == 1 ? "/find-job" : "/client-dashboard"} />
+                {
+                  role == 1 && <NavItem title={"My Jobs"} />
+                }
                 <NavItem title={"Reports"} url="/report" />
                 <NavItem noIcon={true} title={"Messages"} url="/message" />
               </div>
@@ -555,30 +548,28 @@ export const AuthHeader = ({ role }) => {
                   <BsBell width={"20px"} height={"20px"} />
                 </div>
                 <div
-                  className="flex items-center justify-center rounded-full w-[36px] h-[36px] cursor-pointer !bg-cover"
+                  className="flex items-center justify-center rounded-full w-[36px] h-[36px] cursor-pointer"
                   style={{
-                    background: `url(${profileDetail.profile_image!=="null"?profileDetail.profile_image:"./images/user.jpeg"})`,
+                    background: `url(${"./images/user.jpeg"})`,
                     backgroundSize: "contain",
                   }}
                   onClick={() => handleProfileButton()}
                 ></div>
 
-                {openInfo && (
-                  <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
+                {
+                  openInfo && <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
                     <div className="flex justify-around items-center w-full cursor-pointer mt-3">
                       <AiFillSetting />
                       <p className="text-sm">Setting</p>
                     </div>
 
-                    <div
-                      className="flex justify-around items-center w-full cursor-pointer my-3"
-                      onClick={() => handleLogout()}
-                    >
+                    <div className="flex justify-around items-center w-full cursor-pointer my-3" onClick={() => handleLogout()}>
                       <BiExit />
                       <p className="text-sm">Logout</p>
                     </div>
                   </div>
-                )}
+                }
+
               </div>
             </div>
 
@@ -605,6 +596,7 @@ export const AuthHeader = ({ role }) => {
             </div>
           </div>
           <div className="md:hidden">
+
             <button
               onClick={() => {
                 setOpenSearch(!openSearch);
@@ -696,6 +688,7 @@ const NavItem = ({ title, noIcon, url, onClick }) => {
         <p className="text-[14px] font-[500] text-[#374151] ">{title}</p>
         {/* {!noIcon && <BsChevronDown />} */}
       </div>
+
     </Link>
   );
 };

@@ -8,14 +8,11 @@ import { getAllDetailsOfUser } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
-import { useDispatch } from "react-redux";
-import { getProfileDetails } from "../../redux/profileSlice/profileSlice";
 
 export const ClientProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalPage, setModalPage] = useState("");
   const [details, setDetails] = useState([]);
-  const dispatch =  useDispatch()
   const {
     firstName, lastName, location, professional_role, hourly_rate, description, skills, experience, briefDescription, businessName,
   } = details || [];
@@ -42,8 +39,6 @@ export const ClientProfilePage = () => {
   const getProfileInformation = async () => {
     try {
       const resp = await getAllDetailsOfUser();
-    dispatch(getProfileDetails(resp.body));
-    localStorage.setItem("profile",JSON.stringify(resp.body))
       setDetails(resp.body);
     } catch (error) {
       console.log(error);
@@ -58,9 +53,7 @@ export const ClientProfilePage = () => {
   }
   function closeModal() {
     setModalIsOpen(false);
-  };
-
-  console.log(details,"detailsdetails")
+  }
   return (
     <ProfileContainer>
       <div className="w-[1000px] flex flex-col gap-[24px]">
@@ -91,13 +84,13 @@ export const ClientProfilePage = () => {
                   </svg>
                 </div>
               </div>
-              {/* <div
+              <div
                 className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-cover bg-top"
                 style={{
                   background: `url(${bg})`, backgroundSize: "cover",
                   backgroundPosition: "top",
                 }}
-              ></div> */}
+              ></div>
             </div>
             <div className="flex flex-col justify-start gap-[10px]">
               <p className="text-[24px] text-[#374151] font-semibold">
