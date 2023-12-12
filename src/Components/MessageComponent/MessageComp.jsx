@@ -27,7 +27,7 @@ const MessageComp = () => {
         console.log(receiver_id);
         if (receiver_id) {
             const response = await getMessageDetails(receiver_id);
-            console.log(response);
+            setMessageDetails(response.body)
         }
     }
 
@@ -42,11 +42,11 @@ const MessageComp = () => {
 
                 {
                     messageUsers?.length > 0 && messageUsers?.map((user, index) => {
-                        console.log(user.user_details);
+                        console.log(user);
                         return <div className="h-[90px] border border-primary rounded-2xl bg-green-100 mt-2 cursor-pointer" key={index} onClick={() => getMessagesList(user?.user_details?.userId ? user?.user_details?.userId : user?.user_details?.user_id)}>
                             <div className="flex items-center justify-between py-2 px-4">
                                 <Box width={"85px"}>
-                                    {user?.user_details?.profile_image ? <Avatar size='md' round="20px" name={user?.user_details?.firstName} /> : <img src={user?.user_details?.profile_image} className="h-[40px] w-[40px]" alt="img" />}
+                                    {user?.user_details?.profile_image !== "null" ? <img src={user?.user_details?.profile_image} className="h-[40px] w-[40px]" alt="img" /> : <Avatar size='md' round="20px" name={user?.user_details?.firstName} />}
                                 </Box>
                                 <Box width={"full"}>
                                     <div className="flex justify-between">
@@ -62,8 +62,9 @@ const MessageComp = () => {
                 }
             </div>
 
+            {messageDetails?.length > 0 && <MessageBody data={messageDetails} />
+            }
 
-            <MessageBody />
             {/* <div className="w-[56%] px-2">
                 <div className="border-b border-tertiary h-[60px] py-2 px-4 flex gap-3">
                     <img src="images/user-img.png" className="h-[40px] w-[40px]" alt="img" />
@@ -136,7 +137,8 @@ const MessageComp = () => {
     )
 }
 
-const MessageBody = () => {
+const MessageBody = ({ data }) => {
+    console.log({ "messagebody": data });
     return <div className="w-[56%] px-2">
         <div className="border-b border-tertiary h-[60px] py-2 px-4 flex gap-3">
             <img src="images/user-img.png" className="h-[40px] w-[40px]" alt="img" />
@@ -145,54 +147,56 @@ const MessageBody = () => {
                 <div className="text-sm text-gray-300">Expert Dashboard Designer <span className="text-gray-400">5:06 AM CDT</span></div>
             </div>
         </div>
-        <div className="h-[192px] mt-8 border-t border-tertiary relative">
-            <div className="text-sm text-gray-300 absolute left-[300px] bg-secondary px-4 -mt-3">Sat, Jul 29</div>
-            <img src="images/more-msg.png" className="absolute right-0 top-0" alt="msg more" />
-            <div className="flex items-start gap-3 bg-gray-100 p-4 pb-0">
-                <img src="images/user-img.png" alt="user image" />
-                <div className="flex flex-col">
-                    <div>Sohail Karim</div>
-                    <div className="text-sm mb-2 text-gray-300">Hi - Show me samples of work</div>
-                    <div className="text-sm mb-1"><span className="text-gray-300">Lets talk on Skype</span><br />
-                        https://join.skype.com/invite/oNvoDHHBv5q0</div>
-                    <div className="pl-4 text-sm">
-                        Join conversation<br />
-                        <span className="text-gray-300 text-sm">Skype keeps the world talking. Call, message, and share whatever you want - for free.</span>
-                    </div>
-                </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 pb-0">
-                <img src="images/empty-user.png" alt="user image" />
-                <div className="flex flex-col">
-                    <div>Farhan Ali <span className="text-sm text-gray-300">1:57 AM</span></div>
-                    <div className="text-sm">Thanks for the job</div>
-                    <div className="bg-gray-500 p-2 h-[40px] w-[310px]">
-                        <div className="border-l-4 border-black-900 text-sm pl-3">View details</div>
-                    </div>
-                </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 pb-0">
-                <img src="images/user-img.png" alt="user image" />
-                <div className="flex flex-col">
-                    <div>Sohail Karim <span className="text-gray-300">sent an offer</span> <span className="text-sm text-gray-300">1:57 AM</span></div>
-                    <div className="text-sm">Thanks for the job</div>
-                    <div className="bg-gray-500 p-2 h-[95px] w-[321px]">
-                        <div className="border-l-4 border-black-900 text-sm pl-3">
-                            <div className="text-sm text-gray-300">Rate: $23.00/hr</div>
-                            <div className="text-sm text-gray-300">Limit: 5 hrs/week</div>
-                            <div className="text-sm">View details</div>
+
+        {
+            data.length > 0 && data?.map((user) => {
+                console.log(user.sender_details.firstName);
+                return <div className="h-[192px] mt-8 border-t border-tertiary relative">
+                    <div className="text-sm text-gray-300 absolute left-[300px] bg-secondary px-4 -mt-3">Sat, Jul 29</div>
+                    <img src="images/more-msg.png" className="absolute right-0 top-0" alt="msg more" />
+                    <div className="flex items-start gap-3 bg-gray-100 p-4 pb-0">
+                        {user?.sender_details?.user_id == user?.sender_id && user?.sender_details?.profile_image !== "null" ? <img src={user?.sender_details?.profile_image} className="h-[40px] w-[40px]" alt="img" /> : <Avatar size='md' round="20px" name={user.sender_details?.firstName} />}
+                        {/* <img src={user?.sender_details?.user_id == user?.sender_id && user?.sender_details?.profile_image} /> */}
+                        <div className="flex flex-col">
+                            <div>{user.sender_details?.user_id == user?.sender_id && user.sender_details?.firstName} {user.sender_details?.user_id == user?.sender_id && user?.sender_details?.lastName}</div>
+                            <div className="text-sm mb-2 text-gray-300">{user.sender_details?.user_id == user?.sender_id && user.message}</div>
                         </div>
                     </div>
+                    {/* <div className="flex items-start gap-3 p-4 pb-0">
+                        <img src="images/empty-user.png" alt="user image" />
+                        <div className="flex flex-col">
+                            <div>Farhan Ali <span className="text-sm text-gray-300">1:57 AM</span></div>
+                            <div className="text-sm">Thanks for the job</div>
+                            <div className="bg-gray-500 p-2 h-[40px] w-[310px]">
+                                <div className="border-l-4 border-black-900 text-sm pl-3">View details</div>
+                            </div>
+                        </div>
+                    </div> */}
+                    {/* <div className="flex items-start gap-3 p-4 pb-0">
+                        <img src="images/user-img.png" alt="user image" />
+                        <div className="flex flex-col">
+                            <div>Sohail Karim <span className="text-gray-300">sent an offer</span> <span className="text-sm text-gray-300">1:57 AM</span></div>
+                            <div className="text-sm">Thanks for the job</div>
+                            <div className="bg-gray-500 p-2 h-[95px] w-[321px]">
+                                <div className="border-l-4 border-black-900 text-sm pl-3">
+                                    <div className="text-sm text-gray-300">Rate: $23.00/hr</div>
+                                    <div className="text-sm text-gray-300">Limit: 5 hrs/week</div>
+                                    <div className="text-sm">View details</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
+                    {/* <div className="flex items-start gap-3 p-4 pb-0">
+                        <img src="images/empty-user.png" alt="user image" />
+                        <div className="flex flex-col">
+                            <div>Farhan Ali <span className="text-gray-300">accepted an offer</span> <span className="text-sm text-gray-300">1:57 AM</span></div>
+                            <div className="text-sm">Thanks for the job</div>
+                        </div>
+                    </div> */}
                 </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 pb-0">
-                <img src="images/empty-user.png" alt="user image" />
-                <div className="flex flex-col">
-                    <div>Farhan Ali <span className="text-gray-300">accepted an offer</span> <span className="text-sm text-gray-300">1:57 AM</span></div>
-                    <div className="text-sm">Thanks for the job</div>
-                </div>
-            </div>
-        </div>
+            })
+        }
+
     </div>
 }
 
