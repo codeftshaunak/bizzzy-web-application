@@ -35,7 +35,7 @@ export const acceptInvitation = async (data) =>
     makeApiRequest('put', '/invitation-status-update', data);
 
 export const invitationDetails = async (invite_id) =>
-    makeApiRequest('get', `/freelancer-invitation-details?invitation_id=${invite_id}`)
+    makeApiRequest('get', `/freelancer/invitation-details?invitation_id=${invite_id}`)
 
 export const getMessageList = async () =>
     makeApiRequest('get', '/user-chat-list');

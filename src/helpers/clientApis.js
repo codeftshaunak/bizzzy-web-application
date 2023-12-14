@@ -65,3 +65,4 @@ export const inviteToJob = async(data)=>{
         
     }
 }
+

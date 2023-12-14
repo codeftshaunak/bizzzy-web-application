@@ -18,8 +18,11 @@ const createSocket = (userId) => {
     return newSocket;
 };
 
+const user = localStorage.getItem('bizzzy_user');
+const id = user ? JSON.parse(user).id : null;
+const userId = id;
+
 const SocketProvider = ({ children }) => {
-    const [userId, setUserId] = useState(localStorage.getItem("cfl_id"));
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
@@ -51,4 +54,4 @@ const useSocket = () => {
     return socket;
 };
 
-export { SocketProvider, useSocket, SocketContext };
+export { SocketProvider, useSocket, SocketContext, userId };

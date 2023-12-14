@@ -17,7 +17,7 @@ import Report from "../Pages/Reports";
 import MyJobPage from "../Pages/MyJobs";
 import Invitation from "../Pages/Invitation";
 import Review from '../Pages/Review';
-import ActiveJobDetails from "../Pages/MyJobs/ActiveJobDetails/ActiveJobDetails";
+import EndContract from "../Pages/MyJobs/ActiveJobDetails/ActiveJobDetails";
 
 const Router = () => {
     return (
@@ -46,8 +46,8 @@ const Router = () => {
                 <Route exact path="/report" element={<Report />} />
                 <Route exact path="/message/invitation" element={<Invitation />} />
                 <Route exact path="/client-review" element={<Review />} />
-                <Route exact path="/my-jobs" element={<MyJobPage />} />
-                <Route exact path="/active-job/:id" element={<ActiveJobDetails />} />
+                <Route exact path="/my-job" element={<MyJobPage />} />
+                <Route exact path="/submit/job/:id" element={<EndContract />} />
                 <Route exact path="/invitation" element={<Invitation />} />
             </Routes>
         </BrowserRouter>
