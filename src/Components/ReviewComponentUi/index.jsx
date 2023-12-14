@@ -1,23 +1,114 @@
-import { Box, HStack, Heading, Select, Text, Textarea } from "@chakra-ui/react";
-import { FaStar } from "react-icons/fa";
+import { Box, HStack, Heading, Select, Text, Textarea, useToast } from "@chakra-ui/react";
+import StarRatings from 'react-star-ratings';
+import { giveFeedback } from "../../helpers/clientApis";
+import { useState } from "react";
+import jwtDecode from 'jwt-decode';
 
 const ReviewComponentUi = () => {
   const ratingNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [selectedRating, setSelectedRating] = useState(0);
+  const authtoken = localStorage.getItem("authtoken");
+  const decodedToken = authtoken ? jwtDecode(authtoken) : null;
+  const userId = decodedToken?.id
+  const toast = useToast();
+  const [feedbackMessage, setFeedbackMessage] = useState("")
+
+  const options = [
+    "Skills",
+    "Quality of Requirements",
+    "Availability",
+    "Set Responsible Deadlines",
+    "Communication",
+    "Cooperation",
+  ];
+
+  const [formData, setFormData] = useState({
+    // user_id_giver: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    // user_id_feedbacker: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    private_feedback: {
+      reason_for_ending_contract: "",
+      recommending_to_others: 0,
+      strengths: [],
+      status: 1,
+      is_deleted: false,
+    },
+    public_feedback: {
+      feedback: options.map(option => ({
+        option: option,
+        ratings: 0,
+      })),
+      feedback_message: feedbackMessage,
+      status: 1,
+      is_deleted: false,
+    },
+  });
+
+
+  const handlePrivateFeedbackChange = (field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      private_feedback: {
+        ...prevData.private_feedback,
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleRatingSelection = (rating) => {
+    setSelectedRating(rating);
+    handlePrivateFeedbackChange("status", rating);
+  };
+
+
+  const handlePublicFeedbackChange = (option, field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      public_feedback: {
+        ...prevData.public_feedback,
+        feedback: prevData.public_feedback.feedback.map((item) =>
+          item.option === option ? { ...item, rating: value } : item
+        ),
+      },
+    }));
+  };
+ 
+  const handelSubmit = async () => {
+    try {
+      const response = await giveFeedback(formData);
+      console.log(response, "response");
+
+      toast({
+        title: response.msg,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right',
+    });
+    } catch (error) {
+      toast({
+        title:error,
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right',
+    });
+    }
+  };
 
   return (
     <section className="w-full my-4">
       <HStack>
-        <Heading marginBottom={"10"}>Add Review</Heading>
+        <Heading marginBottom={"10"} fontSize={"3xl"}>Add Review</Heading>
       </HStack>
       <Box className="w-full border rounded-lg shadow px-6 py-6">
         <Box marginTop={{ base: 10, md: 8 }} marginBottom={{ base: 10, md: 8 }} paddingX={{ base: 4, md: 8 }}>
           <Box>
-            <Text fontSize="3xl">Client</Text>
-            <Text fontSize="2xl">Steven</Text>
+            <Text fontSize="2xl">Client</Text>
+            <Text fontSize="xl">Steven</Text>
           </Box>
           <Box marginTop={"4"}>
-            <Text fontSize="3xl">Contract Title</Text>
-            <Text fontSize="2xl">
+            <Text fontSize="2xl">Contract Title</Text>
+            <Text fontSize="xl">
               Python & Node JS Full Stack Developer - (40 hours per week
               guaranteed for 4 months)
             </Text>
@@ -59,9 +150,11 @@ const ReviewComponentUi = () => {
             {ratingNumber.map((retNumber) => (
               <Box
                 key={retNumber}
-                className="border-2 cursor-pointer text-center rounded-full w-[4rem] h-[4rem] text-[#22c55e] flex items-center justify-center"
+                className={`border-2 cursor-pointer text-center rounded-full w-[4rem] h-[4rem] ${selectedRating === retNumber ? "bg-[#22c55e] text-white" : ""
+                  } text-[#22c55e] flex items-center justify-center`}
                 fontWeight="bold"
                 fontSize={{ base: "lg", md: "2xl" }}
+                onClick={() => handleRatingSelection(retNumber)}
               >
                 {retNumber}
               </Box>
@@ -83,13 +176,13 @@ const ReviewComponentUi = () => {
             Do you have any feedback on this client?{" "}
             <span className="text-gray-600">Optional</span>
           </Text>
-
           <Box marginTop={{ base: 3, md: 4 }}>
             <Textarea
               padding={{ base: 2, md: 4 }}
               height={{ base: 32, md: 40 }}
               fontSize={{ base: "lg", md: "xl" }}
               placeholder="Your feedback helps us make our platform better for everyone."
+              onChange={(e) => handlePrivateFeedbackChange("strengths", e.target.value)}
             />
           </Box>
         </Box>
@@ -103,7 +196,9 @@ const ReviewComponentUi = () => {
             marginTop={{ base: 3, md: 4 }}
             className="w-full md:w-[70%] lg:w-[50%]"
           >
-            <Select placeholder="Select a reason" size="lg">
+            <Select placeholder="Select a reason" size="lg"
+              onChange={(e) => handlePrivateFeedbackChange("reason_for_ending_contract", e.target.value)}
+            >
               <option value="option1">Option 1</option>
               <option value="option2">Option 2</option>
               <option value="option3">Option 3</option>
@@ -121,7 +216,7 @@ const ReviewComponentUi = () => {
           paddingTop={{ base: 4, md: 8 }}
           paddingBottom={{ base: 8, md: 8 }}
         >
-          <Heading fontSize={{ base: "xl", md: "3xl" }}>
+          <Heading fontSize={{ base: "xl", md: "2xl" }}>
             Public feedback
           </Heading>
           <Text
@@ -148,52 +243,54 @@ const ReviewComponentUi = () => {
         </Box>
 
         <Box marginTop={{ base: 10, md: 8 }} paddingX={{ base: 4, md: 8 }}>
-          <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold">
+          <Text fontSize={{ base: "2xl", md: "2xl" }} fontWeight="bold">
             Feedback to client
           </Text>
-          <Box
-            marginTop={{ base: 3, md: 6 }}
-            className="flex flex-col gap-4 md:gap-8"
-          >
-            {Array.from({ length: 6 }).map((_, index) => (
+
+          <Box marginTop={{ base: 3, md: 6 }} className="flex flex-col gap-4 md:gap-8 w-full">
+            {options.map((option, index) => (
               <Box
                 key={index}
                 className="flex md:items-center gap-2 md:gap-6 flex-col md:flex-row"
               >
                 <Box className="flex items-center gap-2">
-                  {Array.from({ length: 5 }).map((_, starIndex) => (
-                    <FaStar
-                      key={starIndex}
-                      className="text-[1.6rem] md:text-[2rem] cursor-pointer text-[#d1d5db]"
-                    />
-                  ))}
+                  <StarRatings
+                    rating={formData.public_feedback.feedback.find((item) => item.option === option).rating}
+                    starRatedColor="orange"
+                    starHoverColor="orange"
+                    starEmptyColor="gray"
+                    changeRating={(newRating) =>
+                      handlePublicFeedbackChange(option, "rating", newRating)
+                    }
+                    numberOfStars={5}
+                    starDimension="2rem"
+                    name={`ratings-${index}`}
+                  />
                 </Box>
-                <Text fontSize={{ base: "xl", md: "2xl" }} className="w-full">
-                  {
-                    [
-                      "Skills",
-                      "Quality of Requirements",
-                      "Availability",
-                      "Set Responsible Deadlines",
-                      "Communication",
-                      "Cooperation",
-                    ][index]
-                  }
+                <Text fontSize={{ base: "xl", md: "xl" }} className="w-full">
+                  {option}
                 </Text>
               </Box>
             ))}
+
           </Box>
           <Text
             fontWeight="bold"
-            fontSize={{ base: "2xl", md: "3xl" }}
+            fontSize={{ base: "2xl", md: "2xl" }}
             marginTop={{ base: 4, md: 8 }}
           >
-            Total Score: 0.00
+            Total Score:{" "}
+            {(
+              Object.values(formData.public_feedback.feedback).reduce(
+                (total, item) => total + item?.ratings,
+                0
+              ) / options.length
+            ).toFixed(2)}
           </Text>
         </Box>
 
         <Box marginTop={{ base: 10, md: 10 }} paddingX={{ base: 4, md: 8 }}>
-          <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold">
+          <Text fontSize={{ base: "2xl", md: "2xl" }} fontWeight="bold">
             Share your experience with this client to the Upwork community
           </Text>
 
@@ -203,6 +300,8 @@ const ReviewComponentUi = () => {
               height={{ base: 32, md: 40 }}
               fontSize={{ base: "lg", md: "xl" }}
               placeholder="Your comments will be shared publicly"
+              value={feedbackMessage}
+              onChange={(e) => setFeedbackMessage(e.target.value)}
             />
           </Box>
         </Box>
@@ -231,13 +330,15 @@ const ReviewComponentUi = () => {
         <Box marginTop={{ base: 4, md: 6 }} paddingX={{ base: 4, md: 6 }}>
           <Box className="flex flex-col items-center md:flex-row md:items-center gap-3 md:gap-6">
             <Text
-              fontSize={{ base: "xl", md: "3xl" }}
-              fontWeight="bold"
+              fontSize={{ base: "xl", md: "2xl" }}
+              fontWeight="450"
               className="text-[#22c55e]"
             >
               Cancel
             </Text>
-            <button className="my-4 font-semibold text-[1.4rem] rounded-full px-4 py-2 bg-green-500 text-white">
+            <button
+              className="my-4 font-semibold text-[1.2rem] rounded-full px-4 py-2 bg-green-500 text-white"
+              onClick={handelSubmit}>
               Submit Review
             </button>
           </Box>

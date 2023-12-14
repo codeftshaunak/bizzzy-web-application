@@ -17,3 +17,10 @@
     @apply bg-bg-success border-outline-active border-2;
   }
 }
+
+
+.star-ratings{
+  display: flex !important;
+ 
+}
+ 
