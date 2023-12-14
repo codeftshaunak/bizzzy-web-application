@@ -62,7 +62,7 @@ export const getInvitedFreelancer = async () => {
   try {
     const authToken = localStorage.getItem("authtoken");
     const response = await API.get(
-      "/get-invited-freelencers",
+      "/freelencers/invited",
       {
         headers: {
           "Content-Type": "application/json",

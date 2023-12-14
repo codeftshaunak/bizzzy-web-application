@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 import HomeLayout from "../../../Layouts/HomeLayout";
 import ActiveJobDetailsComponent from "../../../Components/MyJobsComponentUi/ActiveJobDetailsComponent";
 
-const ActiveJobDetails = () => {
+const EndContract = () => {
   const role = useSelector((state) => state.auth.role);
   const navigate = useNavigate();
 
   return (
     <>
       <HomeLayout>
-        {role == 1 ? <ActiveJobDetailsComponent /> : navigate("/find-job")}
+        {<ActiveJobDetailsComponent />}
       </HomeLayout>
     </>
   );
 };
 
-export default ActiveJobDetails;
+export default EndContract;

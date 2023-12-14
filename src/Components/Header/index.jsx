@@ -147,7 +147,7 @@ export const Header = () => {
   ];
   const navigation = [
     { title: "Find Work", href: "/find-job" },
-    { title: "My Jobs", href: "/my-jobs" },
+    { title: "My Jobs", href: "/my-job" },
     { title: "Reports", href: "/report" },
   ];
 
@@ -417,7 +417,7 @@ export const AuthHeader = ({ role }) => {
   ];
   const navigation = [
     { title: "Find Work", href: "/find-a-dentist" },
-    { title: "My Jobs", href: "/my-jobs" },
+    { title: "My Job", href: "/my-job" },
     { title: "Reports", href: "/faq" },
     { title: "Message", href: "/faq" },
   ];
@@ -517,7 +517,7 @@ export const AuthHeader = ({ role }) => {
               <div className="flex gap-5">
                 <NavItem title={role == 1 ? "Find Work" : "Dashboard"} url={role == 1 ? "/find-job" : "/client-dashboard"} />
                 {
-                  role == 1 && <NavItem title={"My Jobs"} />
+                  role == 1 && <NavItem title={"My Job"} url={"/my-job"} />
                 }
                 <NavItem title={"Reports"} url="/report" />
                 <NavItem noIcon={true} title={"Messages"} url="/message" />

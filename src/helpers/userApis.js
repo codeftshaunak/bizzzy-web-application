@@ -41,3 +41,6 @@ export const updateFreelancer = async (data) =>
 
 export const getAllDetailsOfUser = async () =>
     makeApiRequest('get', '/get-user-profile');
+
+export const userById = async (data) =>
+    makeApiRequest('get', `/user/${data}`);
