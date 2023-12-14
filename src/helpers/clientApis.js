@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "./proxy";
+import { BASE_URL, useApiErrorHandling } from "./proxy";
 
 export const API = axios.create({
     baseURL: BASE_URL,
@@ -65,3 +65,38 @@ export const inviteToJob = async(data)=>{
         
     }
 }
+
+// ========= Client reviews =======
+
+
+const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}) => {
+    const authtoken = localStorage.getItem("authtoken");
+
+    const headers = {
+        "Content-Type": "application/json",
+        token: authtoken,
+        ...customHeaders, // Allow for custom headers
+    };
+
+    const config = {
+        method,
+        url: endpoint,
+        headers,
+        data,
+    };
+
+    try {
+        const response = await API(config);
+        return response.data;
+    } catch (error) {
+        // Use the error handling hook
+        const { handleApiError } = useApiErrorHandling();
+        handleApiError(error);
+        return error.response.data;
+    }
+};
+
+export const giveFeedback = async (data) =>
+    makeApiRequest('post', '/add/feedback', data);
+
+ 
