@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Modal = ({ setOpenModal, acceptInvite }) => {
+const Modal = ({ setOpenModal, acceptInvite, offer }) => {
     const [messages, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -52,7 +52,9 @@ const Modal = ({ setOpenModal, acceptInvite }) => {
                                 className="px-4 bg-fg-brand py-2 rounded-lg text-white hover:bg-fg-brand"
                                 onClick={() => acceptInvite(messages)}
                             >
-                                {"Accept Interview"}
+                                {
+                                    offer ? "Accept Offer" : "Accept Interview"
+                                }
                             </button>
                         </div>
                     </div>

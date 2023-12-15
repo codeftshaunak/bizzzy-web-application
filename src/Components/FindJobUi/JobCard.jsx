@@ -77,7 +77,7 @@ const JobCard = ({ jobs }) => {
                     / {formattedDate}
                   </div>
                   <div
-                    className="font-semibold mt-2 mb-2 cursor-pointer text-xl"
+                    className="font-semibold mt-2 mb-2 cursor-pointer text-xl capitalize"
                     onClick={() => {
                       navigate(`/find-job/${job?._id}`);
                     }}
