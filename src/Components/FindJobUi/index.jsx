@@ -115,11 +115,11 @@ export const SearchJobPage = () => {
     const [contractType, setContractType] = useState([]);
 
     const handleSearch = () => {
-        const lowerCaseSearchTerm = searchTerm.toLowerCase();
-        const filteredJobs = jobs.filter(job => {
-            const titleMatch = job.title.toLowerCase().includes(lowerCaseSearchTerm);
-            const tagsMatch = job.tags.some(tag => tag.toLowerCase().includes(lowerCaseSearchTerm));
-            const skillsMatch = job.skills.some(skill => skill.toLowerCase().includes(lowerCaseSearchTerm));
+        const lowerCaseSearchTerm = searchTerm?.toLowerCase();
+        const filteredJobs = jobs?.filter(job => {
+            const titleMatch = job?.title?.toLowerCase()?.includes(lowerCaseSearchTerm);
+            const tagsMatch = job?.tags?.some(tag => tag?.toLowerCase()?.includes(lowerCaseSearchTerm));
+            const skillsMatch = job?.skills?.some(skill => skill?.toLowerCase()?.includes(lowerCaseSearchTerm));
 
             return titleMatch || tagsMatch || skillsMatch;
         });
@@ -145,13 +145,13 @@ export const SearchJobPage = () => {
     useEffect(() => {
         const applyFilters = () => {
             let filteredJobs = allJobs;
- 
+
             if (searchTerm) {
                 const lowerCaseSearchTerm = searchTerm.toLowerCase();
                 filteredJobs = filteredJobs.filter(job => {
-                    const titleMatch = job.title.toLowerCase().includes(lowerCaseSearchTerm);
-                    const tagsMatch = job.tags.some(tag => tag.toLowerCase().includes(lowerCaseSearchTerm));
-                    const skillsMatch = job.skills.some(skill => skill.toLowerCase().includes(lowerCaseSearchTerm));
+                    const titleMatch = job?.title?.toLowerCase()?.includes(lowerCaseSearchTerm);
+                    const tagsMatch = job?.tags?.some(tag => tag?.toLowerCase()?.includes(lowerCaseSearchTerm));
+                    const skillsMatch = job?.skills?.some(skill => skill?.toLowerCase()?.includes(lowerCaseSearchTerm));
                     return titleMatch || tagsMatch || skillsMatch;
                 });
             }

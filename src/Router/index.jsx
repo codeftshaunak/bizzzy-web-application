@@ -15,9 +15,9 @@ import ClientJobPostView from "../Pages/ClientJobPostView";
 import ClientDashBoard from "../Pages/ClientDashboard";
 import Report from "../Pages/Reports";
 import MyJobPage from "../Pages/MyJobs";
-import Invitation from "../Pages/Invitation";
 import Review from '../Pages/Review';
 import EndContract from "../Pages/MyJobs/ActiveJobDetails/ActiveJobDetails";
+import { InterviewInvitation, OfferInvitation } from "../Pages/Invitation";
 
 const Router = () => {
     return (
@@ -44,11 +44,11 @@ const Router = () => {
                 <Route exact path="/client-jobdetails" element={<ClientJobPostView />} />
                 <Route exact path="/client-jobdetails/:id" element={<ClientJobPostView />} />
                 <Route exact path="/report" element={<Report />} />
-                <Route exact path="/message/invitation" element={<Invitation />} />
+                <Route exact path="/message/invitation" element={<InterviewInvitation />} />
+                <Route exact path="/message/offer" element={<OfferInvitation />} />
                 <Route exact path="/client-review" element={<Review />} />
                 <Route exact path="/my-job" element={<MyJobPage />} />
                 <Route exact path="/submit/job/:id" element={<EndContract />} />
-                <Route exact path="/invitation" element={<Invitation />} />
             </Routes>
         </BrowserRouter>
     )

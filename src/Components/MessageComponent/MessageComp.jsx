@@ -212,7 +212,7 @@ const MessageBody = ({ data, selectedUser }) => {
             </Flex>
         </Flex>
 
-        <VStack justifyContent={"space-between"} alignItems={"start"} width={"100%"} height={"67vh"} overflow={"scroll"} id="chat-container"
+        <VStack justifyContent={"end"} alignItems={"start"} width={"100%"} height={"67vh"} overflow={"scroll"} id="chat-container"
         >
             {messageData?.length > 0 &&
                 messageData.map((user, index) => (
