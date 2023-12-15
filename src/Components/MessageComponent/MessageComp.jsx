@@ -136,6 +136,18 @@ const MessageBody = ({ data, selectedUser }) => {
         }
     }
 
+    useEffect(() => {
+        // Scroll to the bottom when the component is first rendered or when new messages are added
+        scrollToBottom();
+    }, [messageData]);
+
+    const scrollToBottom = () => {
+        const chatContainer = document.getElementById('chat-container');
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    };
+
     const senderUser = async () => {
         if (selectedUser) {
             const response = await userById(userId);
@@ -200,7 +212,8 @@ const MessageBody = ({ data, selectedUser }) => {
             </Flex>
         </Flex>
 
-        <VStack justifyContent={"space-between"} alignItems={"start"} width={"100%"} height={"67vh"} overflow={"scroll"}>
+        <VStack justifyContent={"space-between"} alignItems={"start"} width={"100%"} height={"67vh"} overflow={"scroll"} id="chat-container"
+        >
             {messageData?.length > 0 &&
                 messageData.map((user, index) => (
                     <Box key={index} position="relative" padding={"20px"} width={"100%"}>
