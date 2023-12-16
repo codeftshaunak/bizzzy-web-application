@@ -1,11 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { activeJobsData } from "../MyJobMockData/MyJobMockData";
 import ActiveJobCard from "../ActiveJobCard";
+import { getActiveJob } from "../../../helpers/myJobsApi";
 
 const ActiveJobSlider = () => {
+  const [activeJobList, setActiveJobList] = useState([]);
+
+  const getActiveJobDatas = async () => {
+    try {
+      const response = await getActiveJob();
+      console.log(response);
+      setActiveJobList(response?.body);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getActiveJobDatas();
+  }, []);
+
+  console.log(activeJobList, "activeJobList+++++")
+
   const [sliderSettings] = useState({
     dots: true,
     infinite: false,
@@ -44,8 +63,8 @@ const ActiveJobSlider = () => {
   return (
     <div>
       <Slider {...sliderSettings}>
-        {activeJobsData.map((job, index) => {
-          return <ActiveJobCard key={index + job?.id} job={job} />;
+        {activeJobList.map((job, index) => {
+          return <ActiveJobCard key={index + job?._id} job={job} />;
         })}
       </Slider>
     </div>

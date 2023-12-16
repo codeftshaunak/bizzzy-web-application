@@ -28,3 +28,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {})
     }
 };
 
+
+
+export const getActiveJob = async () =>
+    makeApiRequest('get', '/freelancer/job/active');
