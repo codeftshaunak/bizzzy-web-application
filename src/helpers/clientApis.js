@@ -35,10 +35,10 @@ export const getProposals = async (data) => {
     }
 }
 
-export const deleteJob = async(data)=>{
+export const deleteJob = async (data) => {
     try {
         const authtoken = localStorage.getItem("authtoken");
-        const response = await API.post(`job/delete/${data}`,{
+        const response = await API.post(`job/delete/${data}`, {
             headers: {
                 "Content-Type": "application/json",
                 token: `${authtoken}`,
@@ -46,15 +46,15 @@ export const deleteJob = async(data)=>{
         })
         return response.data;
     } catch (error) {
-        
+
     }
 }
 
 
-export const inviteToJob = async(data)=>{
+export const inviteToJob = async (data) => {
     try {
         const authtoken = localStorage.getItem("authtoken");
-        const response = await API.post(`invitation-send`,{
+        const response = await API.post(`invitation-send`, {
             headers: {
                 "Content-Type": "application/json",
                 token: `${authtoken}`,
@@ -62,9 +62,24 @@ export const inviteToJob = async(data)=>{
         })
         return response.data;
     } catch (error) {
-        
+
     }
 }
+
+// export const getHiredListByClient = async () => {
+//     try {
+//         const authtoken = localStorage.getItem("authtoken");
+//         const response = await API.get(`client/all-hired`, {
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 token: `${authtoken}`,
+//             },
+//         })
+//         return response.data.body;
+//     } catch (error) {
+
+//     }
+// }
 
 // ========= Client reviews =======
 
@@ -88,6 +103,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
     try {
         const response = await API(config);
         return response?.data;
+
     } catch (error) {
         // Use the error handling hook
         const { handleApiError } = useApiErrorHandling();
@@ -97,7 +113,10 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
 };
 
 export const giveFeedback = async (data) =>
-    makeApiRequest('post', '/add/feedback', data);
+    makeApiRequest('post', 'add/feedback', data);
+
+export const getHiredListByClient = async () =>
+    makeApiRequest('get', 'client/all-hired');
 
 export const getOptionsList = async (userType) =>
     makeApiRequest('get', '/getOptionsList', null, null, { user_type: userType });
