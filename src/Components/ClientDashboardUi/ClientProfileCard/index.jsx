@@ -1,26 +1,37 @@
-import { Button, Image, Text, VStack } from "@chakra-ui/react";
+import { Button, Image, Text, VStack, Avatar } from "@chakra-ui/react";
 import React from "react";
 
-const ClientProfileCard = () => {
+const ClientProfileCard = ({ data }) => {
   return (
     <VStack color="var(--primarytext)" gap={"5"}>
-      <Image
-        src="./images/user.jpeg"
-        alt="user"
-        width="80px"
-        borderRadius="100%"
-      />
+      {data?.profile_image ? (
+        <Image
+          src={data.profile_image}
+          alt="user"
+          width="80px"
+          borderRadius="full"
+        />
+      ) : (
+        <Avatar name={data?.name} size="xl" />
+      )}
 
       <VStack gap={"0"}>
         <Text fontSize="1.2rem" marginBottom={"2"} fontWeight={"bold"}>
-          Joe Doe
+          {data?.name}
         </Text>
         <Text px={10} marginBottom={"0"} textAlign={"center"} fontSize={"sm"}>
-          Customer Experience Consultant
+          {data?.professional_role}
         </Text>
       </VStack>
       <VStack gap={"0"} w="100%">
-        <Button colorScheme="16A34A" bg={'#16A34A'} color={'#fff'} size="sm" fontSize={'sm'} w={"100%"}>
+        <Button
+          colorScheme="16A34A"
+          bg={'#16A34A'}
+          color={'#fff'}
+          size="sm"
+          fontSize={'sm'}
+          w={"100%"}
+        >
           Message
         </Button>
       </VStack>

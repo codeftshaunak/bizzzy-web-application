@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { formatDistanceToNow } from 'date-fns';
 import ClientProfileCard from "./ClientProfileCard";
-import { getClientJobs } from "../../helpers/clientApis";
+import { getClientJobs, getHiredListByClient } from "../../helpers/clientApis";
 
 const ClientDashboardComponent = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
-  console.log({ "Job": jobs });
+  const [hiredList, setHiredList] = useState([]);
+
+  console.log({ "hiredlist": hiredList });
 
   const getClientPostedJob = async () => {
     try {
@@ -21,14 +23,18 @@ const ClientDashboardComponent = () => {
     }
   }
 
-
-
   const handleDelete = async (id) => {
     console.log(id);
   }
 
+  const getHiredFreelancer = async () => {
+    const response = await getHiredListByClient();
+    setHiredList(response.body)
+  }
+
   useEffect(() => {
     getClientPostedJob();
+    getHiredFreelancer();
   }, []);
 
   return (
@@ -37,20 +43,19 @@ const ClientDashboardComponent = () => {
         <div className=" col-span-12 md:col-span-9">
           <h2 className=" text-[25px] mb-2">Your Dashboard</h2>
           <h6 className=" text-[16px]">My Team</h6>
-          {/* card area start */}
+
           <div className="grid grid-cols-12 gap-4 mt-4">
-            <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg">
-              <ClientProfileCard />
-            </div>
-            <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg">
-              <ClientProfileCard />
-            </div>
-            <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg">
-              <ClientProfileCard />
-            </div>
+            {
+              hiredList.length > 0 && hiredList.map((data, index) => {
+                return <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg" key={index}>
+                  <ClientProfileCard data={data.freelancerDetails[0]} />
+                </div>
+              })
+            }
+
+
           </div>
-          {/* card area end */}
-          {/* start position  */}
+
           <div className=" mt-6 border border-[#D1D5DB]  rounded-md">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
               <div className=" text-2xl font-medium text-[#374151]">Your Job Postings</div>
