@@ -61,7 +61,7 @@ const ActiveJobSlider = () => {
   });
 
   return (
-    <div >
+    <div>
       <Slider {...sliderSettings}>
         {activeJobList.map((job, index) => {
           return <ActiveJobCard key={index + job?._id} job={job} />;

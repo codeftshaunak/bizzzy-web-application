@@ -5,13 +5,13 @@ const ActiveJobCard = ({ job }) => {
   const { _id, budget, job_details } = job;
 
   return (
-    <div className="border p-4 m-2 rounded h-[160px] w-full w-[280px]">
-      <div className="flex items-center justify-center">
+    <div className="border p-4 m-2 rounded h-[170px] w-[280px] my-auto mx-auto">
+      <div className="flex items-center justify-center my-2">
         <IoBagOutline className="text-[1.8rem]" />
       </div>
       <div className="text-center my-2">
         <Link to={`/active-job/${_id}`} className="text-lg font-bold ">
-          {job_details[0]?.title}  
+          {job_details[0]?.title}
         </Link>
         <p className="text-sm text-gray-700">
           {job_details[0]?.budget === "1"
