@@ -75,7 +75,7 @@ const MessageComp = () => {
                         h="44px"
                         px={10}
                         border="1px"
-                        borderColor="gray.300"
+                        borderColor="gray.600"
                         rounded="xl"
                     />
                     <Image src="icons/search-icon.svg" alt="search icon" position="absolute" left={3} top={3} />
@@ -102,14 +102,14 @@ const MessageComp = () => {
                                     )}
                                 </Box>
                                 <Box width="full">
-                                    <Flex justify="between">
+                                    <HStack justifyContent={"space-between"}>
                                         <Text fontWeight="semibold">
-                                            {user?.user_details?.firstName} {user?.user_details?.lastName}, {user?.user_details?.businessName}
+                                            {user?.user_details?.firstName} {user?.user_details?.lastName} {user?.user_details?.businessName && "," + " " + user?.user_details?.businessName}
                                         </Text>
-                                        <Text color="gray.300">7/29/23</Text>
-                                    </Flex>
+                                        <Text color="gray.600">7/29/23</Text>
+                                    </HStack>
                                     <Text fontWeight="semibold">Expert Dashboard Designer</Text>
-                                    <Text color="gray.300">You: {user?.lastMessage.slice(0, 20)}</Text>
+                                    <Text color="gray.600">You: {user?.lastMessage.slice(0, 20)}</Text>
                                 </Box>
                             </Flex>
                         </Box>
@@ -197,7 +197,7 @@ const MessageBody = ({ data, selectedUser }) => {
         }
     };
 
-    return <Box w="56%" px={2} marginLeft={"1.5rem"} py={"2rem"} borderRadius={"15px"}>
+    return <Box w="56%" px={2} marginLeft={"1.5rem"} py={"1rem"} borderRadius={"15px"}>
         <Flex borderBottom="1px" borderColor="gray.400" h="60px" py={2} px={4} gap={3}>
             {recieverDetails?.profile_image !== "null" ? (
                 <Image src={recieverDetails?.profile_image} className="h-[40px] w-[40px]" alt="img" />
@@ -206,7 +206,7 @@ const MessageBody = ({ data, selectedUser }) => {
             )}
             <Flex flexDir="column">
                 <Text fontWeight="semibold">{recieverDetails?.firstName} {recieverDetails?.lastName}</Text>
-                <Text fontSize="sm" color="gray.300">
+                <Text fontSize="sm" color="gray.600">
                     Expert Dashboard Designer <span className="text-gray-400">5:06 AM CDT</span>
                 </Text>
             </Flex>
@@ -222,7 +222,7 @@ const MessageBody = ({ data, selectedUser }) => {
                                 {renderProfileImage(user)}
                                 <Flex flexDir="column">
                                     <Text>{user.sender_id == userId ? senderDetails?.firstName : recieverDetails?.firstName} {user?.sender_id == userId ? senderDetails?.lastName : recieverDetails?.lastName}</Text>
-                                    <Text fontSize="sm" mb={2} color="gray.300">{user.message}</Text>
+                                    <Text fontSize="sm" mb={2} color="gray.600">{user.message}</Text>
                                 </Flex>
                             </Flex>
 
