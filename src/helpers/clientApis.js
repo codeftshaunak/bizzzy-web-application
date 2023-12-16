@@ -83,14 +83,13 @@ export const inviteToJob = async (data) => {
 
 // ========= Client reviews =======
 
-
-const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}) => {
+const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}, params = {}) => {
     const authtoken = localStorage.getItem("authtoken");
 
     const headers = {
         "Content-Type": "application/json",
         token: authtoken,
-        ...customHeaders, // Allow for custom headers
+        ...customHeaders,  
     };
 
     const config = {
@@ -98,17 +97,18 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {})
         url: endpoint,
         headers,
         data,
+        params, // Include query parameters
     };
 
     try {
         const response = await API(config);
-        console.log({ "xxx": response });
-        return response.data;
+        return response?.data;
+
     } catch (error) {
         // Use the error handling hook
         const { handleApiError } = useApiErrorHandling();
         handleApiError(error);
-        return error.response.data;
+        return error.response?.data;
     }
 };
 
@@ -118,4 +118,5 @@ export const giveFeedback = async (data) =>
 export const getHiredListByClient = async () =>
     makeApiRequest('get', 'client/all-hired');
 
-
+export const getOptionsList = async (userType) =>
+    makeApiRequest('get', '/getOptionsList', null, null, { user_type: userType });

@@ -1,7 +1,7 @@
 import { Box, HStack, Heading, Select, Text, Textarea, useToast } from "@chakra-ui/react";
 import StarRatings from 'react-star-ratings';
-import { giveFeedback } from "../../helpers/clientApis";
-import { useState } from "react";
+import { giveFeedback, getOptionsList } from "../../helpers/clientApis";
+import { useEffect, useState } from "react";
 import jwtDecode from 'jwt-decode';
 
 const ReviewComponentUi = () => {
@@ -9,9 +9,27 @@ const ReviewComponentUi = () => {
   const [selectedRating, setSelectedRating] = useState(0);
   const authtoken = localStorage.getItem("authtoken");
   const decodedToken = authtoken ? jwtDecode(authtoken) : null;
-  const userId = decodedToken?.id
+  const userId = decodedToken?.role
   const toast = useToast();
   const [feedbackMessage, setFeedbackMessage] = useState("")
+  const [privetFeedbackMessage, setPrivetFeedbackMessage] = useState([])
+  const [resonOptionList, setResonOptionList] = useState([])
+
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getResonOptionList = async () => {
+    try {
+      const response = await getOptionsList(userId)
+      console.log(response)
+      setResonOptionList(response?.body?.reasons)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getResonOptionList();
+  }, []);
 
   const options = [
     "Skills",
@@ -23,12 +41,10 @@ const ReviewComponentUi = () => {
   ];
 
   const [formData, setFormData] = useState({
-    // user_id_giver: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    // user_id_feedbacker: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     private_feedback: {
       reason_for_ending_contract: "",
       recommending_to_others: 0,
-      strengths: [],
+      strengths: privetFeedbackMessage,
       status: 1,
       is_deleted: false,
     },
@@ -59,23 +75,71 @@ const ReviewComponentUi = () => {
     handlePrivateFeedbackChange("status", rating);
   };
 
-
   const handlePublicFeedbackChange = (option, field, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      public_feedback: {
-        ...prevData.public_feedback,
-        feedback: prevData.public_feedback.feedback.map((item) =>
-          item.option === option ? { ...item, rating: value } : item
-        ),
-      },
-    }));
+    setFormData((prevData) => {
+      if (field === "feedback_message") {
+        return {
+          ...prevData,
+          public_feedback: {
+            ...prevData.public_feedback,
+            [field]: value,
+          },
+        };
+      } else {
+        return {
+          ...prevData,
+          public_feedback: {
+            ...prevData.public_feedback,
+            feedback: prevData.public_feedback.feedback.map((item) =>
+              item.option === option ? { ...item, ratings: value } : item
+            ),
+          },
+        };
+      }
+    });
   };
- 
+
+  // Calculate Total Score
+  const totalScore =
+    (
+      formData.public_feedback.feedback
+        .map((item) => item.ratings || 0)
+        .reduce((total, rating) => total + rating, 0) /
+      options.length ||
+      0
+    ).toFixed(2);
+
+
+
+
   const handelSubmit = async () => {
     try {
       const response = await giveFeedback(formData);
-      console.log(response, "response");
+
+      // Reset form data
+      setFormData({
+        private_feedback: {
+          reason_for_ending_contract: "",
+          recommending_to_others: 0,
+          strengths: [],
+          status: 1,
+          is_deleted: false,
+        },
+        public_feedback: {
+          feedback: options.map(option => ({
+            option: option,
+            ratings: 0,
+          })),
+          feedback_message: "",
+          status: 1,
+          is_deleted: false,
+        },
+      });
+      setFeedbackMessage("");  
+      setSelectedRating(0); 
+
+      document.getElementById("reasonSelect").value = "";  
+      document.getElementById("FeedbackChangeID").value = ""; 
 
       toast({
         title: response.msg,
@@ -83,15 +147,15 @@ const ReviewComponentUi = () => {
         duration: 3000,
         isClosable: true,
         position: 'top-right',
-    });
+      });
     } catch (error) {
       toast({
-        title:error,
+        title: error,
         status: 'warning',
         duration: 3000,
         isClosable: true,
         position: 'top-right',
-    });
+      });
     }
   };
 
@@ -178,6 +242,7 @@ const ReviewComponentUi = () => {
           </Text>
           <Box marginTop={{ base: 3, md: 4 }}>
             <Textarea
+            id="FeedbackChangeID"
               padding={{ base: 2, md: 4 }}
               height={{ base: 32, md: 40 }}
               fontSize={{ base: "lg", md: "xl" }}
@@ -196,12 +261,17 @@ const ReviewComponentUi = () => {
             marginTop={{ base: 3, md: 4 }}
             className="w-full md:w-[70%] lg:w-[50%]"
           >
-            <Select placeholder="Select a reason" size="lg"
+            <Select
+              placeholder="Select a reason"
+              size="lg"
+              id="reasonSelect"
               onChange={(e) => handlePrivateFeedbackChange("reason_for_ending_contract", e.target.value)}
             >
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
+              {resonOptionList && resonOptionList?.map((option) => (
+                <option value={option?.name} key={option?._id}>
+                  {option?.name}
+                </option>
+              ))}
             </Select>
           </Box>
         </Box>
@@ -255,12 +325,12 @@ const ReviewComponentUi = () => {
               >
                 <Box className="flex items-center gap-2">
                   <StarRatings
-                    rating={formData.public_feedback.feedback.find((item) => item.option === option).rating}
+                    rating={formData.public_feedback.feedback.find((item) => item.option === option).ratings}
                     starRatedColor="orange"
                     starHoverColor="orange"
                     starEmptyColor="gray"
                     changeRating={(newRating) =>
-                      handlePublicFeedbackChange(option, "rating", newRating)
+                      handlePublicFeedbackChange(option, "ratings", newRating)
                     }
                     numberOfStars={5}
                     starDimension="2rem"
@@ -279,14 +349,9 @@ const ReviewComponentUi = () => {
             fontSize={{ base: "2xl", md: "2xl" }}
             marginTop={{ base: 4, md: 8 }}
           >
-            Total Score:{" "}
-            {(
-              Object.values(formData.public_feedback.feedback).reduce(
-                (total, item) => total + item?.ratings,
-                0
-              ) / options.length
-            ).toFixed(2)}
+            Total Score: {totalScore}
           </Text>
+
         </Box>
 
         <Box marginTop={{ base: 10, md: 10 }} paddingX={{ base: 4, md: 8 }}>
@@ -304,6 +369,7 @@ const ReviewComponentUi = () => {
               onChange={(e) => setFeedbackMessage(e.target.value)}
             />
           </Box>
+
         </Box>
 
         <Box marginTop={{ base: 10, md: 10 }} paddingX={{ base: 4, md: 8 }}>
@@ -337,7 +403,7 @@ const ReviewComponentUi = () => {
               Cancel
             </Text>
             <button
-              className="my-4 font-semibold text-[1.2rem] rounded-full px-4 py-2 bg-green-500 text-white"
+              className="my-4 font-semibold text-[1.2rem] rounded-full px-8 py-2 bg-green-500 text-white"
               onClick={handelSubmit}>
               Submit Review
             </button>
