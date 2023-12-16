@@ -10,15 +10,15 @@ const ActiveJobCard = ({ job }) => {
         <IoBagOutline className="text-[1.8rem]" />
       </div>
       <div className="text-center my-2">
-        <Link to={`/active-job/${_id}`} className="text-lg font-bold ">
+        <Link to={`/active-job/submit/${_id}`} className="text-lg font-bold ">
           {job_details[0]?.title}
         </Link>
         <p className="text-sm text-gray-700">
           {job_details[0]?.budget === "1"
             ? "Fixed Rate"
             : job_details[0]?.budget === "2"
-            ? "Hourly"
-            : ""}
+              ? "Hourly"
+              : ""}
         </p>
 
         <p className="text-sm text-gray-700">{budget}</p>

@@ -48,7 +48,7 @@ const Router = () => {
                 <Route exact path="/message/offer" element={<OfferInvitation />} />
                 <Route exact path="/client-review" element={<Review />} />
                 <Route exact path="/my-job" element={<MyJobPage />} />
-                <Route exact path="/my-job/submit/:id" element={<EndContract />} />
+                <Route exact path="/active-job/submit/:id" element={<EndContract />} />
                 <Route exact path="/endcotract/:id" element={<EndContract />} />
             </Routes>
         </BrowserRouter>
