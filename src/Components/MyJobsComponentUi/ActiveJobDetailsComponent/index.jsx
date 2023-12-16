@@ -94,7 +94,7 @@ const ActiveJobDetailsComponent = () => {
             <TabIndicator
               mt="1.5px"
               height="2px"
-              bg="green.500"
+              bg="var(--primarytextcolor)"
               borderRadius="1px"
             />
             <TabPanels>
@@ -115,11 +115,11 @@ const ActiveJobDetailsComponent = () => {
                           gap="0"
                         >
                           <Step>
-                            <StepIndicator className="border-green-500">
+                            <StepIndicator borderColor="var(--primarytextcolor)">
                               <StepStatus
-                                className="border-green-500"
+                                borderColor="var(--primarytextcolor)"
                                 active={
-                                  <StepNumber className="text-green-500" />
+                                  <StepNumber />
                                 }
                               />
                             </StepIndicator>
@@ -127,7 +127,6 @@ const ActiveJobDetailsComponent = () => {
                             <Box flexShrink="0">
                               <StepTitle>
                                 <h1 className="text-[1.4rem] mx-2 font-500">
-                                  {" "}
                                   Creatomate Timeline Implementation
                                 </h1>
                               </StepTitle>
@@ -136,9 +135,9 @@ const ActiveJobDetailsComponent = () => {
                                   <h1 className="font-bold text-[1.6rem]">
                                     $400.00
                                   </h1>
-                                  <h1 className="border-2 border-green-500 px-3 py-1 text-green-500 text-[1.2rem] rounded-full">
+                                  <Text borderColor="var(--primarytextcolor)" color="var(--primarytextcolor)" className="border-2 px-3 py-1 text-[1.2rem] rounded-full">
                                     Active & funded
-                                  </h1>
+                                  </Text>
                                 </div>
                                 <div>
                                   <h1 className="flex gap-x-2 items-center text-[1.2rem]">
@@ -146,9 +145,12 @@ const ActiveJobDetailsComponent = () => {
                                     Due Dec 1
                                   </h1>
 
-                                  <button className="my-6 font-semibold text-[1.4rem] rounded-full px-4 py-2 bg-green-500 text-white">
+                                  <Button className="my-6 font-semibold text-[1rem] rounded-full px-8 py-2 cursor-pointer" backgroundColor={"var(--primarytextcolor)"} borderRadius={"25px"} color={"var(--secondarycolor)"} _hover={{
+                                    color: "black",
+                                    backgroundColor: "var(--primarysoftbg)"
+                                  }}>
                                     Submit Work
-                                  </button>
+                                  </Button>
                                 </div>
                               </StepDescription>
                             </Box>
@@ -163,14 +165,17 @@ const ActiveJobDetailsComponent = () => {
 
                             <Box flexShrink="0">
                               <StepTitle>
-                                <h1 className="text-[1.4rem] mx-2 font-500 text-green-500">
+                                <Text className="text-[1rem] mx-2 font-500" color={"var(--primarytext)"}>
                                   Propose new milestone
-                                </h1>
+                                </Text>
                               </StepTitle>
                               <StepDescription>
-                                <button className="my-6 font-semibold text-[1.4rem] rounded-full px-4 py-2 bg-green-500 text-white ">
-                                  Manage Milestones
-                                </button>
+                                <Button className="my-6 font-semibold text-[1rem] rounded-full px-8 py-2 cursor-pointer" backgroundColor={"var(--primarytextcolor)"} borderRadius={"25px"} color={"var(--secondarycolor)"} _hover={{
+                                  color: "black",
+                                  backgroundColor: "var(--primarysoftbg)"
+                                }}>
+                                  Manage Milestone
+                                </Button>
                               </StepDescription>
                             </Box>
                           </Step>
@@ -231,75 +236,78 @@ const ActiveJobDetailsComponent = () => {
                           Details
                         </h1>
                       </div>
-                      <div>
-                        <Stepper
-                          orientation="vertical"
-                          height="340px"
-                          colorScheme="green"
-                          gap="0"
-                        >
-                          <Step>
-                            <StepIndicator className="border-green-500">
-                              <StepStatus
-                                className="border-green-500"
-                                active={
-                                  <StepNumber className="text-green-500" />
-                                }
-                              />
-                            </StepIndicator>
+                      <Stepper
+                        orientation="vertical"
+                        height="340px"
+                        colorScheme="green"
+                        gap="0"
+                      >
+                        <Step>
+                          <StepIndicator borderColor="var(--primarytextcolor)">
+                            <StepStatus
+                              borderColor="var(--primarytextcolor)"
+                              active={
+                                <StepNumber />
+                              }
+                            />
+                          </StepIndicator>
 
-                            <Box flexShrink="0">
-                              <StepTitle>
-                                <h1 className="text-[1.4rem] mx-2 font-500">
-                                  {" "}
-                                  Creatomate Timeline Implementation
+                          <Box flexShrink="0">
+                            <StepTitle>
+                              <h1 className="text-[1.4rem] mx-2 font-500">
+                                Creatomate Timeline Implementation
+                              </h1>
+                            </StepTitle>
+                            <StepDescription>
+                              <div className="flex items-center gap-x-4 my-2">
+                                <h1 className="font-bold text-[1.6rem]">
+                                  $400.00
                                 </h1>
-                              </StepTitle>
-                              <StepDescription>
-                                <div className="flex items-center gap-x-4 my-2">
-                                  <h1 className="font-bold text-[1.6rem]">
-                                    $400.00
-                                  </h1>
-                                  <h1 className="border-2 border-green-500 px-3 py-1 text-green-500 text-[1.2rem] rounded-full">
-                                    Active & funded
-                                  </h1>
-                                </div>
-                                <div>
-                                  <h1 className="flex gap-x-2 items-center text-[1.2rem]">
-                                    <FaCalendarAlt className="text-[1.5rem]" />{" "}
-                                    Due Dec 1
-                                  </h1>
-
-                                  <button className="my-6 font-semibold text-[1.4rem] rounded-full px-4 py-2 bg-green-500 text-white">
-                                    Submit Work
-                                  </button>
-                                </div>
-                              </StepDescription>
-                            </Box>
-                            <StepSeparator />
-                          </Step>
-                          <Step>
-                            <StepIndicator className="bg-green-500">
-                              <StepStatus
-                                active={<FaPlus className="text-white" />}
-                              />
-                            </StepIndicator>
-
-                            <Box flexShrink="0">
-                              <StepTitle>
-                                <h1 className="text-[1.4rem] mx-2 font-500 text-green-500">
-                                  Propose new milestone
+                                <Text borderColor="var(--primarytextcolor)" color="var(--primarytextcolor)" className="border-2 px-3 py-1 text-[1.2rem] rounded-full">
+                                  Active & funded
+                                </Text>
+                              </div>
+                              <div>
+                                <h1 className="flex gap-x-2 items-center text-[1.2rem]">
+                                  <FaCalendarAlt className="text-[1.5rem]" />{" "}
+                                  Due Dec 1
                                 </h1>
-                              </StepTitle>
-                              <StepDescription>
-                                <button className="my-6 font-semibold text-[1.4rem] rounded-full px-4 py-2 bg-green-500 text-white ">
-                                  Manage Milestones
-                                </button>
-                              </StepDescription>
-                            </Box>
-                          </Step>
-                        </Stepper>
-                      </div>
+
+                                <Button className="my-6 font-semibold text-[1rem] rounded-full px-8 py-2 cursor-pointer" backgroundColor={"var(--primarytextcolor)"} borderRadius={"25px"} color={"var(--secondarycolor)"} _hover={{
+                                  color: "black",
+                                  backgroundColor: "var(--primarysoftbg)"
+                                }}>
+                                  Submit Work
+                                </Button>
+                              </div>
+                            </StepDescription>
+                          </Box>
+                          <StepSeparator />
+                        </Step>
+                        <Step>
+                          <StepIndicator className="bg-green-500">
+                            <StepStatus
+                              active={<FaPlus className="text-white" />}
+                            />
+                          </StepIndicator>
+
+                          <Box flexShrink="0">
+                            <StepTitle>
+                              <Text className="text-[1rem] mx-2 font-500" color={"var(--primarytext)"}>
+                                Propose new milestone
+                              </Text>
+                            </StepTitle>
+                            <StepDescription>
+                              <Button className="my-6 font-semibold text-[1rem] rounded-full px-8 py-2 cursor-pointer" backgroundColor={"var(--primarytextcolor)"} borderRadius={"25px"} color={"var(--secondarycolor)"} _hover={{
+                                color: "black",
+                                backgroundColor: "var(--primarysoftbg)"
+                              }}>
+                                Manage Milestone
+                              </Button>
+                            </StepDescription>
+                          </Box>
+                        </Step>
+                      </Stepper>
                     </div>
                     <div className="border h-[60%] rounded-xl md:px-[2rem] md:py-[2.2rem] w-[40%] shadow-md">
                       <div>
