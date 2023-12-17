@@ -4,7 +4,7 @@ import { useToast } from '@chakra-ui/react';
 // export const BASE_URL = `http://localhost:5002/api/v1`;
 // export const socketURL = 'http://localhost:5002/'
 
-export const socketURL = 'export const BASE_URL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/'
+export const socketURL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/`;
 export const BASE_URL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/api/v1`;
 
 const authToken = localStorage.getItem("authtoken");
