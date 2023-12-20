@@ -3,7 +3,7 @@ import ApplyedJobs from "./ApplyedJobs/ApplyedJobs";
 
 const MyJobsComponentUi = () => {
     return (
-        <div className="max-w-screen-xl mx-auto">
+        <div className="w-full">
             <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-12 md:col-span-12">
                     <div>

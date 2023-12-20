@@ -89,7 +89,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
     const headers = {
         "Content-Type": "application/json",
         token: authtoken,
-        ...customHeaders,  
+        ...customHeaders,
     };
 
     const config = {
@@ -113,10 +113,11 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
 };
 
 export const giveFeedback = async (data) =>
-    makeApiRequest('post', 'add/feedback', data);
+    makeApiRequest('post', '/add/feedback', data);
 
 export const getHiredListByClient = async () =>
-    makeApiRequest('get', 'client/all-hired');
+    makeApiRequest('get', '/client/all-hired');
 
 export const getOptionsList = async (userType) =>
     makeApiRequest('get', '/getOptionsList', null, null, { user_type: userType });
+

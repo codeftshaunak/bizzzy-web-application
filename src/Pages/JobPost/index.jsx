@@ -15,19 +15,14 @@ const JobPost = () => {
   const [step, setStep] = useState(1);
 
   const onSubmit = async (data) => {
-    // format data for sending to the server
     const formData = new FormData();
     for (const key in data) {
-      // if data is an array then format like this
       if (data[key] instanceof Array) {
         data[key].forEach((item) => formData.append(`${key}[]`, item));
         continue;
       }
-
       formData.append(key, data[key]);
     }
-
-
     // create the job using form state
     const response = await createJob(formData);
     if (response.success) {

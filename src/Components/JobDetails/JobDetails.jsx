@@ -45,31 +45,6 @@ const JobDetails = ({ setPage, setDetails }) => {
                 </div>
                 <div className="w-full flex justify-between">
                     <div className="w-[68%] border border-tertiary rounded-2xl p-6">
-                        {/* We have a fully functional website with all the features in place.
-                        Now, we're looking for a talented Logo and UI Designer to enhance the website's visual appeal and user-friendliness.
-                        <br />
-                        <br />
-                        Responsibilities:
-                        <br />
-                        <br />
-                        - Design a modern and visually appealing logo that aligns with our brand identity.
-                        - Create a user-friendly and modern UI design in Figma, providing clear instructions for implementation.
-                        - Ensure that the UI design is responsive and compatible with various devices.
-                        <br />
-                        <br />
-                        Requirements:
-                        <br />
-                        <br />
-                        - Proven experience in logo design and UI/UX design.
-                        - Proficiency in Figma or similar design tools.
-                        - Strong understanding of modern design principles and trends.
-                        <br />
-                        <br />
-                        Additional Information:
-                        <br />
-                        <br />
-                        - This is not a coding job; the website and its features are already developed.
-                        - You will be responsible for the visual aspects and user experience improvements. */}
                         {job?.description}
                     </div>
                     <div className="w-[30%] border border-tertiary rounded-2xl p-6">
