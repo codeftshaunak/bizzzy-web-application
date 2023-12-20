@@ -33,13 +33,15 @@ export const AllJobs = () => {
                             <img src="/images/dashboard/proposals.png" alt="proposals" />
                             <div>
                                 <div className="text-sm font-semibold">Find A Job</div>
-                                <div className="text-sm text-gray-300">Search & apply to your next job now</div>
+                                <div className="text-sm text-gray-300">Search & apply to your next <br /> job now</div>
                             </div>
                         </HStack>
                         <HStack border={"1px solid #D1D5DA"} width={"32%"} borderRadius={"10px"} justifyContent={"center"} cursor={"pointer"} transition={"0.3s ease-in-out"} padding={"1rem 0.5rem"} _hover={{
                             borderColor: "#22c55e"
                         }}>                            <img src="/images/dashboard/stats.png" alt="proposals" />
-                            <div>
+                            <div onClick={() => {
+                                navigate("/my-stats")
+                            }}>
                                 <div className="text-sm font-semibold">My Stats</div>
                                 <div className="text-sm text-gray-300">Check your earnings & time spent working</div>
                             </div>
@@ -47,7 +49,9 @@ export const AllJobs = () => {
                         <HStack border={"1px solid #D1D5DA"} width={"32%"} borderRadius={"10px"} justifyContent={"center"} cursor={"pointer"} transition={"0.3s ease-in-out"} padding={"1rem 0.5rem"} _hover={{
                             borderColor: "#22c55e"
                         }}>                            <img src="/images/dashboard/jobs.png" alt="proposals" />
-                            <div>
+                            <div onClick={() => {
+                                navigate("/my-job")
+                            }}>
                                 <div className="text-sm font-semibold">My Jobs</div>
                                 <div className="text-sm text-gray-300">View your active jobs & proposals</div>
                             </div>

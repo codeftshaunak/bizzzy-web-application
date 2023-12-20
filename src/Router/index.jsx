@@ -43,11 +43,11 @@ const Router = () => {
                 <Route exact path="/client-dashboard" element={<ClientDashBoard />} />
                 <Route exact path="/client-jobdetails" element={<ClientJobPostView />} />
                 <Route exact path="/client-jobdetails/:id" element={<ClientJobPostView />} />
-                <Route exact path="/report" element={<Report />} />
+                <Route exact path="/my-stats" element={<Report />} />
                 <Route exact path="/message/invitation" element={<InterviewInvitation />} />
                 <Route exact path="/message/offer" element={<OfferInvitation />} />
-                <Route exact path="/client-review" element={<Review />} />
-                <Route exact path="/my-job" element={<MyJobPage />} />
+                <Route exact path="/submit-review/:id" element={<Review />} />
+                <Route exact path="/my-jobs" element={<MyJobPage />} />
                 <Route exact path="/active-job/submit/:id" element={<EndContract />} />
                 <Route exact path="/endcotract/:id" element={<EndContract />} />
             </Routes>

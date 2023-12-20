@@ -147,8 +147,8 @@ export const Header = () => {
   ];
   const navigation = [
     { title: "Find Work", href: "/find-job" },
-    { title: "My Jobs", href: "/my-job" },
-    { title: "Reports", href: "/report" },
+    { title: "My Jobs", href: "/my-jobs" },
+    { title: "My Stats", href: "/my-stats" },
   ];
 
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
@@ -417,8 +417,8 @@ export const AuthHeader = ({ role }) => {
   ];
   const navigation = [
     { title: "Find Work", href: "/find-a-dentist" },
-    { title: "My Job", href: "/my-job" },
-    { title: "Reports", href: "/faq" },
+    { title: "My Jobs", href: "/my-jobs" },
+    { title: "My Stats", href: "/my-stats" },
     { title: "Message", href: "/faq" },
   ];
 
@@ -502,14 +502,15 @@ export const AuthHeader = ({ role }) => {
             )}
           </div>
           <div className="flex items-center sm:items-stretch">
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 md:w-[180px]">
               <p
                 className="text-[22px] font-bold text-green-500 cursor-pointer text-right"
                 onClick={() => navigate("/")}
               >
                 <img src="/images/bizzzy_logo.png" style={{
                   width: "80px",
-                  marginTop: "3px"
+                  marginTop: "3px",
+                  margin: 'auto'
                 }} />
               </p>
             </div>
@@ -517,9 +518,9 @@ export const AuthHeader = ({ role }) => {
               <div className="flex gap-5">
                 <NavItem title={role == 1 ? "Find Work" : "Dashboard"} url={role == 1 ? "/find-job" : "/client-dashboard"} />
                 {
-                  role == 1 && <NavItem title={"My Job"} url={"/my-job"} />
+                  role == 1 && <NavItem title={"My Jobs"} url={"/my-jobs"} />
                 }
-                <NavItem title={"Reports"} url="/report" />
+                <NavItem title={"My Stats"} url="/my-stats" />
                 <NavItem noIcon={true} title={"Messages"} url="/message" />
               </div>
             </div>
@@ -541,12 +542,12 @@ export const AuthHeader = ({ role }) => {
                 </div>
               </div>
               <div className="flex gap-3 relative">
-                <div className=" flex items-center justify-center w-[36px] h-[36px] bg-slate-100 rounded-md ">
+                {/* <div className=" flex items-center justify-center w-[36px] h-[36px] bg-slate-100 rounded-md ">
                   <BsSend width={"20px"} height={"20px"} />
                 </div>
                 <div className=" flex items-center justify-center w-[36px] h-[36px] bg-slate-100 rounded-md ">
                   <BsBell width={"20px"} height={"20px"} />
-                </div>
+                </div> */}
                 <div
                   className="flex items-center justify-center rounded-full w-[36px] h-[36px] cursor-pointer"
                   style={{
