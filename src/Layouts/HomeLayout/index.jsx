@@ -11,7 +11,7 @@ const HomeLayout = (props) => {
     return (
         <VStack width={"full"} spacing={0} gap={"5"}>
             {token ? <AuthHeader role={role} /> : <Header />}
-            <VStack width={"80%"} gap={props.gap ? props.gap : "60px"} bg={props.bg}>
+            <VStack width={"85%"} gap={props.gap ? props.gap : "60px"} bg={props.bg}>
                 {props.children}
             </VStack>
         </VStack>

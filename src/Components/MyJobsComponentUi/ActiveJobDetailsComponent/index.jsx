@@ -414,6 +414,7 @@ import SubmitModal from './SubmitModal';
 import { workSubmit } from '../../../helpers/freelancerApis';
 import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import ConfirmModal from '../../ConfirmationModal/ConfirmModal';
 
 const ClientInfo = ({ clientDetails }) => (
   <Flex>
@@ -430,7 +431,7 @@ const ClientInfo = ({ clientDetails }) => (
   </Flex>
 );
 
-const OptionsPopover = () => (
+const OptionsPopover = ({ setOpenModal }) => (
   <Popover>
     <PopoverTrigger>
       <Button>
@@ -441,7 +442,7 @@ const OptionsPopover = () => (
       <PopoverArrow />
       <PopoverBody padding="4">
         <div className="flex flex-col gap-3">
-          <button className="flex items-center font-400 gap-2 text-[1.2rem]">
+          <button className="flex items-center font-400 gap-2 text-[1.2rem]" onClick={() => setOpenModal(true)}>
             <MdCancel className="text-[1.5rem]" /> End contract
           </button>
         </div>
@@ -615,6 +616,7 @@ const EarningsDetails = ({ jobDetails }) => (
         </div>
       </div>
     </div>
+
   </div>
 );
 
@@ -627,6 +629,8 @@ const ActiveJobDetailsComponent = () => {
   const clientDetails = jobState?.client_profile[0];
   const jobDetails = jobState.job_details[0];
 
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <div className="w-full">
       <div className="flex justify-between gap-4">
@@ -635,7 +639,7 @@ const ActiveJobDetailsComponent = () => {
         </div>
 
         <div>
-          <OptionsPopover />
+          <OptionsPopover setOpenModal={setOpenModal} />
         </div>
       </div>
 
@@ -693,6 +697,11 @@ const ActiveJobDetailsComponent = () => {
           </Tabs>
         </div>
       </div>
+
+      {
+        openModal && <ConfirmModal setOpenModal={setOpenModal} job_id={job_id} clientDetails={clientDetails} jobDetails={jobDetails} />
+      }
+
     </div>
   );
 };

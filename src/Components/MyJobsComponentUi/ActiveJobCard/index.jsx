@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const ActiveJobCard = ({ job }) => {
   const { _id, budget, job_details } = job;
-  console.log({ "dddd": job });
+  // console.log({ "dddd": job });
   return (
     <div className="border p-4 m-2 rounded h-[170px] w-[280px] my-auto mx-auto">
       <div className="flex items-center justify-center my-2">
@@ -21,7 +21,7 @@ const ActiveJobCard = ({ job }) => {
               : ""}
         </p>
 
-        <p className="text-sm text-gray-700">{budget}</p>
+        <p className="text-sm text-gray-700">${budget}</p>
       </div>
     </div>
   );

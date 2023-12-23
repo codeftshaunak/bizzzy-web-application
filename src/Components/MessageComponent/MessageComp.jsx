@@ -5,6 +5,7 @@ import {
     AvatarGroup,
     HStack,
     VStack,
+    Card,
     Box,
     Input,
     Image,
@@ -64,8 +65,8 @@ const MessageComp = () => {
     };
 
     return (
-        <Flex p={6} w="full" overflow={"scroll"}>
-            <Box w="30%">
+        <HStack p={6} w="full" overflow={"scroll"} justifyContent={"space-between"} alignItems={"start"}>
+            <Box w="26%">
                 <Box position="relative" h="44px" mb={2} mt={6}>
                     <Input
                         type="text"
@@ -116,14 +117,22 @@ const MessageComp = () => {
                     ))}
             </Box>
 
-            {messageDetails?.length > 0 && <MessageBody data={messageDetails} selectedUser={selectedUser} />}
-        </Flex>
+            <VStack width={"55%"}>
+                {messageDetails?.length > 0 && <MessageBody data={messageDetails} selectedUser={selectedUser} />}
+            </VStack>
+
+            <VStack marginLeft={"1rem"} marginTop={"1rem"}>
+                <Card>
+                    <h2>Submit works</h2>
+                </Card>
+            </VStack>
+
+        </HStack>
     );
 };
 
 const MessageBody = ({ data, selectedUser }) => {
     const [messageData, setMessageData] = useState([]);
-    console.log(messageData);
     const [recieverDetails, setRecieverDetails] = useState();
     const [senderDetails, setSenderDetails] = useState();
     const [message, setMessage] = useState('');
@@ -139,7 +148,7 @@ const MessageBody = ({ data, selectedUser }) => {
     useEffect(() => {
         // Scroll to the bottom when the component is first rendered or when new messages are added
         scrollToBottom();
-    }, [messageData, message]);
+    }, [messageData, message, data]);
 
     const scrollToBottom = () => {
         const chatContainer = document.getElementById('chat-container');
@@ -179,28 +188,27 @@ const MessageBody = ({ data, selectedUser }) => {
             <Avatar size="md" round="20px" name={user.sender_id === userId ? senderDetails?.firstName : recieverDetails?.firstName} />
         );
     };
-
     const sendMessage = (message) => {
-        if (socket) {
-            // Set up event listener for incoming chat messages before emitting events
-            socket.on("recieve_message", (data) => {
-                console.log({ "rc": data });
-                data.created_at = new Date();
-                setMessageData([...messageData, data]);
-            });
-
-            // Emit events
-            socket.emit("connect_user", { user_id: userId });
-            socket.emit("chat_message", {
-                sender_id: userId,
-                receiver_id: selectedUser,
-                message: message,
-                message_type: 1,
-            });
-        }
+        socket.emit("connect_user", { user_id: userId });
+        socket.emit("chat_message", {
+            sender_id: userId,
+            receiver_id: selectedUser,
+            message: message,
+            message_type: 1,
+        });
     };
 
-    return <Box w="56%" px={2} marginLeft={"1.5rem"} py={"1rem"} borderRadius={"15px"} position={"relative"} height={"80vh"}>
+    useEffect(() => {
+        socket.on();
+        socket.emit("connect_user", { user_id: userId });
+        socket.on("recieve_message", (data) => {
+            console.log({ "rc": data });
+            data.created_at = new Date();
+            setMessageData([...messageData, data]);
+        });
+    }, [data, socket, message])
+
+    return <Box w="100%" px={2} marginLeft={"1.5rem"} py={"1rem"} borderRadius={"15px"} position={"relative"} height={"89vh"} borderLeft={"0.51px solid var(--secondarytext)"}>
         <Flex borderBottom="1px" borderColor="gray.400" h="60px" py={2} px={4} gap={3}>
             {recieverDetails?.profile_image !== "null" ? (
                 <Image src={recieverDetails?.profile_image} className="h-[40px] w-[40px]" alt="img" />
@@ -215,31 +223,30 @@ const MessageBody = ({ data, selectedUser }) => {
             </Flex>
         </Flex>
 
-        <VStack alignItems={"start"} width={"100%"} height={"100%"} id="chat-container">
-            <Box height={"70vh"} overflow={"scroll"} width={"100%"} display={"flex"} flexDir={"column"} alignItems={"start"} justifyContent={"flex-start"}>
+        <VStack alignItems={"start"} width={"100%"} height={"100%"}>
+            <Box height={"70vh"} overflow={"scroll"} width={"100%"} display={"flex"} flexDir={"column"} alignItems={"start"} justifyContent={"flex-start"} id='chat-container'>
                 {messageData?.length > 0 &&
                     messageData.map((user, index) => {
-                        console.log(user.sender_id, userId);
                         return <Box key={index} position="relative" padding={"20px"} width={"100%"}>
                             {
                                 user.sender_id == userId ?
                                     <HStack justifyContent={"space-between"}>
                                         <Image src="images/more-msg.png" alt="msg more" />
-                                        <HStack itemsStart gap={3} p={4} pb={0}>
+                                        <HStack p={4} pb={0}>
                                             <VStack justifyContent={"end"} alignItems={"end"}>
                                                 <Text fontWeight={"600"} textAlign={"right"}>{user.sender_id == userId ? senderDetails?.firstName : recieverDetails?.firstName} {user?.sender_id == userId ? senderDetails?.lastName : recieverDetails?.lastName}</Text>
-                                                <Text width={"90%"} textAlign={"right"} fontSize="1rem" mb={2} color="gray.600">{user.message}</Text>
+                                                <Text width={"450px"} textAlign={"right"} fontSize="1rem" mb={2} color="gray.600">{user.message}</Text>
                                             </VStack>
                                             {renderProfileImage(user)}
                                         </HStack>
                                     </HStack>
                                     :
                                     <HStack justifyContent={"space-between"}>
-                                        <HStack itemsStart gap={3} p={4} pb={0}>
+                                        <HStack p={4} pb={0}>
                                             {renderProfileImage(user)}
                                             <Flex flexDir="column">
                                                 <Text fontWeight={"600"}>{user.sender_id == userId ? senderDetails?.firstName : recieverDetails?.firstName} {user?.sender_id == userId ? senderDetails?.lastName : recieverDetails?.lastName}</Text>
-                                                <Text width={"90%"} fontSize="1rem" mb={2} color="gray.600">{user.message}</Text>
+                                                <Text width={"450px"} fontSize="1rem" mb={2} color="gray.600">{user.message}</Text>
                                             </Flex>
                                         </HStack>
                                         <Image src="images/more-msg.png" alt="msg more" />
