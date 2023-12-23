@@ -405,7 +405,7 @@ import { BiSolidDislike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 import StarRatings from 'react-star-ratings';
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { giveFeedback, getOptionsList } from "../../helpers/clientApis";
 
 
@@ -426,7 +426,7 @@ const index = () => {
   const clientDetails = location.state && location.state.clientDetails;
   const reciever_id = clientDetails.user_id;
   const toast = useToast();
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     sender_id: "",
     reciever_id: "",
@@ -532,8 +532,6 @@ const index = () => {
     console.log(formData);
     try {
       const response = await giveFeedback(formData);
-      console.log(response);
-
       // // Reset form data
       // setFormData({
       //   private_feedback: {
@@ -561,6 +559,7 @@ const index = () => {
         isClosable: true,
         position: 'top-right',
       });
+      navigate("/my-jobs")
     } catch (error) {
       console.log(error);
       toast({
