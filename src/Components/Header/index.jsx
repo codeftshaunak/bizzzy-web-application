@@ -23,7 +23,7 @@ import {
 import { useState } from "react";
 import { AiFillSetting } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearAuthData } from "../../redux/authSlice/authSlice";
 
 
@@ -134,6 +134,8 @@ import { clearAuthData } from "../../redux/authSlice/authSlice";
 
 export const Header = () => {
   const navigate = useNavigate();
+  const profile = useSelector((state) => state.profile);
+  const { profile_image } = profile.profile || [];
   const boxStyle = {
     display: "flex",
     alignItems: "center",
@@ -391,6 +393,8 @@ export const Header = () => {
 export const AuthHeader = ({ role }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+  const profile = useSelector((state) => state.profile);
+  const { profile_image } = profile.profile || [];
 
   const handleProfileButton = () => {
     setOpenInfo(!openInfo)
@@ -550,12 +554,10 @@ export const AuthHeader = ({ role }) => {
                 </div> */}
                 <div
                   className="flex items-center justify-center rounded-full w-[36px] h-[36px] cursor-pointer"
-                  style={{
-                    background: `url(${"./images/user.jpeg"})`,
-                    backgroundSize: "contain",
-                  }}
                   onClick={() => handleProfileButton()}
-                ></div>
+                >
+                  <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} />
+                </div>
 
                 {
                   openInfo && <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
@@ -658,11 +660,9 @@ export const AuthHeader = ({ role }) => {
                 <div className="mx-3 flex gap-3 my-3">
                   <div
                     className="flex items-center justify-center rounded-full w-[36px] h-[36px] "
-                    style={{
-                      background: `url(${"./images/user.jpeg"})`,
-                      backgroundSize: "contain",
-                    }}
-                  ></div>
+                  >
+                    <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} />
+                  </div>
                   <div>
                     <p className="text-gray-700 font-medium text-[14px]">
                       Joe Doe

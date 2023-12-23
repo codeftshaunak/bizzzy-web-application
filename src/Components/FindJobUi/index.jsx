@@ -5,10 +5,14 @@ import JobCard from './JobCard';
 import { useNavigate } from 'react-router-dom'
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack } from '@chakra-ui/react';
 import { BiSearchAlt } from 'react-icons/bi';
+import { useSelector } from 'react-redux'
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
     const navigate = useNavigate();
+    const profile = useSelector((state) => state.profile);
+    const { name, profile_image, professional_role, id } = profile.profile || [];
+    console.log(profile);
     const getAllJobList = async () => {
         try {
             const response = await getAllJobs();
@@ -50,14 +54,14 @@ export const AllJobs = () => {
                             borderColor: "#22c55e"
                         }}>                            <img src="/images/dashboard/jobs.png" alt="proposals" />
                             <div onClick={() => {
-                                navigate("/my-job")
+                                navigate("/my-jobs")
                             }}>
                                 <div className="text-sm font-semibold">My Jobs</div>
                                 <div className="text-sm text-gray-300">View your active jobs & proposals</div>
                             </div>
                         </HStack>
                     </div>
-                    <div className="text-xl font-semibold mt-4">Here are jobs for you.</div>
+                    <div className="text-xl font-semibold mt-4 capitalize">Here are jobs for you</div>
                     <div className="flex gap-6 px-6 mt-4">
                         <div className="text-sm font-medium text-primary border-b-2 border-primary p-2">Most Recent Jobs</div>
                         {/* <div className="text-sm font-medium text-primary border-b-2 border-primary p-2">Best Matches</div> */}
@@ -75,9 +79,9 @@ export const AllJobs = () => {
                 <div className="w-[25%] pl-6">
                     <div className="h-[296px] border border-tertiary rounded-2xl">
                         <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                            <img src="/images/user.jpeg" alt="avatar" className="h-[90px] w-[90px] rounded-full border-4 border-tertiary" />
-                            <div className="text-2xl font-medium">Sasheen M.</div>
-                            <div className="text-sm text-gray-300">Customer Experience Consultant</div>
+                            <img src={profile_image} alt="avatar" className="h-[90px] w-[90px] rounded-full border-4 border-tertiary" />
+                            <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/freelancer`)}>{name}</div>
+                            <div className="text-sm text-gray-300">{professional_role}</div>
                             <div className="flex items-center">
                                 <div className="star-filled"></div>
                                 <div className="star-filled"></div>
@@ -98,9 +102,9 @@ export const AllJobs = () => {
                     <div className="mt-6 relative">
                         <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
                         <div className="flex flex-col gap-3 absolute bottom-3 left-3">
-                            <div className="text-3xl text-secondary font-bold">Get Discount</div>
-                            <div className="text-sm text-secondary">Analyze your performance to improve your success</div>
-                            <button className="bg-primary text-secondary rounded h-[36px] w-[90px]">Let's Join</button>
+                            <div className="text-3xl text-secondary font-bold">Earn Hourly</div>
+                            <div className="text-sm text-secondary">Download the Bizzzy time tracker app to start working hourly contracts.</div>
+                            <button className="bg-primary text-secondary rounded h-[36px] w-[130px]">Download Now</button>
                         </div>
                     </div>
                 </div>
@@ -232,9 +236,9 @@ export const SearchJobPage = () => {
                     <div className="mt-6 relative">
                         <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
                         <div className="flex flex-col gap-3 absolute bottom-3 left-3">
-                            <div className="text-3xl text-secondary font-bold">Get Discount</div>
-                            <div className="text-sm text-secondary">Analyze your performance to improve your success</div>
-                            <button className="bg-primary text-secondary rounded h-[36px] w-[90px]">Let's Join</button>
+                            <div className="text-3xl text-secondary font-bold">Earn Hourly</div>
+                            <div className="text-sm text-secondary">Download the Bizzzy time tracker app to start working hourly contracts.</div>
+                            <button className="bg-primary text-secondary rounded h-[36px] w-[130px]">Download Now</button>
                         </div>
                     </div>
                 </div>
