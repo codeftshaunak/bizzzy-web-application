@@ -10,7 +10,7 @@ const JobCard = ({ jobs }) => {
     <>
       <div>
         {jobs?.length > 0 ? (
-          jobs.slice(0, visibleJobs).reverse().map((job, index) => {
+          jobs.slice(0, visibleJobs).map((job, index) => {
 
             const formattedDate = formatDistanceToNow(new Date(job?.created_at), {
               addSuffix: true,

@@ -4,6 +4,7 @@ import { AiOutlineStar } from 'react-icons/ai';
 import { BsBriefcase, BsSend } from 'react-icons/bs';
 
 const UserCard = () => {
+
     return (
         <VStack color="var(--primarytext)" gap={"5"}>
             <Image src='./images/user.jpeg' alt='user' width="80px" borderRadius="100%" />

@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
+    const reverseJob = jobs.slice().reverse();
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
     const { name, profile_image, professional_role, id } = profile.profile || [];
@@ -68,7 +69,7 @@ export const AllJobs = () => {
                         {/* <div className="text-sm font-medium text-gray-300 p-2">Most Recent Jobs</div> */}
                     </div>
                     <div className="border border-tertiary rounded-2xl overflow-auto">
-                        <JobCard jobs={jobs} />
+                        <JobCard jobs={reverseJob} />
                     </div>
                     <div className="text-center p-5">
                         <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/search-job")}>
@@ -116,11 +117,16 @@ export const AllJobs = () => {
 
 export const SearchJobPage = () => {
     const [jobs, setJobs] = useState([]);
+    const leatestJob = jobs.slice().reverse();
     const [allJobs, setAllJobs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [category, setCategory] = useState('');
     const [experience, setExperience] = useState([]);
     const [contractType, setContractType] = useState([]);
+    const navigate = useNavigate();
+    const profile = useSelector((state) => state.profile);
+    const { name, profile_image, professional_role, id } = profile.profile || [];
+
 
     const handleSearch = () => {
         const lowerCaseSearchTerm = searchTerm?.toLowerCase();
@@ -213,8 +219,8 @@ export const SearchJobPage = () => {
                     <div className="h-[296px] border border-tertiary rounded-2xl">
                         <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
                             <img src="/images/user.jpeg" alt="avatar" className="h-[90px] w-[90px] rounded-full border-4 border-tertiary" />
-                            <div className="text-2xl font-medium">Sasheen M.</div>
-                            <div className="text-sm text-gray-300">Customer Experience Consultant</div>
+                            <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate("/freelancer")}>{name}</div>
+                            <div className="text-sm text-gray-300">{professional_role}</div>
                             <div className="flex items-center">
                                 <div className="star-filled"></div>
                                 <div className="star-filled"></div>
@@ -264,7 +270,7 @@ export const SearchJobPage = () => {
                     </HStack>
                     <div className="text-xl font-semibold mb-4">Latest Job Posts</div>
                     <div className="border border-tertiary rounded-2xl overflow-auto w-[100%]">
-                        <JobCard jobs={jobs} />
+                        <JobCard jobs={leatestJob} />
                     </div>
                 </div>
             </div>
@@ -290,7 +296,7 @@ export const Filter = ({ handleContractTypeChange, handleExperienceChange, handl
             <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
                 <Text fontWeight={"600"}>Experience Required</Text>
                 <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-                    <Checkbox onChange={() => handleExperienceChange('Entry Level')}>Entry Level</Checkbox>
+                    <Checkbox onChange={() => handleExperienceChange('Entry')}>Entry Level</Checkbox>
                     <Checkbox onChange={() => handleExperienceChange('Intermediate')}>Intermediate</Checkbox>
                     <Checkbox onChange={() => handleExperienceChange('Expert')}>Expert</Checkbox>
                 </VStack>
