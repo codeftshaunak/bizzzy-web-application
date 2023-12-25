@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { Text, HStack } from '@chakra-ui/react'
 
 const JobCard = ({ jobs }) => {
+
+  console.log(jobs);
   const navigate = useNavigate();
   const [visibleJobs, setVisibleJobs] = useState(4);
   return (
     <>
       <div>
         {jobs?.length > 0 ? (
-          jobs.slice(0, visibleJobs).map((job, index) => {
+          jobs?.slice(0, visibleJobs).map((job, index) => {
 
             const formattedDate = formatDistanceToNow(new Date(job?.created_at), {
               addSuffix: true,

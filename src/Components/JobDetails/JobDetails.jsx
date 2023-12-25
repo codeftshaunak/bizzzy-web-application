@@ -5,7 +5,25 @@ import { getJobById } from '../../helpers/jobApis';
 const JobDetails = ({ setPage, setDetails }) => {
     const { id } = useParams();
     const [job, setJob] = useState();
-    console.log(job);
+
+    const dateObject = new Date(job?.created_at);
+    const currentTime = new Date();
+    const timeDifference = currentTime - dateObject;
+
+    const minutes = Math.floor((timeDifference / 1000 / 60) % 60);
+    const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    // Construct the string representation
+    const formattedTimeElapsed =
+        days > 0
+            ? `${days} day${days !== 1 ? "s" : ""} ago`
+            : hours > 0
+                ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
+                : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+
+
+
     const getJobDetails = async () => {
         try {
             const getJob = await getJobById(id);
@@ -26,25 +44,25 @@ const JobDetails = ({ setPage, setDetails }) => {
                 <div className="flex gap-2 py-6">
                     <img src="/icons/home.svg" alt="home" />
                     <img src="/icons/chevron-right.svg" alt="arrow right" />
-                    <div>{job?.title}</div>
+                    <div className="capitalize">{job?.title}</div>
                 </div>
                 <div className="w-full border border-tertiary rounded-2xl p-6 mb-4">
                     <div className="flex justify-between items-center">
                         <div className='flex flex-col gap-2'>
                             <div className='flex'>
-                                <div className="font-semibold mr-2">{job?.title} </div>
-                                <div className="text-gray-300">Posted 2mins ago</div>
+                                <div className="font-semibold mr-2 capitalize">{job?.title} </div>
+                                <div className="text-gray-300">{formattedTimeElapsed}</div>
                             </div>
                             <div className="flex gap-3">
                                 <div className="flex gap-2"><img src="/icons/receipt.svg" alt="receipt" /> <div className='text-gray-300'>${job?.amount}</div></div>
-                                <div className="flex gap-2"><img src="/icons/user.svg" alt="user" /> <div className='text-gray-300'>{job?.experience}</div></div>
+                                <div className="flex gap-2"><img src="/icons/user.svg" alt="user" /> <div className='text-gray-300 capitalize'>{job?.experience}</div></div>
                             </div>
                         </div>
                         <button className="bg-primary text-secondary rounded h-[36px] px-4" onClick={() => setPage(2)}>Apply for this Job</button>
                     </div>
                 </div>
                 <div className="w-full flex justify-between">
-                    <div className="w-[68%] border border-tertiary rounded-2xl p-6">
+                    <div className="w-[68%] border border-tertiary rounded-2xl p-6 capitalize">
                         {job?.description}
                     </div>
                     <div className="w-[30%] border border-tertiary rounded-2xl p-6">

@@ -59,11 +59,11 @@ const ClientDashboardComponent = () => {
           <div className=" mt-6 border border-[#D1D5DB]  rounded-md">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
               <div className=" text-2xl font-medium text-[#374151]">Your Job Postings</div>
-              <div>
+              {/* <div>
                 <Link to="#" className=" text-lg font-medium text-fg-brand">
                   See All Postings
                 </Link>
-              </div>
+              </div> */}
             </div>
             <div className="px-4" >
               {

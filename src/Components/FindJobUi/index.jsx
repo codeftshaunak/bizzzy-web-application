@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
-    const reverseJob = jobs.slice().reverse();
+    const reverseJob = jobs?.slice().reverse();
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
     const { name, profile_image, professional_role, id } = profile.profile || [];
@@ -117,7 +117,7 @@ export const AllJobs = () => {
 
 export const SearchJobPage = () => {
     const [jobs, setJobs] = useState([]);
-    const leatestJob = jobs.slice().reverse();
+    const leatestJob = jobs?.slice().reverse();
     const [allJobs, setAllJobs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [category, setCategory] = useState('');

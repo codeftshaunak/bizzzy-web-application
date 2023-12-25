@@ -78,7 +78,7 @@ const JobApply = ({ setPage, details }) => {
                         <div className="w-[96%] border border-tertiary rounded-2xl p-6">
                             <div className="font-semibold">Job details</div>
                             <br />
-                            <p>
+                            <p className="capitalize">
                                 {details?.description}
                             </p>
                         </div>
@@ -167,8 +167,12 @@ const JobApply = ({ setPage, details }) => {
                                 <div className="border border-tertiary rounded-2xl p-6">
                                     <div className="font-semibold mb-2">Additional details</div>
                                     <div>Cover Letter</div>
-                                    <textarea rows="10" className="border border-tertiary w-full rounded"></textarea>
-                                    <div className="text-right text-gray-300">(0/500)</div>
+                                    <textarea
+                                        rows="10"
+                                        className="border border-tertiary w-full rounded p-3"
+                                        value={coverLetter}
+                                        onChange={(e) => setCoverLetter(e.target.value)}
+                                    />                                    <div className="text-right text-gray-300">(0/500)</div>
                                     <div className="font-semibold mt-4">Attachments</div>
                                     <div className="max-w-xl">
                                         <label
@@ -183,7 +187,7 @@ const JobApply = ({ setPage, details }) => {
                                             <input type="file" name="file_upload" className="hidden" />
                                         </label>
                                     </div>
-                                    <button className="bg-primary text-secondary rounded h-[36px] px-4 mt-4" onClick={() => setPage(1)}>Submit Proposal</button>
+                                    <button className="bg-primary text-secondary rounded h-[36px] px-4 mt-4" onClick={() => handleSubmit()}>Submit Proposal</button>
                                 </div>
                             </>
                         }
@@ -199,7 +203,7 @@ const JobApply = ({ setPage, details }) => {
 const BidDetailsSection = ({ label, placeholder, bidAmount, setBidAmount, serviceFee, details }) => (
     <div className="border border-tertiary rounded-2xl p-6 mb-4">
         {console.log({ bidAmount, serviceFee })}
-        <div className="font-semibold mb-2">{label}</div>
+        <div className="font-semibold mb-2 capitalize">{label}</div>
         <p className="mb-2">Client Budget: ${details?.amount}</p>
         <input
             className="rounded-md border border-tertiary p-1 w-full"

@@ -12,6 +12,7 @@ import {
   Text,
   useToast,
   HStack,
+  VStack,
   Image
 } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
@@ -234,15 +235,20 @@ export const JobPostView = () => {
 export const InviteFreelancer = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [allFreelancers, setAllFreelancers] = useState([]);
-  const [invitedFreelancers,setinvitedFreelancers] = useState([]);
+  const [invitedFreelancers, setinvitedFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isHire, setIsHire] = useState(false);
-  const [isUserId,setIsUserId] = useState('')
+  const [isUserId, setIsUserId] = useState('')
 
   const toast = useToast();
+  const location = useLocation();
+  const jobDetails = location.state && location?.state?.jobDetails;
+  const {
+    amount
+  } = jobDetails || [];
 
   let params = useParams();
   let { id } = params;
@@ -284,7 +290,7 @@ export const InviteFreelancer = () => {
     getFreelancer();
   }, []);
 
-  const invitedFreelancer=async()=>{
+  const invitedFreelancer = async () => {
     try {
       setLoading(true);
       const response = await getInvitedFreelancer();
@@ -300,39 +306,37 @@ export const InviteFreelancer = () => {
     }
   }
 
+  // const HandleInviteToJob = async (userId) => {
+  //   const formData = {
+  //     receiver_id: userId,
+  //     message: "hi accept this",
+  //     job_id: id,
+  //   };
+  //   try {
+  //     let result = await dispatch(clientService(formData));
+  //     if (result?.code === 200) {
+  //       // getSearchFreelancer([""])
+  //       toast({
+  //         title: "Invite send",
+  //         position: "top-right",
+  //         status: "success",
+  //         isClosable: true,
+  //         duration: 2000,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     const message = error?.response?.data?.msg;
+  //     toast({
+  //       title: message,
+  //       status: "error",
+  //       duration: 3000,
+  //       isClosable: true,
+  //       position: "top-right",
+  //     });
+  //   }
+  // };
 
-
-  const HandleInviteToJob = async (userId) => {
-    const formData = {
-      receiver_id: userId,
-      message: "hi accept this",
-      job_id: id,
-    };
-    try {
-      let result = await dispatch(clientService(formData));
-      if (result?.code === 200) {
-        // getSearchFreelancer([""])
-        toast({
-          title: "Invite send",
-          position: "top-right",
-          status: "success",
-          isClosable: true,
-          duration: 2000,
-        });
-      }
-    } catch (error) {
-      const message = error?.response?.data?.msg;
-      toast({
-        title: message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
-    }
-  };
-
-  const HandleOpenModal = (item,id) => {
+  const HandleOpenModal = (item, id) => {
     setIsUserId(id)
     if (item === "hire") {
       setIsHire(true);
@@ -357,13 +361,13 @@ export const InviteFreelancer = () => {
 
   const handleSend = async () => {
     if (isHire) {
-      //call hire api
       const formData = {
         freelencer_id: isUserId,
         job_id: id,
-        budget:"$55"
+        budget: amount
       }
-      try{
+
+      try {
         let result = await dispatch(hireFreelancerService(formData));
         if (result?.code == 200) {
           setOpen(false);
@@ -376,7 +380,7 @@ export const InviteFreelancer = () => {
             duration: 2000,
           });
         }
-      } catch(error){
+      } catch (error) {
         setOpen(false);
         setMessage("");
         const message = error?.response?.data?.msg;
@@ -436,7 +440,7 @@ export const InviteFreelancer = () => {
             <Tab className="px-0 text-black" onClick={() => getFreelancer()}>Search</Tab>
             <Tab
               className="px-0 text-black"
-              onClick={()=>invitedFreelancer()}
+              onClick={() => invitedFreelancer()}
             >
               Invited freelancer
             </Tab>
@@ -498,7 +502,7 @@ export const InviteFreelancer = () => {
                                   colorScheme="#16A34A"
                                   variant="outline"
                                   color={"#16A34A"}
-                                  onClick={() => HandleOpenModal("hire",searchResult?.user_id)}
+                                  onClick={() => HandleOpenModal("hire", searchResult?.user_id)}
                                 >
                                   Hire
                                 </Button>
@@ -508,10 +512,10 @@ export const InviteFreelancer = () => {
                                   size={"sm"}
                                   bg={"#16A34A"}
                                   color={"#fff"}
-                                  onClick={() => HandleOpenModal("inviteToJob",searchResult?.user_id
+                                  onClick={() => HandleOpenModal("inviteToJob", searchResult?.user_id
                                   )}
                                 >
-                                 {searchResult?.invitation_status === 0 ? "Invited" : "Invite to Job" }
+                                  {searchResult?.invitation_status === 0 ? "Invited" : "Invite to Job"}
                                 </Button>
                               </Stack>
                             </div>
@@ -751,6 +755,7 @@ export const InviteFreelancer = () => {
 export const ReviewProposal = () => {
   const location = useLocation();
   const jobDetails = location.state && location.state.jobDetails;
+  console.log({ "dddd": jobDetails });
   const id = jobDetails?._id;
   const [proposals, setProposals] = useState([]);
   const proposalsDetails = async () => {
@@ -785,130 +790,48 @@ export const ReviewProposal = () => {
                 proposals?.map(() => {
                   const details = proposals?.[0].user_details?.[0];
                   return (
-                    <div className="h-auto px-8 pt-8 pb-4 border-b-2 ">
-                      <div className="flex gap-4">
-                        <div className="w-[90px] h-[85px]  border-4 border-[#D1D5DB] rounded-full">
+                    <VStack className="h-auto px-8 pt-8 pb-4 border-b-2 w-full">
+                      <VStack>
+                        <HStack justifyContent={"start"} width={"100%"} alignItems={"center"}>
                           <img
-                            src={AvatarImg}
-                            className="w-full h-full rounded-full"
+                            src={details?.profile_image}
+                            className="w-[50px] h-full rounded-full"
                             alt=""
                           />
-                        </div>
-                        <div className="w-full space-y-3 ">
-                          <div className="flex justify-between ">
-                            <div>
-                              <h2 className="font-semibold text-fg-brand">
-                                {details?.firstName + " " + details?.lastName}
-                              </h2>
-                              <p className="text-sm font-medium text-[#6B7280]">
-                                Skilled UI/UX Product Designer
-                              </p>
+                          <div className="w-full space-y-3 ">
+                            <div className="flex justify-between ">
+                              <div>
+                                <h2 className="font-semibold text-fg-brand">
+                                  {details?.firstName + " " + details?.lastName}
+                                </h2>
+                                <p className="text-sm font-medium text-[#6B7280]">
+                                  {details?.professional_role}
+                                </p>
+                              </div>
+                              <div>
+                                <Stack direction="row" spacing={4} align="center">
+                                  <Button
+                                    size="sm"
+                                    colorScheme="#16A34A"
+                                    variant="outline"
+                                    color={"#16A34A"}
+                                  >
+                                    Message
+                                  </Button>
+                                  <Button
+                                    colorScheme="#16A34A"
+                                    variant="outline"
+                                    size={"sm"}
+                                    bg={"#16A34A"}
+                                    color={"#fff"}
+                                  >
+                                    Hire
+                                  </Button>
+                                </Stack>
+                              </div>
                             </div>
-                            <div>
-                              <Stack direction="row" spacing={4} align="center">
-                                <Button
-                                  size="sm"
-                                  colorScheme="#16A34A"
-                                  variant="outline"
-                                  color={"#16A34A"}
-                                >
-                                  Message
-                                </Button>
-                                <Button
-                                  colorScheme="#16A34A"
-                                  variant="outline"
-                                  size={"sm"}
-                                  bg={"#16A34A"}
-                                  color={"#fff"}
-                                >
-                                  Hire
-                                </Button>
-                              </Stack>
-                            </div>
                           </div>
-
-                          <div>
-                            <p className="text-sm font-medium text-[#6B7280]">
-                              {details?.country}
-                            </p>
-                          </div>
-                          <div className="flex gap-10">
-                            <p className="text-sm font-medium text-[#6B7280]">
-                              ${proposals?.[0]?.desiredPrice}
-                            </p>
-                            <p className="text-sm font-medium text-[#6B7280]">
-                              $3M+ earned
-                            </p>
-                            <p className="text-sm font-medium text-[#6B7280] border-b-2 block border-fg-brand">
-                              100% job success
-                              {details?.professional_role}
-                            </p>
-                          </div>
-                          <div>
-                            <h6 className="text-sm font-medium text-[#6B7280]">
-                              Cover letter
-                            </h6>
-                            <p className="mt-1 text-sm font-normal leading-6">
-                              Hello there, are you seeking a talented UX/UI
-                              designer? to refine and optimize our existing
-                              platform's user experience and visuals. Previous
-                              experience preferred. Share your portfolio
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Stack spacing={4} direction="row" align="center">
-                              <Button
-                                size="sm"
-                                colorScheme="gray"
-                                color={"#6B7280"}
-                              >
-                                Web design
-                              </Button>
-                              <Button
-                                size="sm"
-                                colorScheme="gray"
-                                color={"#6B7280"}
-                              >
-                                Mobile App Design
-                              </Button>
-                              <Button
-                                size="sm"
-                                colorScheme="gray"
-                                color={"#6B7280"}
-                              >
-                                Button text
-                              </Button>
-                              <Button
-                                size="sm"
-                                colorScheme="gray"
-                                color={"#6B7280"}
-                              >
-                                Button text
-                              </Button>
-                              <Button
-                                size="sm"
-                                colorScheme="gray"
-                                color={"#6B7280"}
-                              >
-                                Button text
-                              </Button>
-                              <Button
-                                size="sm"
-                                colorScheme="gray"
-                                color={"#6B7280"}
-                              >
-                                Button text
-                              </Button>
-                              <Button
-                                size="sm"
-                                colorScheme="gray"
-                                color={"#6B7280"}
-                              >
-                                Button text
-                              </Button>
-                            </Stack>
-                          </div>
-                        </div>
+                        </HStack>
                         <div>
                           <p className="text-sm font-medium text-[#6B7280]">
                             {details?.country}
@@ -934,24 +857,25 @@ export const ReviewProposal = () => {
                           </p>
                         </div>
                         <div className="flex items-center justify-between">
+
                           <Stack spacing={4} direction="row" align="center">
                             {
                               details?.skills?.map((skill) => {
                                 return <Button size="sm" colorScheme="gray" color={"#6B7280"}>
-                                  {skill}
+                                  {skill.skill_name}
                                 </Button>
                               })
                             }
                           </Stack>
-                          <div>
+                          {/* <div>
                             <IoIosArrowForward
                               size={24}
                               className="text-fg-brand"
                             />
-                          </div>
+                          </div> */}
                         </div>
-                      </div>
-                    </div>
+                      </VStack>
+                    </VStack>
                   );
                 })
               ) : (

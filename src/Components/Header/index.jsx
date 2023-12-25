@@ -556,7 +556,9 @@ export const AuthHeader = ({ role }) => {
                   className="flex items-center justify-center rounded-full w-[36px] h-[36px] cursor-pointer"
                   onClick={() => handleProfileButton()}
                 >
-                  <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} />
+                  {
+                    profile_image ? <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} /> : <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} />
+                  }
                 </div>
 
                 {

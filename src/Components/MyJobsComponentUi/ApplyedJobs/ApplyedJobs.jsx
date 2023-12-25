@@ -26,25 +26,25 @@ const ApplyedJobs = () => {
     getAllJobProposalList();
   }, []);
 
-  console.log(jobProposal, "jobProposal]]]]]]");
-
   return (
     <div className="my-3 space-y-4">
-      <h2 className="my-3 text-2xl font-medium text-[#374151]">Applied Job</h2>
-      <div className="my-5">
+      <h2 className="my-3 text-2xl font-medium">Applied Jobs</h2>
+      <div className="m-auto w-[100%] border p-5 shadow-md rounded-lg">
         <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th className="capitalize">Date</Th>
-                <Th className="capitalize">Action</Th>
-                <Th className="capitalize">Contacts</Th>
+          <Table variant="simple" justifyContent={"center"} width={"100%"} margin={"auto"} alignItems={"center"} textAlign={"center"}>
+            <Thead justifyContent={"center"} textAlign={"center"}>
+              <Tr textAlign={"center"}>
+                <Th fontSize={"1rem"} textAlign={"center"} className="capitalize">Date</Th>
+                <Th fontSize={"1rem"} textAlign={"center"} className="capitalize">Action</Th>
+                <Th fontSize={"1rem"} textAlign={"center"} className="capitalize">Status</Th>
               </Tr>
             </Thead>
             <Tbody>
               {jobProposal?.map((item, index) => {
-                const { createdAt, jobId } = item;
-                const dateObject = new Date(createdAt);
+                console.log(item);
+                const { created_at, jobId } = item;
+
+                const dateObject = new Date(created_at);
 
                 const formattedDate = dateObject.toLocaleDateString("en-US", {
                   year: "numeric",
@@ -54,19 +54,18 @@ const ApplyedJobs = () => {
 
                 return (
                   <Tr key={index}>
-                    <Td className="text-2xl font-normal text-[#6B7280]">
+                    <Td className="text-[1.2rem]" textAlign={"center"}>
                       {formattedDate}
                     </Td>
                     <Td>
-                      <div className="text-[#6B7280]">{item.job_title}</div>
-                      <div className="text-[#16A34A] text-lg font-medium">
+                      <div className="text-[#16A34A] text-lg font-medium capitalize text-center">
                         <Link to={`/find-job/${jobId?._id}`}>
                           {jobId?.title}
                         </Link>
                       </div>
                     </Td>
-                    <Td className="text-[#6B7280] font-normal text-lg">
-                      {-16}
+                    <Td className="text-[1.2rem]" textAlign={"center"}>
+                      {item.status == 1 && "Applied"}
                     </Td>
                   </Tr>
                 );

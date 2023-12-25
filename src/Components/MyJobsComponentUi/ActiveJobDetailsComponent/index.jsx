@@ -622,7 +622,8 @@ const EarningsDetails = ({ jobDetails }) => (
 
 const ActiveJobDetailsComponent = () => {
   const location = useLocation();
-  const jobState = location.state;
+  const jobState = location.state.job;
+  console.log({ "------": jobState.job });
   const job_id = jobState.job_id;
   const client_id = jobState.client_id;
 

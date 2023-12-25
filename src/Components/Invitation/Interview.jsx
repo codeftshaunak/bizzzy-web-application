@@ -14,7 +14,8 @@ const Interview = () => {
     const { job_id, invite_id } = queryString.parseUrl(currentUrl).query;
     const [openModal, setOpenModal] = useState(false);
     const [jobdetails, setJobDetails] = useState();
-    console.log({ "jd": jobdetails });
+
+
     const toast = useToast();
     const { socket } = useContext(SocketContext); // Use socket from context
     const getInvitationDetails = async () => {

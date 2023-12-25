@@ -5,11 +5,13 @@ import { Box, HStack, Text, VStack, useToast } from "@chakra-ui/react";
 
 export const ClientDetailsSection = ({ clientDetails, status, acceptInvite, rejectInvite, setOpenModal, offer }) => {
     return (
+
         <VStack padding="2rem 3rem" borderRadius="10px" width="450px" alignItems="start">
+
             {
                 offer ? <Text fontSize="xs" >Accept Job Offer For Start Your Contract!</Text> : <Text fontSize="xs" mb="15px" textAlign="center">Interested in discussing this job</Text>
-
             }
+
             <VStack>
                 {
                     offer ? <>
@@ -20,8 +22,8 @@ export const ClientDetailsSection = ({ clientDetails, status, acceptInvite, reje
                         <CTAButton text="Decline Interview" size="xl" padding="0.6rem 1.5rem" borderRadius="20px" border="1px solid var(--primarycolor)" hoverbg="var(--primarycolor)" hovercolor="#ffff" onClick={rejectInvite} isDisabled={status === 1 || status === 2} />
                     </>
                 }
-
             </VStack>
+
             <VStack width="100%" marginTop="0.8rem">
                 <Text textAlign="left" width="full" fontWeight="600" mb={"0"}>About the client</Text>
                 <HStack justifyContent="left" width="100%" gap={"0"}>
@@ -35,6 +37,7 @@ export const ClientDetailsSection = ({ clientDetails, status, acceptInvite, reje
                     <Text textAlign="left" marginBottom="0">{clientDetails?.location}</Text>
                 </VStack>
             </VStack>
+
         </VStack>
     );
 };
