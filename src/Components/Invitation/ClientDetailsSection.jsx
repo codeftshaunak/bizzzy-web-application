@@ -16,10 +16,10 @@ export const ClientDetailsSection = ({ clientDetails, status, acceptInvite, reje
                 {
                     offer ? <>
                         <CTAButton text="Accept Offer" size="xl" padding="0.6rem 1.5rem" borderRadius="20px" background="var(--primarycolor)" color="#ffff" border="1px solid var(--primarycolor)" onClick={() => setOpenModal(true)} isDisabled={status === 1 || status === 2} />
-                        <CTAButton text="Decline Offer" size="xl" padding="0.6rem 1.5rem" borderRadius="20px" border="1px solid var(--primarycolor)" hoverbg="var(--primarycolor)" hovercolor="#ffff" onClick={rejectInvite} isDisabled={status === 1 || status === 2} />
+                        <CTAButton text="Decline Offer" size="xl" padding="0.6rem 1.5rem" borderRadius="20px" border="1px solid var(--primarycolor)" hoverbg="var(--primarycolor)" hovercolor="#ffff" onClick={() => rejectInvite()} isDisabled={status === 1 || status === 2} />
                     </> : <>
                         <CTAButton text="Accept Interview" size="xl" padding="0.6rem 1.5rem" borderRadius="20px" background="var(--primarycolor)" color="#ffff" border="1px solid var(--primarycolor)" onClick={() => setOpenModal(true)} isDisabled={status === 1 || status === 2} />
-                        <CTAButton text="Decline Interview" size="xl" padding="0.6rem 1.5rem" borderRadius="20px" border="1px solid var(--primarycolor)" hoverbg="var(--primarycolor)" hovercolor="#ffff" onClick={rejectInvite} isDisabled={status === 1 || status === 2} />
+                        <CTAButton text="Decline Interview" size="xl" padding="0.6rem 1.5rem" borderRadius="20px" border="1px solid var(--primarycolor)" hoverbg="var(--primarycolor)" hovercolor="#ffff" onClick={() => rejectInvite()} isDisabled={status === 1 || status === 2} />
                     </>
                 }
             </VStack>
@@ -37,7 +37,6 @@ export const ClientDetailsSection = ({ clientDetails, status, acceptInvite, reje
                     <Text textAlign="left" marginBottom="0">{clientDetails?.location}</Text>
                 </VStack>
             </VStack>
-
         </VStack>
     );
 };

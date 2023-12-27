@@ -8,6 +8,7 @@ import {
   InputLeftElement,
   Text,
   VStack,
+  Avatar
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import CTAButton from "../CTAButton";
@@ -100,7 +101,7 @@ import { clearAuthData } from "../../redux/authSlice/authSlice";
 //                         </svg>
 //                         <Input placeholder={"Search here..."} width={"100%"} border={"none"} marginLeft={"0"} />
 //                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-//                             <g clip-path="url(#clip0_3745_2309)">
+//                             <g clipPath="url(#clip0_3745_2309)">
 //                                 <path d="M4.66634 6.00065C4.40263 6.00065 4.14485 5.92245 3.92558 5.77594C3.70632 5.62944 3.53542 5.4212 3.4345 5.17756C3.33359 4.93393 3.30718 4.66584 3.35863 4.4072C3.41007 4.14856 3.53706 3.91098 3.72353 3.72451C3.91 3.53804 4.14758 3.41105 4.40622 3.3596C4.66486 3.30816 4.93295 3.33456 5.17659 3.43548C5.42022 3.5364 5.62846 3.70729 5.77497 3.92656C5.92148 4.14582 5.99968 4.40361 5.99968 4.66732V11.334C5.99968 11.5977 5.92148 11.8555 5.77497 12.0747C5.62846 12.294 5.42022 12.4649 5.17659 12.5658C4.93295 12.6667 4.66486 12.6931 4.40622 12.6417C4.14758 12.5903 3.91 12.4633 3.72353 12.2768C3.53706 12.0903 3.41007 11.8527 3.35863 11.5941C3.30718 11.3355 3.33359 11.0674 3.4345 10.8237C3.53542 10.5801 3.70632 10.3719 3.92558 10.2254C4.14485 10.0789 4.40263 10.0007 4.66634 10.0007H11.333C11.5967 10.0007 11.8545 10.0789 12.0738 10.2254C12.293 10.3719 12.4639 10.5801 12.5648 10.8237C12.6658 11.0674 12.6922 11.3355 12.6407 11.5941C12.5893 11.8527 12.4623 12.0903 12.2758 12.2768C12.0893 12.4633 11.8518 12.5903 11.5931 12.6417C11.3345 12.6931 11.0664 12.6667 10.8228 12.5658C10.5791 12.4649 10.3709 12.294 10.2244 12.0747C10.0779 11.8555 9.99968 11.5977 9.99968 11.334V4.66732C9.99968 4.40361 10.0779 4.14582 10.2244 3.92656C10.3709 3.70729 10.5791 3.5364 10.8228 3.43548C11.0664 3.33456 11.3345 3.30816 11.5931 3.3596C11.8518 3.41105 12.0893 3.53804 12.2758 3.72451C12.4623 3.91098 12.5893 4.14856 12.6407 4.4072C12.6922 4.66584 12.6658 4.93393 12.5648 5.17756C12.4639 5.4212 12.293 5.62944 12.0738 5.77594C11.8545 5.92245 11.5967 6.00065 11.333 6.00065H4.66634Z" stroke="#6B7280" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
 //                             </g>
 //                             <defs>
@@ -394,8 +395,7 @@ export const AuthHeader = ({ role }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
   const profile = useSelector((state) => state.profile);
-  const { profile_image } = profile.profile || [];
-
+  const { profile_image, name } = profile.profile || [];
   const handleProfileButton = () => {
     setOpenInfo(!openInfo)
   }
@@ -557,7 +557,7 @@ export const AuthHeader = ({ role }) => {
                   onClick={() => handleProfileButton()}
                 >
                   {
-                    profile_image ? <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} /> : <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} />
+                    profile_image != "null" ? <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} /> : <Avatar title={name} boxSize="40px" />
                   }
                 </div>
 
@@ -820,7 +820,7 @@ const NavItem = ({ title, noIcon, url, onClick }) => {
 //                                     <>
 //                                         Logout
 //                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ marginLeft: "10px" }}>
-//                                             <g clip-path="url(#clip0_26_2554)">
+//                                             <g clipPath="url(#clip0_26_2554)">
 //                                                 <path d="M11.6667 6.66659V4.99992C11.6667 4.55789 11.4911 4.13397 11.1785 3.82141C10.8659 3.50885 10.442 3.33325 10 3.33325H4.16667C3.72464 3.33325 3.30072 3.50885 2.98816 3.82141C2.67559 4.13397 2.5 4.55789 2.5 4.99992V14.9999C2.5 15.4419 2.67559 15.8659 2.98816 16.1784C3.30072 16.491 3.72464 16.6666 4.16667 16.6666H10C10.442 16.6666 10.8659 16.491 11.1785 16.1784C11.4911 15.8659 11.6667 15.4419 11.6667 14.9999V13.3333" stroke="white" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
 //                                                 <path d="M7.5 10H17.5L15 7.5" stroke="white" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
 //                                                 <path d="M15 12.5L17.5 10" stroke="white" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />

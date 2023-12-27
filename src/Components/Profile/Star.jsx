@@ -10,7 +10,7 @@ const Star = () => {
       fill="none"
     >
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         clipRule="evenodd"
         d="M10.0004 14.7913L4.85702 17.4955L5.83952 11.768L1.67285 7.71214L7.42285 6.8788L9.99452 1.66797L12.5662 6.8788L18.3162 7.71214L14.1495 11.768L15.132 17.4955L10.0004 14.7913Z"
         fill="#16A34A"

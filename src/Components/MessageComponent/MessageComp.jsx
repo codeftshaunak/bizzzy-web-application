@@ -29,8 +29,6 @@ const MessageComp = () => {
     const getMessageUser = async () => {
         try {
             const response = await getMessageList();
-            console.log(response);
-
             if (response?.isError) {
                 toast({
                     title: response.message,
@@ -66,7 +64,7 @@ const MessageComp = () => {
 
     return (
         <HStack p={6} w="full" overflow={"scroll"} justifyContent={"space-between"} alignItems={"start"}>
-            <Box w="26%">
+            <Box w="350px">
                 <Box position="relative" h="44px" mb={2} mt={6}>
                     <Input
                         type="text"
@@ -87,7 +85,7 @@ const MessageComp = () => {
                     messageUsers.map((user, index) => (
                         <Box
                             key={index}
-                            className="h-[90px] border border-primary rounded-2xl bg-green-100 mt-[2rem] cursor-pointer"
+                            className="h-[90px] w-full border border-primary rounded-2xl bg-green-100 mt-[2rem] cursor-pointer"
                             onClick={() =>
                                 getMessagesList(
                                     user?.user_details?.userId ? user?.user_details?.userId : user?.user_details?.user_id
@@ -97,7 +95,7 @@ const MessageComp = () => {
                             <Flex align="center" justify="between" py={2} px={4}>
                                 <Box width="85px">
                                     {user?.user_details?.profile_image !== "null" ? (
-                                        <Image src={user?.user_details?.profile_image} className="h-[40px] w-[40px]" alt="img" />
+                                        <Image src={user?.user_details?.profile_image} className="h-[50px] w-[50px]" alt="img" borderRadius={"50px"} />
                                     ) : (
                                         <Avatar size="md" round="20px" name={user?.user_details?.firstName} />
                                     )}
@@ -121,7 +119,7 @@ const MessageComp = () => {
                 {messageDetails?.length > 0 && <MessageBody data={messageDetails} selectedUser={selectedUser} />}
             </VStack>
 
-            <VStack marginLeft={"1rem"} marginTop={"1rem"}>
+            <VStack marginLeft={"1rem"} marginTop={"1rem"} width={"200px"}>
                 <Card>
                     <h2>Submit works</h2>
                 </Card>
@@ -166,6 +164,7 @@ const MessageBody = ({ data, selectedUser }) => {
 
     useEffect(() => {
         setMessageData(data);
+        console.log(data);
     }, [data])
 
     useEffect(() => {
@@ -188,6 +187,7 @@ const MessageBody = ({ data, selectedUser }) => {
             <Avatar size="md" round="20px" name={user.sender_id === userId ? senderDetails?.firstName : recieverDetails?.firstName} />
         );
     };
+
     const sendMessage = (message) => {
         socket.emit("connect_user", { user_id: userId });
         socket.emit("chat_message", {
@@ -202,10 +202,12 @@ const MessageBody = ({ data, selectedUser }) => {
         socket.on();
         socket.emit("connect_user", { user_id: userId });
         socket.on("recieve_message", (data) => {
-            console.log({ "rc": data });
             data.created_at = new Date();
-            setMessageData([...messageData, data]);
+            setMessageData((prev) => [...prev, data])
         });
+        return () => {
+            socket.off("recieve_message");
+        };
     }, [data, socket, message])
 
     return <Box w="100%" px={2} marginLeft={"1.5rem"} py={"1rem"} borderRadius={"15px"} position={"relative"} height={"89vh"} borderLeft={"0.51px solid var(--secondarytext)"}>

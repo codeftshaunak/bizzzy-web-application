@@ -1,4 +1,6 @@
 import { Card, Image, Text, VStack, HStack, Box, Button } from "@chakra-ui/react";
+import { getReportData } from "../../helpers/freelancerApis";
+import { useEffect, useState } from "react";
 
 const data = [{
   "id": 0,
@@ -21,29 +23,40 @@ const data = [{
   "title": "Gross Earnings",
   "number": 20
 }
-
 ]
 
 const Status = () => {
+  const [report, setReport] = useState([]);
+
+  const getReport = async () => {
+    const response = await getReportData();
+    setReport(response.body)
+  }
+
+  const { user_details, balance, stats } = report;
+
+  useEffect(() => {
+    getReport();
+  }, [])
+
   return (
     <div className="w-full pb-24">
-
       <h2 className="my-6 text-[30px] font-semibold">Earnings Overview</h2>
 
       <HStack justifyContent={"space-between"}>
         <Card width={"400px"} backgroundColor={"#F0FDF4"} height={"10rem"} alignItems={"center"} justifyContent={"center"}>
-          <p className="font-semibold text-4xl mb-2">$35.00</p>
+          <p className="font-semibold text-4xl mb-2">${balance?.progress}</p>
           <p className="font-semibold text-lg capitalize">In Progress</p>
         </Card>
 
 
         <Card width={"400px"} height={"10rem"} alignItems={"center"} justifyContent={"center"}>
-          <p className="font-semibold text-4xl mb-2">$35.00</p>
+          <p className="font-semibold text-4xl mb-2">${balance?.review}</p>
           <p className="font-semibold text-xl capitalize">In review</p>
         </Card>
 
         <Card width={"400px"} height={"10rem"} alignItems={"center"} justifyContent={"center"}>
-          <p className="font-semibold text-4xl mb-2">$35.00</p>
+          <p className="font-semibold text-4xl mb-2">${balance?.available}</p>
           <p className="font-semibold text-lg">Available</p>
         </Card>
 
@@ -52,7 +65,7 @@ const Status = () => {
       <h2 className="my-6 text-[30px] font-semibold">General Stats</h2>
       <HStack justifyContent={"space-between"}>
         {
-          data.map((data) => {
+          stats?.map((data) => {
             return <Card key={data.id} width={"220px"} backgroundColor={"#F0FDF4"} height={"10rem"} alignItems={"center"} justifyContent={"center"}>
               <p className="font-semibold text-4xl mb-2">{data.number}</p>
               <p className="font-semibold text-lg capitalize">{data.title}</p>

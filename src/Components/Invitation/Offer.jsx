@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, HStack, Text, VStack, useToast } from "@chakra-ui/react";
 import queryString from 'query-string';
-import { acceptInvitation, acceptOffer, offerDetails } from '../../helpers/freelancerApis';
+import { acceptInvitation, updateOfferRequest, offerDetails } from '../../helpers/freelancerApis';
 import { useNavigate } from 'react-router-dom';
 import { JobDetailsSection } from './JobDetails';
 import { SocketContext } from '../../Contexts/SocketContext';
@@ -31,21 +31,58 @@ const Offer = () => {
 
     const performAction = async ({ messages, statusValue }) => {
         try {
-            const response = await acceptOffer({
-                "job_id": job_id,
-                "offer_id": offer_id,
-                "status": statusValue,
+            const response = await updateOfferRequest({
+                job_id: job_id,
+                offer_id: offer_id,
+                status: statusValue,
             });
-            if (response.code === 200) {
-                sendMessage(messages);
-                const message = statusValue === "1" ? "Offer Accepted Successfully!!!" : "You've Rejected The Offer!!!";
-                toast({ title: message, duration: '3000', colorScheme: statusValue === "1" ? 'green' : 'warning', position: 'top-right' });
-                navigate("/message");
+            // if (response.code === 200) {
+            //     sendMessage(messages);
+            //     const message =
+            //         statusValue === "accepted"
+            //             ? "Offer Accepted Successfully!!!"
+            //             : "You've Rejected The Offer!!!";
+
+            //     toast({
+            //         title: message,
+            //         duration: 3000,
+            //         colorScheme: statusValue === "accepted" ? "green" : "warning",
+            //         position: "top-right",
+            //     });
+
+            //     navigate("/message");
+            // } else if(response.isError){
+            //     console.warn("Unexpected response code:", response);
+            // }
+
+            if (response.isError) {
+                throw new Error(response.message)
             }
+            sendMessage(messages);
+            const message =
+                statusValue === "accepted"
+                    ? "Offer Accepted Successfully!!!"
+                    : "You've Rejected The Offer!!!";
+
+            toast({
+                title: message,
+                duration: 3000,
+                colorScheme: statusValue === "accepted" ? "green" : "warning",
+                position: "top-right",
+            });
+            navigate("/message");
         } catch (error) {
-            toast({ title: "Error performing action", duration: '3000', position: 'top-right', status: 'warning', isClosable: true });
+            toast({
+                title: "Error performing action",
+                description: error.message || "Unknown error",
+                duration: 3000,
+                position: "top-right",
+                status: "warning",
+                isClosable: true,
+            });
         }
     };
+
 
     const sendMessage = (message) => {
         if (socket) {
@@ -77,8 +114,8 @@ const Offer = () => {
     }, [socket, jobdetails]);
 
 
-    const acceptInvite = (messages) => performAction({ messages, statusValue: "1" });
-    const rejectInvite = () => performAction("2");
+    const acceptInvite = (messages) => performAction({ messages, statusValue: "accepted" });
+    const rejectInvite = (messages) => performAction({ messages, statusValue: "rejected" });
 
     return (
         <Box width="90%" padding="1rem 0">

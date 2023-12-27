@@ -39,7 +39,7 @@ const JobDetails = ({ setPage, setDetails }) => {
     }, [id])
 
     return (
-        <div className="w-full">
+        <div className="w-[90%]">
             <div className="py-2 w-full">
                 <div className="flex gap-2 py-6">
                     <img src="/icons/home.svg" alt="home" />
@@ -63,7 +63,7 @@ const JobDetails = ({ setPage, setDetails }) => {
                 </div>
                 <div className="w-full flex justify-between">
                     <div className="w-[68%] border border-tertiary rounded-2xl p-6 capitalize">
-                        {job?.description}
+                        <div dangerouslySetInnerHTML={{ __html: job?.description }} />
                     </div>
                     <div className="w-[30%] border border-tertiary rounded-2xl p-6">
                         <div className="font-semibold mb2">About the client</div>

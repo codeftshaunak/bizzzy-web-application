@@ -32,7 +32,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
 export const acceptInvitation = async (data) =>
     makeApiRequest('put', '/invitation-status-update', data);
 
-export const acceptOffer = async (data) =>
+export const updateOfferRequest = async (data) =>
     makeApiRequest('post', '/offer-update', data);
 
 export const offerDetails = async (offer_id) =>
@@ -49,4 +49,7 @@ export const getMessageList = async () =>
 
 export const getMessageDetails = async (data) =>
     makeApiRequest('get', `/message-list?receiver_id=${data}`);
+
+export const getReportData = async () =>
+    makeApiRequest('get', '/reports');
 

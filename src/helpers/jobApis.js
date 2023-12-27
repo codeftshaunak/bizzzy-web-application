@@ -17,7 +17,7 @@ export const getAllJobs = async () => {
 
     return response.data.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -37,26 +37,26 @@ export const searchJobs = async (searchQuery) => {
   }
 };
 
-export const getSearchFreelancer = async (keywords) => {
-  try {
-    const authToken = localStorage.getItem("authtoken");
-    const response = await API.post(
-      "/search-freelencers",
-      { keywords },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          token: authToken,
-        },
-      }
-    );
-    console.log("API Success:", response.data.body);
-    return response.data.body;
-  } catch (error) {
-    console.error("API Error:", error.message);
-    throw error;
-  }
-};
+// export const getSearchFreelancer = async (keywords) => {
+//   try {
+//     const authToken = localStorage.getItem("authtoken");
+//     const response = await API.get(
+//       "/search-freelencers",
+//       { keywords },
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           token: authToken,
+//         },
+//       }
+//     );
+//     console.log("API Success:", response.data.body);
+//     return response.data.body;
+//   } catch (error) {
+//     console.error("API Error:", error.message);
+//     throw error;
+//   }
+// };
 
 export const getInvitedFreelancer = async () => {
   try {

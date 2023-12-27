@@ -38,25 +38,23 @@ const ClientDashboardComponent = () => {
   }, []);
 
   return (
-    <div className=" max-w-screen-xl mx-auto">
-      <div className=" grid grid-cols-12 gap-4">
-        <div className=" col-span-12 md:col-span-9">
-          <h2 className=" text-[25px] mb-2">Your Dashboard</h2>
-          <h6 className=" text-[16px]">My Team</h6>
+    <div className="w-[90%]">
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-12 md:col-span-9">
+          <h2 className="text-[25px] mb-2">Your Dashboard</h2>
+          <h6 className="text-[16px]">My Team</h6>
 
           <div className="grid grid-cols-12 gap-4 mt-4">
             {
-              hiredList.length > 0 && hiredList.map((data, index) => {
+              hiredList?.length > 0 && hiredList.map((data, index) => {
                 return <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg" key={index}>
                   <ClientProfileCard data={data.freelancerDetails[0]} />
                 </div>
               })
             }
-
-
           </div>
 
-          <div className=" mt-6 border border-[#D1D5DB]  rounded-md">
+          <div className="mt-6 border border-[#D1D5DB]  rounded-md w-full">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
               <div className=" text-2xl font-medium text-[#374151]">Your Job Postings</div>
               {/* <div>
@@ -65,12 +63,12 @@ const ClientDashboardComponent = () => {
                 </Link>
               </div> */}
             </div>
-            <div className="px-4" >
+            <div className="px-4 w-full">
               {
                 jobs?.length > 0 && (
                   jobs?.slice()?.reverse().map((job, index) => {
                     const formattedDate = formatDistanceToNow(new Date(job?.created_at), { addSuffix: true });
-                    return <div className="flex items-center justify-between" key={index} style={{
+                    return <div className="flex items-center justify-between w-full" key={index} style={{
                       borderBottom: "0.1px solid #6b7280",
                       padding: "20px"
                     }}>

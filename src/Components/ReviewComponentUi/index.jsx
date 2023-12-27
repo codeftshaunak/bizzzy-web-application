@@ -26,9 +26,11 @@ const index = () => {
   const reciever_id = clientDetails.user_id;
   const toast = useToast();
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     sender_id: "",
     reciever_id: "",
+    job_id: "",
     private_feedback: {
       reason_for_ending_contract: "",
       recommending_others: 0,
@@ -61,7 +63,6 @@ const index = () => {
       console.log(error)
     }
   }
-
 
   const handlePublicFeedbackChange = (option, field, value) => {
     setFormData((prevData) => {
@@ -128,7 +129,6 @@ const index = () => {
 
 
   const handelSubmit = async () => {
-    console.log(formData);
     try {
       const response = await giveFeedback(formData);
       // // Reset form data

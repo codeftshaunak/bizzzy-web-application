@@ -5,9 +5,13 @@ import { BiX } from "react-icons/bi";
 import { TagsInput } from "react-tag-input-component";
 import { useFormState } from "../../Contexts/FormContext";
 import { firstStepSchema } from "../../Schema/job-create-schema";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css';
 
 function FirstStep({ setStep }) {
   const { insertToFormState, formState } = useFormState();
+  const { quill, quillRef } = useQuill();
+
   const {
     register,
     formState: { errors },
@@ -22,6 +26,14 @@ function FirstStep({ setStep }) {
       tags: [],
     },
   });
+
+  React.useEffect(() => {
+    if (quill) {
+      quill.on('text-change', (delta, oldDelta, source) => {
+        setValue("description", quill.root.innerHTML)
+      });
+    }
+  }, [quill]);
 
   const tags = getValues("tags");
   const skills = getValues("skills");
@@ -82,12 +94,16 @@ function FirstStep({ setStep }) {
         <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight">
           Description
         </div>
-        <textarea
+        {/* <textarea
           className="border mt-1 border-outline-primary rounded-md shadow-sm w-full font-['SF Pro Text'] text-sm py-1 px-3"
           placeholder="Already have a description? Paste here!"
           rows={2}
           {...register("description")}
-        />
+        /> */}
+        <div style={{ width: "100%", height: 300 }}>
+          <div ref={quillRef} style={{ width: "100%", height: "250px" }} />
+        </div>
+
         {errors?.description ? (
           <p className="text-sm text-red-500">{errors.description.message}</p>
         ) : null}
@@ -266,7 +282,6 @@ function FirstStep({ setStep }) {
                     id="file"
                     className="hidden"
                     onChange={(e) => {
-                      console.log(e.target.files,"ttt")
                       onChange(e.target.files[0])
                     }}
                   />

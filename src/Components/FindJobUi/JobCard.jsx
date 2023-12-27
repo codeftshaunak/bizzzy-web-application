@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { Text, HStack } from '@chakra-ui/react'
 
 const JobCard = ({ jobs }) => {
-
-  console.log(jobs);
   const navigate = useNavigate();
   const [visibleJobs, setVisibleJobs] = useState(4);
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  };
+
   return (
     <>
       <div>
@@ -38,9 +40,9 @@ const JobCard = ({ jobs }) => {
                   >
                     {job?.title}
                   </div>
-                  <div className="text-gray-300 text-sm mb-2">
-                    {job?.description}
-                  </div>
+                  <br />
+                  <div className="space-y-0" dangerouslySetInnerHTML={{ __html: truncateText(job?.description, 500) }} />
+
                   <div className="flex items-center ">
                     <div className="star-filled" style={{ color: 'var(--primarycolor)' }}>★</div>
                     <div className="star-filled" style={{ color: 'var(--primarycolor)' }}>★</div>

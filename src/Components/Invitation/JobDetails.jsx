@@ -21,7 +21,7 @@ export const JobDetailsSection = ({ jobdetails }) => {
                         <Text backgroundColor="var(--bordersecondary)" padding="0.2rem 1rem" borderRadius="15px" fontWeight="300">Scription & Automation</Text>
                         <Text padding="0.2rem 1rem" borderRadius="15px" fontWeight="300">{formatDate(new Date(jobdetails?.job_details[0]?.created_at))}</Text>
                     </HStack>
-                    <Text fontSize="0.9rem">{jobdetails?.job_details[0]?.description}</Text>
+                    <div dangerouslySetInnerHTML={{ __html: jobdetails?.job_details[0].description }}></div>
                     <Text color="var(--primarytextcolor)" fontWeight="600" cursor="pointer" mb="0">View Job Post</Text>
                 </VStack>
                 <VStack paddingLeft="1rem" borderLeft="1px solid var(--bordersecondary)" marginTop="3rem" marginLeft="1rem" gap="5">

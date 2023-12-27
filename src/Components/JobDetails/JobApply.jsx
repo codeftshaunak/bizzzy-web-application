@@ -2,9 +2,13 @@ import { Box, HStack, Select, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import { applyJob } from '../../helpers/jobApis';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css';
 
 const JobApply = ({ setPage, details }) => {
+    const { quill, quillRef } = useQuill();
     const [coverLetter, setCoverLetter] = useState('');
+    console.log(coverLetter);
     const [bidDetails, setBidDetails] = useState({
         amount: details?.amount,
         type: details?.budget === 1 ? 'milestone' : 'project',
@@ -37,7 +41,6 @@ const JobApply = ({ setPage, details }) => {
                 jobType: bidDetails.type,
                 coverLetter: coverLetter,
             });
-            console.log(response);
             if (response.code === 200) {
                 toast({
                     title: 'Job Applied Successfully',
@@ -61,9 +64,17 @@ const JobApply = ({ setPage, details }) => {
         }
     };
 
+    React.useEffect(() => {
+        if (quill) {
+            quill.on('text-change', (delta, oldDelta, source) => {
+                setCoverLetter(quill.root.innerHTML)
+            });
+        }
+    }, [quill]);
+
     return (
         <div className="w-full">
-            <div className="py-2 px-40">
+            <div className="py-2 w-[90%] m-auto">
                 <div className="flex gap-2 py-6">
                     <img src="/icons/home.svg" alt="home" />
                     <img src="/icons/chevron-right.svg" alt="arrow right" />
@@ -74,16 +85,14 @@ const JobApply = ({ setPage, details }) => {
                     <div>Submit Proposal</div>
                 </div>
                 <div className="w-full flex justify-between">
-                    <div className='w-full'>
+                    <div className='w-[100%]'>
                         <div className="w-[96%] border border-tertiary rounded-2xl p-6">
                             <div className="font-semibold">Job details</div>
                             <br />
-                            <p className="capitalize">
-                                {details?.description}
-                            </p>
+                            <p className="capitalize" dangerouslySetInnerHTML={{ __html: details?.description }}></p>
                         </div>
                     </div>
-                    <div className="w-full">
+                    <div className="w-[60%]">
                         {details?.budget == 1 &&
                             <div className="w-full flex justify-between">
                                 <div className="w-full">
@@ -118,13 +127,16 @@ const JobApply = ({ setPage, details }) => {
                                     <div className="border border-tertiary rounded-2xl p-6">
                                         <div className="font-semibold mb-2">Additional details</div>
                                         <div>Cover Letter</div>
-                                        <textarea
+                                        <div style={{ width: "100%", height: 300 }}>
+                                            <div ref={quillRef} style={{ width: "100%", height: "250px" }} />
+                                        </div>
+                                        {/* <textarea
                                             rows="10"
                                             className="border border-tertiary w-full rounded p-3"
                                             value={coverLetter}
                                             onChange={(e) => setCoverLetter(e.target.value)}
-                                        />
-
+                                        /> */}
+                                        <br />
                                         <div className="text-right text-gray-300">(0/500)</div>
                                         <div className="font-semibold mt-4">Attachments</div>
                                         <div className="max-w-xl">
@@ -167,12 +179,18 @@ const JobApply = ({ setPage, details }) => {
                                 <div className="border border-tertiary rounded-2xl p-6">
                                     <div className="font-semibold mb-2">Additional details</div>
                                     <div>Cover Letter</div>
-                                    <textarea
+                                    {/* <textarea
                                         rows="10"
                                         className="border border-tertiary w-full rounded p-3"
                                         value={coverLetter}
                                         onChange={(e) => setCoverLetter(e.target.value)}
-                                    />                                    <div className="text-right text-gray-300">(0/500)</div>
+                                    /> */}
+                                    <div style={{ width: "100%", height: 300 }}>
+                                        <div ref={quillRef} style={{ width: "100%", height: "250px" }} />
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div className="text-right text-gray-300">(0/500)</div>
                                     <div className="font-semibold mt-4">Attachments</div>
                                     <div className="max-w-xl">
                                         <label

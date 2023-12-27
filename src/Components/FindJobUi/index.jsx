@@ -9,11 +9,12 @@ import { useSelector } from 'react-redux'
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
+    console.log(jobs);
     const reverseJob = jobs?.slice().reverse();
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
     const { name, profile_image, professional_role, id } = profile.profile || [];
-    console.log(profile);
+
     const getAllJobList = async () => {
         try {
             const response = await getAllJobs();

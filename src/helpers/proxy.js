@@ -16,7 +16,6 @@ export const API = axios.create({
 
 export const useApiErrorHandling = () => {
   const logoutAndRedirect = (msg) => {
-    localStorage.removeItem("authtoken");
     return {
       path: "/login",
       message: msg,
