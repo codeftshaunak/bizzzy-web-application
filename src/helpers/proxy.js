@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const BASE_URL = `http://localhost:5002/api/v1`;
 export const socketURL = 'http://localhost:5002/'
 
@@ -23,13 +24,22 @@ export const useApiErrorHandling = () => {
     }
   };
 
+  const handleErrorResponse=(msg)=>{
+    return {
+      message: msg,
+      isError: true,
+    }
+  }
+
   const handleApiError = (error) => {
     console.error("API Error:", error.response.data);
     if (error.response) {
       if (error.response.data.code === 401) {
         return logoutAndRedirect(error.response.data.msg);
       } else if (error.response.data.code === 400) {
-        return logoutAndRedirect(error.response.data.msg);
+        return handleErrorResponse(error.response.data.msg);
+      } else if (error.response.data.code === 404) {
+        return handleErrorResponse(error.response.data.msg);
       } else {
         throw error;
       }

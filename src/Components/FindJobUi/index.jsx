@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { getAllJobs, searchJobs } from '../../helpers/jobApis';
 import JobCard from './JobCard';
 import { useNavigate } from 'react-router-dom'
-import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack } from '@chakra-ui/react';
+import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useSelector } from 'react-redux'
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
-    console.log(jobs);
     const reverseJob = jobs?.slice().reverse();
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
@@ -81,7 +80,15 @@ export const AllJobs = () => {
                 <div className="w-[25%] pl-6">
                     <div className="h-[296px] border border-tertiary rounded-2xl">
                         <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                            <img src={profile_image} alt="avatar" className="h-[90px] w-[90px] rounded-full border-4 border-tertiary" />
+                            {profile_image == null ? (
+                                <Avatar name={name} />
+                            ) : (
+                                <img
+                                    src={profile_image}
+                                    alt="avatar"
+                                    className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
+                                />
+                            )}
                             <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/freelancer`)}>{name}</div>
                             <div className="text-sm text-gray-300">{professional_role}</div>
                             <div className="flex items-center">

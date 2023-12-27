@@ -7,6 +7,7 @@ import { JobDetailsSection } from './JobDetails';
 import { SocketContext } from '../../Contexts/SocketContext';
 import Modal from './Modal';
 import { ClientDetailsSection } from './ClientDetailsSection';
+import ConfirmModalCommon from '../ConfirmationModal/ConfirmationModalCommon';
 
 const Offer = () => {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Offer = () => {
     const { offer_id, job_id } = queryString.parseUrl(currentUrl).query;
     const [openModal, setOpenModal] = useState(false);
     const [jobdetails, setJobDetails] = useState();
+    const [reject, setReject] = useState(false);
     const toast = useToast();
     const { socket } = useContext(SocketContext); // Use socket from context
     const getInvitationDetails = async () => {
@@ -36,25 +38,6 @@ const Offer = () => {
                 offer_id: offer_id,
                 status: statusValue,
             });
-            // if (response.code === 200) {
-            //     sendMessage(messages);
-            //     const message =
-            //         statusValue === "accepted"
-            //             ? "Offer Accepted Successfully!!!"
-            //             : "You've Rejected The Offer!!!";
-
-            //     toast({
-            //         title: message,
-            //         duration: 3000,
-            //         colorScheme: statusValue === "accepted" ? "green" : "warning",
-            //         position: "top-right",
-            //     });
-
-            //     navigate("/message");
-            // } else if(response.isError){
-            //     console.warn("Unexpected response code:", response);
-            // }
-
             if (response.isError) {
                 throw new Error(response.message)
             }
@@ -82,6 +65,37 @@ const Offer = () => {
             });
         }
     };
+
+    const handleRejectOffer = async () => {
+        try {
+            const response = await updateOfferRequest({
+                job_id: job_id,
+                offer_id: offer_id,
+                status: "rejected",
+            });
+            if (response.isError) {
+                throw new Error(response.message)
+            }
+            const message = "You've Rejected The Offer!!!";
+
+            toast({
+                title: message,
+                duration: 3000,
+                colorScheme: warning,
+                position: "top-right",
+            });
+            navigate("/message");
+        } catch (error) {
+            toast({
+                title: "Error performing action",
+                description: error.message || "Unknown error",
+                duration: 3000,
+                position: "top-right",
+                status: "warning",
+                isClosable: true,
+            });
+        }
+    }
 
 
     const sendMessage = (message) => {
@@ -115,7 +129,9 @@ const Offer = () => {
 
 
     const acceptInvite = (messages) => performAction({ messages, statusValue: "accepted" });
-    const rejectInvite = (messages) => performAction({ messages, statusValue: "rejected" });
+    const rejectInvite = () => setReject(true);
+
+    // const rejectInvite = (messages) => performAction({ messages, statusValue: "rejected" });
 
     return (
         <Box width="90%" padding="1rem 0">
@@ -125,6 +141,9 @@ const Offer = () => {
                 <ClientDetailsSection clientDetails={jobdetails?.client_details[0]} status={jobdetails?.status} setOpenModal={setOpenModal} rejectInvite={rejectInvite} offer={true} />
                 {
                     openModal && <Modal setOpenModal={setOpenModal} acceptInvite={acceptInvite} offer={true} />
+                }
+                {
+                    reject && <ConfirmModalCommon setOpenModal={setReject} title={"Reject The Offer"} handleSubmit={handleRejectOffer} />
                 }
             </HStack>
         </Box>
