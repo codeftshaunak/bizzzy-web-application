@@ -33,7 +33,7 @@ export const acceptInvitation = async (data) =>
     makeApiRequest('put', '/invitation-status-update', data);
 
 export const updateOfferRequest = async (data) =>
-    makeApiRequest('post', '/offer-update', data);
+    makeApiRequest('post', '/offer/update', data);
 
 export const offerDetails = async (offer_id) =>
     makeApiRequest('get', `/freelancer/offer-details?offer_id=${offer_id}`)

@@ -112,6 +112,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
     }
 };
 
+
 export const getSearchFreelancer = async (keywords) =>
     makeApiRequest('get', '/search-freelencers', keywords)
 

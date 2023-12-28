@@ -29,7 +29,7 @@ export const clientService = (data) => (dispatch) => {
 export const hireFreelancerService= (data) => (dispatch) => {
   return new Promise(async(resolve, reject) => {
     try {
-        const res = await axiosInstance.post("offer-send",data);
+        const res = await axiosInstance.post("offer/send",data);
         // dispatch(updateCode(res.status))
         resolve(res.data)
     } catch (error) {

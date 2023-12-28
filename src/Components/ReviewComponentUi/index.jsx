@@ -6,6 +6,7 @@ import StarRatings from 'react-star-ratings';
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { giveFeedback, getOptionsList } from "../../helpers/clientApis";
+import { useParams } from 'react-router-dom';
 
 
 const index = () => {
@@ -26,6 +27,7 @@ const index = () => {
   const reciever_id = clientDetails.user_id;
   const toast = useToast();
   const navigate = useNavigate();
+  const { job_id } = useParams()
 
   const [formData, setFormData] = useState({
     sender_id: "",
@@ -110,6 +112,7 @@ const index = () => {
     setFormData((data) => ({
       ...data,
       sender_id: id,
+      job_id: job_id,
       reciever_id: reciever_id,
       public_feedback: {
         ...data.public_feedback,
@@ -122,7 +125,7 @@ const index = () => {
       }
     }));
     getResonOptionList();
-  }, [totalScore, feedbackMessage, selectedNumber, id, reciever_id]);
+  }, [totalScore, feedbackMessage, selectedNumber, id, job_id, reciever_id]);
 
 
   const [resonOptionList, setResonOptionList] = useState([]);

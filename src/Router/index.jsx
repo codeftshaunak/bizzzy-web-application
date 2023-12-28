@@ -46,8 +46,8 @@ const Router = () => {
                 <Route exact path="/my-stats" element={<Report />} />
                 <Route exact path="/message/invitation" element={<InterviewInvitation />} />
                 <Route exact path="/message/offer" element={<OfferInvitation />} />
-                <Route exact path="/submit-review/:id" element={<Review />} />
-                <Route exact path="/end-contract/:id" element={<Review />} />
+                <Route exact path="/submit-review/:job_id" element={<Review />} />
+                <Route exact path="/end-contract/:job_id" element={<Review />} />
                 <Route exact path="/my-jobs" element={<MyJobPage />} />
                 <Route exact path="/active-job/submit/:id" element={<EndContract />} />
                 <Route exact path="/endcotract/:id" element={<EndContract />} />

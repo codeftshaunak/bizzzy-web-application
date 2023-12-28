@@ -54,7 +54,7 @@ export const signIn = async (data) => {
 
 export const verifyMail = async (data) => {
   try {
-    const response = await API.post("/verify-email", data, {
+    const response = await API.post("/email/verification", data, {
       headers: { "Access-Control-Allow-Credentials": true },
     });
     return response.data;
