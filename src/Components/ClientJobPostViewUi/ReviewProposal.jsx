@@ -15,18 +15,54 @@ import {
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getProposals } from "../../helpers/clientApis";
 import { useEffect, useState } from "react";
+import { hireFreelancerService } from "../../redux/clientSlice/clientService";
 
 
 export const ReviewProposal = () => {
-
     const location = useLocation();
     const jobDetails = location.state && location.state.jobDetails;
     const id = jobDetails?._id;
+    const [open, setOpen] = useState(false);
+    console.log(open);
+
     const [proposals, setProposals] = useState([]);
 
     const proposalsDetails = async () => {
         const resp = await getProposals(id);
         setProposals(resp);
+    };
+
+    const handleSend = async () => {
+        const formData = {
+            freelencer_id: isUserId,
+            job_id: id,
+            budget: amount
+        }
+
+        try {
+            let result = await dispatch(hireFreelancerService(formData));
+            if (result?.code == 200) {
+                setOpen(false);
+                setMessage("");
+                toast({
+                    title: result?.msg,
+                    position: "top-right",
+                    status: "success",
+                    isClosable: true,
+                    duration: 2000,
+                });
+            }
+        } catch (error) {
+            setOpen(false);
+            const message = error?.response?.data?.msg;
+            toast({
+                title: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+                position: "top-right",
+            });
+        }
     };
 
     useEffect(() => {
@@ -76,11 +112,49 @@ export const ReviewProposal = () => {
                                                                         size={"sm"}
                                                                         bg={"#16A34A"}
                                                                         color={"#fff"}
-                                                                    >
-                                                                        Hire
-                                                                    </Button>
+                                                                        onClick={() => setOpen(true)}
+                                                                    >Hire</Button>
                                                                 </HStack>
                                                             </Box>
+
+                                                            {open && (
+                                                                <div>
+                                                                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                                                                        <div className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+                                                                        <div className="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                                                                            <div className="modal-content py-4 text-left px-6">
+                                                                                <div className="flex justify-between items-center pb-3 border-b">
+                                                                                    <p className="text-xl font-500">
+                                                                                        Are you sure!
+                                                                                    </p>
+                                                                                    <button
+                                                                                        className="modal-close cursor-pointer z-50"
+                                                                                        onClick={() => setOpen(false)}
+                                                                                    >
+                                                                                        &times;
+                                                                                    </button>
+                                                                                </div>
+
+                                                                                <div className="flex justify-end pt-2 border-t">
+                                                                                    <button
+                                                                                        onClick={() => setOpen(false)}
+                                                                                        className="px-4 py-2 mx-4 bg-white border border-black rounded-lg text-black hover:bg-[#F0FDF4]"
+                                                                                    >
+                                                                                        Cancel
+                                                                                    </button>
+                                                                                    <button
+                                                                                        className="px-4 bg-fg-brand py-2 rounded-lg text-white hover:bg-fg-brand"
+                                                                                        onClick={() => handleSend()}>
+                                                                                        Sure
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+
+
                                                         </Box>
 
                                                     </Box>
