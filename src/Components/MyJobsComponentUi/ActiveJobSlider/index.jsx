@@ -6,24 +6,24 @@ import { activeJobsData } from "../MyJobMockData/MyJobMockData";
 import ActiveJobCard from "../ActiveJobCard";
 import { userAllJobs } from "../../../helpers/jobApis";
 
-const ActiveJobSlider = () => {
-  const [activeJobList, setActiveJobList] = useState([]);
+const ActiveJobSlider = ({ activeJobList }) => {
+  // const [activeJobList, setActiveJobList] = useState([]);
 
-  const userAllJobsDatas = async () => {
-    try {
-      const response = await userAllJobs();
-      console.log(response);
-      setActiveJobList(response?.body);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const userAllJobsDatas = async () => {
+  //   try {
+  //     const response = await userAllJobs();
+  //     console.log(response);
+  //     setActiveJobList(response?.body);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    userAllJobsDatas();
-  }, []);
+  // useEffect(() => {
+  //   userAllJobsDatas();
+  // }, []);
 
-  console.log(activeJobList, "activeJobList+++++")
+  // console.log(activeJobList, "activeJobList+++++")
 
   const [sliderSettings] = useState({
     dots: true,
@@ -63,7 +63,7 @@ const ActiveJobSlider = () => {
   return (
     <div>
       <Slider {...sliderSettings}>
-        {activeJobList.map((job, index) => {
+        {activeJobList.length > 0 && activeJobList?.map((job, index) => {
           return <ActiveJobCard key={index + job?._id} job={job} />;
         })}
       </Slider>
