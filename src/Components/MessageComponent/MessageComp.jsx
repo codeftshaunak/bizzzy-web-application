@@ -184,7 +184,7 @@ const MessageBody = ({ data, selectedUser }) => {
         return isProfileImageAvailable ? (
             <Image src={profileImage} className="h-[50px] w-[50px]" alt="img" rounded={"50%"} border={"1px solid gray"} />
         ) : (
-            <Avatar size="md" round="20px" name={user.sender_id === userId ? senderDetails?.firstName + senderDetails.lastName : recieverDetails?.firstName + senderDetails.lastName} />
+            <Avatar size="md" round="20px" name={user.sender_id === userId ? senderDetails?.firstName + senderDetails.lastName : recieverDetails?.firstName + recieverDetails.lastName} />
         );
     };
 
