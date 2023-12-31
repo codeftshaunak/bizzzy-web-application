@@ -29,11 +29,8 @@ const ApplyedJobs = ({ applyJobs }) => {
               </Thead>
               <Tbody>
                 {applyJobs?.map((item, index) => {
-                  console.log(item);
                   const { created_at, jobId } = item;
-
                   const dateObject = new Date(created_at);
-
                   const formattedDate = dateObject.toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
