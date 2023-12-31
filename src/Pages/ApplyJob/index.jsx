@@ -6,7 +6,6 @@ import JobApply from '../../Components/JobDetails/JobApply'
 const ApplyJob = () => {
     const [page, setPage] = useState(1);
     const [details, setDetails] = useState([]);
-    console.log({ "details--": details });
     return (
         <HomeLayout>
             {

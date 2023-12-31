@@ -4,14 +4,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { activeJobsData } from "../MyJobMockData/MyJobMockData";
 import ActiveJobCard from "../ActiveJobCard";
-import { getActiveJob } from "../../../helpers/myJobsApi";
+import { userAllJobs } from "../../../helpers/jobApis";
 
 const ActiveJobSlider = () => {
   const [activeJobList, setActiveJobList] = useState([]);
 
-  const getActiveJobDatas = async () => {
+  const userAllJobsDatas = async () => {
     try {
-      const response = await getActiveJob();
+      const response = await userAllJobs();
       console.log(response);
       setActiveJobList(response?.body);
     } catch (error) {
@@ -20,7 +20,7 @@ const ActiveJobSlider = () => {
   };
 
   useEffect(() => {
-    getActiveJobDatas();
+    userAllJobsDatas();
   }, []);
 
   console.log(activeJobList, "activeJobList+++++")

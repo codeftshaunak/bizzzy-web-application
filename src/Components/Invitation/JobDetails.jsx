@@ -3,8 +3,10 @@ import { FaHeadSideVirus } from 'react-icons/fa6';
 import { BsCalendar2Month } from 'react-icons/bs';
 import { Box, HStack, Text, VStack, useToast } from "@chakra-ui/react";
 import { IoMdTime } from 'react-icons/io';
+import { useEffect } from 'react';
 
 export const JobDetailsSection = ({ jobdetails }) => {
+
     const formatDate = (dateString) => {
         const options = { day: 'numeric', month: 'short', year: 'numeric' };
         const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);

@@ -8,7 +8,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getAllJobsProposal } from "../../../helpers/jobProposalApi";
+import { getAllJobsProposal } from "../../../helpers/jobApis";
 import { Link } from "react-router-dom";
 
 const ApplyedJobs = () => {

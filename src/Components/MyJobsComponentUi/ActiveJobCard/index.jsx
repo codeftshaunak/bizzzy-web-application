@@ -40,7 +40,7 @@ const ActiveJobCard = ({ job }) => {
         </VStack>
       </Box>
       <Box position={"absolute"} fontWeight={"600"} backgroundColor={"var(--primarycolor)"} padding={"1px 8px"} color={"white"} top={"10px"} borderRadius={"5px"} right={"10px"}>
-        <Text>{job_details[0].experience}</Text>
+        <Text>{job_details[0]?.experience}</Text>
       </Box>
     </VStack>
   );

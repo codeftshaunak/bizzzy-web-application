@@ -10,8 +10,19 @@ const ClientDashboardComponent = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [hiredList, setHiredList] = useState([]);
+  const uniqueHired = [];
+  const seenFreelancerIds = new Set();
+  if (hiredList.length > 0) {
+    hiredList?.forEach((item) => {
+      // Check if the freelancer_id is already in the Set
+      if (!seenFreelancerIds.has(item.freelencer_id)) {
+        // If not, add it to the Set and push the item to the result array
+        seenFreelancerIds.add(item.freelencer_id);
+        uniqueHired.push(item);
+      }
+    });
+  }
 
-  console.log({ "hiredlist": hiredList });
 
   const getClientPostedJob = async () => {
     try {
@@ -37,6 +48,8 @@ const ClientDashboardComponent = () => {
     getHiredFreelancer();
   }, []);
 
+
+
   return (
     <div className="w-[90%]">
       <div className="grid grid-cols-12 gap-4">
@@ -46,7 +59,7 @@ const ClientDashboardComponent = () => {
 
           <div className="grid grid-cols-12 gap-4 mt-4">
             {
-              hiredList?.length > 0 && hiredList.map((data, index) => {
+              uniqueHired?.length > 0 && uniqueHired.map((data, index) => {
                 return <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg" key={index}>
                   <ClientProfileCard data={data.freelancerDetails[0]} />
                 </div>

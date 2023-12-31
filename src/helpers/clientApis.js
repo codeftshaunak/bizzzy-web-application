@@ -117,7 +117,7 @@ export const getSearchFreelancer = async (keywords) =>
     makeApiRequest('get', '/search-freelencers', keywords)
 
 export const giveFeedback = async (data) =>
-    makeApiRequest('post', '/add/feedback', data);
+    makeApiRequest('post', '/feedback/add', data);
 
 export const getHiredListByClient = async () =>
     makeApiRequest('get', '/client/all-hired');

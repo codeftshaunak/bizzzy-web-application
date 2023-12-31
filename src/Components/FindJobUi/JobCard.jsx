@@ -22,7 +22,7 @@ const JobCard = ({ jobs }) => {
 
             return (
               <div key={index}>
-                <div className="p-4 border-b border-tertiary">
+                <div className="p-8 border-b border-tertiary">
                   <div className="text-gray-300 text-sm">
                     {(job?.budget == 1 && " Fixed Budget ") ||
                       (job?.budget == 2 && "Hourly")}
@@ -40,8 +40,7 @@ const JobCard = ({ jobs }) => {
                   >
                     {job?.title}
                   </div>
-                  <br />
-                  <div className="space-y-0" dangerouslySetInnerHTML={{ __html: truncateText(job?.description, 500) }} />
+                  <div className="space-y-0 text-gray-300" dangerouslySetInnerHTML={{ __html: truncateText(job?.description, 500) }} />
 
                   <div className="flex items-center ">
                     <div className="star-filled" style={{ color: 'var(--primarycolor)' }}>★</div>

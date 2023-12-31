@@ -11,10 +11,11 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getAllJobsProposal } from "../../helpers/jobProposalApi";
+import { getAllJobsProposal } from "../../helpers/jobApis";
 
 const ConnectionHistory = () => {
-  const [jobProposal, setJobProposal] = useState(null)
+  const [jobProposal, setJobProposal] = useState(null);
+  const userProfile = CurrentUserProvider;
   const tableDummyData = [
     {
       date: "Today",
@@ -61,7 +62,7 @@ const ConnectionHistory = () => {
     getAllJobProposalList();
   }, []);
 
- 
+
   return (
     <div className="my-3 space-y-4">
       <h2 className="my-3 text-2xl font-medium text-[#374151]">

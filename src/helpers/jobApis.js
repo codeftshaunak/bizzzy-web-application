@@ -98,7 +98,7 @@ export const applyJob = async (data) => {
     const authtoken = localStorage.getItem("authtoken");
     const response = await API.post(`/job-proposal`, data, {
       headers: {
-        "Content-Type": "application/json",
+        'content-type': 'multipart/form-data',
         token: `${authtoken}`,
       },
     });
@@ -122,5 +122,58 @@ export const createJob = async (formData) => {
     return error;
   }
 };
+
+export const getAllJobsProposal = async () => {
+  try {
+      const authtoken = localStorage.getItem("authtoken");
+      const response = await API.get("/jobs/proposals", {
+          headers: {
+              "Content-Type": "application/json",
+              token: `${authtoken}`,
+          },
+      });
+
+      console.log(response?.data?.body);
+      return response?.data?.body;
+  } catch (error) {
+      return error;
+  }
+};
+
+// -------------
+
+const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}, params = {}) => {
+  const authtoken = localStorage.getItem("authtoken");
+
+  const headers = {
+      "Content-Type": "application/json",
+      token: authtoken,
+      ...customHeaders,
+  };
+
+  const config = {
+      method,
+      url: endpoint,
+      headers,
+      data,
+      params, // Include query parameters
+  };
+
+  try {
+      const response = await API(config);
+      return response?.data;
+
+  } catch (error) {
+      // Use the error handling hook
+      const { handleApiError } = useApiErrorHandling();
+      handleApiError(error);
+      return error.response?.data;
+  }
+};
+
+export const userAllJobs = async () =>
+    makeApiRequest('get', '/users/jobs');
+
+
 
  

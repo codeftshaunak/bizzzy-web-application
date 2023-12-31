@@ -12,6 +12,7 @@ import {
   Text,
   useToast,
   HStack,
+  Avatar,
   VStack,
   Image
 } from "@chakra-ui/react";
@@ -121,6 +122,7 @@ export const ClientJobPostViewComponent = () => {
 export const JobPostView = () => {
   const location = useLocation();
   const jobDetails = location.state && location?.state?.jobDetails;
+
   const {
     amount,
     budget,
@@ -172,14 +174,14 @@ export const JobPostView = () => {
               <FiEdit2 className="text-[#16A34A]" />
               <p className="text-sm">Edit posting</p>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <FiEye className="text-[#16A34A]" />
               <p className="text-sm">View posting</p>
             </div>
             <div className="flex items-center gap-2">
               <LiaRetweetSolid className="text-[#16A34A]" />
               <p className="text-sm">Reuse posting</p>
-            </div>
+            </div> */}
             <div className="flex items-center gap-2">
               <RxCross1 className="text-[#16A34A]" />
               <p className="text-sm">Remove posting</p>
@@ -435,28 +437,43 @@ export const InviteFreelancer = () => {
                 {!loading &&
                   searchResults?.map((searchResult) => (
                     <div key={searchResult?._id}>
-                      <div className="flex gap-8 pb-5">
-                        <div className="w-[200px] h-[150px]">
-                          <img
+                      <div className="flex gap-8 pb-5 items-center">
+                        <div className="w-[150px] h-[150px]">
+                          {/* <img
                             src="https://c.animaapp.com/LZ3BWujk/img/rectangle-26-1@2x.png"
                             alt=""
-                          />
+                          /> */}
+                          {
+                            !searchResult?.profile_image || searchResult?.profile_image == "null" || searchResult?.profile_image == null ?
+                              <Avatar name={searchResult?.firstName + searchResult.lastName} width={"130px"} height={"130px"} borderRadius={"50%"} fontSize={"3rem"} objectFit={"cover"} /> : <img
+                                src={searchResult?.profile_image}
+                                className="w-[130px] h-[130px] rounded-full object-cover shadow-md"
+                                alt=""
+                              />
+                          }
                         </div>
                         <div className="w-full space-y-2 ">
                           <div className="flex justify-between ">
                             <div className="flex gap-3">
-                              <div className="w-[36px] h-[36px] rounded-full">
-                                <img
-                                  src={searchResult?.profile_image}
-                                  className="w-full h-full rounded-full"
-                                  alt=""
-                                />
-                              </div>
                               <div>
-                                <h2 className="text-base font-semibold text-fg-brand">
-                                  {searchResult?.firstName}{" "}
-                                  {searchResult?.lastName}
-                                </h2>
+                                <HStack>
+
+                                  <h2 className="text-base font-semibold text-fg-brand">
+                                    {searchResult?.firstName}{" "}
+                                    {searchResult?.lastName}
+                                  </h2>
+                                  <Button
+                                    colorScheme="#16A34A"
+                                    variant="outline"
+                                    size={"xs"}
+                                    color={"#16A34A"}
+                                    marginLeft={"0.8rem"}
+                                    height={"18px"}
+                                  >
+                                    Available now
+                                  </Button>
+                                </HStack>
+
                                 <p className="text-sm font-medium text-[#6B7280]">
                                   {searchResult?.professional_role}
                                 </p>
@@ -488,7 +505,7 @@ export const InviteFreelancer = () => {
                             </div>
                           </div>
 
-                          <div>
+                          {/* <div>
                             <Button
                               colorScheme="#16A34A"
                               variant="outline"
@@ -497,7 +514,7 @@ export const InviteFreelancer = () => {
                             >
                               Available now
                             </Button>
-                          </div>
+                          </div> */}
 
                           <div>
                             <p className="text-sm font-medium text-[#6B7280]">
@@ -535,12 +552,12 @@ export const InviteFreelancer = () => {
                                 </Button>
                               ))}
                             </Stack>
-                            <div>
+                            {/* <div>
                               <IoIosArrowForward
                                 size={24}
                                 className="text-fg-brand"
                               />
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>

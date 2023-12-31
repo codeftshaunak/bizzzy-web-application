@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getJobById } from '../../helpers/jobApis';
+import { getAllJobsProposal, getJobById } from '../../helpers/jobApis';
 
 const JobDetails = ({ setPage, setDetails }) => {
     const { id } = useParams();
     const [job, setJob] = useState();
+    const [applyJob, setApplyJob] = useState([])
+
+    const getAppliedJobs = async () => {
+        const response = await getAllJobsProposal();
+        setApplyJob(response)
+    }
+
+    const alreadyApplied = applyJob.filter((item) => item?.jobId?._id === id)
+
+
+    useEffect(() => {
+        getAppliedJobs();
+    }, []);
 
     const dateObject = new Date(job?.created_at);
     const currentTime = new Date();
@@ -58,7 +71,10 @@ const JobDetails = ({ setPage, setDetails }) => {
                                 <div className="flex gap-2"><img src="/icons/user.svg" alt="user" /> <div className='text-gray-300 capitalize'>{job?.experience}</div></div>
                             </div>
                         </div>
-                        <button className="bg-primary text-secondary rounded h-[36px] px-4" onClick={() => setPage(2)}>Apply for this Job</button>
+                        {
+                            alreadyApplied.length > 0 ? <button className="bg-primary text-secondary font-semibold rounded h-[36px] px-4 disabled">Already Applied</button>
+                                : <button className="bg-primary text-secondary rounded font-semibold h-[36px] px-4" onClick={() => setPage(2)}>Apply for this Job</button>
+                        }
                     </div>
                 </div>
                 <div className="w-full flex justify-between">

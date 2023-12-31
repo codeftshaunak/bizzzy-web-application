@@ -3,7 +3,7 @@ import ProfileContainer from "./ProfileContainer";
 import bg from "../../assets/avatar.jpeg";
 import { BsLink45Deg } from "react-icons/bs";
 import ReviewCard from "./ReviewCard";
-import { HStack } from "@chakra-ui/react";
+import { HStack, Avatar } from "@chakra-ui/react";
 import { getAllDetailsOfUser } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
@@ -13,8 +13,9 @@ export const ClientProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalPage, setModalPage] = useState("");
   const [details, setDetails] = useState([]);
+  console.log(details);
   const {
-    firstName, lastName, location, professional_role, hourly_rate, description, skills, experience, briefDescription, businessName,
+    firstName, lastName, location, profile_image, professional_role, hourly_rate, description, skills, experience, briefDescription, businessName,
   } = details || [];
   const [localTime, setLocalTime] = useState();
   function openModal() {
@@ -56,11 +57,11 @@ export const ClientProfilePage = () => {
   }
   return (
     <ProfileContainer>
-      <div className="w-[1000px] flex flex-col gap-[24px]">
+      <div className="w-[90%] flex flex-col gap-[24px]">
         <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
-              <div style={{ position: "absolute", top: "0px", left: "0px" }}>
+              <div style={{ position: "absolute", top: "0px", left: "0px", cursor: "pointer", zIndex: "50" }}>
                 <div className="flex items-center justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -84,13 +85,9 @@ export const ClientProfilePage = () => {
                   </svg>
                 </div>
               </div>
-              <div
-                className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-cover bg-top"
-                style={{
-                  background: `url(${bg})`, backgroundSize: "cover",
-                  backgroundPosition: "top",
-                }}
-              ></div>
+              {
+                !profile_image || profile_image == "null" || profile_image === null ? <Avatar name={firstName + " " + lastName} width={"60px"} height={"60px"} /> : <img src={profile_image} className="w-[60px] rounded-full" />
+              }
             </div>
             <div className="flex flex-col justify-start gap-[10px]">
               <p className="text-[24px] text-[#374151] font-semibold">

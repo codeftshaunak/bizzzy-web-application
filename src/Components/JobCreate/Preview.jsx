@@ -104,8 +104,8 @@ const Preview = () => {
         </div>
       ) : null}
       {formState?.description ? (
-        <div className="w-[310px] my-2 text-gray-700 text-sm font-normal font-['SF Pro Text'] leading-tight">
-          {formState?.description}
+        <div className="w-[310px] my-2 text-gray-700 text-sm font-normal font-['SF Pro Text'] leading-tight" dangerouslySetInnerHTML={{ __html: formState?.description }}>
+          {/* {formState?.description} */}
         </div>
       ) : null}
       {formState?.amount ? (

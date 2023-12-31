@@ -26,6 +26,7 @@ import { AiFillSetting } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAuthData } from "../../redux/authSlice/authSlice";
+import { clearProfileData } from "../../redux/authSlice/profileSlice";
 
 
 // export const Header = () => {
@@ -404,6 +405,7 @@ export const AuthHeader = ({ role }) => {
 
   const handleLogout = () => {
     dispatch(clearAuthData()); // Dispatch the clearAuthData action to reset the state
+    dispatch(clearProfileData()); // Dispatch the clearAuthData action to reset the state
   };
 
 
@@ -429,10 +431,10 @@ export const AuthHeader = ({ role }) => {
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
   const [openLoginMenu, setOpenLoginMenu] = useState(false);
   return (
-    <nav className="bg-white w-full shadow-slate-700 border-b-[1px]">
-      <div className="max-w-full mx-auto px-2 sm:px-6 lg:px-8">
-        <div className=" flex items-center md:justify-between justify-between h-16">
-          <div className=" inset-y-0 left-0 flex items-center sm:hidden">
+    <nav className="bg-white w-full shadow-slate-700 border-b-[1px] h-[80px] items-center flex justify-between">
+      <div className="w-full mx-auto px-2 sm:px-6 lg:px-8 justify-between">
+        <div className=" flex w-full items-center md:justify-between justify-between h-16">
+          <div className="inset-y-0 left-0 flex items-center sm:hidden">
             {/* <!-- Mobile menu button--> */}
             {openMobileMenu ? (
               <button
@@ -505,10 +507,10 @@ export const AuthHeader = ({ role }) => {
               </button>
             )}
           </div>
-          <div className="flex items-center sm:items-stretch">
-            <div className="flex-shrink-0 md:w-[180px]">
+          <div className="flex items-center">
+            <div className="flex md:w-[100px] items-center">
               <p
-                className="text-[22px] font-bold text-green-500 cursor-pointer text-right"
+                className="text-[22px] font-bold text-green-500 cursor-pointer text-right mb-0 pb-0"
                 onClick={() => navigate("/")}
               >
                 <img src="/images/bizzzy_logo.png" style={{
@@ -519,7 +521,7 @@ export const AuthHeader = ({ role }) => {
               </p>
             </div>
             <div className="hidden sm:block sm:ml-6 mt-2">
-              <div className="flex gap-5">
+              <div className="flex gap-9">
                 <NavItem title={role == 1 ? "Find Work" : "Dashboard"} url={role == 1 ? "/find-job" : "/client-dashboard"} />
                 {
                   role == 1 && <NavItem title={"My Jobs"} url={"/my-jobs"} />
@@ -557,7 +559,7 @@ export const AuthHeader = ({ role }) => {
                   onClick={() => handleProfileButton()}
                 >
                   {
-                    profile_image != "null" ? <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} /> : <Avatar title={name} boxSize="40px" />
+                    profile_image != "null" ? <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} /> : <Avatar name={name} boxSize="40px" />
                   }
                 </div>
 
@@ -688,7 +690,7 @@ const NavItem = ({ title, noIcon, url, onClick }) => {
   return (
     <Link to={url}>
       <div className="flex items-center gap-[8px] text-[#536e53] cursor-pointer">
-        <p className="text-[14px] font-[500] text-[#374151] ">{title}</p>
+        <p className="text-[16px] font-[500] text-[#374151] ">{title}</p>
         {/* {!noIcon && <BsChevronDown />} */}
       </div>
 

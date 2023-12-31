@@ -4,7 +4,7 @@ import SkillCard from "./SkillCard";
 import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
-import { HStack } from "@chakra-ui/react";
+import { HStack, Avatar } from "@chakra-ui/react";
 import { getAllDetailsOfUser } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
@@ -110,11 +110,11 @@ export const FreelancerProfilePage = () => {
 
   return (
     <ProfileContainer>
-      <div className="w-full flex flex-col gap-[24px] ">
+      <div className="w-[90%] justify-center m-auto flex flex-col gap-[24px] ">
         <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
-              <div style={{ position: "absolute", top: "0px", left: "0px" }}>
+              <div style={{ position: "absolute", top: "0px", left: "0px", zIndex: "50", cursor: "pointer" }}>
                 <div className="flex items-center justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -144,12 +144,15 @@ export const FreelancerProfilePage = () => {
                   </svg>
                 </div>
               </div>
-              <div
+              {/* <div
                 className="flex items-center justify-center rounded-full w-[70px] h-[70px] !bg-cover !bg-top"
                 style={{
                   background: `url(${profile_image})`,
                 }}
-              ></div>
+              ></div> */}
+              {
+                !profile_image || profile_image == "null" || profile_image === null ? <Avatar name={firstName + " " + lastName} width={"60px"} height={"60px"} /> : <img src={profile_image} className="w-[60px] rounded-full" />
+              }
             </div>
             <div className="flex flex-col justify-start gap-[10px]">
               <p className="text-[24px] text-[#374151] font-semibold">

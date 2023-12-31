@@ -11,6 +11,7 @@ import { signIn } from '../../helpers/apiRequest';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setAuthData } from '../../redux/authSlice/authSlice'; // Import your actions
+import { profileData } from '../../redux/authSlice/profileSlice'; // Import your actions
 
 const Login = ({ setPage }) => {
     const toast = useToast();
@@ -48,15 +49,12 @@ const Login = ({ setPage }) => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        console.log("HWL");
         const response = await signIn(formData);
         console.log(response);
         if (response.code === 200) {
             const { role, token } = response.body;
-            dispatch(setAuthData({ role: role, authtoken: token })); // Dispatch the action to set the role and token
-            localStorage.setItem("authtoken", token);
-            localStorage.setItem("role", role);
-            localStorage.setItem("bizzzy_user", JSON.stringify(response.body));
+            dispatch(setAuthData({ role: role, authtoken: token }));
+            dispatch(profileData({ profile: response.body }))
             toast({
                 title: response.msg,
                 status: 'success',
