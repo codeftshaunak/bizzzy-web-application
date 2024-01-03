@@ -12,7 +12,7 @@ const ClientDashboardComponent = () => {
   const [hiredList, setHiredList] = useState([]);
   const uniqueHired = [];
   const seenFreelancerIds = new Set();
-  if (hiredList.length > 0) {
+  if (hiredList?.length > 0) {
     hiredList?.forEach((item) => {
       // Check if the freelancer_id is already in the Set
       if (!seenFreelancerIds.has(item.freelencer_id)) {

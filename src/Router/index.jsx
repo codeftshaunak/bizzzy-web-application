@@ -18,6 +18,7 @@ import MyJobPage from "../Pages/MyJobs";
 import Review from '../Pages/Review';
 import EndContract from "../Pages/MyJobs/ActiveJobDetails/ActiveJobDetails";
 import { InterviewInvitation, OfferInvitation } from "../Pages/Invitation";
+import HireFreelancer from "../Pages/HireFreelancer";
 
 const Router = () => {
     return (
@@ -38,6 +39,7 @@ const Router = () => {
                 <Route exact path="/freelancer/:id" element={<Profile />} />
                 <Route exact path="/client" element={<Profile />} />
                 <Route exact path="/client/:id" element={<Profile />} />
+                <Route exact path="/client/hire/:freelancer_id" element={<HireFreelancer />} />
                 <Route exact path="/userprofile-setting" element={<ProfileSetting />} />
                 <Route exact path='/tracker' element={<TimeTracker />} />
                 <Route exact path="/client-dashboard" element={<ClientDashBoard />} />

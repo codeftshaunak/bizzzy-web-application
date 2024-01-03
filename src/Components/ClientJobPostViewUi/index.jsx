@@ -269,7 +269,7 @@ export const InviteFreelancer = () => {
     }
   };
 
-  const getFreelancer = async () => {
+  const getFreelancers = async () => {
     try {
       setLoading(true);
       const response = await getSearchFreelancer([""]);
@@ -286,7 +286,7 @@ export const InviteFreelancer = () => {
   };
   useEffect(() => {
     fetchData();
-    getFreelancer();
+    getFreelancers();
   }, []);
 
   const invitedFreelancer = async () => {
@@ -406,7 +406,7 @@ export const InviteFreelancer = () => {
       <div className="overflow-hidden border rounded-lg basis-full md:basis-4/5 border-slate-300">
         <Tabs variant="unstyled">
           <TabList className="pt-4 border-b">
-            <Tab className="px-0 text-black" onClick={() => getFreelancer()}>Search</Tab>
+            <Tab className="px-0 text-black" onClick={() => getFreelancers()}>Search</Tab>
             <Tab
               className="px-0 text-black"
               onClick={() => invitedFreelancer()}
