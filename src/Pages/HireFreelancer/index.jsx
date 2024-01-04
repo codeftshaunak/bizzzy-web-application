@@ -1,12 +1,13 @@
-import React from 'react'
-import HomeLayout from '../../Layouts/HomeLayout';
+import React from "react";
+import HomeLayout from "../../Layouts/HomeLayout";
+import HireFreelancerPage from "../../Components/HireFreelancer/HireFreelancer";
 
 const HireFreelancer = () => {
-    return (
-        <HomeLayout>
-
-        </HomeLayout>
-    )
-}
+  return (
+    <HomeLayout>
+      <HireFreelancerPage />
+    </HomeLayout>
+  );
+};
 
 export default HireFreelancer;
