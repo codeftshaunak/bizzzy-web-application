@@ -33,6 +33,7 @@ import { useDispatch } from "react-redux";
 import { clientService } from "../../redux/clientSlice/clientService";
 import { hireFreelancerService } from "../../redux/clientSlice/clientService";
 import { ReviewProposal } from "./ReviewProposal";
+import { setTargetedFreelancer } from "../../redux/features/HireFreelancerSlice";
 
 export const ClientJobPostViewComponent = () => {
   const location = useLocation();
@@ -241,10 +242,12 @@ export const InviteFreelancer = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isHire, setIsHire] = useState(false);
   const [isUserId, setIsUserId] = useState('')
+  const navigate = useNavigate();
 
   const toast = useToast();
   const location = useLocation();
   const jobDetails = location.state && location?.state?.jobDetails;
+  console.log("Job Details", jobDetails);
   const {
     amount
   } = jobDetails || [];
@@ -328,39 +331,42 @@ export const InviteFreelancer = () => {
     setMessage(e.target.value);
   };
 
-  const handleSend = async () => {
+  const handleSend = async (freelancer) => {
     if (isHire) {
-      const formData = {
-        freelencer_id: isUserId,
-        job_id: id,
-        budget: amount
-      }
 
-      try {
-        let result = await dispatch(hireFreelancerService(formData));
-        if (result?.code == 200) {
-          setOpen(false);
-          setMessage("");
-          toast({
-            title: result?.msg,
-            position: "top-right",
-            status: "success",
-            isClosable: true,
-            duration: 2000,
-          });
-        }
-      } catch (error) {
-        setOpen(false);
-        setMessage("");
-        const message = error?.response?.data?.msg;
-        toast({
-          title: message,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-          position: "top-right",
-        });
-      }
+      dispatch(setTargetedFreelancer({...freelancer, jobDetails}));
+      navigate(`/client/hire/${freelancer?.user_id}`);
+      // const formData = {
+      //   freelencer_id: isUserId,
+      //   job_id: id,
+      //   budget: amount
+      // }
+
+      // try {
+      //   let result = await dispatch(hireFreelancerService(formData));
+      //   if (result?.code == 200) {
+      //     setOpen(false);
+      //     setMessage("");
+      //     toast({
+      //       title: result?.msg,
+      //       position: "top-right",
+      //       status: "success",
+      //       isClosable: true,
+      //       duration: 2000,
+      //     });
+      //   }
+      // } catch (error) {
+      //   setOpen(false);
+      //   setMessage("");
+      //   const message = error?.response?.data?.msg;
+      //   toast({
+      //     title: message,
+      //     status: "error",
+      //     duration: 3000,
+      //     isClosable: true,
+      //     position: "top-right",
+      //   });
+      // }
     } else {
       if (message.trim().length === 0) {
         setErrorMessage("Please enter a message.");
@@ -604,7 +610,7 @@ export const InviteFreelancer = () => {
                                   <button
                                     className="px-4 bg-fg-brand py-2 rounded-lg text-white hover:bg-fg-brand"
                                     onClick={
-                                      handleSend
+                                      () => handleSend(searchResult)
                                     }
                                   >
                                     {isHire ? "Sure" : "Send"}

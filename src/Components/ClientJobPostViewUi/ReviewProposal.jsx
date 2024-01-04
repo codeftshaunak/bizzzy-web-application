@@ -80,7 +80,8 @@ export const ReviewProposal = () => {
                     <TabPanels width={"100%"}>
                         <TabPanel p={0} bg={"#F3F4F6"} width={"100%"}>
                             {proposals?.length > 0 ? (
-                                proposals?.map(() => {
+                                proposals?.map((item) => {
+                                    console.log("singleProposal",item);
                                     const details = proposals?.[0].user_details?.[0];
                                     return (
                                         <VStack key={details?._id} className="h-auto px-8 pt-8 pb-4 border-b-2 w-full" justifyContent={"start"} width={"100%"}>

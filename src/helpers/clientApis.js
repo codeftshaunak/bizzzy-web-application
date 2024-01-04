@@ -114,7 +114,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
 
 
 export const getSearchFreelancer = async (keywords) =>
-    makeApiRequest('get', '/search-freelencers', keywords)
+    makeApiRequest('get', '/search-freelancers', keywords)
 
 export const giveFeedback = async (data) =>
     makeApiRequest('post', '/feedback/add', data);
@@ -125,3 +125,6 @@ export const getHiredListByClient = async () =>
 export const getOptionsList = async (userType) =>
     makeApiRequest('get', '/getOptionsList', null, null, { user_type: userType });
 
+export const sendHireFreelancer = async (data) => {
+   return makeApiRequest('post', '/offer/send', data);
+}

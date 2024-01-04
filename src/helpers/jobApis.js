@@ -41,7 +41,7 @@ export const searchJobs = async (searchQuery) => {
 //   try {
 //     const authToken = localStorage.getItem("authtoken");
 //     const response = await API.get(
-//       "/search-freelencers",
+//       "/search-freelancers",
 //       { keywords },
 //       {
 //         headers: {
@@ -62,7 +62,7 @@ export const getInvitedFreelancer = async () => {
   try {
     const authToken = localStorage.getItem("authtoken");
     const response = await API.get(
-      "/freelencers/invited",
+      "/freelancers/invited",
       {
         headers: {
           "Content-Type": "application/json",
@@ -176,4 +176,3 @@ export const userAllJobs = async () =>
 
 
 
- 

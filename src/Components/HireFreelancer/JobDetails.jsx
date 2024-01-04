@@ -5,9 +5,9 @@ import { setJobDetails } from "../../redux/features/HireFreelancerSlice";
 
 const JobDetails = () => {
   const [formData, setFormData] = useState({
-    selectedTeam: "",
-    relatedJob: "",
-    contractTitle: "",
+    hiring_team: "",
+    job_title: "",
+    contract_title: "",
   });
 
   // update form data and dispatch to Redux
@@ -42,8 +42,9 @@ const JobDetails = () => {
           placeholder="CoFounderLab"
           marginTop="15"
           width="md"
-          value={formData.selectedTeam}
-          onChange={(e) => handleFormDataChange("selectedTeam", e.target.value)}
+          value={formData.hiring_team}
+          onChange={(e) => handleFormDataChange("hiring_team", e.target.value)}
+          required
         >
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>
@@ -58,7 +59,8 @@ const JobDetails = () => {
           placeholder="Select an open job poet.."
           marginTop="15"
           width="md"
-          onChange={(e) => handleFormDataChange("relatedJob", e.target.value)}
+          onChange={(e) => handleFormDataChange("job_title", e.target.value)}
+          required
         >
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>
@@ -73,8 +75,9 @@ const JobDetails = () => {
           placeholder="Basic usage"
           marginTop="15"
           onChange={(e) =>
-            handleFormDataChange("contractTitle", e.target.value)
+            handleFormDataChange("contract_title", e.target.value)
           }
+          required
         />
       </Box>
     </Box>

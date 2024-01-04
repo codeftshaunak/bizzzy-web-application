@@ -3,13 +3,10 @@ import { MdOutlineRecommend } from "react-icons/md";
 import { useSelector } from "react-redux";
 
 const FreelancerProfile = () => {
-  const profile = useSelector(
-    (state) => state?.HireFreelancer?.targetedFreelancer
-  );
   const { firstName, lastName, professional_role, profile_image } = useSelector(
     (state) => state?.HireFreelancer?.targetedFreelancer
   );
-  console.log(profile);
+
   return (
     <Flex
       marginTop="25"
