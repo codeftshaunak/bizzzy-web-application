@@ -28,8 +28,8 @@ const JobDetails = () => {
       gap="2"
       border="1px solid lightgray"
       rounded="10"
-      paddingY="5"
-      paddingX="8"
+      paddingY="6"
+      paddingX="10"
     >
       <Heading as="h4" size="md">
         Job Details
@@ -40,7 +40,7 @@ const JobDetails = () => {
         </Heading>
         <Select
           placeholder="CoFounderLab"
-          marginTop="15"
+          marginTop="8px"
           width="md"
           value={formData.hiring_team}
           onChange={(e) => handleFormDataChange("hiring_team", e.target.value)}
@@ -57,7 +57,7 @@ const JobDetails = () => {
         </Heading>
         <Select
           placeholder="Select an open job poet.."
-          marginTop="15"
+          marginTop="8px"
           width="md"
           onChange={(e) => handleFormDataChange("job_title", e.target.value)}
           required
@@ -73,7 +73,7 @@ const JobDetails = () => {
         </Heading>
         <Input
           placeholder="Basic usage"
-          marginTop="15"
+          marginTop="8px"
           onChange={(e) =>
             handleFormDataChange("contract_title", e.target.value)
           }

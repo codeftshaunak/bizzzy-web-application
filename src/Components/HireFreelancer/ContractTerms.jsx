@@ -23,10 +23,10 @@ const ContractTerms = () => {
     if (key === "job_type") {
       if (value === "hourly") {
         delete updatedFormData.project_budget;
-        updatedFormData['weekly_limit'] = Number(40);
+        updatedFormData["weekly_limit"] = Number(40);
       } else {
         delete updatedFormData.hourly_rate;
-        delete updatedFormData.weekly_limit
+        delete updatedFormData.weekly_limit;
       }
 
       priceRef.current.value = null;
@@ -51,20 +51,22 @@ const ContractTerms = () => {
     </div>
   );
   return (
-    <div className="border border-[lightgray] rounded-lg mt-8 py-5 px-8">
+    <div className="border border-[lightgray] rounded-lg mt-8 py-6 px-10">
       <h4 className="text-xl font-bold">Contract Terms</h4>
-      <p className="mt-4 font-semibold">
+      <p className="font-semibold">
         <span className="text-green-500">Upwork Payment Protection.</span> Only
         pey for the work you
       </p>
-      <div className="mt-3">
+      <div className="mt-5">
         <h5 className="font-bold flex items-center gap-1">
           Payment Option <FaQuestionCircle className="cursor-pointer" />
         </h5>
         <div className="flex gap-10 mt-1">
           <div
             className={`border-2  rounded-md p-2 cursor-pointer ${
-              formData.job_type === "fixed" ? "" : "border-green-500 bg-green-50"
+              formData.job_type === "fixed"
+                ? ""
+                : "border-green-500 bg-green-50"
             }`}
             onClick={() => handleFormDataChange("job_type", "hourly")}
           >
@@ -88,7 +90,9 @@ const ContractTerms = () => {
           </div>
           <div
             className={`border-2  rounded-md p-2 cursor-pointer ${
-              formData.job_type === "fixed" ? "border-green-500 bg-green-50" : ""
+              formData.job_type === "fixed"
+                ? "border-green-500 bg-green-50"
+                : ""
             }`}
             onClick={() => handleFormDataChange("job_type", "fixed")}
           >
@@ -109,7 +113,11 @@ const ContractTerms = () => {
           </div>
         </div>
         <div className="mt-7">
-          <h5 className="font-bold flex items-center gap-1">{formData.job_type === "fixed" ? "Pay by the project" : "Pay by the hour"}</h5>
+          <h5 className="font-bold flex items-center gap-1">
+            {formData.job_type === "fixed"
+              ? "Pay by the project"
+              : "Pay by the hour"}
+          </h5>
           <div className="font-semibold mt-1">
             <input
               type="number"
@@ -119,17 +127,19 @@ const ContractTerms = () => {
               ref={priceRef}
               onChange={(e) => {
                 handleFormDataChange(
-                  formData.job_type === "fixed" ? "project_budget" : "hourly_rate",
+                  formData.job_type === "fixed"
+                    ? "project_budget"
+                    : "hourly_rate",
                   Number(e.target.value)
                 );
               }}
             />
             /{formData.job_type === "fixed" ? "total" : "hr"}
           </div>
-          <p className="text-sm text-gray-600 font-semibold mt-2 h-5">
+          {/* <p className="text-sm text-gray-600 font-semibold mt-2 h-5">
             {!formData.job_type === "fixed" &&
               "Seanie D.&apos;s profile rate is $9.00/hr"}
-          </p>
+          </p> */}
         </div>
         <div className="mt-7">
           <h5 className="font-bold flex items-center gap-1">
@@ -140,34 +150,39 @@ const ContractTerms = () => {
             budget
           </p>
         </div>
-        {formData.job_type === 'hourly' && <div className="mt-6">
-          <h5 className="font-bold flex items-center gap-1">
-            {formData.weekly_limit} hrs/week{" "}
-            <FaPen
-              className="cursor-pointer"
-              onClick={() => setIsEditingHours(true)}
-            />
-          </h5>
-          {isEditingHours ? (
-            <input
-              type="number"
-              className="border-2 px-2 rounded-md outline-gray-500 mt-1"
-              value={formData.weekly_limit}
-              required
-              onChange={(e) =>
-                handleFormDataChange("weekly_limit", Number(e.target.value))
-              }
-              onBlur={() => setIsEditingHours(false)}
-            />
-          ) : (
-            <p className="mt-1 text-gray-600">40 max/week</p>
-          )}
-        </div>}
+        {formData.job_type === "hourly" && (
+          <div className="mt-6">
+            <h5 className="font-bold flex items-center gap-1">
+              {formData.weekly_limit} hrs/week{" "}
+              <FaPen
+                className="cursor-pointer"
+                onClick={() => setIsEditingHours(true)}
+              />
+            </h5>
+            {isEditingHours ? (
+              <input
+                type="number"
+                className="border-2 px-2 rounded-md outline-gray-500 mt-1"
+                value={formData.weekly_limit}
+                required
+                onChange={(e) =>
+                  handleFormDataChange("weekly_limit", Number(e.target.value))
+                }
+                onBlur={() => setIsEditingHours(false)}
+              />
+            ) : (
+              <p className="mt-1 text-gray-600">40 max/week</p>
+            )}
+          </div>
+        )}
         <div className="flex gap-1 mt-7">
           <input
             type="checkbox"
             onChange={(e) =>
-              handleFormDataChange("allow_freelancer_manually_timelog", e.target.checked)
+              handleFormDataChange(
+                "allow_freelancer_manually_timelog",
+                e.target.checked
+              )
             }
             checked={formData.allow_freelancer_manually_timelog}
           />{" "}

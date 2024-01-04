@@ -75,7 +75,7 @@ const HireFreelancerPage = () => {
       <form action="" onSubmit={handleSubmit}>
         <JobDetails />
         <ContractTerms />
-        <div className="border border-[lightgray] rounded-lg mt-8 py-5 px-8">
+        <div className="border border-[lightgray] rounded-lg mt-8 py-6 px-10">
           <div className="flex gap-1">
             <input
               type="checkbox"
