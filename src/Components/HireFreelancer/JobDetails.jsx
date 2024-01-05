@@ -5,9 +5,9 @@ import { setJobDetails } from "../../redux/features/HireFreelancerSlice";
 
 const JobDetails = () => {
   const [formData, setFormData] = useState({
-    selectedTeam: "",
-    relatedJob: "",
-    contractTitle: "",
+    hiring_team: "",
+    job_title: "",
+    contract_title: "",
   });
 
   // update form data and dispatch to Redux
@@ -28,8 +28,8 @@ const JobDetails = () => {
       gap="2"
       border="1px solid lightgray"
       rounded="10"
-      paddingY="5"
-      paddingX="8"
+      paddingY="6"
+      paddingX="10"
     >
       <Heading as="h4" size="md">
         Job Details
@@ -40,10 +40,11 @@ const JobDetails = () => {
         </Heading>
         <Select
           placeholder="CoFounderLab"
-          marginTop="15"
+          marginTop="8px"
           width="md"
-          value={formData.selectedTeam}
-          onChange={(e) => handleFormDataChange("selectedTeam", e.target.value)}
+          value={formData.hiring_team}
+          onChange={(e) => handleFormDataChange("hiring_team", e.target.value)}
+          required
         >
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>
@@ -56,9 +57,10 @@ const JobDetails = () => {
         </Heading>
         <Select
           placeholder="Select an open job poet.."
-          marginTop="15"
+          marginTop="8px"
           width="md"
-          onChange={(e) => handleFormDataChange("relatedJob", e.target.value)}
+          onChange={(e) => handleFormDataChange("job_title", e.target.value)}
+          required
         >
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>
@@ -71,10 +73,11 @@ const JobDetails = () => {
         </Heading>
         <Input
           placeholder="Basic usage"
-          marginTop="15"
+          marginTop="8px"
           onChange={(e) =>
-            handleFormDataChange("contractTitle", e.target.value)
+            handleFormDataChange("contract_title", e.target.value)
           }
+          required
         />
       </Box>
     </Box>
