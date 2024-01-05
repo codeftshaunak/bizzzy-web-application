@@ -1,4 +1,4 @@
-# Bizzzy Freelancer Platform
+# Bizzzy Freelancing Platform
 
 Bizzzy is a dynamic platform that effortlessly connects talented freelancers with clients, streamlining project collaboration.
 
