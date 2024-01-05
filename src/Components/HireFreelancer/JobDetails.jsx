@@ -1,14 +1,32 @@
 import { Heading, Text, Box, Select, Input } from "@chakra-ui/react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { setJobDetails } from "../../redux/features/HireFreelancerSlice";
+import { getClientJobs } from "../../helpers/clientApis";
 
 const JobDetails = () => {
+  const [jobsTitle, setJobsTitle] = useState([]);
+  const profile = useSelector((state) => state?.profile?.profile);
+  console.log(profile);
   const [formData, setFormData] = useState({
     hiring_team: "",
     job_title: "",
     contract_title: "",
   });
+
+  // Fetch Job Title
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const jobsData = await getClientJobs();
+        setJobsTitle(jobsData);
+      } catch (error) {
+        console.error("Error fetching job titles:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // update form data and dispatch to Redux
   const dispatch = useDispatch();
@@ -39,16 +57,26 @@ const JobDetails = () => {
           Hiring Team
         </Heading>
         <Select
-          placeholder="CoFounderLab"
+          placeholder="Select Team"
           marginTop="8px"
-          width="md"
+          maxWidth="2xl"
           value={formData.hiring_team}
           onChange={(e) => handleFormDataChange("hiring_team", e.target.value)}
           required
         >
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          <option
+            value={`${
+              profile?.business_name && profile?.business_name !== "null"
+                ? profile.business_name
+                : profile?.name
+            }
+            &apos;s Team`}
+          >
+            {profile?.business_name && profile?.business_name !== "null"
+              ? profile.business_name
+              : profile?.name}
+            &apos;s Team
+          </option>
         </Select>
       </Box>
       <Box marginTop="30">
@@ -56,15 +84,22 @@ const JobDetails = () => {
           Related Job Posting <Text color="gray">(Optional)</Text>
         </Heading>
         <Select
-          placeholder="Select an open job poet.."
+          placeholder="Select an open job post"
           marginTop="8px"
-          width="md"
+          maxWidth="2xl"
           onChange={(e) => handleFormDataChange("job_title", e.target.value)}
           required
         >
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          {jobsTitle &&
+            jobsTitle.map((job) => (
+              <option
+                key={job?._id}
+                value={job?.title}
+                className="px-2 tracking-wide"
+              >
+                {job?.title}
+              </option>
+            ))}
         </Select>
       </Box>
       <Box marginTop="30">
@@ -74,6 +109,7 @@ const JobDetails = () => {
         <Input
           placeholder="Basic usage"
           marginTop="8px"
+          maxWidth="2xl"
           onChange={(e) =>
             handleFormDataChange("contract_title", e.target.value)
           }

@@ -2,20 +2,27 @@ import { FaPen, FaQuestionCircle } from "react-icons/fa";
 import { IoIosAlarm } from "react-icons/io";
 import { GiPriceTag } from "react-icons/gi";
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setContractTerms } from "../../redux/features/HireFreelancerSlice";
 
 const ContractTerms = () => {
+  const info = useSelector(
+    (state) => state?.HireFreelancer?.targetedFreelancer
+  );
   const priceRef = useRef(null);
   const [isEditingHours, setIsEditingHours] = useState(false);
   const [formData, setFormData] = useState({
     job_type: "hourly",
+    hourly_rate: info?.hourly_rate || 0,
     weekly_limit: "40",
     allow_freelancer_manually_timelog: false,
   });
 
-  // update form data and dispatch to Redux
   const dispatch = useDispatch();
+
+  console.log(info);
+
+  // update form data and dispatch to Redux
   const handleFormDataChange = (key, value) => {
     let updatedFormData = { ...formData };
 
@@ -61,7 +68,7 @@ const ContractTerms = () => {
         <h5 className="font-bold flex items-center gap-1">
           Payment Option <FaQuestionCircle className="cursor-pointer" />
         </h5>
-        <div className="flex gap-10 mt-1">
+        <div className="flex gap-11 mt-1">
           <div
             className={`border-2  rounded-md p-2 cursor-pointer ${
               formData.job_type === "fixed"
@@ -125,6 +132,7 @@ const ContractTerms = () => {
               placeholder="$0.00"
               required
               ref={priceRef}
+              defaultValue={info.hourly_rate}
               onChange={(e) => {
                 handleFormDataChange(
                   formData.job_type === "fixed"
@@ -151,29 +159,44 @@ const ContractTerms = () => {
           </p>
         </div>
         {formData.job_type === "hourly" && (
-          <div className="mt-6">
-            <h5 className="font-bold flex items-center gap-1">
-              {formData.weekly_limit} hrs/week{" "}
-              <FaPen
-                className="cursor-pointer"
-                onClick={() => setIsEditingHours(true)}
-              />
-            </h5>
-            {isEditingHours ? (
-              <input
-                type="number"
-                className="border-2 px-2 rounded-md outline-gray-500 mt-1"
-                value={formData.weekly_limit}
-                required
-                onChange={(e) =>
-                  handleFormDataChange("weekly_limit", Number(e.target.value))
-                }
-                onBlur={() => setIsEditingHours(false)}
-              />
-            ) : (
-              <p className="mt-1 text-gray-600">40 max/week</p>
-            )}
-          </div>
+          <>
+            <div className="mt-6">
+              <h5 className="font-bold flex items-center gap-1">
+                {formData.weekly_limit} hrs/week{" "}
+                <FaPen
+                  className="cursor-pointer"
+                  onClick={() => setIsEditingHours(true)}
+                />
+              </h5>
+              {isEditingHours ? (
+                <input
+                  type="number"
+                  className="border-2 px-2 rounded-md outline-gray-500 mt-1"
+                  value={formData.weekly_limit}
+                  required
+                  max={40}
+                  maxLength={2}
+                  onChange={(e) => {
+                    const enteredValue = Number(e.target.value);
+                    if (enteredValue <= 40) {
+                      handleFormDataChange("weekly_limit", enteredValue);
+                    } else {
+                      handleFormDataChange("weekly_limit", 40);
+                    }
+                  }}
+                  onBlur={() => setIsEditingHours(false)}
+                />
+              ) : (
+                <p className=" text-gray-600">40 max/week</p>
+              )}
+            </div>
+            <p className="mt-2 text-gray-600">
+              <span className="text-red-500 font-bold">*</span>Total Weekly
+              Expenditure: $
+              {Number(formData?.hourly_rate) * Number(formData?.weekly_limit) ||
+                0}
+            </p>
+          </>
         )}
         <div className="flex gap-1 mt-7">
           <input

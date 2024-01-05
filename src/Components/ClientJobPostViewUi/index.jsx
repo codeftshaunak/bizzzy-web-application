@@ -14,7 +14,7 @@ import {
   HStack,
   Avatar,
   VStack,
-  Image
+  Image,
 } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
@@ -66,7 +66,7 @@ export const ClientJobPostViewComponent = () => {
         <div className="grid gap-4 md:grid-cols-12">
           <div className="col-span-2">
             <div
-              className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center"
+              className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center cursor-pointer"
               onClick={() => {
                 setPage(0);
               }}
@@ -76,7 +76,7 @@ export const ClientJobPostViewComponent = () => {
           </div>
           <div className="col-span-2">
             <div
-              className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center"
+              className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center cursor-pointer"
               onClick={() => setPage(1)}
             >
               <p>Invite Freelancers</p>
@@ -84,7 +84,7 @@ export const ClientJobPostViewComponent = () => {
           </div>
           <div className="col-span-2">
             <div
-              className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center"
+              className="border rounded-lg  hover:bg-[#F0FDF4] h-[56px] flex justify-center items-center cursor-pointer"
               onClick={() => setPage(2)}
             >
               <p>
@@ -166,7 +166,10 @@ export const JobPostView = () => {
             </div>
           </div>
         </div>
-        <div className="p-6 space-y-0" dangerouslySetInnerHTML={{ __html: description }} />
+        <div
+          className="p-6 space-y-0"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
       </div>
       <div className="mt-4 border rounded-lg basis-full md:mt-0 md:basis-1/4 border-slate-300">
         <div className="p-6 border-b ">
@@ -234,6 +237,7 @@ export const JobPostView = () => {
 
 export const InviteFreelancer = () => {
   const [searchResults, setSearchResults] = useState([]);
+  console.log("searchResult", searchResults);
   const [allFreelancers, setAllFreelancers] = useState([]);
   const [invitedFreelancers, setinvitedFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -241,16 +245,14 @@ export const InviteFreelancer = () => {
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isHire, setIsHire] = useState(false);
-  const [isUserId, setIsUserId] = useState('')
+  const [isUserId, setIsUserId] = useState("");
   const navigate = useNavigate();
 
   const toast = useToast();
   const location = useLocation();
   const jobDetails = location.state && location?.state?.jobDetails;
   console.log("Job Details", jobDetails);
-  const {
-    amount
-  } = jobDetails || [];
+  const { amount } = jobDetails || [];
 
   let params = useParams();
   let { id } = params;
@@ -306,10 +308,11 @@ export const InviteFreelancer = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  const HandleOpenModal = (item, id) => {
-    setIsUserId(id)
+  const HandleOpenModal = (item, freelancer) => {
+    setIsUserId(freelancer?.user_id);
+    dispatch(setTargetedFreelancer({ ...freelancer, jobDetails }));
     if (item === "hire") {
       setIsHire(true);
     } else {
@@ -331,11 +334,9 @@ export const InviteFreelancer = () => {
     setMessage(e.target.value);
   };
 
-  const handleSend = async (freelancer) => {
+  const handleSend = async () => {
     if (isHire) {
-
-      dispatch(setTargetedFreelancer({...freelancer, jobDetails}));
-      navigate(`/client/hire/${freelancer?.user_id}`);
+      navigate(`/client/hire/${isUserId}`);
       // const formData = {
       //   freelencer_id: isUserId,
       //   job_id: id,
@@ -379,7 +380,7 @@ export const InviteFreelancer = () => {
         try {
           let result = await dispatch(clientService(formData));
           if (result?.code == 200) {
-            fetchData()
+            fetchData();
             setOpen(false);
             closeModal();
             setMessage("");
@@ -412,7 +413,9 @@ export const InviteFreelancer = () => {
       <div className="overflow-hidden border rounded-lg basis-full md:basis-4/5 border-slate-300">
         <Tabs variant="unstyled">
           <TabList className="pt-4 border-b">
-            <Tab className="px-0 text-black" onClick={() => getFreelancers()}>Search</Tab>
+            <Tab className="px-0 text-black" onClick={() => getFreelancers()}>
+              Search
+            </Tab>
             <Tab
               className="px-0 text-black"
               onClick={() => invitedFreelancer()}
@@ -420,7 +423,6 @@ export const InviteFreelancer = () => {
               Invited freelancer
             </Tab>
             {/* <Tab className="px-0 text-black">My Hire</Tab> */}
-
           </TabList>
           <TabIndicator
             height="2px"
@@ -432,38 +434,53 @@ export const InviteFreelancer = () => {
             <TabPanel p={0} bg={"#F3F4F6"}>
               <div className="h-auto px-8 pt-8 pb-4 border-b-2 ">
                 {loading && (
-                  <Spinner
-                    backgroundColor={"#"}
-                    width={"3rem"}
-                    height={"3rem"}
-                    color="red"
-                  />
+                  <div className="text-center">
+                    <Spinner
+                      backgroundColor={"#"}
+                      width={"3rem"}
+                      height={"3rem"}
+                      color="red"
+                    />
+                  </div>
                 )}
 
                 {!loading &&
                   searchResults?.map((searchResult) => (
                     <div key={searchResult?._id}>
+                      {console.log("REsult", searchResult)}
+
                       <div className="flex gap-8 pb-5 items-center">
                         <div className="w-[150px] h-[150px]">
                           {/* <img
                             src="https://c.animaapp.com/LZ3BWujk/img/rectangle-26-1@2x.png"
                             alt=""
                           /> */}
-                          {
-                            !searchResult?.profile_image || searchResult?.profile_image == "null" || searchResult?.profile_image == null ?
-                              <Avatar name={searchResult?.firstName + searchResult.lastName} width={"130px"} height={"130px"} borderRadius={"50%"} fontSize={"3rem"} objectFit={"cover"} /> : <img
-                                src={searchResult?.profile_image}
-                                className="w-[130px] h-[130px] rounded-full object-cover shadow-md"
-                                alt=""
-                              />
-                          }
+                          {!searchResult?.profile_image ||
+                          searchResult?.profile_image == "null" ||
+                          searchResult?.profile_image == null ? (
+                            <Avatar
+                              name={
+                                searchResult?.firstName + searchResult.lastName
+                              }
+                              width={"130px"}
+                              height={"130px"}
+                              borderRadius={"50%"}
+                              fontSize={"3rem"}
+                              objectFit={"cover"}
+                            />
+                          ) : (
+                            <img
+                              src={searchResult?.profile_image}
+                              className="w-[130px] h-[130px] rounded-full object-cover shadow-md"
+                              alt=""
+                            />
+                          )}
                         </div>
                         <div className="w-full space-y-2 ">
                           <div className="flex justify-between ">
                             <div className="flex gap-3">
                               <div>
                                 <HStack>
-
                                   <h2 className="text-base font-semibold text-fg-brand">
                                     {searchResult?.firstName}{" "}
                                     {searchResult?.lastName}
@@ -492,7 +509,9 @@ export const InviteFreelancer = () => {
                                   colorScheme="#16A34A"
                                   variant="outline"
                                   color={"#16A34A"}
-                                  onClick={() => HandleOpenModal("hire", searchResult?.user_id)}
+                                  onClick={() =>
+                                    HandleOpenModal("hire", searchResult)
+                                  }
                                 >
                                   Hire
                                 </Button>
@@ -502,10 +521,13 @@ export const InviteFreelancer = () => {
                                   size={"sm"}
                                   bg={"#16A34A"}
                                   color={"#fff"}
-                                  onClick={() => HandleOpenModal("inviteToJob", searchResult?.user_id
-                                  )}
+                                  onClick={() =>
+                                    HandleOpenModal("inviteToJob", searchResult)
+                                  }
                                 >
-                                  {searchResult?.invitation_status === 0 ? "Invited" : "Invite to Job"}
+                                  {searchResult?.invitation_status === 0
+                                    ? "Invited"
+                                    : "Invite to Job"}
                                 </Button>
                               </Stack>
                             </div>
@@ -547,16 +569,17 @@ export const InviteFreelancer = () => {
 
                           <div className="flex items-center justify-between">
                             <Stack spacing={4} direction="row" align="center">
-                              {searchResult.length > 0 && searchResult?.skills.map((skill, idx) => (
-                                <Button
-                                  key={idx}
-                                  size="sm"
-                                  colorScheme="gray"
-                                  color={"#6B7280"}
-                                >
-                                  {skill}
-                                </Button>
-                              ))}
+                              {searchResult.length > 0 &&
+                                searchResult?.skills.map((skill, idx) => (
+                                  <Button
+                                    key={idx}
+                                    size="sm"
+                                    colorScheme="gray"
+                                    color={"#6B7280"}
+                                  >
+                                    {skill}
+                                  </Button>
+                                ))}
                             </Stack>
                             {/* <div>
                               <IoIosArrowForward
@@ -609,9 +632,7 @@ export const InviteFreelancer = () => {
                                   </button>
                                   <button
                                     className="px-4 bg-fg-brand py-2 rounded-lg text-white hover:bg-fg-brand"
-                                    onClick={
-                                      () => handleSend(searchResult)
-                                    }
+                                    onClick={() => handleSend()}
                                   >
                                     {isHire ? "Sure" : "Send"}
                                   </button>
@@ -630,12 +651,14 @@ export const InviteFreelancer = () => {
               <TabPanel p={0} bg={"#F3F4F6"}>
                 <div className="h-auto px-8 pt-8 pb-4 border-b-2 ">
                   {loading && (
-                    <Spinner
-                      backgroundColor={"#"}
-                      width={"3rem"}
-                      height={"3rem"}
-                      color="red"
-                    />
+                    <div className="text-center">
+                      <Spinner
+                        backgroundColor={"#"}
+                        width={"3rem"}
+                        height={"3rem"}
+                        color="red"
+                      />
+                    </div>
                   )}
                   {!loading &&
                     invitedFreelancers?.map((searchResult) => (
@@ -706,16 +729,17 @@ export const InviteFreelancer = () => {
 
                             <div className="flex items-center justify-between">
                               <Stack spacing={4} direction="row" align="center">
-                                {searchResult.length > 0 && searchResult?.skills?.map((skill, idx) => (
-                                  <Button
-                                    key={idx}
-                                    size="sm"
-                                    colorScheme="gray"
-                                    color={"#6B7280"}
-                                  >
-                                    {skill}
-                                  </Button>
-                                ))}
+                                {searchResult.length > 0 &&
+                                  searchResult?.skills?.map((skill, idx) => (
+                                    <Button
+                                      key={idx}
+                                      size="sm"
+                                      colorScheme="gray"
+                                      color={"#6B7280"}
+                                    >
+                                      {skill}
+                                    </Button>
+                                  ))}
                               </Stack>
                               <div>
                                 <IoIosArrowForward
@@ -741,7 +765,7 @@ export const InviteFreelancer = () => {
   );
 };
 
-<ReviewProposal />
+<ReviewProposal />;
 
 // export const ReviewProposal = () => {
 //   const location = useLocation();
@@ -911,16 +935,3 @@ export const ClientHire = () => {
     </div>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
