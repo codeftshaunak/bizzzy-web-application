@@ -31,7 +31,7 @@ const FreelancerProfile = () => {
         <Box display="flex" gap="100px" marginTop="10px">
           <Box>
             <Heading as="h6" size="xs" className="text-gray-600">
-              Madaripur, Bangladesh
+              Dhaka, Bangladesh
             </Heading>
           </Box>
         </Box>
