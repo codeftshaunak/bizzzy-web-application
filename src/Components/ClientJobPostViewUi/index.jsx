@@ -447,8 +447,6 @@ export const InviteFreelancer = () => {
                 {!loading &&
                   searchResults?.map((searchResult) => (
                     <div key={searchResult?._id}>
-                      {console.log("REsult", searchResult)}
-
                       <div className="flex gap-8 pb-5 items-center">
                         <div className="w-[150px] h-[150px]">
                           {/* <img

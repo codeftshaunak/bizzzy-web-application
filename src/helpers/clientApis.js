@@ -2,69 +2,64 @@ import axios from "axios";
 import { BASE_URL, useApiErrorHandling } from "./proxy";
 
 export const API = axios.create({
-    baseURL: BASE_URL,
+  baseURL: BASE_URL,
 });
 
 export const getClientJobs = async () => {
-    try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.get("/job/client/jobs", {
-            headers: {
-                "Content-Type": "application/json",
-                token: `${authtoken}`,
-            },
-        });
-        return response.data.body;
-    } catch (error) {
-        return error;
-    }
-}
+  try {
+    const authtoken = localStorage.getItem("authtoken");
+    const response = await API.get("/job/client/jobs", {
+      headers: {
+        "Content-Type": "application/json",
+        token: `${authtoken}`,
+      },
+    });
+    return response.data.body;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const getProposals = async (data) => {
-    try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.get(`/job/${data}/proposal`, {
-            headers: {
-                "Content-Type": "application/json",
-                token: `${authtoken}`,
-            },
-        });
-        return response.data.body;
-    } catch (error) {
-        return error;
-    }
-}
+  try {
+    const authtoken = localStorage.getItem("authtoken");
+    const response = await API.get(`/job/${data}/proposal`, {
+      headers: {
+        "Content-Type": "application/json",
+        token: `${authtoken}`,
+      },
+    });
+    return response.data.body;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const deleteJob = async (data) => {
-    try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.post(`job/delete/${data}`, {
-            headers: {
-                "Content-Type": "application/json",
-                token: `${authtoken}`,
-            },
-        })
-        return response.data;
-    } catch (error) {
-
-    }
-}
-
+  try {
+    const authtoken = localStorage.getItem("authtoken");
+    const response = await API.post(`job/delete/${data}`, {
+      headers: {
+        "Content-Type": "application/json",
+        token: `${authtoken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {}
+};
 
 export const inviteToJob = async (data) => {
-    try {
-        const authtoken = localStorage.getItem("authtoken");
-        const response = await API.post(`invitation-send`, {
-            headers: {
-                "Content-Type": "application/json",
-                token: `${authtoken}`,
-            },
-        })
-        return response.data;
-    } catch (error) {
-
-    }
-}
+  try {
+    const authtoken = localStorage.getItem("authtoken");
+    const response = await API.post(`invitation-send`, {
+      headers: {
+        "Content-Type": "application/json",
+        token: `${authtoken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {}
+};
 
 // export const getHiredListByClient = async () => {
 //     try {
@@ -83,48 +78,57 @@ export const inviteToJob = async (data) => {
 
 // ========= Client reviews =======
 
-const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}, params = {}) => {
-    const authtoken = localStorage.getItem("authtoken");
+const makeApiRequest = async (
+  method,
+  endpoint,
+  data = null,
+  customHeaders = {},
+  params = {}
+) => {
+  const authtoken = localStorage.getItem("authtoken");
 
-    const headers = {
-        "Content-Type": "application/json",
-        token: authtoken,
-        ...customHeaders,
-    };
+  const headers = {
+    "Content-Type": "application/json",
+    token: authtoken,
+    ...customHeaders,
+  };
 
-    const config = {
-        method,
-        url: endpoint,
-        headers,
-        data,
-        params, // Include query parameters
-    };
+  const config = {
+    method,
+    url: endpoint,
+    headers,
+    data,
+    params, // Include query parameters
+  };
 
-    try {
-        const response = await API(config);
-        return response?.data;
-
-    } catch (error) {
-        // Use the error handling hook
-        const { handleApiError } = useApiErrorHandling();
-        handleApiError(error);
-        return error.response?.data;
-    }
+  try {
+    const response = await API(config);
+    return response?.data;
+  } catch (error) {
+    // Use the error handling hook
+    const { handleApiError } = useApiErrorHandling();
+    handleApiError(error);
+    return error.response?.data;
+  }
 };
 
-
 export const getSearchFreelancer = async (keywords) =>
-    makeApiRequest('get', '/search-freelancers', keywords)
+  makeApiRequest("get", "/search-freelancers", keywords);
 
 export const giveFeedback = async (data) =>
-    makeApiRequest('post', '/feedback/add', data);
+  makeApiRequest("post", "/feedback/add", data);
 
 export const getHiredListByClient = async () =>
-    makeApiRequest('get', '/client/all-hired');
+  makeApiRequest("get", "/client/all-hired");
 
 export const getOptionsList = async (userType) =>
-    makeApiRequest('get', '/getOptionsList', null, null, { user_type: userType });
+  makeApiRequest("get", "/getOptionsList", null, null, { user_type: userType });
 
-export const sendHireFreelancer = async (data) => {
-   return makeApiRequest('post', '/offer/send', data);
-}
+export const sendHireFreelancer = async (data) =>
+  makeApiRequest("post", "/offer/send", data);
+
+export const getFreelancerInfo = async (id) =>
+  makeApiRequest("get", `/user?user_id=${id}`);
+
+export const deleteMessage = async (id) =>
+  makeApiRequest("post", `/message/delete?message_id=${id}`);
