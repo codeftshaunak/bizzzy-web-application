@@ -73,8 +73,8 @@ const Login = ({ setPage }) => {
         isClosable: true,
         position: "top-right",
       });
-      // navigate("/onboarding");
-      navigate(from, { replace: true });
+      navigate("/onboarding");
+      // navigate(from, { replace: true });
     } else if (response.code === 403) {
       toast({
         title: response.msg,

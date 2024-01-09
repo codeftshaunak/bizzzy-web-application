@@ -132,3 +132,13 @@ export const getFreelancerInfo = async (id) =>
 
 export const deleteMessage = async (id) =>
   makeApiRequest("post", `/message/delete?message_id=${id}`);
+
+export const resendEmailVerification = async (email) =>
+  makeApiRequest("post", "/email/resend-verification", email);
+
+export const getCountries = async () => makeApiRequest("get", "/get-countries");
+
+export const getCategories = async () => makeApiRequest("get", "/category");
+
+export const getSkills = async (categoryId) =>
+  makeApiRequest("get", `/skills?category_id=${categoryId}`);
