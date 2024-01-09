@@ -21,3 +21,10 @@
 .star-ratings {
   display: flex !important;
 }
+
+#chat-container::-webkit-scrollbar {
+  display: none;
+}
+#chat-container {
+  scrollbar-width: none;
+}

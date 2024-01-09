@@ -8,7 +8,7 @@ import {
   InputLeftElement,
   Text,
   VStack,
-  Avatar
+  Avatar,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import CTAButton from "../CTAButton";
@@ -27,7 +27,6 @@ import { BiExit } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAuthData } from "../../redux/authSlice/authSlice";
 import { clearProfileData } from "../../redux/authSlice/profileSlice";
-
 
 // export const Header = () => {
 //     const navigate = useNavigate();
@@ -131,8 +130,6 @@ import { clearProfileData } from "../../redux/authSlice/profileSlice";
 //         </FullContainer>
 //     );
 // };
-
-
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -242,19 +239,24 @@ export const Header = () => {
                   className="text-[22px] font-bold text-green-500 cursor-pointer text-right"
                   onClick={() => navigate("/")}
                 >
-                  <img src="/images/bizzzy_logo.png" style={{
-                    width: "80px",
-                    marginTop: "3px"
-                  }} />
+                  <img
+                    src="/images/bizzzy_logo.png"
+                    style={{
+                      width: "80px",
+                      marginTop: "3px",
+                    }}
+                  />
                 </p>
               </div>
             </div>
 
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-5">
-                {navigation && navigation.length > 0 && navigation.map((item, i) => (
-                  <NavItem key={i} title={item.title} url={item.href} />
-                ))}
+                {navigation &&
+                  navigation.length > 0 &&
+                  navigation.map((item, i) => (
+                    <NavItem key={i} title={item.title} url={item.href} />
+                  ))}
               </div>
             </div>
           </div>
@@ -398,8 +400,8 @@ export const AuthHeader = ({ role }) => {
   const profile = useSelector((state) => state.profile);
   const { profile_image, name } = profile.profile || [];
   const handleProfileButton = () => {
-    setOpenInfo(!openInfo)
-  }
+    setOpenInfo(!openInfo);
+  };
 
   const dispatch = useDispatch();
 
@@ -407,7 +409,6 @@ export const AuthHeader = ({ role }) => {
     dispatch(clearAuthData()); // Dispatch the clearAuthData action to reset the state
     dispatch(clearProfileData()); // Dispatch the clearAuthData action to reset the state
   };
-
 
   const navigate = useNavigate();
   const boxStyle = {
@@ -513,19 +514,23 @@ export const AuthHeader = ({ role }) => {
                 className="text-[22px] font-bold text-green-500 cursor-pointer text-right mb-0 pb-0"
                 onClick={() => navigate("/")}
               >
-                <img src="/images/bizzzy_logo.png" style={{
-                  width: "80px",
-                  marginTop: "3px",
-                  margin: 'auto'
-                }} />
+                <img
+                  src="/images/bizzzy_logo.png"
+                  style={{
+                    width: "80px",
+                    marginTop: "3px",
+                    margin: "auto",
+                  }}
+                />
               </p>
             </div>
             <div className="hidden sm:block sm:ml-6 mt-2">
               <div className="flex gap-9">
-                <NavItem title={role == 1 ? "Find Work" : "Dashboard"} url={role == 1 ? "/find-job" : "/client-dashboard"} />
-                {
-                  role == 1 && <NavItem title={"My Jobs"} url={"/my-jobs"} />
-                }
+                <NavItem
+                  title={role == 1 ? "Find Work" : "Dashboard"}
+                  url={role == 1 ? "/find-job" : "/client-dashboard"}
+                />
+                {role == 1 && <NavItem title={"My Jobs"} url={"/my-jobs"} />}
                 <NavItem title={"My Stats"} url="/my-stats" />
                 <NavItem noIcon={true} title={"Messages"} url="/message" />
               </div>
@@ -558,25 +563,33 @@ export const AuthHeader = ({ role }) => {
                   className="flex items-center justify-center rounded-full w-[36px] h-[36px] cursor-pointer"
                   onClick={() => handleProfileButton()}
                 >
-                  {
-                    profile_image != "null" ? <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} /> : <Avatar name={name} boxSize="40px" />
-                  }
+                  {profile_image != "null" && profile_image != null ? (
+                    <img
+                      src={profile_image}
+                      width={"60px"}
+                      style={{ borderRadius: "20px" }}
+                    />
+                  ) : (
+                    <Avatar name={name} boxSize="40px" />
+                  )}
                 </div>
 
-                {
-                  openInfo && <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
+                {openInfo && (
+                  <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
                     <div className="flex justify-around items-center w-full cursor-pointer mt-3">
                       <AiFillSetting />
                       <p className="text-sm">Setting</p>
                     </div>
 
-                    <div className="flex justify-around items-center w-full cursor-pointer my-3" onClick={() => handleLogout()}>
+                    <div
+                      className="flex justify-around items-center w-full cursor-pointer my-3"
+                      onClick={() => handleLogout()}
+                    >
                       <BiExit />
                       <p className="text-sm">Logout</p>
                     </div>
                   </div>
-                }
-
+                )}
               </div>
             </div>
 
@@ -603,7 +616,6 @@ export const AuthHeader = ({ role }) => {
             </div>
           </div>
           <div className="md:hidden">
-
             <button
               onClick={() => {
                 setOpenSearch(!openSearch);
@@ -662,10 +674,12 @@ export const AuthHeader = ({ role }) => {
                 </div>
 
                 <div className="mx-3 flex gap-3 my-3">
-                  <div
-                    className="flex items-center justify-center rounded-full w-[36px] h-[36px] "
-                  >
-                    <img src={profile_image} width={"60px"} style={{ borderRadius: "20px" }} />
+                  <div className="flex items-center justify-center rounded-full w-[36px] h-[36px] ">
+                    <img
+                      src={profile_image}
+                      width={"60px"}
+                      style={{ borderRadius: "20px" }}
+                    />
                   </div>
                   <div>
                     <p className="text-gray-700 font-medium text-[14px]">
@@ -693,7 +707,6 @@ const NavItem = ({ title, noIcon, url, onClick }) => {
         <p className="text-[16px] font-[500] text-[#374151] ">{title}</p>
         {/* {!noIcon && <BsChevronDown />} */}
       </div>
-
     </Link>
   );
 };
