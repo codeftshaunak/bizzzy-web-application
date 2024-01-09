@@ -98,7 +98,7 @@ const SingleText = ({
   return (
     <Box
       position="relative"
-      padding={"20px"}
+      padding={"10px"}
       width={"100%"}
       onMouseEnter={() => setIsMore(true)}
       onMouseLeave={() => setIsMore(false)}
@@ -107,13 +107,6 @@ const SingleText = ({
         <HStack justifyContent={"space-between"}>
           {isMore ? (
             <div className="relative">
-              {/* <Image
-                src="images/more-msg.png"
-                alt="..."
-                cursor={"pointer"}
-                onClick={() => setIsMenu(true)}
-                onMouseLeave={() => setIsMenu(false)}
-              /> */}
               <div
                 className="cursor-pointer bg-white hover:bg-gray-200/30 p-1 rounded-full shadow-[rgba(17,_17,_26,_0.1)_0px_0px_12px]"
                 onClick={() => setIsMenu(true)}
@@ -143,7 +136,7 @@ const SingleText = ({
           ) : (
             <Text></Text>
           )}
-          <HStack p={4} pb={0}>
+          <HStack alignItems={"start"}>
             <VStack justifyContent={"end"} alignItems={"end"}>
               <Text fontWeight={"600"} textAlign={"right"}>
                 You
@@ -167,7 +160,7 @@ const SingleText = ({
           onMouseEnter={() => setIsMore(true)}
           onMouseLeave={() => setIsMore(false)}
         >
-          <HStack p={4} pb={0}>
+          <HStack>
             {renderProfileImage(user)}
             <Flex flexDir="column">
               <Text fontWeight={"600"}>
@@ -185,13 +178,6 @@ const SingleText = ({
           </HStack>
           {isMore ? (
             <div className="relative">
-              {/* <Image
-             src="images/more-msg.png"
-             alt="..."
-             cursor={"pointer"}
-             onClick={() => setIsMenu(true)}
-             onMouseLeave={() => setIsMenu(false)}
-           /> */}
               <div
                 className="cursor-pointer bg-white hover:bg-gray-200/30 p-1 rounded-full shadow-[rgba(17,_17,_26,_0.1)_0px_0px_12px]"
                 onClick={() => setIsMenu(true)}

@@ -68,7 +68,7 @@ const ContractTerms = () => {
         <h5 className="font-bold flex items-center gap-1">
           Payment Option <FaQuestionCircle className="cursor-pointer" />
         </h5>
-        <div className="flex gap-11 mt-1">
+        <div className="grid grid-cols-2 max-w-2xl gap-5 mt-1">
           <div
             className={`border-2  rounded-md p-2 cursor-pointer ${
               formData.job_type === "fixed"
@@ -91,7 +91,7 @@ const ContractTerms = () => {
               <IoIosAlarm className="text-2xl" />
             </div>
             <p className="text-2xl font-semibold">Pay by the hour</p>
-            <p className="text-gray-500 text-sm">
+            <p className="text-sm">
               Pay for the number of hours worked on a project
             </p>
           </div>
@@ -114,9 +114,7 @@ const ContractTerms = () => {
               <GiPriceTag className="text-2xl" />
             </div>
             <p className="text-2xl font-semibold">Pay a fixed price</p>
-            <p className="text-gray-500">
-              Pay as project milestones are completed
-            </p>
+            <p className="text-sm">Pay as project milestones are completed</p>
           </div>
         </div>
         <div className="mt-7">

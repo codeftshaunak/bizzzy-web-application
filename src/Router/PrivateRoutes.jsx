@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
   const location = useLocation();
-  const auth = useSelector((state) => state?.auth?.authtoken.length > 10);
+  const auth = useSelector((state) => state?.auth?.authtoken.length > 10); //dummy checking purpose
 
   return auth ? (
     <Outlet />
