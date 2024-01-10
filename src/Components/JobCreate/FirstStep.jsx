@@ -51,7 +51,7 @@ function FirstStep({ setStep }) {
     if (formState?.description) values.description = formState.description;
     if (formState?.tags) values.tags = formState.tags;
     if (formState?.skills) values.skills = formState.skills;
-    if (formState?.budget) values.budget = `${formState.budget}`;
+    if (formState?.job_type) values.job_type = `${formState.job_type}`;
     if (formState?.amount) values.amount = formState.amount;
     if (formState?.file) values.file = formState.file;
 
@@ -158,7 +158,7 @@ function FirstStep({ setStep }) {
         <div className="flex items-center">
           <div className="flex items-center">
             <input
-              {...register("budget")}
+              {...register("job_type")}
               id="default-radio-1"
               type="radio"
               value={1}
@@ -173,7 +173,7 @@ function FirstStep({ setStep }) {
           </div>
           <div className="flex items-center ml-3">
             <input
-              {...register("budget")}
+              {...register("job_type")}
               id="default-radio-2"
               type="radio"
               value={2}
@@ -187,8 +187,8 @@ function FirstStep({ setStep }) {
             </label>
           </div>
         </div>
-        {errors?.budget ? (
-          <p className="text-sm text-red-500">{errors.budget.message}</p>
+        {errors?.job_type ? (
+          <p className="text-sm text-red-500">{errors.job_type.message}</p>
         ) : null}
       </div>
 

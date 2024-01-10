@@ -286,7 +286,7 @@ const JobApply = ({ setPage, details }) => {
     console.log(selectedFile);
     const [bidDetails, setBidDetails] = useState({
         amount: details?.amount,
-        type: details?.budget === 1 ? 'milestone' : 'project',
+        type: details?.job_type == "fixed" ? 'milestone' : 'project',
         customBidAmount: null,
         coverLetter: '',
     });
@@ -394,7 +394,7 @@ const JobApply = ({ setPage, details }) => {
                 </Box>
 
                 <Box w="60%">
-                    {details?.budget == 1 && (
+                    {details?.budget == "fixed" && (
                         <Box w="full" className="w-full">
                             <Box className="w-full">
                                 <Box className="border border-tertiary rounded-2xl p-6 mb-4">
@@ -454,7 +454,7 @@ const JobApply = ({ setPage, details }) => {
                         </Box>
                     )}
 
-                    {details?.budget == 2 && (
+                    {details?.budget == "hourly" && (
                         <Box w="full">
                             <Box className="border border-tertiary rounded-2xl p-6 mb-4">
                                 <Box fontWeight="semibold" mb={2}>What is the rate you'd like to bid for this job?</Box>

@@ -186,7 +186,7 @@ export const SearchJobPage = () => {
             }
 
             if (contractType.length > 0) {
-                filteredJobs = filteredJobs.filter(job => contractType.includes(job?.budget));
+                filteredJobs = filteredJobs.filter(job => contractType.includes(job?.job_type));
             }
 
             setJobs(filteredJobs);
@@ -246,7 +246,7 @@ export const SearchJobPage = () => {
                             </div>
                         </div>
                         <div className="p-4">
-                            <button className="bg-primary text-secondary rounded h-[36px] w-full">View Your Profile</button>
+                            <button className="bg-primary text-secondary rounded h-[36px] w-full" onClick={() => navigate("/freelancer")}>View Your Profile</button>
                         </div>
                     </div>
                     <Filter
@@ -320,8 +320,8 @@ export const Filter = ({ handleContractTypeChange, handleExperienceChange, handl
             <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
                 <Text fontWeight={"600"}>Contract Type</Text>
                 <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-                    <Checkbox onChange={() => handleContractTypeChange('2')}>Hourly Rate</Checkbox>
-                    <Checkbox onChange={() => handleContractTypeChange('1')}>Fixed Price</Checkbox>
+                    <Checkbox onChange={() => handleContractTypeChange('hourly')}>Hourly Rate</Checkbox>
+                    <Checkbox onChange={() => handleContractTypeChange('fixed')}>Fixed Price</Checkbox>
                 </VStack>
             </VStack>
         </VStack>

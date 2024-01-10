@@ -34,7 +34,7 @@ export const JobDetailsSection = ({ jobdetails }) => {
                             <Text mb="0" fontSize="0.8rem">Experience Level</Text>
                         </div>
                     </HStack>
-                    {jobdetails?.job_details[0]?.budget == 1 && (
+                    {jobdetails?.job_details[0]?.job_type == 1 && (
                         <HStack width="180px" alignItems="start">
                             <Text mt="0.5rem"><IoMdTime fontSize="20px" /></Text>
                             <div gap="0">
@@ -43,7 +43,7 @@ export const JobDetailsSection = ({ jobdetails }) => {
                             </div>
                         </HStack>
                     )}
-                    {jobdetails?.job_details[0]?.budget == 2 && (
+                    {jobdetails?.job_details[0]?.job_type == 2 && (
                         <HStack width="180px" alignItems="start">
                             <Text mt="0.5rem"><IoMdTime fontSize="20px" /></Text>
                             <div gap="0">

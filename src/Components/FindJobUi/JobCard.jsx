@@ -24,8 +24,8 @@ const JobCard = ({ jobs }) => {
               <div key={index}>
                 <div className="p-8 border-b border-tertiary">
                   <div className="text-gray-300 text-sm">
-                    {(job?.budget == 1 && " Fixed Budget ") ||
-                      (job?.budget == 2 && "Hourly")}
+                    {(job?.job_type == "fixed" && " Fixed Budget ") ||
+                      (job?.job_type == "hourly" && "Hourly")}
                     / {job?.experience} / Est. Budget:
                     <span className="text-black">
                       ${job?.amount}

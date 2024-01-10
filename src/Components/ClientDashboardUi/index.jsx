@@ -5,6 +5,7 @@ import { PiDotsThreeBold } from "react-icons/pi";
 import { formatDistanceToNow } from 'date-fns';
 import ClientProfileCard from "./ClientProfileCard";
 import { getClientJobs, getHiredListByClient } from "../../helpers/clientApis";
+import CTAButton from "../CTAButton";
 
 const ClientDashboardComponent = () => {
   const navigate = useNavigate();
@@ -55,26 +56,39 @@ const ClientDashboardComponent = () => {
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12 md:col-span-9">
           <h2 className="text-[25px] mb-2">Your Dashboard</h2>
-          <h6 className="text-[16px]">My Team</h6>
-
-          <div className="grid grid-cols-12 gap-4 mt-4">
-            {
-              uniqueHired?.length > 0 && uniqueHired.map((data, index) => {
-                return <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg" key={index}>
-                  <ClientProfileCard data={data.freelancerDetails[0]} />
+          {/* <h6 className="text-[16px]">My Team</h6> */}
+          {
+            uniqueHired?.length > 0 ? <div className="grid grid-cols-12 gap-4 mt-4">
+              {
+                uniqueHired?.length > 0 && uniqueHired.map((data, index) => {
+                  return <div className="col-span-12 md:col-span-6 lg:col-span-4 border border-[#D1D5DB] p-4 rounded-lg" key={index}>
+                    <ClientProfileCard data={data.freelancerDetails[0]} />
+                  </div>
+                })
+              }
+            </div> : <div className="border-2 mt-4 rounded-md">
+              <div className="flex justify-between border-b border-[#D1D5DB] p-4">
+                <div className=" text-2xl font-medium text-[#374151]">My Team</div>
+              </div>
+              <div className=" h-[200px] bg-[#f4f5f787] text-center py-4">
+                <div className="w-[70%] m-auto flex flex-col justify-center items-center gap-2 h-full">
+                  <h2 className="font-bold text-xl">Welcome to Bizzzy!</h2>
+                  <p className="py-3">Ready to start building your team online? Explore our vast database of programmers, designers, marketers, builders & more. Click below to make your first hire & bring your project live.</p>
+                  <Button bg={"#16A34A"} color={'#fff'} border={"1px solid #16A34A"} fontSize={'sm'} height={"2rem"} w={"12rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                    bg: '#36af63',
+                    color: "#fff"
+                  }}>
+                    Start your first project
+                  </Button>
                 </div>
-              })
-            }
-          </div>
+              </div>
+            </div>
+          }
+
 
           <div className="mt-6 border border-[#D1D5DB]  rounded-md w-full">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
-              <div className=" text-2xl font-medium text-[#374151]">Your Job Postings</div>
-              {/* <div>
-                <Link to="#" className=" text-lg font-medium text-fg-brand">
-                  See All Postings
-                </Link>
-              </div> */}
+              <div className=" text-2xl font-medium text-[#374151]">Your Job Posting</div>
             </div>
             <div className="px-4 w-full">
               {

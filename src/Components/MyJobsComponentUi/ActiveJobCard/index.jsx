@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ActiveJobCard = ({ job }) => {
   console.log({ "jobbbb": job });
-  const { _id, budget, job_details } = job;
+  const { _id, job_type, job_details } = job;
   const navigate = useNavigate()
   return (
     <VStack
@@ -28,9 +28,9 @@ const ActiveJobCard = ({ job }) => {
         </Link>
         <VStack justifyContent={"space-around"} width={"200px"} margin={"auto"} gap={"1px"}>
           <Text fontSize="1rem" color="gray.700" fontWeight={"600"} marginBottom={"0"}>
-            Job Type: {job_details[0]?.budget == "1"
+            Job Type: {job_details[0]?.job_type == "fixed"
               ? "Fixed Rate"
-              : job_details[0]?.budget == "2"
+              : job_details[0]?.job_type == "hourly"
                 ? "Hourly"
                 : ""}
           </Text>

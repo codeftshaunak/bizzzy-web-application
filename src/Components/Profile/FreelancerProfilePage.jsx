@@ -4,7 +4,7 @@ import SkillCard from "./SkillCard";
 import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
-import { HStack, Avatar } from "@chakra-ui/react";
+import { HStack, VStack, Avatar, Box, Text } from "@chakra-ui/react";
 import { getAllDetailsOfUser } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
@@ -179,12 +179,12 @@ export const FreelancerProfilePage = () => {
         <div className="flex gap-[24px]">
           <div className="flex flex-1 gap-[24px]  flex-col ">
             {/* ==================== Freelance Stats ====================== */}
-            <div className="flex w-[full]  flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex w-[full] relative flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <p className="text-[20px] text-[#374151] font-[600] ">
                 Freelance Stats
               </p>
-              <hr className="  border-t-[#D1D5DB] " />
-              <div className="flex items-center justify-between">
+              {/* <hr className="  border-t-[#D1D5DB] " /> */}
+              {/* <div className="flex items-center justify-between">
                 <div className="flex flex-col items-start gap-[8px]">
                   <p className="text-[18px] text-[#374151] font-[600]">
                     $400K+
@@ -205,7 +205,33 @@ export const FreelancerProfilePage = () => {
                     Total Hours
                   </p>
                 </div>
-              </div>
+              </div> */}
+
+
+
+              <VStack
+                backgroundColor={"#f4f5f787"}
+                height={"80px"}
+                shadow={"sm"}
+                justifyContent={"center"}
+              >
+                <Text fontWeight={"600"} top={"8rem"} zIndex={"10"} textAlign={"center"}>Updated Freelancer Stats <br /> Coming Soon</Text>
+
+                {/* <div className="flex items-center justify-between">
+                  <div className="flex flex-col items-start gap-2">
+                    <p className="text-lg font-semibold">$400K+</p>
+                    <p className="text-sm font-medium">Total Earnings</p>
+                  </div>
+                  <div className="flex flex-col items-start gap-2">
+                    <p className="text-lg font-semibold">145</p>
+                    <p className="text-sm font-medium">Total Jobs</p>
+                  </div>
+                  <div className="flex flex-col items-start gap-2">
+                    <p className="text-lg font-semibold">680</p>
+                    <p className="text-sm font-medium">Total Hours</p>
+                  </div>
+                </div> */}
+              </VStack>
             </div>
             {/* ==================== Freelance Stats ====================== */}
             {/* ==================== Education ====================== */}
