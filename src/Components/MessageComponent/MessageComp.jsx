@@ -22,7 +22,6 @@ import { BsSendFill } from "react-icons/bs";
 import { SocketContext, userId } from "../../Contexts/SocketContext";
 import { userById } from "../../helpers/userApis";
 import SingleText from "./SingleText";
-import { getUserDetails } from "../../helpers/clientApis";
 
 const MessageComp = () => {
   const [messageUsers, setMessageUsers] = useState([]);
