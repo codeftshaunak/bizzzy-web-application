@@ -84,7 +84,6 @@ const ClientDashboardComponent = () => {
               </div>
             </div>
           }
-          {/*  */}
 
           <div className="mt-6 border border-[#D1D5DB]  rounded-md w-full">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
