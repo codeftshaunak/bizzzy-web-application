@@ -3,6 +3,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
 import { HStack, useToast } from "@chakra-ui/react";
+import { FaCloudUploadAlt } from "react-icons/fa";
 import {
   updateFreelancerProfile,
   updateFreelancer,
@@ -11,6 +12,7 @@ import {
 } from "../../helpers/userApis";
 import { Spinner } from "@chakra-ui/react";
 import { getSkills } from "../../helpers/clientApis";
+import { IoMdClose } from "react-icons/io";
 export const customStyles = {
   content: {
     top: "50%",
@@ -36,16 +38,9 @@ export const ProfileModal = ({
   const toast = useToast();
   const animatedComponents = makeAnimated();
   const [options, setOptions] = useState(null);
-  const option = [
-    { value: "Reactjs", label: "React js" },
-    { value: "Nodejs", label: "Node js" },
-    { value: "design", label: "Graphic Design" },
-    { value: "java", label: "Java" },
-    { value: "python", label: "Python" },
-    { value: "design3", label: "Graphic Design" },
-  ];
+  const [selectedImages, setSelectedImages] = useState([]);
 
-  console.log(modalPage, "modalPagemodalPagemodalPage");
+  console.log(modalPage, "modalPage");
 
   const selectStyle = {
     multiValue: (styles) => ({
@@ -77,10 +72,7 @@ export const ProfileModal = ({
     // Add any other style customizations here
   };
 
-  const [selectedOptions, setSelectedOptions] = useState([
-    { value: "Reactjs", label: "React js" },
-    { value: "Nodejs", label: "Node js" },
-  ]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
 
   const handleChange = (selected) => {
@@ -101,7 +93,6 @@ export const ProfileModal = ({
       profile_image: file,
     });
   };
-
   const uploadProfileImage = async () => {
     setIsLoader(true);
     try {
@@ -178,17 +169,16 @@ export const ProfileModal = ({
   // Handle Updating Skills Methods
   const getCategorySkills = async (categoryIds) => {
     try {
-      const validCategoryIds = categoryIds.filter((category) => category._id);
-
-      const promises = validCategoryIds.map(async ({ _id }) => {
+      const validCategoryIds = categoryIds?.filter((category) => category._id);
+      console.log({ categoryIds });
+      const promises = validCategoryIds?.map(async ({ _id }) => {
         try {
           const skills = await getSkills(_id);
           if (skills && skills.body) {
-            return skills.body.map((item) => ({
-              value: item.skill_name,
-              label: item.skill_name,
-              category_id: item.category_id,
-              _id: item._id,
+            return skills.body?.map((item) => ({
+              value: item?.skill_name,
+              label: item?.skill_name,
+              _id: item?._id,
             }));
           } else {
             return [];
@@ -207,22 +197,36 @@ export const ProfileModal = ({
       console.error("Error fetching skills:", error);
     }
   };
+  console.log({ options });
   useEffect(() => {
     setSelectedOptions(
       userProfileInfo?.skills?.map((item) => ({
-        value: item,
-        label: item,
+        value: item.skill_name,
+        label: item.skill_name,
       }))
     );
     getCategorySkills(userProfileInfo?.categories);
   }, [userProfileInfo]);
+  console.log({ selectedOptions });
+
+  // const uploadImages = async (images) => {
+  //   try {
+  //     const uploadPromises = images.map((image) => uploadImage(image));
+  //     const uploadedResults = await Promise.all(uploadPromises);
+  //     console.log("Uploaded images:", uploadedResults);
+  //     return uploadedResults;
+  //   } catch (error) {
+  //     console.error("Error uploading images:", error);
+  //     throw error;
+  //   }
+  // };
 
   const handleSaveAndContinue = async (data) => {
     console.log(data, "datadatadata");
     try {
       if (data === "category") {
         // Handle saving categories
-        const selectedCategories = selectedOptions.map(
+        const selectedCategories = selectedOptions?.map(
           (option) => option.value
         );
         const response = await updateFreelancerProfile({
@@ -306,6 +310,13 @@ export const ProfileModal = ({
           closeModal();
         }
       } else if (data == "portfolio") {
+        // try {
+        //   const uploadedImages = await uploadImages(selectedImages);
+        //   console.log("All images uploaded:", uploadedImages);
+        // } catch (error) {
+        //   console.error("Error uploading images:", error);
+        // }
+
         const response = await updateFreelancerProfile({
           portfolio: {
             project_name: portfolioInput.project_name,
@@ -617,6 +628,25 @@ export const ProfileModal = ({
       console.log(error);
     }
   };
+
+  // Handle Media Image Uploaded
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+
+    if (selectedImages.length + files.length <= 3) {
+      const selectedFiles = files.filter((file) => file.type.includes("image"));
+      setSelectedImages([...selectedImages, ...selectedFiles]);
+    } else {
+      console.log("You can select a maximum of 3 images.");
+    }
+  };
+  const handleImageDelete = (indexToRemove) => {
+    const updatedImages = selectedImages.filter(
+      (_, index) => index !== indexToRemove
+    );
+    setSelectedImages(updatedImages);
+  };
+  // console.log({ selectedImages });
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -722,8 +752,8 @@ export const ProfileModal = ({
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Technologies
                 </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
+                <div className="w-[100%] outline-none border-[1px] rounded-md">
+                  {/* <input
                     type="text"
                     className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                     placeholder="Technologies"
@@ -733,7 +763,67 @@ export const ProfileModal = ({
                         technologies: e.target.value,
                       })
                     }
+                  /> */}
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    options={options}
+                    value={selectedOptions}
+                    onChange={handleChange}
+                    // styles={selectStyle}
                   />
+                </div>
+              </div>
+              <div className="flex flex-col gap-[2px] mt-6">
+                <p className="text-[14px] font-[500] text-[#374151]">Media</p>
+                <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
+                  <div className="flex">
+                    {selectedImages?.map((image, index) => (
+                      <div
+                        key={index}
+                        className="rounded border border-green-300 mr-2 relative"
+                      >
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt={`Selected ${index + 1}`}
+                          className="w-20 h-20 object-cover rounded"
+                        />
+                        <span
+                          className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
+                          onClick={() => handleImageDelete(index)}
+                        >
+                          <IoMdClose />
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedImages.length < 3 && (
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        multiple
+                        style={{ display: "none" }}
+                        id="fileInput"
+                        disabled={selectedImages.length >= 3}
+                      />
+                      <label htmlFor="fileInput">
+                        <div
+                          className={`w-24 h-20 border border-green-400 rounded cursor-pointer bg-green-100 hover:bg-green-200 flex flex-col items-center justify-center text-center`}
+                        >
+                          <span>
+                            <FaCloudUploadAlt className="text-2xl text-center" />
+                          </span>
+                          <span className="font-semibold">
+                            {selectedImages.length > 0 ? "Add More" : "Add"}
+                          </span>
+                        </div>
+                      </label>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
