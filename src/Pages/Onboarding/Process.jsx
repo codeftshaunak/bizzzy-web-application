@@ -123,13 +123,13 @@ const Process = () => {
               isClosable: true,
             });
           } else {
-            const selectedCategories = selectedOptions.map(
-              (option) => option.value
-            );
+            const selectedCategories = selectedOptions.map((option) => ({
+              value: option.value,
+              _id: option._id,
+            }));
             const response = await updateFreelancerProfile({
               categories: selectedCategories,
             });
-            console.log({ category: response });
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -319,35 +319,44 @@ const Process = () => {
 
   // Handle Skills Options Category Wise
   const getCategorySkills = async (categoryIds) => {
-    if (selectedOptions.length > 0) {
-      try {
-        const promises = categoryIds.map(async ({ _id }) => {
+    try {
+      const validCategoryIds = categoryIds.filter((category) => category._id);
+
+      const promises = validCategoryIds.map(async ({ _id }) => {
+        try {
           const skills = await getSkills(_id);
-          return skills?.body.map((item) => ({
-            value: item.skill_name,
-            label: item.skill_name,
-            category_id: item.category_id,
-            _id: item._id,
-          }));
-        });
+          if (skills && skills.body) {
+            return skills.body.map((item) => ({
+              value: item.skill_name,
+              label: item.skill_name,
+              category_id: item.category_id,
+              _id: item._id,
+            }));
+          } else {
+            return [];
+          }
+        } catch (error) {
+          console.error(`Error fetching skills for category ID ${_id}:`, error);
+          return [];
+        }
+      });
 
-        const results = await Promise.all(promises);
-        const newSkillOptions = results.flat();
+      const results = await Promise.all(promises);
+      const newSkillOptions = results.flat();
 
-        setSkillOptions(newSkillOptions);
-      } catch (error) {
-        console.error("Error fetching skills:", error);
-      }
+      setSkillOptions(newSkillOptions);
+    } catch (error) {
+      console.error("Error fetching skills:", error);
     }
   };
 
-  console.log({ userDetails });
   useEffect(() => {
-    getCategorySkills(selectedOptions);
-  }, [selectedOptions]);
+    console.log({ page });
+    if (userDetails.categories?.length > 0 && page === 4) {
+      getCategorySkills(userDetails?.categories);
+    }
+  }, [userDetails, page]);
 
-  console.log({ selectedOptions });
-  console.log({ skillOptions });
   return (
     <OnboardingProcess>
       <>
@@ -608,7 +617,7 @@ const Process = () => {
                   components={animatedComponents}
                   isMulti
                   options={skillOptions}
-                  //   onChange={handleSelectChange}
+                  onChange={handleSelectChange}
                   value={selectedOptions}
                 />
                 <Button

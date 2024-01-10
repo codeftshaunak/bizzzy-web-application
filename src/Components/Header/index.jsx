@@ -24,6 +24,7 @@ import {
 import { useState } from "react";
 import { AiFillSetting } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAuthData } from "../../redux/authSlice/authSlice";
 import { clearProfileData } from "../../redux/authSlice/profileSlice";
@@ -410,6 +411,14 @@ export const AuthHeader = ({ role }) => {
     dispatch(clearProfileData()); // Dispatch the clearAuthData action to reset the state
   };
 
+  const handleUserProfile = () => {
+    if (role == 1) {
+      navigate("/freelancer");
+    } else {
+      navigate("/client");
+    }
+  };
+
   const navigate = useNavigate();
   const boxStyle = {
     display: "flex",
@@ -576,13 +585,20 @@ export const AuthHeader = ({ role }) => {
 
                 {openInfo && (
                   <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
-                    <div className="flex justify-around items-center w-full cursor-pointer mt-3">
+                    <div
+                      className="flex justify-around items-center w-full cursor-pointer mt-1 hover:bg-gray-200/20 py-1 px-2 rounded"
+                      onClick={handleUserProfile}
+                    >
+                      <CgProfile />
+                      <p className="text-sm">Profile</p>
+                    </div>
+                    <div className="flex justify-around items-center w-full cursor-pointer mt-1 hover:bg-gray-200/20 py-1 px-2 rounded">
                       <AiFillSetting />
                       <p className="text-sm">Setting</p>
                     </div>
 
                     <div
-                      className="flex justify-around items-center w-full cursor-pointer my-3"
+                      className="flex justify-around items-center w-full cursor-pointer my-1 hover:bg-gray-200/20 py-1 px-2 rounded"
                       onClick={() => handleLogout()}
                     >
                       <BiExit />

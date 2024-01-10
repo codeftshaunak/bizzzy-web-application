@@ -17,7 +17,7 @@ export const FreelancerProfilePage = () => {
   const [details, setDetails] = useState([]);
   const [deleteModalPage, setDeleteModalPage] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [id, setId] = useState({ id: '', type: '' });
+  const [id, setId] = useState({ id: "", type: "" });
   const {
     firstName,
     lastName,
@@ -82,12 +82,12 @@ export const FreelancerProfilePage = () => {
     const selectedEducationData = {
       professional_role: title,
       hourly_rate: rate,
-      description: desc
+      description: desc,
     };
     setSelectedEducation(selectedEducationData);
     setModalPage("basicInformation");
     openModal();
-  }
+  };
 
   const openExperienceEditModal = (edu) => {
     setSelectedEducation(edu);
@@ -96,10 +96,10 @@ export const FreelancerProfilePage = () => {
   };
   //===edit skills handle
   const openEditSkills = () => {
-    setSelectedEducation('');
+    setSelectedEducation("");
     setModalPage("skills");
     openModal();
-  }
+  };
 
   //===delete selected education
   const HandleDeleteEducation = (id, type) => {
@@ -107,6 +107,7 @@ export const FreelancerProfilePage = () => {
     setDeleteModalPage("exprience");
     setDeleteModalOpen(true);
   };
+  console.log({ details });
 
   return (
     <ProfileContainer>
@@ -114,7 +115,15 @@ export const FreelancerProfilePage = () => {
         <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
-              <div style={{ position: "absolute", top: "0px", left: "0px", zIndex: "50", cursor: "pointer" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "0px",
+                  left: "0px",
+                  zIndex: "50",
+                  cursor: "pointer",
+                }}
+              >
                 <div className="flex items-center justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -150,9 +159,17 @@ export const FreelancerProfilePage = () => {
                   background: `url(${profile_image})`,
                 }}
               ></div> */}
-              {
-                !profile_image || profile_image == "null" || profile_image === null ? <Avatar name={firstName + " " + lastName} width={"60px"} height={"60px"} /> : <img src={profile_image} className="w-[60px] rounded-full" />
-              }
+              {!profile_image ||
+              profile_image == "null" ||
+              profile_image === null ? (
+                <Avatar
+                  name={firstName + " " + lastName}
+                  width={"60px"}
+                  height={"60px"}
+                />
+              ) : (
+                <img src={profile_image} className="w-[60px] rounded-full" />
+              )}
             </div>
             <div className="flex flex-col justify-start gap-[10px]">
               <p className="text-[24px] text-[#374151] font-semibold">
@@ -265,7 +282,9 @@ export const FreelancerProfilePage = () => {
                         </div>
                         <div
                           className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                          onClick={() => HandleDeleteEducation(edu._id, "education")}
+                          onClick={() =>
+                            HandleDeleteEducation(edu._id, "education")
+                          }
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -458,10 +477,16 @@ export const FreelancerProfilePage = () => {
                 <p className="text-[20px] text-[#374151] font-[600]">
                   ${hourly_rate}/hr
                 </p>
-                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                <div
+                  className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                   onClick={() => {
-                    openEditBasicModal(professional_role, hourly_rate, description);
-                  }}>
+                    openEditBasicModal(
+                      professional_role,
+                      hourly_rate,
+                      description
+                    );
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -503,7 +528,10 @@ export const FreelancerProfilePage = () => {
                 }}
               >
                 <p className="text-[16px] text-[#374151] font-[600]">Skills</p>
-                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer" onClick={() => openEditSkills()}>
+                <div
+                  className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                  onClick={() => openEditSkills()}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -619,8 +647,9 @@ export const FreelancerProfilePage = () => {
                 </p>
                 <div className="h-[2px] w-[60px] bg-[#16A34A]"></div>
               </div>
-              <ReviewCard />
-              <ReviewCard />
+              {details?.work_history?.map((item, index) => (
+                <ReviewCard key={index} workDetails={item} />
+              ))}
               <p className="text-[14px] text-[#16A34A] font-[600] cursor-pointer">
                 View More
               </p>
@@ -635,7 +664,16 @@ export const FreelancerProfilePage = () => {
         selectedEducation={selectedEducation}
         inputChange={setSelectedEducation}
       />
-      {deleteModalOpen ? <AlertDeleteDialog modalIsOpen={setDeleteModalOpen} id={id} deleteModalPage={modalPage} setModalIsOpen={setDeleteModalOpen} /> : <></>}
+      {deleteModalOpen ? (
+        <AlertDeleteDialog
+          modalIsOpen={setDeleteModalOpen}
+          id={id}
+          deleteModalPage={modalPage}
+          setModalIsOpen={setDeleteModalOpen}
+        />
+      ) : (
+        <></>
+      )}
     </ProfileContainer>
   );
 };

@@ -1,25 +1,27 @@
-import React from "react";
-import Star from "./Star";
+import StarRatings from "react-star-ratings";
 
-const ReviewCard = () => {
+const ReviewCard = ({ workDetails }) => {
+  const { feedback_details, job_details, sender_details } = workDetails;
+  console.log({ workDetails });
   return (
     <div className="flex flex-col gap-[8px]">
       <p className="text-[16px] text-[#374151] font-[500]">
-        Update our site design with a figma
+        {job_details?.title}
       </p>
       <div className="flex gap-[8px]">
-        <Star />
-        <Star />
-        <Star />
-        <Star />
-        <Star />
-        <p className="text-[#374151] text-[14px] font-[400]">5.0</p>
+        <StarRatings
+          rating={Number(feedback_details?.average_rating)}
+          starDimension="18px"
+          starSpacing="1px"
+          starRatedColor="#16A34A"
+          starEmptyColor="#8ab89b"
+        />
+        <p className="text-[#374151] text-[14px] font-[400]">
+          {feedback_details?.average_rating}
+        </p>
       </div>
       <p className="text-[#374151] text-[14px] font-[400]">
-        "He is a very efficient UI/UX designer, and we enjoy working with him.
-        He grasps the project needs very quickly and punctually delivers
-        results. Communication and collaboration with him has always been very
-        smooth."
+        {feedback_details?.feedback_message}
       </p>
       <p className="text-[#374151] text-[14px] font-[400]">2022-2022</p>
     </div>
