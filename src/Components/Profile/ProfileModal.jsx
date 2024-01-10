@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
 import { HStack, useToast } from "@chakra-ui/react";
+import { FaCloudUploadAlt } from "react-icons/fa";
 import {
   updateFreelancerProfile,
   updateFreelancer,
   uploadImage,
+  getAllDetailsOfUser,
 } from "../../helpers/userApis";
 import { Spinner } from "@chakra-ui/react";
+import { getSkills } from "../../helpers/clientApis";
+import { IoMdClose } from "react-icons/io";
 export const customStyles = {
   content: {
     top: "50%",
@@ -19,7 +23,7 @@ export const customStyles = {
     transform: "translate(-50%, -50%)",
     padding: " 0",
     borderRadius: "12px",
-    overflow: "visible"
+    overflow: "visible",
   },
 };
 
@@ -30,59 +34,50 @@ export const ProfileModal = ({
   selectedEducation,
   inputChange,
 }) => {
+  const [userProfileInfo, setUserProfileInfo] = useState(null);
   const toast = useToast();
   const animatedComponents = makeAnimated();
-  const options = [
-    { value: "Reactjs", label: "React js" },
-    { value: "Nodejs", label: "Node js" },
-    { value: "design", label: "Graphic Design" },
-    { value: "java", label: "Java" },
-    { value: "python", label: "Python" },
-    { value: "design3", label: "Graphic Design" },
-  ];
+  const [options, setOptions] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
 
-  console.log(modalPage, "modalPagemodalPagemodalPage")
+  console.log(modalPage, "modalPage");
 
   const selectStyle = {
     multiValue: (styles) => ({
       ...styles,
-      backgroundColor: '#16A34A',
-      color: '#fff',
+      backgroundColor: "#16A34A",
+      color: "#fff",
     }),
     multiValueLabel: (styles) => ({
       ...styles,
-      color: '#fff',
+      color: "#fff",
     }),
     control: (provided, state) => ({
       ...provided,
-      borderColor: state.isFocused ? '#16A34A' : provided.borderColor,
-      boxShadow: state.isFocused ? '0 0 0 1px #16A34A' : provided.boxShadow,
-      '&:hover': {
-        borderColor: state.isFocused ? '#16A34A' : provided.borderColor,
+      borderColor: state.isFocused ? "#16A34A" : provided.borderColor,
+      boxShadow: state.isFocused ? "0 0 0 1px #16A34A" : provided.boxShadow,
+      "&:hover": {
+        borderColor: state.isFocused ? "#16A34A" : provided.borderColor,
       },
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isFocused ? '#d1f3dd' : null,
-      ':hover': {
-        ...provided[':hover'],
-        backgroundColor: '#d1f3dd', // Change to your desired hover background color
-        color: 'colorForTextOnGreen', // Change text color for better visibility if needed
+      backgroundColor: state.isFocused ? "#d1f3dd" : null,
+      ":hover": {
+        ...provided[":hover"],
+        backgroundColor: "#d1f3dd", // Change to your desired hover background color
+        color: "colorForTextOnGreen", // Change text color for better visibility if needed
       },
     }),
     // Add any other style customizations here
   };
 
-  const [selectedOptions, setSelectedOptions] = useState([
-    { value: 'Reactjs', label: 'React js' },
-    { value: 'Nodejs', label: 'Node js' },
-  ]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
 
   const handleChange = (selected) => {
     setSelectedOptions(selected);
   };
-
 
   const [inputValues, setInputValues] = useState({
     professional_role: "",
@@ -98,7 +93,6 @@ export const ProfileModal = ({
       profile_image: file,
     });
   };
-
   const uploadProfileImage = async () => {
     setIsLoader(true);
     try {
@@ -163,12 +157,76 @@ export const ProfileModal = ({
     setSelectedOptions(selectedValues || []);
   };
 
+  // Get Profile Details
+  const userProfile = async () => {
+    const response = await getAllDetailsOfUser();
+    setUserProfileInfo(response?.body);
+  };
+  useEffect(() => {
+    userProfile();
+  }, []);
+
+  // Handle Updating Skills Methods
+  const getCategorySkills = async (categoryIds) => {
+    try {
+      const validCategoryIds = categoryIds?.filter((category) => category._id);
+      console.log({ categoryIds });
+      const promises = validCategoryIds?.map(async ({ _id }) => {
+        try {
+          const skills = await getSkills(_id);
+          if (skills && skills.body) {
+            return skills.body?.map((item) => ({
+              value: item?.skill_name,
+              label: item?.skill_name,
+              _id: item?._id,
+            }));
+          } else {
+            return [];
+          }
+        } catch (error) {
+          console.error(`Error fetching skills for category ID ${_id}:`, error);
+          return [];
+        }
+      });
+
+      const results = await Promise.all(promises);
+      const newSkillOptions = results.flat();
+
+      setOptions(newSkillOptions);
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+    }
+  };
+  console.log({ options });
+  useEffect(() => {
+    setSelectedOptions(
+      userProfileInfo?.skills?.map((item) => ({
+        value: item.skill_name,
+        label: item.skill_name,
+      }))
+    );
+    getCategorySkills(userProfileInfo?.categories);
+  }, [userProfileInfo]);
+  console.log({ selectedOptions });
+
+  // const uploadImages = async (images) => {
+  //   try {
+  //     const uploadPromises = images.map((image) => uploadImage(image));
+  //     const uploadedResults = await Promise.all(uploadPromises);
+  //     console.log("Uploaded images:", uploadedResults);
+  //     return uploadedResults;
+  //   } catch (error) {
+  //     console.error("Error uploading images:", error);
+  //     throw error;
+  //   }
+  // };
+
   const handleSaveAndContinue = async (data) => {
-    console.log(data, "datadatadata")
+    console.log(data, "datadatadata");
     try {
       if (data === "category") {
         // Handle saving categories
-        const selectedCategories = selectedOptions.map(
+        const selectedCategories = selectedOptions?.map(
           (option) => option.value
         );
         const response = await updateFreelancerProfile({
@@ -221,12 +279,11 @@ export const ProfileModal = ({
           });
           closeModal();
         }
-
       } else if (data == "skills") {
         const selectedCategories = selectedOptions.map((option) => ({
           skill_name: option?.value,
         }));
-        console.log(selectedCategories, "selectedCategories")
+        console.log(selectedCategories, "selectedCategories");
         const response = await updateFreelancerProfile({
           skills: selectedCategories,
         });
@@ -253,6 +310,13 @@ export const ProfileModal = ({
           closeModal();
         }
       } else if (data == "portfolio") {
+        // try {
+        //   const uploadedImages = await uploadImages(selectedImages);
+        //   console.log("All images uploaded:", uploadedImages);
+        // } catch (error) {
+        //   console.error("Error uploading images:", error);
+        // }
+
         const response = await updateFreelancerProfile({
           portfolio: {
             project_name: portfolioInput.project_name,
@@ -564,6 +628,25 @@ export const ProfileModal = ({
       console.log(error);
     }
   };
+
+  // Handle Media Image Uploaded
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+
+    if (selectedImages.length + files.length <= 3) {
+      const selectedFiles = files.filter((file) => file.type.includes("image"));
+      setSelectedImages([...selectedImages, ...selectedFiles]);
+    } else {
+      console.log("You can select a maximum of 3 images.");
+    }
+  };
+  const handleImageDelete = (indexToRemove) => {
+    const updatedImages = selectedImages.filter(
+      (_, index) => index !== indexToRemove
+    );
+    setSelectedImages(updatedImages);
+  };
+  // console.log({ selectedImages });
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -614,8 +697,10 @@ export const ProfileModal = ({
               />
             </div>
             <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md"
-                onClick={() => handleSaveAndContinue("skills")}>
+              <button
+                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md"
+                onClick={() => handleSaveAndContinue("skills")}
+              >
                 Submit
               </button>
             </div>
@@ -667,8 +752,8 @@ export const ProfileModal = ({
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Technologies
                 </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
+                <div className="w-[100%] outline-none border-[1px] rounded-md">
+                  {/* <input
                     type="text"
                     className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                     placeholder="Technologies"
@@ -678,7 +763,67 @@ export const ProfileModal = ({
                         technologies: e.target.value,
                       })
                     }
+                  /> */}
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    options={options}
+                    value={selectedOptions}
+                    onChange={handleChange}
+                    // styles={selectStyle}
                   />
+                </div>
+              </div>
+              <div className="flex flex-col gap-[2px] mt-6">
+                <p className="text-[14px] font-[500] text-[#374151]">Media</p>
+                <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
+                  <div className="flex">
+                    {selectedImages?.map((image, index) => (
+                      <div
+                        key={index}
+                        className="rounded border border-green-300 mr-2 relative"
+                      >
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt={`Selected ${index + 1}`}
+                          className="w-20 h-20 object-cover rounded"
+                        />
+                        <span
+                          className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
+                          onClick={() => handleImageDelete(index)}
+                        >
+                          <IoMdClose />
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedImages.length < 3 && (
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        multiple
+                        style={{ display: "none" }}
+                        id="fileInput"
+                        disabled={selectedImages.length >= 3}
+                      />
+                      <label htmlFor="fileInput">
+                        <div
+                          className={`w-24 h-20 border border-green-400 rounded cursor-pointer bg-green-100 hover:bg-green-200 flex flex-col items-center justify-center text-center`}
+                        >
+                          <span>
+                            <FaCloudUploadAlt className="text-2xl text-center" />
+                          </span>
+                          <span className="font-semibold">
+                            {selectedImages.length > 0 ? "Add More" : "Add"}
+                          </span>
+                        </div>
+                      </label>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

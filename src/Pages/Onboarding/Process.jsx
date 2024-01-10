@@ -123,7 +123,7 @@ const Process = () => {
               isClosable: true,
             });
           } else {
-            const selectedCategories = selectedOptions.map((option) => ({
+            const selectedCategories = selectedOptions?.map((option) => ({
               value: option.value,
               _id: option._id,
             }));
@@ -214,7 +214,7 @@ const Process = () => {
               position: "top",
             });
           } else {
-            const selectedCategories = selectedOptions.map(
+            const selectedCategories = selectedOptions?.map(
               (option) => option.value
             );
             const response = await updateFreelancerProfile({
@@ -306,7 +306,7 @@ const Process = () => {
   const getCategory = async () => {
     const categories = await getCategories();
     setOptions(
-      categories?.body.map((item) => ({
+      categories?.body?.map((item) => ({
         value: item.category_name,
         label: item.category_name,
         _id: item._id,
@@ -322,15 +322,15 @@ const Process = () => {
     try {
       const validCategoryIds = categoryIds.filter((category) => category._id);
 
-      const promises = validCategoryIds.map(async ({ _id }) => {
+      const promises = validCategoryIds?.map(async ({ _id }) => {
         try {
           const skills = await getSkills(_id);
           if (skills && skills.body) {
-            return skills.body.map((item) => ({
-              value: item.skill_name,
-              label: item.skill_name,
-              category_id: item.category_id,
-              _id: item._id,
+            return skills.body?.map((item) => ({
+              value: item?.skill_name,
+              label: item?.skill_name,
+              category_id: item?.category_id,
+              _id: item?._id,
             }));
           } else {
             return [];

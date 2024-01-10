@@ -224,15 +224,20 @@ export const FreelancerProfilePage = () => {
                 </div>
               </div> */}
 
-
-
               <VStack
                 backgroundColor={"#f4f5f787"}
                 height={"80px"}
                 shadow={"sm"}
                 justifyContent={"center"}
               >
-                <Text fontWeight={"600"} top={"8rem"} zIndex={"10"} textAlign={"center"}>Updated Freelancer Stats <br /> Coming Soon</Text>
+                <Text
+                  fontWeight={"600"}
+                  top={"8rem"}
+                  zIndex={"10"}
+                  textAlign={"center"}
+                >
+                  Updated Freelancer Stats <br /> Coming Soon
+                </Text>
 
                 {/* <div className="flex items-center justify-between">
                   <div className="flex flex-col items-start gap-2">
