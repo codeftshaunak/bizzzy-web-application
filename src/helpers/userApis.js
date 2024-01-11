@@ -10,9 +10,8 @@ const makeApiRequest = async (
   const authtoken = localStorage.getItem("authtoken");
 
   const headers = {
-    "Content-Type": "application/json",
+    "Content-Type": customHeaders ? customHeaders : "application/json",
     token: authtoken,
-    ...customHeaders, // Allow for custom headers
   };
 
   const config = {
@@ -34,12 +33,10 @@ const makeApiRequest = async (
 };
 
 export const updateFreelancerProfile = async (data) =>
-  makeApiRequest("post", "/profile-details", data);
+  makeApiRequest("post", "/profile-details", data, "multipart/form-data");
 
 export const uploadImage = async (data) =>
-  makeApiRequest("post", "/user-profile-image", data, {
-    "Content-Type": "multipart/form-data",
-  });
+  makeApiRequest("post", "/user-profile-image", data, "multipart/form-data");
 
 export const updateFreelancer = async (data) =>
   makeApiRequest("put", "/edit-profile", data);
@@ -50,4 +47,4 @@ export const getAllDetailsOfUser = async () =>
 export const userById = async (id) =>
   makeApiRequest("get", `/user?user_id=${id}`);
 
-  // 
+// 

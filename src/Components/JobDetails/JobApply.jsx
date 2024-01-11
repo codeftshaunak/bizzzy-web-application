@@ -394,7 +394,7 @@ const JobApply = ({ setPage, details }) => {
                 </Box>
 
                 <Box w="60%">
-                    {details?.budget == "fixed" && (
+                    {details?.job_type == "fixed" && (
                         <Box w="full" className="w-full">
                             <Box className="w-full">
                                 <Box className="border border-tertiary rounded-2xl p-6 mb-4">
@@ -454,7 +454,7 @@ const JobApply = ({ setPage, details }) => {
                         </Box>
                     )}
 
-                    {details?.budget == "hourly" && (
+                    {details?.job_type == "hourly" && (
                         <Box w="full">
                             <Box className="border border-tertiary rounded-2xl p-6 mb-4">
                                 <Box fontWeight="semibold" mb={2}>What is the rate you'd like to bid for this job?</Box>

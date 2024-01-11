@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiUser } from "react-icons/ci";
 import { BsEye, BsEyeSlash } from "react-icons/bs"; // For the show/hide password functionality
 import CTAButton from "../../Components/CTAButton";
@@ -10,11 +10,13 @@ import {
   Flex,
   Box,
   Input,
+  Stack,
   HStack,
   IconButton,
   InputGroup,
   InputRightElement,
   useToast,
+  Skeleton, SkeletonCircle, SkeletonText
 } from "@chakra-ui/react"; // Import Chakra-UI components
 import OnbardingCardLayout from "../../Layouts/CardLayout/OnbardingCardLayout";
 import { signIn } from "../../helpers/apiRequest";
@@ -22,6 +24,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthData } from "../../redux/authSlice/authSlice"; // Import your actions
 import { profileData } from "../../redux/authSlice/profileSlice"; // Import your actions
+import { getAllDetailsOfUser } from "../../helpers/userApis";
 
 const Login = ({ setPage }) => {
   const toast = useToast();
@@ -44,12 +47,17 @@ const Login = ({ setPage }) => {
   };
 
   const [showPassword, setShowPassword] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    categories: [],
+    skills: [],
+    hourly_rate: null,
+  });
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -57,6 +65,20 @@ const Login = ({ setPage }) => {
       [name]: value,
     });
   };
+
+  const userDetails = async () => {
+    setLoading(true);
+    try {
+      const response = await getAllDetailsOfUser();
+      setUserInfo(response.body || {});
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -73,8 +95,19 @@ const Login = ({ setPage }) => {
         isClosable: true,
         position: "top-right",
       });
-      navigate("/onboarding");
-      // navigate(from, { replace: true });
+      setLoading(true)
+      const res = await getAllDetailsOfUser();
+      const data = res?.body;
+      const detailsFound =
+        data?.categories?.length > 0 &&
+        data?.skills?.length > 0 &&
+        data?.hourly_rate;
+      if (detailsFound) {
+        navigate(from, { replace: true });
+      } else {
+        navigate("/onboarding");
+      }
+      setLoading(false)
     } else if (response.code === 403) {
       toast({
         title: response.msg,
@@ -101,95 +134,113 @@ const Login = ({ setPage }) => {
   };
 
   return (
-    <OnbardingCardLayout title="Login to Bizzzy">
-      <br />
-      <VStack width="100%" gap={7}>
-        <Flex
-          border="1px solid var(--bordersecondary)"
-          borderRadius="5px"
-          width="100%"
-          justifyContent="center"
-          alignItems="center"
-          padding="0rem 0.4rem"
-        >
-          <CiUser style={{ fontSize: "1.3rem", marginRight: "0.1rem" }} />
-          <Input
-            type="text"
-            name="email"
-            placeholder="Username Or Email"
-            value={formData.email}
-            onChange={handleChange}
-            fontSize="1rem"
-            width="100%"
-            border="none"
-            variant="unstyled"
-            padding="0.5rem 0.5rem"
-          />
-        </Flex>
-        <Flex
-          border="1px solid var(--bordersecondary)"
-          borderRadius="5px"
-          width="100%"
-          justifyContent="center"
-          alignItems="center"
-          padding="0rem 0rem 0 0.6rem"
-        >
-          <BsEye style={{ fontSize: "1.2rem", marginRight: "0.1rem" }} />
-          <Input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            variant="unstyled"
-            fontSize="1rem"
-            padding="0.5rem 0.5rem"
-            border={"none"}
-          />
-          <IconButton
-            aria-label={showPassword ? "Hide Password" : "Show Password"}
-            icon={showPassword ? <BsEyeSlash /> : <BsEye />}
-            onClick={toggleShowPassword}
-          />
-        </Flex>
-        <CTAButton
-          text="Continue with Email"
-          bg="var(--primarycolor)"
-          color="#fff"
-          fontWeight="500"
-          height="2.5rem"
-          borderRadius="5px"
-          fontSize="1rem"
-          onClick={(e) => handleLogin(e)}
-        />
-        <Divider text="Or" dwidth="180px" />
-        <HStack justifyContent="space-between" width="100%">
-          <Box style={iconsStyle} color="#3789f4">
-            <BsFacebook />
-          </Box>
-          <Box style={iconsStyle}>
-            <FcGoogle />
-          </Box>
-          <Box style={iconsStyle}>
-            <BsApple />
-          </Box>
-        </HStack>
-      </VStack>
-      <br />
-      <br />
-      <div>
-        <Divider text="Don't have a Bizzzy account?" dwidth="60px" />
-        <br />
-        <CTAButton
-          fontSize="1rem"
-          text="Sign Up"
-          border="1px solid var(--bordersecondary)"
-          bg="var(--secondarycolor)"
-          width="100%"
-          onClick={() => navigate("/signup")}
-        />
-      </div>
-    </OnbardingCardLayout>
+    <>
+      {
+        loading ?
+          <OnbardingCardLayout>
+            <Stack width={"90%"} margin={"auto"}>
+              <Skeleton height='45px' />
+              <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+              <Skeleton height='25px' />
+              <Skeleton height='25px' />
+              <Skeleton height='25px' />
+              <Skeleton height='25px' />
+              <Skeleton height='25px' />
+              <Skeleton height='25px' />
+              <Skeleton height='25px' />
+            </Stack>
+          </OnbardingCardLayout>
+          : <OnbardingCardLayout title="Login to Bizzzy">
+            <br />
+            <VStack width="100%" gap={7}>
+              <Flex
+                border="1px solid var(--bordersecondary)"
+                borderRadius="5px"
+                width="100%"
+                justifyContent="center"
+                alignItems="center"
+                padding="0rem 0.4rem"
+              >
+                <CiUser style={{ fontSize: "1.3rem", marginRight: "0.1rem" }} />
+                <Input
+                  type="text"
+                  name="email"
+                  placeholder="Username Or Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  fontSize="1rem"
+                  width="100%"
+                  border="none"
+                  variant="unstyled"
+                  padding="0.5rem 0.5rem"
+                />
+              </Flex>
+              <Flex
+                border="1px solid var(--bordersecondary)"
+                borderRadius="5px"
+                width="100%"
+                justifyContent="center"
+                alignItems="center"
+                padding="0rem 0rem 0 0.6rem"
+              >
+                <BsEye style={{ fontSize: "1.2rem", marginRight: "0.1rem" }} />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  variant="unstyled"
+                  fontSize="1rem"
+                  padding="0.5rem 0.5rem"
+                  border={"none"}
+                />
+                <IconButton
+                  aria-label={showPassword ? "Hide Password" : "Show Password"}
+                  icon={showPassword ? <BsEyeSlash /> : <BsEye />}
+                  onClick={toggleShowPassword}
+                />
+              </Flex>
+              <CTAButton
+                text="Continue with Email"
+                bg="var(--primarycolor)"
+                color="#fff"
+                fontWeight="500"
+                height="2.5rem"
+                borderRadius="5px"
+                fontSize="1rem"
+                onClick={(e) => handleLogin(e)}
+              />
+              <Divider text="Or" dwidth="180px" />
+              <HStack justifyContent="space-between" width="100%">
+                <Box style={iconsStyle} color="#3789f4">
+                  <BsFacebook />
+                </Box>
+                <Box style={iconsStyle}>
+                  <FcGoogle />
+                </Box>
+                <Box style={iconsStyle}>
+                  <BsApple />
+                </Box>
+              </HStack>
+            </VStack>
+            <br />
+            <br />
+            <div>
+              <Divider text="Don't have a Bizzzy account?" dwidth="60px" />
+              <br />
+              <CTAButton
+                fontSize="1rem"
+                text="Sign Up"
+                border="1px solid var(--bordersecondary)"
+                bg="var(--secondarycolor)"
+                width="100%"
+                onClick={() => navigate("/signup")}
+              />
+            </div>
+          </OnbardingCardLayout>
+      }
+    </>
   );
 };
 

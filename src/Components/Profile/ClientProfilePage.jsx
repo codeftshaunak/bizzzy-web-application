@@ -57,7 +57,7 @@ export const ClientProfilePage = () => {
   }
   return (
     <ProfileContainer>
-      <div className="w-[90%] flex flex-col gap-[24px]">
+      <div className="w-[90%] flex flex-col gap-[24px] m-auto">
         <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
@@ -214,8 +214,9 @@ export const ClientProfilePage = () => {
                 </p>
                 <div className="h-[2px] w-[60px] bg-[#16A34A]"></div>
               </div>
-              <ReviewCard />
-              <ReviewCard />
+              {details?.work_history?.map((item, index) => (
+                <ReviewCard key={index} workDetails={item} />
+              ))}
               <p className="text-[14px] text-[#16A34A] font-[600] cursor-pointer">
                 View More
               </p>

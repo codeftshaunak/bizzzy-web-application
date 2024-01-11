@@ -1,8 +1,7 @@
 import StarRatings from "react-star-ratings";
 
 const ReviewCard = ({ workDetails }) => {
-  const { feedback_details, job_details, sender_details } = workDetails;
-  console.log({ workDetails });
+  const { feedback_details, job_details, sender_details } = workDetails || [];
   return (
     <div className="flex flex-col gap-[8px]">
       <p className="text-[16px] text-[#374151] font-[500]">

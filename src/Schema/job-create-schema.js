@@ -8,7 +8,7 @@ export const firstStepSchema = z.object({
   description: z.string().min(5),
   tags: z.array(z.string()).min(1),
   skills: z.array(z.string()).min(1),
-  budget: z.enum(["fixed", "hourly"]).transform((v) => Number(v)),
+  job_type: z.string().min(1),
   amount: z.coerce.number().transform((v) => Number(v)),
   file: z
     .custom()
