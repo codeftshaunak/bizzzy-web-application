@@ -788,6 +788,7 @@ export const ProfileModal = ({
                         <img
                           src={URL.createObjectURL(image)}
                           alt={`Selected ${index + 1}`}
+                          name="file"
                           className="w-20 h-20 object-cover rounded"
                         />
                         <span

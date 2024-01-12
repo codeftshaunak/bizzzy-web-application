@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
+    const [loading, setLoading] = useState(false);
     const reverseJob = jobs?.slice().reverse();
     const leatestJob = reverseJob.slice(0, 4)
     const navigate = useNavigate();
