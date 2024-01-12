@@ -315,15 +315,19 @@ export const ProfileModal = ({
         //   console.error("Error uploading images:", error);
         // }
 
-        console.log(selectedImages);
+      
+        const formData = new FormData();
+        formData.append("file", selectedImages);
+
 
         const response = await updateFreelancerProfile({
           portfolio: {
             project_name: portfolioInput.project_name,
             project_description: portfolioInput.project_description,
             technologies: portfolioInput.technologies,
-            attachements: selectedImages,
+            file: formData,
           },
+          // file: formData,
         });
         if (response.code == 405 || response.code == 500) {
           toast({
@@ -632,14 +636,17 @@ export const ProfileModal = ({
 
   // Handle Media Image Uploaded
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    console.log({ "files": files });
-    if (selectedImages.length + files.length <= 3) {
-      const selectedFiles = files.filter((file) => file.type.includes("image"));
-      setSelectedImages([...selectedImages, ...selectedFiles]);
-    } else {
-      console.log("You can select a maximum of 3 images.");
-    }
+    const file = e.target.files[0];
+//     const formData = new FormData();
+// formData.append("image", file); 
+// console.log("formData--->",formData)
+    // const files = Array.from(e.target.files);
+    // if (selectedImages.length + files.length <= 3) {
+      // const selectedFiles = files.filter((file) => file.type.includes("image"));
+      setSelectedImages([...selectedImages, file]);
+    // } else {
+    //   console.log("You can select a maximum of 3 images.");
+    // }
   };
   const handleImageDelete = (indexToRemove) => {
     const updatedImages = selectedImages.filter(
