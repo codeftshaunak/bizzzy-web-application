@@ -111,8 +111,8 @@ export const FreelancerProfilePage = () => {
 
   return (
     <ProfileContainer>
-      <div className="w-[90%] justify-center m-auto flex flex-col gap-[24px] ">
-        <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+      <div className="min-w-[90%] justify-center m-auto flex flex-col gap-[24px]">
+        <div className="w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
               <div
@@ -194,7 +194,7 @@ export const FreelancerProfilePage = () => {
           </div>
         </div>
         <div className="flex gap-[24px]">
-          <div className="flex flex-1 gap-[24px]  flex-col ">
+          <div className="flex flex-1 gap-[24px]  flex-col w-full">
             {/* ==================== Freelance Stats ====================== */}
             <div className="flex w-[full] relative flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <p className="text-[20px] text-[#374151] font-[600] ">
@@ -504,10 +504,10 @@ export const FreelancerProfilePage = () => {
                   <p className="text-[20px] text-[#374151] font-[600] w-[480px]">
                     {professional_role}
                   </p>
+                  <p className="text-[20px] text-[#374151] font-[600]">
+                    ${hourly_rate}/hr
+                  </p>
                 </div>
-                <p className="text-[20px] text-[#374151] font-[600]">
-                  ${hourly_rate}/hr
-                </p>
                 <div
                   className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                   onClick={() => {

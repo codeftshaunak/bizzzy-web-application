@@ -1,5 +1,3 @@
-import React from "react";
-
 const SkillCard = ({ title }) => {
   return (
     <div className="flex items-center gap-[8px] p-[12px] border-[1px] border-[#D1D5DB] rounded-lg">
@@ -28,7 +26,7 @@ const SkillCard = ({ title }) => {
         </svg>
       </div>
       <p className="text-[16px] text-[#374151]] font-[600] capitalize">
-        {title?.skill_name}
+        {title}
       </p>
     </div>
   );
