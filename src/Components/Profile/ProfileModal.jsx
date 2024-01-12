@@ -39,8 +39,8 @@ export const ProfileModal = ({
   const animatedComponents = makeAnimated();
   const [options, setOptions] = useState(null);
   const [selectedImages, setSelectedImages] = useState([]);
-
-  console.log(modalPage, "modalPage");
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isLoader, setIsLoader] = useState(false);
 
   const selectStyle = {
     multiValue: (styles) => ({
@@ -71,9 +71,6 @@ export const ProfileModal = ({
     }),
     // Add any other style customizations here
   };
-
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isLoader, setIsLoader] = useState(false);
 
   const handleChange = (selected) => {
     setSelectedOptions(selected);
@@ -164,13 +161,12 @@ export const ProfileModal = ({
   };
   useEffect(() => {
     userProfile();
-  }, []);
+  }, [closeModal]);
 
   // Handle Updating Skills Methods
   const getCategorySkills = async (categoryIds) => {
     try {
       const validCategoryIds = categoryIds?.filter((category) => category._id);
-      console.log({ categoryIds });
       const promises = validCategoryIds?.map(async ({ _id }) => {
         try {
           const skills = await getSkills(_id);
@@ -197,17 +193,19 @@ export const ProfileModal = ({
       console.error("Error fetching skills:", error);
     }
   };
-  console.log({ options });
   useEffect(() => {
-    setSelectedOptions(
-      userProfileInfo?.skills?.map((item) => ({
-        value: item.skill_name,
-        label: item.skill_name,
-      }))
-    );
-    getCategorySkills(userProfileInfo?.categories);
-  }, [userProfileInfo]);
-  console.log({ selectedOptions });
+    if (modalPage === "skills") {
+      setSelectedOptions(
+        userProfileInfo?.skills?.map((item) => ({
+          value: item,
+          label: item,
+        }))
+      );
+      getCategorySkills(userProfileInfo?.categories);
+    }
+  }, [modalIsOpen]);
+
+  // console.log({ selectedOptions });
 
   // const uploadImages = async (images) => {
   //   try {
@@ -222,7 +220,7 @@ export const ProfileModal = ({
   // };
 
   const handleSaveAndContinue = async (data) => {
-    console.log(data, "datadatadata");
+    console.log(data, "data");
     try {
       if (data === "category") {
         // Handle saving categories
@@ -280,9 +278,9 @@ export const ProfileModal = ({
           closeModal();
         }
       } else if (data == "skills") {
-        const selectedCategories = selectedOptions.map((option) => ({
-          skill_name: option?.value,
-        }));
+        const selectedCategories = selectedOptions.map(
+          (option) => option?.value
+        );
         console.log(selectedCategories, "selectedCategories");
         const response = await updateFreelancerProfile({
           skills: selectedCategories,
@@ -773,7 +771,6 @@ export const ProfileModal = ({
                     components={animatedComponents}
                     isMulti
                     options={options}
-                    value={selectedOptions}
                     onChange={handleChange}
                   // styles={selectStyle}
                   />
