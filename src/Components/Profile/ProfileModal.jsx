@@ -201,8 +201,8 @@ export const ProfileModal = ({
           label: item,
         }))
       );
-      getCategorySkills(userProfileInfo?.categories);
     }
+    getCategorySkills(userProfileInfo?.categories);
   }, [modalIsOpen]);
 
   // console.log({ selectedOptions });
@@ -315,7 +315,7 @@ export const ProfileModal = ({
         //   console.error("Error uploading images:", error);
         // }
 
-        console.log(selectedImages);
+        console.log("Updated Profile");
 
         const response = await updateFreelancerProfile({
           portfolio: {
@@ -633,7 +633,7 @@ export const ProfileModal = ({
   // Handle Media Image Uploaded
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    console.log({ "files": files });
+    console.log({ files: files });
     if (selectedImages.length + files.length <= 3) {
       const selectedFiles = files.filter((file) => file.type.includes("image"));
       setSelectedImages([...selectedImages, ...selectedFiles]);
@@ -772,7 +772,7 @@ export const ProfileModal = ({
                     isMulti
                     options={options}
                     onChange={handleChange}
-                  // styles={selectStyle}
+                    // styles={selectStyle}
                   />
                 </div>
               </div>

@@ -82,9 +82,7 @@ const Process = () => {
   const handleSelectChange = (selectedValues) => {
     setSelectedOptions(selectedValues || []);
   };
-  const handleSkillSelect = (selectedValues) => {
-    setSkillSelectedOptions(selectedValues || []);
-  };
+
   const autoProcess = () => {
     if (
       userDetails?.categories?.length > 0 &&
@@ -115,6 +113,7 @@ const Process = () => {
     try {
       if (role == 1) {
         if (data === "category") {
+          console.log("click now");
           if (selectedOptions.length <= 0) {
             toast({
               title: "Atleast Select A Category",
