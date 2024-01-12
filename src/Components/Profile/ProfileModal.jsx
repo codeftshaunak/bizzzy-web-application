@@ -315,14 +315,8 @@ export const ProfileModal = ({
         //   console.error("Error uploading images:", error);
         // }
 
-<<<<<<< HEAD
-        console.log("Updated Profile");
-=======
-      
         const formData = new FormData();
         formData.append("file", selectedImages);
-
->>>>>>> 1491140fc642bbdf0226c5b68858b630b778b693
 
         const response = await updateFreelancerProfile({
           portfolio: {
@@ -640,28 +634,17 @@ export const ProfileModal = ({
 
   // Handle Media Image Uploaded
   const handleImageUpload = (e) => {
-<<<<<<< HEAD
-    const files = Array.from(e.target.files);
-    console.log({ files: files });
-    if (selectedImages.length + files.length <= 3) {
-      const selectedFiles = files.filter((file) => file.type.includes("image"));
-      setSelectedImages([...selectedImages, ...selectedFiles]);
-    } else {
-      console.log("You can select a maximum of 3 images.");
-    }
-=======
     const file = e.target.files[0];
-//     const formData = new FormData();
-// formData.append("image", file); 
-// console.log("formData--->",formData)
+    //     const formData = new FormData();
+    // formData.append("image", file);
+    // console.log("formData--->",formData)
     // const files = Array.from(e.target.files);
     // if (selectedImages.length + files.length <= 3) {
-      // const selectedFiles = files.filter((file) => file.type.includes("image"));
-      setSelectedImages([...selectedImages, file]);
+    // const selectedFiles = files.filter((file) => file.type.includes("image"));
+    setSelectedImages([...selectedImages, file]);
     // } else {
     //   console.log("You can select a maximum of 3 images.");
     // }
->>>>>>> 1491140fc642bbdf0226c5b68858b630b778b693
   };
   const handleImageDelete = (indexToRemove) => {
     const updatedImages = selectedImages.filter(
