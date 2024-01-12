@@ -107,13 +107,12 @@ const Process = () => {
       setPage(4);
     }
   };
-
+  // changes some
   const handleSaveAndContinue = async (data) => {
     autoProcess();
     try {
       if (role == 1) {
         if (data === "category") {
-          console.log("click now");
           if (selectedOptions.length <= 0) {
             toast({
               title: "Atleast Select A Category",
