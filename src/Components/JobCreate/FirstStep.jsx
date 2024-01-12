@@ -27,6 +27,8 @@ function FirstStep({ setStep }) {
     },
   });
 
+
+
   React.useEffect(() => {
     if (quill) {
       quill.on('text-change', (delta, oldDelta, source) => {
@@ -54,7 +56,7 @@ function FirstStep({ setStep }) {
     if (formState?.job_type) values.job_type = `${formState.job_type}`;
     if (formState?.amount) values.amount = formState.amount;
     if (formState?.file) values.file = formState.file;
-
+    console.log(values);
     reset(values);
   }, [formState]);
 
@@ -112,7 +114,7 @@ function FirstStep({ setStep }) {
       {/* TAGS FIELD */}
       <div>
         <div className="w-[530px] text-gray-700 text-sm font-medium font-['SF Pro Text'] leading-tight mb-1">
-          Add Tags
+          Job Category
         </div>
 
         <TagsInput
@@ -161,7 +163,7 @@ function FirstStep({ setStep }) {
               {...register("job_type")}
               id="default-radio-1"
               type="radio"
-              value={1}
+              value={"fixed"}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
             />
             <label
@@ -176,7 +178,7 @@ function FirstStep({ setStep }) {
               {...register("job_type")}
               id="default-radio-2"
               type="radio"
-              value={2}
+              value={"hourly"}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
             />
             <label

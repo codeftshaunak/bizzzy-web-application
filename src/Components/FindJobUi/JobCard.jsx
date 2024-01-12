@@ -5,7 +5,6 @@ import { Text, HStack } from '@chakra-ui/react'
 
 const JobCard = ({ jobs }) => {
   const navigate = useNavigate();
-  const [visibleJobs, setVisibleJobs] = useState(4);
   const truncateText = (text, maxLength) => {
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
@@ -14,7 +13,7 @@ const JobCard = ({ jobs }) => {
     <>
       <div>
         {jobs?.length > 0 ? (
-          jobs?.slice(0, visibleJobs).map((job, index) => {
+          jobs?.map((job, index) => {
 
             const formattedDate = formatDistanceToNow(new Date(job?.created_at), {
               addSuffix: true,

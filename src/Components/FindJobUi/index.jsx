@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
     const reverseJob = jobs?.slice().reverse();
+    const leatestJob = reverseJob.slice(0, 4)
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
     const { name, profile_image, professional_role, id } = profile.profile || [];
@@ -68,7 +69,7 @@ export const AllJobs = () => {
                         {/* <div className="text-sm font-medium text-gray-300 p-2">Most Recent Jobs</div> */}
                     </div>
                     <div className="border border-tertiary rounded-2xl overflow-auto">
-                        <JobCard jobs={reverseJob} />
+                        <JobCard jobs={leatestJob} />
                     </div>
                     <div className="text-center p-5">
                         <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/search-job")}>

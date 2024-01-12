@@ -160,8 +160,8 @@ export const FreelancerProfilePage = () => {
                 }}
               ></div> */}
               {!profile_image ||
-              profile_image == "null" ||
-              profile_image === null ? (
+                profile_image == "null" ||
+                profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
@@ -233,7 +233,6 @@ export const FreelancerProfilePage = () => {
                 <Text
                   fontWeight={"600"}
                   top={"8rem"}
-                  zIndex={"10"}
                   textAlign={"center"}
                 >
                   Updated Freelancer Stats <br /> Coming Soon

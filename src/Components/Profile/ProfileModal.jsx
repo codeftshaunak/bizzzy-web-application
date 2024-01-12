@@ -315,11 +315,14 @@ export const ProfileModal = ({
         //   console.error("Error uploading images:", error);
         // }
 
+        console.log(selectedImages);
+
         const response = await updateFreelancerProfile({
           portfolio: {
             project_name: portfolioInput.project_name,
             project_description: portfolioInput.project_description,
             technologies: portfolioInput.technologies,
+            attachements: selectedImages,
           },
         });
         if (response.code == 405 || response.code == 500) {
@@ -630,7 +633,7 @@ export const ProfileModal = ({
   // Handle Media Image Uploaded
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-
+    console.log({ "files": files });
     if (selectedImages.length + files.length <= 3) {
       const selectedFiles = files.filter((file) => file.type.includes("image"));
       setSelectedImages([...selectedImages, ...selectedFiles]);
@@ -769,7 +772,7 @@ export const ProfileModal = ({
                     isMulti
                     options={options}
                     onChange={handleChange}
-                    // styles={selectStyle}
+                  // styles={selectStyle}
                   />
                 </div>
               </div>
@@ -802,7 +805,8 @@ export const ProfileModal = ({
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
-                        multiple
+                        name="file"
+                        // multiple
                         style={{ display: "none" }}
                         id="fileInput"
                         disabled={selectedImages.length >= 3}

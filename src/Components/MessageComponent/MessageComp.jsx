@@ -74,7 +74,7 @@ const MessageComp = () => {
       height="full"
       justifyContent={"space-between"}
       alignItems={"start"}
-      // className="bg-green-500"
+    // className="bg-green-500"
     >
       <Box w="350px">
         <Box position="relative" h="44px" mb={2} mt={6}>
@@ -121,7 +121,7 @@ const MessageComp = () => {
               >
                 <Flex align="center" justify="between" py={2} px={4}>
                   <Box width="85px">
-                    {user?.user_details?.profile_image !== "null" ? (
+                    {user?.user_details?.profile_image !== null ? (
                       <Image
                         src={user?.user_details?.profile_image}
                         className="h-[50px] w-[50px] rounded-full"
@@ -132,13 +132,13 @@ const MessageComp = () => {
                       <Avatar
                         size="md"
                         round="20px"
-                        name={user?.user_details?.firstName}
+                        name={user?.user_details?.firstName + " " + user?.user_details?.lastName}
                       />
                     )}
                   </Box>
                   <Box width="full">
                     <HStack justifyContent={"space-between"}>
-                      <Text fontWeight="semibold">
+                      <Text fontWeight="semibold" fontSize={"15px"}>
                         {user?.user_details?.firstName}{" "}
                         {user?.user_details?.lastName}{" "}
                         {user?.user_details?.businessName &&
@@ -146,9 +146,9 @@ const MessageComp = () => {
                       </Text>
                       <Text color="gray.600">7/29/23</Text>
                     </HStack>
-                    <Text fontWeight="semibold">Expert Dashboard Designer</Text>
+                    <Text fontWeight="semibold" fontSize={"15px"}>Expert Dashboard Designer</Text>
                     <Text color="gray.600">
-                      You: {user?.lastMessage.slice(0, 20)}
+                      You: {user?.lastMessage.slice(0, 10)}
                     </Text>
                   </Box>
                 </Flex>
@@ -269,14 +269,14 @@ const MessageBody = ({ data, selectedUser }) => {
         px={4}
         gap={3}
       >
-        {receiverDetails?.profile_image !== "null" ? (
+        {receiverDetails?.profile_image !== null ? (
           <Image
             src={receiverDetails?.profile_image}
             className="h-[40px] w-[40px] rounded-full"
             alt="img"
           />
         ) : (
-          <Avatar size="md" round="20px" name={receiverDetails?.firstName} />
+          <Avatar size="md" round="20px" name={receiverDetails?.firstName + " " + receiverDetails?.lastName} />
         )}
         <Flex flexDir="column">
           <Text fontWeight="semibold">
@@ -310,7 +310,7 @@ const MessageBody = ({ data, selectedUser }) => {
             },
             scrollbarWidth: "none",
           }}
-          // className="bg-red-500"
+        // className="bg-red-500"
         >
           {console.log({ messageData })}
           {messageData?.length > 0 &&
@@ -321,10 +321,10 @@ const MessageBody = ({ data, selectedUser }) => {
                 userId={userId}
                 senderDetails={senderDetails}
                 receiverDetails={receiverDetails}
-                // setIsRepeatedUser={setIsRepeatedUser}
-                // isRepeatedUser={isRepeatedUser}
-                // currentUser={currentUser}
-                // setCurrentUser={setCurrentUser}
+              // setIsRepeatedUser={setIsRepeatedUser}
+              // isRepeatedUser={isRepeatedUser}
+              // currentUser={currentUser}
+              // setCurrentUser={setCurrentUser}
               />
             ))}
         </Box>

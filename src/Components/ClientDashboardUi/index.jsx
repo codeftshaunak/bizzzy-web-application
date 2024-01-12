@@ -66,24 +66,43 @@ const ClientDashboardComponent = () => {
                   </div>
                 })
               }
-            </div> : <div className="border-2 mt-4 rounded-md">
-              <div className="flex justify-between border-b border-[#D1D5DB] p-4">
-                <div className=" text-2xl font-medium text-[#374151]">My Team</div>
-              </div>
-              <div className=" h-[200px] bg-[#f4f5f787] text-center py-4">
-                <div className="w-[70%] m-auto flex flex-col justify-center items-center gap-2 h-full">
-                  <h2 className="font-bold text-xl">Welcome to Bizzzy!</h2>
-                  <p className="py-3">Ready to start building your team online? Explore our vast database of programmers, designers, marketers, builders & more. Click below to make your first hire & bring your project live.</p>
-                  <Button bg={"#16A34A"} color={'#fff'} border={"1px solid #16A34A"} fontSize={'sm'} height={"2rem"} w={"12rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
-                    bg: '#36af63',
-                    color: "#fff"
-                  }}>
-                    Start your first project
-                  </Button>
+            </div> :
+              <div className="border-2 mt-4 rounded-md">
+                <div className="flex justify-between border-b border-[#D1D5DB] p-4">
+                  <div className=" text-2xl font-medium text-[#374151]">My Team</div>
+                </div>
+                <div className=" h-[200px] bg-[#f4f5f787] text-center py-4">
+                  <div className="w-[70%] m-auto flex flex-col justify-center items-center gap-2 h-full">
+                    <h2 className="font-bold text-xl">Welcome to Bizzzy!</h2>
+                    <p className="py-3">Ready to start building your team online? Explore our vast database of programmers, designers, marketers, builders & more. Click below to make your first hire & bring your project live.</p>
+                    <Button bg={"#16A34A"} color={'#fff'} border={"1px solid #16A34A"} fontSize={'sm'} height={"2rem"} w={"12rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                      bg: '#36af63',
+                      color: "#fff"
+                    }}>
+                      Post a new job
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
           }
+
+          <div className="border-2 mt-4 rounded-md">
+            <div className="flex justify-between border-b border-[#D1D5DB] p-4">
+              <div className=" text-2xl font-medium text-[#374151]">Packages</div>
+            </div>
+            <div className=" h-[200px] bg-[#f4f5f787] text-center py-4">
+              <div className="w-[70%] m-auto flex flex-col justify-center items-center gap-2 h-full">
+                <h2 className="font-bold text-xl">Remumber Packages</h2>
+                <p className="py-3">Ready to start building your team online? Explore our vast database of programmers, designers, marketers, builders & more. Click below to make your first hire & bring your project live.</p>
+                <Button bg={"#16A34A"} color={'#fff'} border={"1px solid #16A34A"} fontSize={'sm'} height={"2rem"} w={"12rem"} textTransform={"capitalize"} transition={"0.3s ease-in-out"} _hover={{
+                  bg: '#36af63',
+                  color: "#fff"
+                }}>
+                  Post a new job
+                </Button>
+              </div>
+            </div>
+          </div>
 
           <div className="mt-6 border border-[#D1D5DB]  rounded-md w-full">
             <div className=" flex items-center justify-between border-b border-[#D1D5DB] p-4 ">
