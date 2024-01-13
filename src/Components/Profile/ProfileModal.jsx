@@ -193,6 +193,7 @@ export const ProfileModal = ({
       console.error("Error fetching skills:", error);
     }
   };
+
   useEffect(() => {
     if (modalPage === "skills") {
       setSelectedOptions(
@@ -322,6 +323,7 @@ export const ProfileModal = ({
           portfolioInput.project_description
         );
         // formData.append("technologies", portfolioInput.technologies);
+
 
         const response = await updateFreelancerProfile(formData);
         if (response.code == 405 || response.code == 500) {
@@ -793,7 +795,6 @@ export const ProfileModal = ({
                         <img
                           src={URL.createObjectURL(image)}
                           alt={`Selected ${index + 1}`}
-                          name="file"
                           className="w-20 h-20 object-cover rounded"
                         />
                         <span
@@ -812,7 +813,7 @@ export const ProfileModal = ({
                         accept="image/*"
                         onChange={handleImageUpload}
                         name="file"
-                        // multiple
+                        multiple
                         style={{ display: "none" }}
                         id="fileInput"
                         disabled={selectedImages.length >= 3}
