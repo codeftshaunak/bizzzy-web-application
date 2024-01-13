@@ -218,7 +218,7 @@ export const ProfileModal = ({
   //     throw error;
   //   }
   // };
-
+  console.log({ selectedImages });
   const handleSaveAndContinue = async (data) => {
     console.log(data, "data");
     try {
@@ -308,25 +308,22 @@ export const ProfileModal = ({
           closeModal();
         }
       } else if (data == "portfolio") {
-        // try {
-        //   const uploadedImages = await uploadImages(selectedImages);
-        //   console.log("All images uploaded:", uploadedImages);
-        // } catch (error) {
-        //   console.error("Error uploading images:", error);
-        // }
-
         const formData = new FormData();
-        formData.append("file", selectedImages);
+        for (let i = 0; i < selectedImages.length; i++) {
+          const file = selectedImages[i];
+          if (file) {
+            formData.append(`file`, file, file.name);
+          }
+        }
 
-        const response = await updateFreelancerProfile({
-          portfolio: {
-            project_name: portfolioInput.project_name,
-            project_description: portfolioInput.project_description,
-            technologies: portfolioInput.technologies,
-            file: formData,
-          },
-          // file: formData,
-        });
+        formData.append("portfolio[project_name]", portfolioInput.project_name);
+        formData.append(
+          "portfolio[project_description]",
+          portfolioInput.project_description
+        );
+        // formData.append("technologies", portfolioInput.technologies);
+
+        const response = await updateFreelancerProfile(formData);
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -590,11 +587,14 @@ export const ProfileModal = ({
           hourly_rate: selectedEducation.hourly_rate,
           description: selectedEducation.description,
         });
+        console.log({ selectedEducation });
         const response = await updateFreelancer({
-          // educationId: selectedEducation?._id,
-          professional_role: selectedEducation?.professional_role,
-          hourly_rate: selectedEducation?.hourly_rate,
-          description: selectedEducation?.description,
+          education: {
+            // educationId: selectedEducation?._id,
+            professional_role: selectedEducation?.professional_role,
+            hourly_rate: selectedEducation?.hourly_rate,
+            description: selectedEducation?.description,
+          },
         });
         if (response.code == 405 || response.code == 500) {
           toast({
@@ -611,9 +611,9 @@ export const ProfileModal = ({
           });
           closeModal();
         } else if (response.code === 200) {
-          // Handle category added successfully
+          userProfile();
           toast({
-            title: "Education Update Successfully",
+            title: "Basic Info Updated Successfully",
             status: "success",
             duration: 3000,
             isClosable: true,
