@@ -17,8 +17,8 @@ const makeApiRequest = async (
   const config = {
     method,
     url: endpoint,
-    headers,
     data,
+    headers,
   };
 
   try {
@@ -38,8 +38,10 @@ export const updateFreelancerProfile = async (data) =>
 export const uploadImage = async (data) =>
   makeApiRequest("post", "/user-profile-image", data, "multipart/form-data");
 
-export const updateFreelancer = async (data) =>
-  makeApiRequest("put", "/edit-profile", data);
+export const updateFreelancer = async (data) => {
+  console.log({ data });
+  return makeApiRequest("put", "/edit-profile", data);
+};
 
 export const getAllDetailsOfUser = async () =>
   makeApiRequest("get", "/get-user-profile");
@@ -47,4 +49,4 @@ export const getAllDetailsOfUser = async () =>
 export const userById = async (id) =>
   makeApiRequest("get", `/user?user_id=${id}`);
 
-// 
+//

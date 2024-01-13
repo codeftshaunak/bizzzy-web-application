@@ -5,11 +5,12 @@ import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
 import { HStack, VStack, Avatar, Box, Text } from "@chakra-ui/react";
-import { getAllDetailsOfUser } from "../../helpers/userApis";
+import { getAllDetailsOfUser, updateFreelancer } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
+import axios from "axios";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -65,10 +66,6 @@ export const FreelancerProfilePage = () => {
     getProfileInformation();
   }, [modalIsOpen]);
 
-  //   function afterOpenModal() {
-  //     // references are now sync'd and can be accessed.
-  //     subtitle.style.color = "#f00";
-  //   }
   function closeModal() {
     setModalIsOpen(false);
   }
@@ -79,12 +76,12 @@ export const FreelancerProfilePage = () => {
     openModal();
   };
   const openEditBasicModal = (title, rate, desc) => {
-    const selectedEducationData = {
+    const basicInformation = {
       professional_role: title,
       hourly_rate: rate,
       description: desc,
     };
-    setSelectedEducation(selectedEducationData);
+    setSelectedEducation(basicInformation);
     setModalPage("basicInformation");
     openModal();
   };
@@ -101,6 +98,38 @@ export const FreelancerProfilePage = () => {
     openModal();
   };
 
+  const updatedEducationInfo = async () => {
+    axios
+      .put(
+        "http://localhost:5002/api/v1/edit-profile",
+        {
+          education: {
+            educationId: "65a1658ffc9226f8e42b6324",
+            degree_name: "Honors",
+            institution: "National University ",
+            start_date: "2024-01-12",
+            end_date: "2024-01-20",
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            token:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTE1ZGY0ZTYyY2EwNmE3NWY1OTFiMiIsImVtYWlsIjoibW9kZWphbjYxN0B6aXJhZ29sZC5jb20iLCJyb2xlIjoxLCJpYXQiOjE3MDUwNzQyMDQsImV4cCI6MTcwNTE2MDYwNH0.gp-zkY5Bj0Q1TO7VXfnjJFPjCMMA2xpvdqL7KJUnJ3o",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  useEffect(() => {
+    updatedEducationInfo();
+  }, []);
+
   //===delete selected education
   const HandleDeleteEducation = (id, type) => {
     setId({ id, type });
@@ -111,7 +140,7 @@ export const FreelancerProfilePage = () => {
 
   return (
     <ProfileContainer>
-      <div className="min-w-[90%] justify-center m-auto flex flex-col gap-[24px]">
+      <div className="w-[90%] justify-center m-auto flex flex-col gap-[24px]">
         <div className="w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
@@ -160,8 +189,8 @@ export const FreelancerProfilePage = () => {
                 }}
               ></div> */}
               {!profile_image ||
-                profile_image == "null" ||
-                profile_image === null ? (
+              profile_image == "null" ||
+              profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
@@ -230,11 +259,7 @@ export const FreelancerProfilePage = () => {
                 shadow={"sm"}
                 justifyContent={"center"}
               >
-                <Text
-                  fontWeight={"600"}
-                  top={"8rem"}
-                  textAlign={"center"}
-                >
+                <Text fontWeight={"600"} top={"8rem"} textAlign={"center"}>
                   Updated Freelancer Stats <br /> Coming Soon
                 </Text>
 
@@ -497,55 +522,53 @@ export const FreelancerProfilePage = () => {
             {/* ==================== Basic info ====================== */}
           </div>
           <div className="flex-[2] flex flex-col gap-[24px]">
-            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex flex-col gap-5  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex gap-[16px] justify-between">
-                <div className="">
-                  <p className="text-[20px] text-[#374151] font-[600] w-[480px]">
-                    {professional_role}
-                  </p>
+                <p className="text-[20px] text-[#374151] font-[600] w-[480px]">
+                  {professional_role}
+                </p>
+
+                <div className="flex gap-5">
                   <p className="text-[20px] text-[#374151] font-[600]">
                     ${hourly_rate}/hr
                   </p>
-                </div>
-                <div
-                  className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                  onClick={() => {
-                    openEditBasicModal(
-                      professional_role,
-                      hourly_rate,
-                      description
-                    );
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
+                  <div
+                    className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                    onClick={() => {
+                      openEditBasicModal(
+                        professional_role,
+                        hourly_rate,
+                        description
+                      );
+                    }}
                   >
-                    <path
-                      d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9 4.33301L11.6667 6.99967"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
+                        stroke="#6B7280"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M9 4.33301L11.6667 6.99967"
+                        stroke="#6B7280"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
               <p className="text-[14px] text-[#374151] font-[400]">
                 {description}
-              </p>
-              <p className="text-[14px] text-[#16A34A] font-[600] cursor-pointer">
-                View More
               </p>
             </div>
             {/* ===================== skills ============= */}

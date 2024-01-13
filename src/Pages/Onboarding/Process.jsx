@@ -82,9 +82,7 @@ const Process = () => {
   const handleSelectChange = (selectedValues) => {
     setSelectedOptions(selectedValues || []);
   };
-  const handleSkillSelect = (selectedValues) => {
-    setSkillSelectedOptions(selectedValues || []);
-  };
+
   const autoProcess = () => {
     if (
       userDetails?.categories?.length > 0 &&
@@ -109,7 +107,7 @@ const Process = () => {
       setPage(4);
     }
   };
-
+  // changes some
   const handleSaveAndContinue = async (data) => {
     autoProcess();
     try {
