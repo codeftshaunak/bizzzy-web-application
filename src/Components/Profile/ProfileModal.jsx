@@ -202,8 +202,8 @@ export const ProfileModal = ({
           label: item,
         }))
       );
-      getCategorySkills(userProfileInfo?.categories);
     }
+    getCategorySkills(userProfileInfo?.categories);
   }, [modalIsOpen]);
 
   // console.log({ selectedOptions });
@@ -219,7 +219,7 @@ export const ProfileModal = ({
   //     throw error;
   //   }
   // };
-
+  console.log({ selectedImages });
   const handleSaveAndContinue = async (data) => {
     console.log(data, "data");
     try {
@@ -309,23 +309,23 @@ export const ProfileModal = ({
           closeModal();
         }
       } else if (data == "portfolio") {
-        // try {
-        //   const uploadedImages = await uploadImages(selectedImages);
-        //   console.log("All images uploaded:", uploadedImages);
-        // } catch (error) {
-        //   console.error("Error uploading images:", error);
-        // }
+        const formData = new FormData();
+        for (let i = 0; i < selectedImages.length; i++) {
+          const file = selectedImages[i];
+          if (file) {
+            formData.append(`file`, file, file.name);
+          }
+        }
 
-        console.log(selectedImages);
+        formData.append("portfolio[project_name]", portfolioInput.project_name);
+        formData.append(
+          "portfolio[project_description]",
+          portfolioInput.project_description
+        );
+        // formData.append("technologies", portfolioInput.technologies);
 
-        const response = await updateFreelancerProfile({
-          portfolio: {
-            project_name: portfolioInput.project_name,
-            project_description: portfolioInput.project_description,
-            technologies: portfolioInput.technologies,
-          },
-          file: selectedImages,
-        });
+
+        const response = await updateFreelancerProfile(formData);
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -589,11 +589,14 @@ export const ProfileModal = ({
           hourly_rate: selectedEducation.hourly_rate,
           description: selectedEducation.description,
         });
+        console.log({ selectedEducation });
         const response = await updateFreelancer({
-          // educationId: selectedEducation?._id,
-          professional_role: selectedEducation?.professional_role,
-          hourly_rate: selectedEducation?.hourly_rate,
-          description: selectedEducation?.description,
+          education: {
+            // educationId: selectedEducation?._id,
+            professional_role: selectedEducation?.professional_role,
+            hourly_rate: selectedEducation?.hourly_rate,
+            description: selectedEducation?.description,
+          },
         });
         if (response.code == 405 || response.code == 500) {
           toast({
@@ -610,9 +613,9 @@ export const ProfileModal = ({
           });
           closeModal();
         } else if (response.code === 200) {
-          // Handle category added successfully
+          userProfile();
           toast({
-            title: "Education Update Successfully",
+            title: "Basic Info Updated Successfully",
             status: "success",
             duration: 3000,
             isClosable: true,
@@ -633,14 +636,17 @@ export const ProfileModal = ({
 
   // Handle Media Image Uploaded
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    console.log({ "files": files });
-    if (selectedImages.length + files.length <= 3) {
-      const selectedFiles = files.filter((file) => file.type.includes("image"));
-      setSelectedImages([...selectedImages, ...selectedFiles]);
-    } else {
-      console.log("You can select a maximum of 3 images.");
-    }
+    const file = e.target.files[0];
+    //     const formData = new FormData();
+    // formData.append("image", file);
+    // console.log("formData--->",formData)
+    // const files = Array.from(e.target.files);
+    // if (selectedImages.length + files.length <= 3) {
+    // const selectedFiles = files.filter((file) => file.type.includes("image"));
+    setSelectedImages([...selectedImages, file]);
+    // } else {
+    //   console.log("You can select a maximum of 3 images.");
+    // }
   };
   const handleImageDelete = (indexToRemove) => {
     const updatedImages = selectedImages.filter(
@@ -773,7 +779,7 @@ export const ProfileModal = ({
                     isMulti
                     options={options}
                     onChange={handleChange}
-                  // styles={selectStyle}
+                    // styles={selectStyle}
                   />
                 </div>
               </div>

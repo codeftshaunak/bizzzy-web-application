@@ -142,3 +142,6 @@ export const getCategories = async () => makeApiRequest("get", "/category");
 
 export const getSkills = async (categoryId) =>
   makeApiRequest("get", `/skills?category_id=${categoryId}`);
+
+export const getSingleJobDetails = async (id) =>
+  makeApiRequest("get", `/job/get-job?job_id=${id}`);
