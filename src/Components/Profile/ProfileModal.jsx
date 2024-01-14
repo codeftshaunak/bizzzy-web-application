@@ -219,7 +219,7 @@ export const ProfileModal = ({
   //     throw error;
   //   }
   // };
-  console.log({ selectedImages });
+
   const handleSaveAndContinue = async (data) => {
     console.log(data, "data");
     try {
@@ -584,19 +584,14 @@ export const ProfileModal = ({
         }
       } else if (data == "basicInformation") {
         inputChange({
-          // _id: selectedEducation._id,
           professional_role: selectedEducation.professional_role,
           hourly_rate: selectedEducation.hourly_rate,
           description: selectedEducation.description,
         });
-        console.log({ selectedEducation });
         const response = await updateFreelancer({
-          education: {
-            // educationId: selectedEducation?._id,
-            professional_role: selectedEducation?.professional_role,
-            hourly_rate: selectedEducation?.hourly_rate,
-            description: selectedEducation?.description,
-          },
+          professional_role: selectedEducation?.professional_role,
+          hourly_rate: selectedEducation?.hourly_rate,
+          description: selectedEducation?.description,
         });
         if (response.code == 405 || response.code == 500) {
           toast({
@@ -779,7 +774,7 @@ export const ProfileModal = ({
                     isMulti
                     options={options}
                     onChange={handleChange}
-                    // styles={selectStyle}
+                  // styles={selectStyle}
                   />
                 </div>
               </div>

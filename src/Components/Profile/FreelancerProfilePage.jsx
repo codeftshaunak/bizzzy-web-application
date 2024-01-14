@@ -4,17 +4,18 @@ import SkillCard from "./SkillCard";
 import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
-import { HStack, VStack, Avatar, Box, Text } from "@chakra-ui/react";
+import { HStack, VStack, Avatar, Box, Text, Button } from "@chakra-ui/react";
 import { getAllDetailsOfUser, updateFreelancer } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
-import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalPage, setModalPage] = useState("");
+  const navigate = useNavigate();
   const [details, setDetails] = useState([]);
   const [deleteModalPage, setDeleteModalPage] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -69,12 +70,14 @@ export const FreelancerProfilePage = () => {
   function closeModal() {
     setModalIsOpen(false);
   }
+
   const [selectedEducation, setSelectedEducation] = useState(null);
   const openEditModal = (edu) => {
     setSelectedEducation(edu);
     setModalPage("educationEdit");
     openModal();
   };
+
   const openEditBasicModal = (title, rate, desc) => {
     const basicInformation = {
       professional_role: title,
@@ -91,52 +94,53 @@ export const FreelancerProfilePage = () => {
     setModalPage("experienceUpdated");
     openModal();
   };
-  //===edit skills handle
+
   const openEditSkills = () => {
     setSelectedEducation("");
     setModalPage("skills");
     openModal();
   };
 
-  const updatedEducationInfo = async () => {
-    axios
-      .put(
-        "http://localhost:5002/api/v1/edit-profile",
-        {
-          education: {
-            educationId: "65a1658ffc9226f8e42b6324",
-            degree_name: "Honors",
-            institution: "National University ",
-            start_date: "2024-01-12",
-            end_date: "2024-01-20",
-          },
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            token:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTE1ZGY0ZTYyY2EwNmE3NWY1OTFiMiIsImVtYWlsIjoibW9kZWphbjYxN0B6aXJhZ29sZC5jb20iLCJyb2xlIjoxLCJpYXQiOjE3MDUwNzQyMDQsImV4cCI6MTcwNTE2MDYwNH0.gp-zkY5Bj0Q1TO7VXfnjJFPjCMMA2xpvdqL7KJUnJ3o",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-  useEffect(() => {
-    updatedEducationInfo();
-  }, []);
+  // const updatedEducationInfo = async () => {
+  //   axios
+  //     .put(
+  //       "http://localhost:5002/api/v1/edit-profile",
+  //       {
+  //         education: {
+  //           educationId: "65a2d4a62f6ce5b5ef6ca6f6",
+  //           degree_name: "Honors",
+  //           institution: "National University ",
+  //           start_date: "2024-01-12",
+  //           end_date: "2024-01-20",
+  //         },
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           token:
+  //             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTJhMzY5MmY2Y2U1YjVlZjZjYTRlZSIsImVtYWlsIjoieWVoZWppNTU4OEB0ZWx2ZXR0by5jb20iLCJyb2xlIjoxLCJpYXQiOjE3MDUxNTc1MTgsImV4cCI6MTcwNTI0MzkxOH0.n5YpJDSLcArH9IRPXQxQJjJTQMFxwhXUFXgfGkwQQFY"
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
-  //===delete selected education
+  // useEffect(() => {
+  //   updatedEducationInfo()
+  // })
+
+
+
   const HandleDeleteEducation = (id, type) => {
     setId({ id, type });
     setDeleteModalPage("exprience");
     setDeleteModalOpen(true);
   };
-  console.log({ details });
 
   return (
     <ProfileContainer>
@@ -189,8 +193,8 @@ export const FreelancerProfilePage = () => {
                 }}
               ></div> */}
               {!profile_image ||
-              profile_image == "null" ||
-              profile_image === null ? (
+                profile_image == "null" ||
+                profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
@@ -200,14 +204,13 @@ export const FreelancerProfilePage = () => {
                 <img src={profile_image} className="w-[60px] rounded-full" />
               )}
             </div>
-            <div className="flex flex-col justify-start gap-[10px]">
-              <p className="text-[24px] text-[#374151] font-semibold">
+            <div className="flex flex-col justify-start">
+              <p className="text-[24px] text-[#374151] font-semibold pl-3">
                 {firstName + (lastName ? " " + lastName.split(" ")[0] : "")}
               </p>
               <HStack className="text-[16px] text-[#374151] font-[400]">
-                <CiLocationOn />{" "}
+                <CiLocationOn />
                 <p className="capitalize">
-                  {" "}
                   {location}, {localTime} local time
                 </p>
               </HStack>
@@ -659,40 +662,35 @@ export const FreelancerProfilePage = () => {
                     <PortfolioCard key={idx} portfolio={port} />
                   ))}
               </div>
-              <p className="text-[14px] text-[#16A34A] font-[600] cursor-pointer">
-                View More
-              </p>
             </div>
+
+
+            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+              <div>
+                <p className="text-[16px] text-[#374151] font-[600] pb-3">
+                  Your Gigs
+                </p>
+                <hr />
+                <p className="mt-3">Projects are a new way to earn on Upwork that helps you do more of the work you love to do. Create project offerings that highlight your strengths and attract more clients.
+                </p>
+                <Button className="mt-3 border" backgroundColor={"white"} height={"34px"} fontWeight={"400"} borderRadius={"25px"} border={"2px solid  var(--primarytextcolor)"} transition={"0.3s ease-in-out"} _hover={{
+                  color: "white",
+                  backgroundColor: "var(--primarytextcolor)"
+                }} onClick={() => navigate("/freelancer/gig")}>Manage Gigs</Button>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+
+              </div>
+            </div>
+
+
             {/* ================= work history ====================== */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Work History
                 </p>
-                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9 4.33301L11.6667 6.99967"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
               </div>
               <div className="flex flex-col gap-[6px]">
                 <p className="text-[14px] text-[#16A34A] font-[600] cursor-pointer">
@@ -703,9 +701,6 @@ export const FreelancerProfilePage = () => {
               {details?.work_history?.map((item, index) => (
                 <ReviewCard key={index} workDetails={item} />
               ))}
-              <p className="text-[14px] text-[#16A34A] font-[600] cursor-pointer">
-                View More
-              </p>
             </div>
           </div>
         </div>
