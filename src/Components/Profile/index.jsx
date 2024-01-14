@@ -16,7 +16,7 @@ export const customStyles = {
 export const UserProfile = () => {
   const role = useSelector((state) => state.auth.role);
   return (
-    <div>
+    <div className="w-[100%] m-auto">
       {(role == 1 && <FreelancerProfilePage />) ||
         (role == 2 && <ClientProfilePage />)}
     </div>

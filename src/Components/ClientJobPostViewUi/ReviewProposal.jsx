@@ -197,12 +197,12 @@ export const ReviewProposal = () => {
                             <Stack direction="row" align="center">
                               {details?.skills?.map((skill) => (
                                 <Button
-                                  key={skill.skill_name}
+                                  key={skill?.skill_name}
                                   size="sm"
                                   color={"black"}
                                   border={"2px solid var(--primarytextcolor))"}
                                 >
-                                  {skill.skill_name}
+                                  {skill?.skill_name}
                                 </Button>
                               ))}
                             </Stack>
@@ -246,7 +246,7 @@ export const ReviewProposal = () => {
                     placeholder="Enter your message..."
                     rows="4"
                   />
-                  <p className="text-red-500 text-sm">{}</p>
+                  <p className="text-red-500 text-sm">{ }</p>
                 </div>
               }
               <div className="flex justify-end pt-4 border-t">

@@ -193,6 +193,7 @@ export const ProfileModal = ({
       console.error("Error fetching skills:", error);
     }
   };
+
   useEffect(() => {
     if (modalPage === "skills") {
       setSelectedOptions(
@@ -218,7 +219,7 @@ export const ProfileModal = ({
   //     throw error;
   //   }
   // };
-  console.log({ selectedImages });
+
   const handleSaveAndContinue = async (data) => {
     console.log(data, "data");
     try {
@@ -322,6 +323,7 @@ export const ProfileModal = ({
           portfolioInput.project_description
         );
         // formData.append("technologies", portfolioInput.technologies);
+
 
         const response = await updateFreelancerProfile(formData);
         if (response.code == 405 || response.code == 500) {
@@ -582,19 +584,14 @@ export const ProfileModal = ({
         }
       } else if (data == "basicInformation") {
         inputChange({
-          // _id: selectedEducation._id,
           professional_role: selectedEducation.professional_role,
           hourly_rate: selectedEducation.hourly_rate,
           description: selectedEducation.description,
         });
-        console.log({ selectedEducation });
         const response = await updateFreelancer({
-          education: {
-            // educationId: selectedEducation?._id,
-            professional_role: selectedEducation?.professional_role,
-            hourly_rate: selectedEducation?.hourly_rate,
-            description: selectedEducation?.description,
-          },
+          professional_role: selectedEducation?.professional_role,
+          hourly_rate: selectedEducation?.hourly_rate,
+          description: selectedEducation?.description,
         });
         if (response.code == 405 || response.code == 500) {
           toast({
@@ -777,7 +774,7 @@ export const ProfileModal = ({
                     isMulti
                     options={options}
                     onChange={handleChange}
-                    // styles={selectStyle}
+                  // styles={selectStyle}
                   />
                 </div>
               </div>
@@ -793,7 +790,6 @@ export const ProfileModal = ({
                         <img
                           src={URL.createObjectURL(image)}
                           alt={`Selected ${index + 1}`}
-                          name="file"
                           className="w-20 h-20 object-cover rounded"
                         />
                         <span
@@ -812,7 +808,7 @@ export const ProfileModal = ({
                         accept="image/*"
                         onChange={handleImageUpload}
                         name="file"
-                        // multiple
+                        multiple
                         style={{ display: "none" }}
                         id="fileInput"
                         disabled={selectedImages.length >= 3}

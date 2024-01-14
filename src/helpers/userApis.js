@@ -5,7 +5,7 @@ const makeApiRequest = async (
   method,
   endpoint,
   data = null,
-  customHeaders = {}
+  customHeaders
 ) => {
   const authtoken = localStorage.getItem("authtoken");
 
@@ -40,7 +40,7 @@ export const uploadImage = async (data) =>
 
 export const updateFreelancer = async (data) => {
   console.log({ data });
-  return makeApiRequest("put", "/edit-profile", data);
+  return makeApiRequest("PUT", "/edit-profile", data);
 };
 
 export const getAllDetailsOfUser = async () =>

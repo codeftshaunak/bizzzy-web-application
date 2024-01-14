@@ -22,6 +22,9 @@ import HireFreelancer from "../Pages/HireFreelancer";
 import PrivateRoutes from "./PrivateRoutes";
 import SearchFreelancers from "../Pages/SearchFreelancers";
 
+import Gig from '../Components/Gigs/index';
+
+
 const Router = () => {
   return (
     <BrowserRouter>
@@ -39,6 +42,7 @@ const Router = () => {
           <Route exact path="/find-job/:id" element={<ApplyJob />} />
           {/* <Route exact path="/apply-job" element={<ApplyJob />} /> */}
           <Route exact path="/search-job" element={<SearchPage />} />
+          <Route exact path="/search-talent" element={<SeatchTalentPage />} />
 
           <Route
             exact
@@ -49,6 +53,7 @@ const Router = () => {
           <Route exact path="/message" element={<Message />} />
           <Route exact path="/freelancer" element={<Profile />} />
           <Route exact path="/freelancer/:id" element={<Profile />} />
+          <Route exact path="/freelancer/gig" element={<Gig />} />
           <Route exact path="/client" element={<Profile />} />
           <Route exact path="/client/:id" element={<Profile />} />
           <Route
