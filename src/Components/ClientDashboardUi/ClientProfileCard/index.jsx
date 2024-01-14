@@ -1,6 +1,4 @@
 import { Button, Image, Text, VStack, Avatar } from "@chakra-ui/react";
-import React from "react";
-
 const ClientProfileCard = ({ data }) => {
   return (
     <VStack color="var(--primarytext)" gap={"5"}>
@@ -26,10 +24,10 @@ const ClientProfileCard = ({ data }) => {
       <VStack gap={"0"} w="100%">
         <Button
           colorScheme="16A34A"
-          bg={'#16A34A'}
-          color={'#fff'}
+          bg={"#16A34A"}
+          color={"#fff"}
           size="sm"
-          fontSize={'sm'}
+          fontSize={"sm"}
           w={"100%"}
         >
           Message

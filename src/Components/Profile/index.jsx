@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { FreelancerProfilePage } from "./FreelancerProfilePage";
 import { ClientProfilePage } from "./ClientProfilePage";
@@ -23,4 +22,3 @@ export const UserProfile = () => {
     </div>
   );
 };
-
