@@ -343,6 +343,7 @@ export const GigCreateLayout = ({ children, title }) => {
     return <div className='w-[60%]'>
         <Text fontSize={"2.5rem"} fontWeight={"600"} textAlign={"left"}>{title}</Text>
         <br />
+        {/*  */}
         <div className='w-full flex flex-col gap-5'>
             {children}
         </div>
