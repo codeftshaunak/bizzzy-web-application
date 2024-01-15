@@ -22,8 +22,8 @@ import HireFreelancer from "../Pages/HireFreelancer";
 import PrivateRoutes from "./PrivateRoutes";
 import SearchFreelancers from "../Pages/SearchFreelancers";
 
-import Gig from '../Components/Gigs/index';
-
+import Gig from "../Components/Gigs/index";
+import { SearchTalents } from "../Components/Search/SearchTalent";
 
 const Router = () => {
   return (
@@ -42,7 +42,7 @@ const Router = () => {
           <Route exact path="/find-job/:id" element={<ApplyJob />} />
           {/* <Route exact path="/apply-job" element={<ApplyJob />} /> */}
           <Route exact path="/search-job" element={<SearchPage />} />
-          <Route exact path="/search-talent" element={<SeatchTalentPage />} />
+          <Route exact path="/search-talent" element={<SearchTalents />} />
 
           <Route
             exact
