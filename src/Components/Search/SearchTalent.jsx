@@ -21,14 +21,6 @@ import {
 } from "../../helpers/freelancerApis";
 import Select from "react-select";
 
-const options = [
-  { value: "programming", label: "programming" },
-  { value: "markating", label: "markating" },
-  { value: "Frontend", label: "Frontend" },
-  { value: "Angoler", label: "Angoler" },
-  { value: "HTML", label: "HTML" },
-];
-
 const CategoryOption = [
   { value: "programming", label: "programming" },
   { value: "markating", label: "markating" },
@@ -193,6 +185,7 @@ export const SearchTalents = () => {
   const [hourlyRateMin, setHourlyRateMin] = useState(null);
   const [hourlyRateMax, setHourlyRateMax] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState(null);
+  const [categorySkills, setCategorySkills] = useState([]);
 
   // hourly rate
 
@@ -256,8 +249,8 @@ export const SearchTalents = () => {
     const fetchCategory = async () => {
       try {
         setLoading(true);
-        const freelancers = await getCategories();
-        setCategoryData(freelancers);
+        const category = await getCategories();
+        setCategoryData(category);
       } catch (error) {
         console.error("Error fetching freelancer data:", error);
       } finally {
@@ -271,20 +264,20 @@ export const SearchTalents = () => {
 
   // calling skills API
 
-  // useEffect(() => {
-  //   const fetchSkills = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const freelancers = await getSkills(selectedCategories);
-  //       setFreelancerData(freelancers);
-  //     } catch (error) {
-  //       console.error("Error fetching freelancer data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchSkills();
-  // }, [selectedCategories]);
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        setLoading(true);
+        const categorySkills = await getSkills(selectedCategories);
+        setCategorySkills(categorySkills);
+      } catch (error) {
+        console.error("Error fetching freelancer data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSkills();
+  }, [selectedCategories]);
 
   const handleHourlyRateChange = (value) => {
     switch (value) {
@@ -316,7 +309,21 @@ export const SearchTalents = () => {
   // console.log(selectedTalents);
   // console.log(hourlyRateMin);
   // console.log(hourlyRateMax);
+  console.log("categorySkills", categorySkills);
   console.log("selectedCategories", selectedCategories);
+
+  // const options = [
+  //   { value: "programming", label: "programming" },
+  //   { value: "markating", label: "markating" },
+  //   { value: "Frontend", label: "Frontend" },
+  //   { value: "Angoler", label: "Angoler" },
+  //   { value: "HTML", label: "HTML" },
+  // ];
+
+  const options = categorySkills?.map((skill) => ({
+    value: skill?.skill_name,
+    label: skill?.skill_name,
+  }));
 
   return (
     <div className="w-full mx-auto">
@@ -334,18 +341,20 @@ export const SearchTalents = () => {
               Search Your Talents
             </Text>
 
-            <VStack alignItems={"flex-start"} w={"full"}>
-              <Text fontWeight={"600"} className="mb-3">
-                Skills
-              </Text>
-              <Select
-                className="w-full"
-                isMulti
-                options={options}
-                onChange={handleSelectChange}
-                value={skills}
-              />
-            </VStack>
+            {categorySkills?.length && (
+              <VStack alignItems={"flex-start"} w={"full"}>
+                <Text fontWeight={"600"} className="mb-3">
+                  Skills
+                </Text>
+                <Select
+                  className="w-full"
+                  isMulti
+                  options={options}
+                  onChange={handleSelectChange}
+                  value={skills}
+                />
+              </VStack>
+            )}
 
             <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
               <Text fontWeight={"600"}>Category</Text>
@@ -355,9 +364,9 @@ export const SearchTalents = () => {
                   onChange={(value) => handleCategoryChange(value)}
                 >
                   <Stack spacing={2} direction="column">
-                    <Radio colorScheme="green" value="">
+                    {/* <Radio colorScheme="green" value="6586ac7bf89063570489595c">
                       All
-                    </Radio>
+                    </Radio> */}
                     {categoryData?.map((category) => (
                       <Radio
                         key={category?._id}

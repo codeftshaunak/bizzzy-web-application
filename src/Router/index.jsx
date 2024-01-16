@@ -21,10 +21,9 @@ import { InterviewInvitation, OfferInvitation } from "../Pages/Invitation";
 import HireFreelancer from "../Pages/HireFreelancer";
 import PrivateRoutes from "./PrivateRoutes";
 import SearchFreelancers from "../Pages/SearchFreelancers";
-
 import Gig from '../Components/Gigs/index';
 import Agency from "../Pages/Agency";
-
+import { SearchTalents } from "../Components/Search/SearchTalent";
 
 const Router = () => {
   return (
@@ -42,7 +41,7 @@ const Router = () => {
           <Route exact path="/find-job" element={<FindJob />} />
           <Route exact path="/find-job/:id" element={<ApplyJob />} />
           <Route exact path="/search-job" element={<SearchPage />} />
-
+          <Route exact path="/search-talent" element={<SearchTalents />} />
           <Route
             exact
             path="/search-freelancers"
