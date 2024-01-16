@@ -45,7 +45,7 @@ export const deleteJob = async (data) => {
       },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const inviteToJob = async (data) => {
@@ -58,7 +58,7 @@ export const inviteToJob = async (data) => {
       },
     });
     return response.data;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 // export const getHiredListByClient = async () => {
@@ -136,9 +136,11 @@ export const deleteMessage = async (id) =>
 export const resendEmailVerification = async (email) =>
   makeApiRequest("post", "/email/resend-verification", email);
 
-export const getCountries = async () => makeApiRequest("get", "/get-countries");
+export const getCountries = async () =>
+  makeApiRequest("get", "/get-countries");
 
-export const getCategories = async () => makeApiRequest("get", "/category");
+export const getCategories = async () =>
+  makeApiRequest("get", "/category");
 
 export const getSkills = async (categoryId) =>
   makeApiRequest("get", `/skills?category_id=${categoryId}`);

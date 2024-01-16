@@ -58,8 +58,16 @@ export const getMessageList = async () =>
 export const getMessageDetails = async (data) =>
   makeApiRequest("get", `/message-list?receiver_id=${data}`);
 
-export const getReportData = async () => makeApiRequest("get", "/reports");
+export const getReportData = async () =>
+  makeApiRequest("get", "/reports");
 
+export const createGig = async (data) =>
+  makeApiRequest('post', '/freelancer/gig/create', data)
+
+
+
+
+//Thous function with end points need to recerate again with the following method avobe 
 export const getFreelancers = async (
   skills,
   searchText,

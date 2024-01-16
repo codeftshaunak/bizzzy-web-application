@@ -23,6 +23,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import SearchFreelancers from "../Pages/SearchFreelancers";
 
 import Gig from '../Components/Gigs/index';
+import Agency from "../Pages/Agency";
 
 
 const Router = () => {
@@ -40,15 +41,15 @@ const Router = () => {
           <Route exact path="/create-job" element={<JobPost />} />
           <Route exact path="/find-job" element={<FindJob />} />
           <Route exact path="/find-job/:id" element={<ApplyJob />} />
-          {/* <Route exact path="/apply-job" element={<ApplyJob />} /> */}
           <Route exact path="/search-job" element={<SearchPage />} />
-          <Route exact path="/search-talent" element={<SeatchTalentPage />} />
 
           <Route
             exact
             path="/search-freelancers"
             element={<SearchFreelancers />}
           />
+
+          <Route exact path="/agency-dashboard" element={<Agency />} />
 
           <Route exact path="/message" element={<Message />} />
           <Route exact path="/freelancer" element={<Profile />} />
