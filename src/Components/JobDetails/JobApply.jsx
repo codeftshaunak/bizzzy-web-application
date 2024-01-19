@@ -277,6 +277,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CurrentUserContext } from '../../Contexts/CurrentUser';
 
 const JobApply = ({ setPage, details }) => {
+    console.log({ details });
+
     const { quill, quillRef } = useQuill();
     const [coverLetter, setCoverLetter] = useState('');
     const currentUser = useContext(CurrentUserContext);

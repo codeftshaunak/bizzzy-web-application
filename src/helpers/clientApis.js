@@ -112,6 +112,7 @@ const makeApiRequest = async (
   }
 };
 
+
 export const getSearchFreelancer = async (keywords) =>
   makeApiRequest("get", "/search-freelancers", keywords);
 
@@ -141,9 +142,3 @@ export const getCountries = async () =>
 
 export const getCategories = async () =>
   makeApiRequest("get", "/category");
-
-export const getSkills = async (categoryId) =>
-  makeApiRequest("get", `/skills?category_id=${categoryId}`);
-
-export const getSingleJobDetails = async (id) =>
-  makeApiRequest("get", `/job/get-job?job_id=${id}`);

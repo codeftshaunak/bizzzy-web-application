@@ -47,7 +47,7 @@ const AgencyDashboard = () => {
 
     useEffect(() => {
         getClientPostedJob();
-        getHiredFreelancer();
+        // getHiredFreelancer();
     }, []);
 
 
@@ -252,7 +252,7 @@ const AgencyDashboard = () => {
                 <div className="w-[300px] flex flex-col m-auto justify-center items-center">
                     <UserProfileCard />
                     <UserProfileCard />
-                    <button className="bg-[#16A34A] text-[#fff] border-2 border-[#16A34A] text-md w-[90%] ml-[26px] text-center mt-4  rounded-md font-semibold py-1">
+                    <button className="bg-[#16A34A] text-[#fff] border-2 border-[#16A34A] text-md w-[90%] ml-[26px] text-center mt-4  rounded-md font-semibold py-1" onClick={() => navigate("/search-freelancers")}>
                         Invite Freelancer To Your Agency
                     </button>
                     <button className="bg-[#ebebeb] text-[#2c2c2c] border border-[#707070] text-md w-[90%] ml-[26px] text-center mt-4  rounded-md font-semibold py-1">

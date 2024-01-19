@@ -418,7 +418,7 @@ import ConfirmModal from '../../ConfirmationModal/ConfirmModal';
 
 const ClientInfo = ({ clientDetails }) => (
   <Flex>
-    <Avatar src={clientDetails.profile_image !== 'null' ? clientDetails.profile_image : clientDetails.firstName} name={clientDetails.profile_image !== 'null' ? clientDetails.profile_image : clientDetails.firstName} />
+    <Avatar src={clientDetails.profile_image !== null ? clientDetails.profile_image : clientDetails.firstName} name={clientDetails.profile_image !== 'null' ? clientDetails.profile_image : clientDetails.firstName} />
     <Box ml="3">
       <Text fontWeight="bold">
         {clientDetails.firstName} {clientDetails.lastName}
@@ -462,14 +462,10 @@ const MilestoneStepper = ({ jobDetails }) => {
   const handleSubmit = async (data) => {
     setLoadingSubmit(true);
     try {
-      console.log(data.file); // Check if file data is available
-
       const formData = new FormData();
       formData.append('job_id', jobState.job_id);
       formData.append('client_id', jobState.client_id);
       formData.append('message', data.messages);
-
-      // Check if file data is available before appending
       if (data.file) {
         formData.append('file', data.file);
       }
@@ -483,9 +479,7 @@ const MilestoneStepper = ({ jobDetails }) => {
         navigate(`/submit-review/${jobState.job_id}`)
       }
       setLoadingSubmit(false);
-      console.log(response);
     } catch (error) {
-      console.error('Error submitting work:', error);
       setLoadingSubmit(false);
     }
     setLoadingSubmit(false);
@@ -542,7 +536,6 @@ const MilestoneStepper = ({ jobDetails }) => {
         </StepDescription>
       </Box>
 
-      {/* Define Modal */}
       {
         openModal && <SubmitModal setOpenModal={setOpenModal} acceptInvite={acceptInvite} jobdetails={jobDetails} loadingSubmit={loadingSubmit} setLoadingSubmit={setLoadingSubmit} />
       }
@@ -623,13 +616,11 @@ const EarningsDetails = ({ jobDetails }) => (
 const ActiveJobDetailsComponent = () => {
   const location = useLocation();
   const jobState = location.state.job;
-  console.log({ "------": jobState.job });
   const job_id = jobState.job_id;
   const client_id = jobState.client_id;
 
-  const clientDetails = jobState?.client_profile[0];
-  const jobDetails = jobState.job_details[0];
-
+  const clientDetails = jobState?.client_profile;
+  const jobDetails = jobState;
   const [openModal, setOpenModal] = useState(false);
 
   return (

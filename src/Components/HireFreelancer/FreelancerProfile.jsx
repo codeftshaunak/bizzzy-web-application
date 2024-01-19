@@ -23,7 +23,7 @@ const FreelancerProfile = () => {
       )}
       <Box>
         <Heading as="h4" size="md" className="text-green-600">
-          {firstName} {lastName.slice(0, 1)}.
+          {firstName} {lastName?.slice(0, 1)}.
         </Heading>
         <Heading as="h5" size="sm">
           {professional_role}

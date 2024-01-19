@@ -2,16 +2,18 @@
 import React, { useEffect, useState } from 'react'
 import { getAllJobs, searchJobs } from '../../helpers/jobApis';
 import JobCard from './JobCard';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useSelector } from 'react-redux'
+import UserCard from './UserCard';
+import AgencyUserCard from './AgencyUserCard';
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(false);
     const reverseJob = jobs?.slice().reverse();
-    const leatestJob = reverseJob.slice(0, 4)
+    const leatestJob = reverseJob.slice(0, 4);
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
     const { name, profile_image, professional_role, id } = profile.profile || [];
@@ -79,7 +81,7 @@ export const AllJobs = () => {
                     </div>
                 </div>
                 <div className="w-[25%] pl-6">
-                    <div className="h-[296px] border border-tertiary rounded-2xl">
+                    {/* <div className="border border-tertiary rounded-2xl">
                         <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
                             {profile_image == null ? (
                                 <Avatar name={name} />
@@ -108,9 +110,13 @@ export const AllJobs = () => {
                                 <div className="text-xs font-semibold">100%</div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
+
+                    <UserCard profile_image={profile_image} name={name} professional_role={professional_role} />
                     <br />
-                    <div className="h-[296px] border border-tertiary rounded-2xl">
+                    <AgencyUserCard profile_image={profile_image} name={name} professional_role={professional_role} />
+
+                    {/* <div className="border border-tertiary rounded-2xl">
                         <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
                             {profile_image == null ? (
                                 <Avatar name={name} />
@@ -139,7 +145,7 @@ export const AllJobs = () => {
                                 <div className="text-xs font-semibold">100%</div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="mt-6 relative">
                         <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
@@ -257,7 +263,7 @@ export const SearchJobPage = () => {
         <div className='w-full mx-auto'>
             <div className="py-6 px-8 flex w-full">
                 <div className="w-[40%] pr-6">
-                    <div className="h-[296px] border border-tertiary rounded-2xl">
+                    <div className="border border-tertiary rounded-2xl">
                         <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
                             {profile_image == null ? (
                                 <Avatar name={name} />

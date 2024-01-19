@@ -120,7 +120,7 @@ export const Talents = () => {
           </div>
         </div>
         <div className="w-[25%] pl-6">
-          <div className="h-[296px] border border-tertiary rounded-2xl">
+          <div className="h-[250px] border border-tertiary rounded-2xl">
             <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
               {profile_image == null ? (
                 <Avatar name={name} />
@@ -149,6 +149,7 @@ export const Talents = () => {
                 <div className="text-xs font-semibold">100%</div>
               </div>
             </div>
+
           </div>
           <div className="mt-6 relative">
             <img
