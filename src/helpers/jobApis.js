@@ -177,3 +177,4 @@ export const userAllJobs = async () =>
 
 export const getSingleJobDetails = async (id) =>
   makeApiRequest("get", `/job/get-job?job_id=${id}`);
+

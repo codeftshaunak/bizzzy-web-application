@@ -142,3 +142,4 @@ export const getCountries = async () =>
 
 export const getCategories = async () =>
   makeApiRequest("get", "/category");
+

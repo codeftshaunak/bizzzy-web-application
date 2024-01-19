@@ -120,3 +120,4 @@ const HireFreelancerPage = () => {
 };
 
 export default HireFreelancerPage;
+

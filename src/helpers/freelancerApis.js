@@ -135,3 +135,4 @@ export const getSkills = async (category_id) => {
     throw error;
   }
 };
+

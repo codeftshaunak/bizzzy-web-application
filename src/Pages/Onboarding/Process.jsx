@@ -724,10 +724,3 @@ const Process = () => {
 
 export default Process;
 
-{
-  /* <HStack>
-<CTAButton fontWeight="500" text="Import from LinkedIn" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-<CTAButton fontWeight="500" text="Upload your Resume" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-<CTAButton fontWeight="500" text="Fill out manually (15mins)" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-</HStack> */
-}

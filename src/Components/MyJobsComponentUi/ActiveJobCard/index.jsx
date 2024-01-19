@@ -47,3 +47,4 @@ const ActiveJobCard = ({ job }) => {
 };
 
 export default ActiveJobCard;
+

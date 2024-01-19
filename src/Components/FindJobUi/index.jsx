@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { getAllJobs, searchJobs } from '../../helpers/jobApis';
 import JobCard from './JobCard';
@@ -367,3 +366,4 @@ export const Filter = ({ handleContractTypeChange, handleExperienceChange, handl
         </VStack>
     );
 };
+
