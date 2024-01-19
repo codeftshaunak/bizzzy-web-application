@@ -59,7 +59,7 @@ export const getMessageDetails = async (data) =>
   makeApiRequest("get", `/message-list?receiver_id=${data}`);
 
 export const getReportData = async () =>
-  makeApiRequest("get", "/reports");
+  makeApiRequest("get", "/reports/freelancer");
 
 export const createGig = async (data) =>
   makeApiRequest('post', '/freelancer/gig/create', data)
@@ -120,7 +120,7 @@ export const getSkills = async (category_id) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
 
-    const response = await API.get(`/skills`, {
+    const response = await API.get(`/category/skills`, {
       headers: {
         "Content-Type": "application/json",
         token: authtoken,
@@ -135,3 +135,4 @@ export const getSkills = async (category_id) => {
     throw error;
   }
 };
+

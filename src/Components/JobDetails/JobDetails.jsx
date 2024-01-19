@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getAllJobsProposal, getJobById } from "../../helpers/jobApis";
-import { getSingleJobDetails } from "../../helpers/clientApis";
+import { getAllJobsProposal, getSingleJobDetails } from "../../helpers/jobApis";
 import StarRatings from "react-star-ratings";
 
 const JobDetails = ({ setPage, setDetails }) => {
@@ -14,10 +13,13 @@ const JobDetails = ({ setPage, setDetails }) => {
     const response = await getAllJobsProposal();
     setApplyJob(response);
   };
+
   const getDetails = async () => {
     try {
       const response = await getSingleJobDetails(id);
       setJobDetails(response?.body);
+      setJob(response?.body);
+      setDetails(response?.body[0]);
     } catch (error) {
       console.error("Error fetching job Details:", error);
     }
@@ -43,22 +45,9 @@ const JobDetails = ({ setPage, setDetails }) => {
     days > 0
       ? `${days} day${days !== 1 ? "s" : ""} ago`
       : hours > 0
-      ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
-      : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+        ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
+        : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
 
-  const getJobDetails = async () => {
-    try {
-      const getJob = await getJobById(id);
-      setJob(getJob);
-      setDetails(getJob);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getJobDetails();
-  }, []);
 
   const clientDetails = jobDetails[0]?.client_details[0];
   const hiredPercentage =
@@ -176,3 +165,4 @@ const JobDetails = ({ setPage, setDetails }) => {
 };
 
 export default JobDetails;
+
