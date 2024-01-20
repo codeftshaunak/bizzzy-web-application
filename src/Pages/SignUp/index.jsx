@@ -42,8 +42,8 @@ export const SignUp = () => {
     selectedOption === "freelancer"
       ? "Apply as a freelancer"
       : selectedOption === "client"
-      ? "Join as a client"
-      : "Create Account";
+        ? "Join as a client"
+        : "Create Account";
 
   return (
     <>
@@ -649,7 +649,7 @@ export const FreelancerSignUp = () => {
   // Get Countries List
   const getVerifiedCountries = async () => {
     const countries = await getCountries();
-    setCountries(countries?.body);
+    setCountries(countries);
   };
   useEffect(() => {
     getVerifiedCountries();
@@ -864,9 +864,11 @@ export const FreelancerSignUp = () => {
                     name="country"
                     onChange={handleChange}
                   >
+
+
                     {countries?.map((country) => (
-                      <option key={country?._id} value={country?.country_name}>
-                        {country?.country_name}
+                      <option key={country?._id} value={country?.name}>
+                        {country?.name}
                       </option>
                     ))}
                   </Select>
@@ -1289,3 +1291,4 @@ export const verifyMail = async () => {
     </OnbardingCardLayout>
   );
 };
+

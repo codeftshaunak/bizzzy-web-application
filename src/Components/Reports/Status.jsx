@@ -30,7 +30,7 @@ const Status = () => {
 
   const getReport = async () => {
     const response = await getReportData();
-    setReport(response.body)
+    setReport(response)
   }
 
   const { user_details, balance, stats } = report;

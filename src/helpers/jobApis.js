@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "./proxy";
+import { BASE_URL, useApiErrorHandling } from "./proxy";
 
 export const API = axios.create({
   baseURL: BASE_URL,
@@ -78,20 +78,21 @@ export const getInvitedFreelancer = async () => {
   }
 };
 
-export const getJobById = async (data) => {
-  try {
-    const authtoken = localStorage.getItem("authtoken");
-    const response = await API.get(`/job/get-job/${data}`, {
-      headers: {
-        "Content-Type": "application/json",
-        token: `${authtoken}`,
-      },
-    });
-    return response.data.data;
-  } catch (error) {
-    return error.data;
-  }
-};
+// export const getJobById = async (data) => {
+//   try {
+//     const authtoken = localStorage.getItem("authtoken");
+//     const response = await API.get(`/job/get-job/${data}`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         token: `${authtoken}`,
+//       },
+//     });
+//     return response.data.data;
+//   } catch (error) {
+//     return error.data;
+//   }
+// };
+
 
 export const applyJob = async (data) => {
   try {
@@ -125,18 +126,18 @@ export const createJob = async (formData) => {
 
 export const getAllJobsProposal = async () => {
   try {
-      const authtoken = localStorage.getItem("authtoken");
-      const response = await API.get("/jobs/proposals", {
-          headers: {
-              "Content-Type": "application/json",
-              token: `${authtoken}`,
-          },
-      });
+    const authtoken = localStorage.getItem("authtoken");
+    const response = await API.get("/jobs/proposals", {
+      headers: {
+        "Content-Type": "application/json",
+        token: `${authtoken}`,
+      },
+    });
 
-      console.log(response?.data?.body);
-      return response?.data?.body;
+    console.log(response?.data?.body);
+    return response?.data?.body;
   } catch (error) {
-      return error;
+    return error;
   }
 };
 
@@ -146,33 +147,34 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
   const authtoken = localStorage.getItem("authtoken");
 
   const headers = {
-      "Content-Type": "application/json",
-      token: authtoken,
-      ...customHeaders,
+    "Content-Type": "application/json",
+    token: authtoken,
+    ...customHeaders,
   };
 
   const config = {
-      method,
-      url: endpoint,
-      headers,
-      data,
-      params, // Include query parameters
+    method,
+    url: endpoint,
+    headers,
+    data,
+    params, // Include query parameters
   };
 
   try {
-      const response = await API(config);
-      return response?.data;
+    const response = await API(config);
+    return response?.data;
 
   } catch (error) {
-      // Use the error handling hook
-      const { handleApiError } = useApiErrorHandling();
-      handleApiError(error);
-      return error.response?.data;
+    // Use the error handling hook
+    const { handleApiError } = useApiErrorHandling();
+    handleApiError(error);
+    return error.response?.data;
   }
 };
 
 export const userAllJobs = async () =>
-    makeApiRequest('get', '/users/jobs');
+  makeApiRequest('get', '/users/jobs');
 
-
+export const getSingleJobDetails = async (id) =>
+  makeApiRequest("get", `/job/get-job?job_id=${id}`);
 

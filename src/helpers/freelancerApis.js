@@ -25,7 +25,7 @@ const makeApiRequest = async (
 
   try {
     const response = await API(config);
-    return response.data;
+    return response.data.body;
   } catch (error) {
     // Use the error handling hook
     const { handleApiError } = useApiErrorHandling();
@@ -59,10 +59,13 @@ export const getMessageDetails = async (data) =>
   makeApiRequest("get", `/message-list?receiver_id=${data}`);
 
 export const getReportData = async () =>
-  makeApiRequest("get", "/reports");
+  makeApiRequest("get", "/reports/freelancer");
 
 export const createGig = async (data) =>
   makeApiRequest('post', '/freelancer/gig/create', data)
+
+export const getSubCategory = async (data) =>
+  makeApiRequest('get', `/categories/subcategories?category_id=${data}`)
 
 
 
@@ -102,7 +105,7 @@ export const getCategories = async () => {
   try {
     const authtoken = localStorage.getItem("authtoken");
 
-    const response = await API.get("/category", {
+    const response = await API.get("/categories", {
       headers: {
         "Content-Type": "application/json",
         token: authtoken,
@@ -120,7 +123,7 @@ export const getSkills = async (category_id) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
 
-    const response = await API.get(`/skills`, {
+    const response = await API.get(`/categories/skills`, {
       headers: {
         "Content-Type": "application/json",
         token: authtoken,
@@ -135,3 +138,4 @@ export const getSkills = async (category_id) => {
     throw error;
   }
 };
+

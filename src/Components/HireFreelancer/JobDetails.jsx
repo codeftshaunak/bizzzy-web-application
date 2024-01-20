@@ -7,7 +7,7 @@ import { getClientJobs } from "../../helpers/clientApis";
 const JobDetails = () => {
   const [jobsTitle, setJobsTitle] = useState([]);
   const profile = useSelector((state) => state?.profile?.profile);
-  console.log(profile);
+
   const [formData, setFormData] = useState({
     hiring_team: "",
     job_title: "",
@@ -65,11 +65,10 @@ const JobDetails = () => {
           required
         >
           <option
-            value={`${
-              profile?.business_name && profile?.business_name !== "null"
-                ? profile.business_name
-                : profile?.name
-            }
+            value={`${profile?.business_name && profile?.business_name !== "null"
+              ? profile.business_name
+              : profile?.name
+              }
             &apos;s Team`}
           >
             {profile?.business_name && profile?.business_name !== "null"
@@ -121,3 +120,4 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
+

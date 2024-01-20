@@ -12,6 +12,7 @@ const ClientDashboardComponent = () => {
   const [jobs, setJobs] = useState([]);
   const [hiredList, setHiredList] = useState([]);
   const uniqueHired = [];
+  console.log(uniqueHired);
   const seenFreelancerIds = new Set();
   if (hiredList?.length > 0) {
     hiredList?.forEach((item) => {
@@ -41,7 +42,7 @@ const ClientDashboardComponent = () => {
 
   const getHiredFreelancer = async () => {
     const response = await getHiredListByClient();
-    setHiredList(response.body)
+    setHiredList(response)
   }
 
   useEffect(() => {

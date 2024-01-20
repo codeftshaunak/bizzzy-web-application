@@ -32,13 +32,12 @@ import {
 import { BsBack, BsBackspaceFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getCategories, getSkills } from "../../helpers/clientApis";
+import { getCategories, getSkills } from "../../helpers/freelancerApis";
 
 const animatedComponents = makeAnimated();
 
 const Process = () => {
   const [page, setPage] = useState(0);
-  console.log({ page: page });
   const toast = useToast();
   const navigate = useNavigate();
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +45,7 @@ const Process = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [options, setOptions] = useState([]);
   const [skillOptions, setSkillOptions] = useState([]);
+
   const [skillSelectedOptions, setSkillSelectedOptions] = useState([]);
   const role = useSelector((state) => state.auth.role);
 
@@ -181,7 +181,6 @@ const Process = () => {
               hourly_rate: inputValues.hourly_rate,
               description: inputValues.description,
             });
-            console.log({ info: response });
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -218,7 +217,6 @@ const Process = () => {
             const response = await updateFreelancerProfile({
               skills: selectedCategories,
             });
-            console.log({ skills: response });
             if (response.code == 405) {
               toast({
                 title: response.msg,
@@ -265,7 +263,6 @@ const Process = () => {
               business_name: businessDetails.business_name,
               brief_description: businessDetails.brief_description,
             });
-            console.log({ businessDetails: response });
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -323,8 +320,8 @@ const Process = () => {
       const promises = validCategoryIds?.map(async ({ _id }) => {
         try {
           const skills = await getSkills(_id);
-          if (skills && skills.body) {
-            return skills.body?.map((item) => ({
+          if (skills) {
+            return skills?.map((item) => ({
               value: item?.skill_name,
               label: item?.skill_name,
               category_id: item?.category_id,
@@ -349,7 +346,6 @@ const Process = () => {
   };
 
   useEffect(() => {
-    console.log({ page });
     if (userDetails.categories?.length > 0 && page === 4) {
       getCategorySkills(userDetails?.categories);
     }
@@ -464,7 +460,6 @@ const Process = () => {
                   onChange={handleSelectChange}
                   value={selectedOptions}
                 />
-                {console.log({ selectedOptions })}
                 <Button
                   fontWeight="500"
                   color="#fff"
@@ -638,90 +633,90 @@ const Process = () => {
             )}
           </>
         )) || (
-          <>
-            {role == 2 && page == 2 && (
-              <VStack
-                justifyContent="start"
-                alignItems="start"
-                width="630px"
-                gap="30px"
-                color="var(--primarytext)"
-              >
-                <Box
-                  backgroundColor="var(--primarysoftbg)"
-                  color="var(--primarytextcolor)"
-                  padding="0rem 0.8rem"
-                  borderRadius="5px"
+            <>
+              {role == 2 && page == 2 && (
+                <VStack
+                  justifyContent="start"
+                  alignItems="start"
+                  width="630px"
+                  gap="30px"
+                  color="var(--primarytext)"
                 >
-                  Create your Profile
-                </Box>
-                <Box>
-                  <Text fontSize="40px" fontWeight="500">
-                    How would you like to tell us about yourself?
-                  </Text>
-                </Box>
-                <Box>
-                  <Text fontSize="15px" fontWeight="400">
-                    We need to get a sense of your education, experience and
-                    categories. It’s quickest to import your information, you
-                    can edit it before your profile goes live.
-                  </Text>
-                </Box>
-                <VStack width={"full"} alignItems={"start"}>
-                  <Text mb="0px">{"Write Your Business Name"}</Text>
-                  <Input
-                    variant="outline"
-                    required
-                    placeholder="Write Your Business Name"
-                    width={"100%"}
-                    value={businessDetails?.business_name}
-                    onChange={(e) =>
-                      setBusinessDetails({
-                        ...businessDetails,
-                        business_name: e.target.value,
-                      })
-                    }
-                  />
-                </VStack>
+                  <Box
+                    backgroundColor="var(--primarysoftbg)"
+                    color="var(--primarytextcolor)"
+                    padding="0rem 0.8rem"
+                    borderRadius="5px"
+                  >
+                    Create your Profile
+                  </Box>
+                  <Box>
+                    <Text fontSize="40px" fontWeight="500">
+                      How would you like to tell us about yourself?
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text fontSize="15px" fontWeight="400">
+                      We need to get a sense of your education, experience and
+                      categories. It’s quickest to import your information, you
+                      can edit it before your profile goes live.
+                    </Text>
+                  </Box>
+                  <VStack width={"full"} alignItems={"start"}>
+                    <Text mb="0px">{"Write Your Business Name"}</Text>
+                    <Input
+                      variant="outline"
+                      required
+                      placeholder="Write Your Business Name"
+                      width={"100%"}
+                      value={businessDetails?.business_name}
+                      onChange={(e) =>
+                        setBusinessDetails({
+                          ...businessDetails,
+                          business_name: e.target.value,
+                        })
+                      }
+                    />
+                  </VStack>
 
-                <VStack width={"full"} alignItems={"start"}>
-                  <Text mb="0px">{"Write Your Business Details"}</Text>
-                  <Textarea
-                    required
-                    variant="outline"
-                    placeholder="Write Your Business Details"
-                    width={"100%"}
-                    style={{ resize: "none" }}
-                    rows={5}
-                    value={businessDetails?.brief_description}
-                    onChange={(e) =>
-                      setBusinessDetails({
-                        ...businessDetails,
-                        brief_description: e.target.value,
-                      })
-                    }
-                  />
+                  <VStack width={"full"} alignItems={"start"}>
+                    <Text mb="0px">{"Write Your Business Details"}</Text>
+                    <Textarea
+                      required
+                      variant="outline"
+                      placeholder="Write Your Business Details"
+                      width={"100%"}
+                      style={{ resize: "none" }}
+                      rows={5}
+                      value={businessDetails?.brief_description}
+                      onChange={(e) =>
+                        setBusinessDetails({
+                          ...businessDetails,
+                          brief_description: e.target.value,
+                        })
+                      }
+                    />
+                  </VStack>
+                  <Button
+                    fontWeight="500"
+                    color="#fff"
+                    fontSize="1rem"
+                    bg="var(--primarycolor)"
+                    height="2.5rem"
+                    transition={"0.3s ease-in-out"}
+                    _hover={{
+                      border: "1px solid var(--primarycolor)",
+                      backgroundColor: "var(--primarysoftbg)",
+                      color: "var(--primarytext)",
+                    }}
+                    onClick={() => handleSaveAndContinue("business_details")}
+                  >
+                    Save & Continue
+                  </Button>
                 </VStack>
-                <Button
-                  fontWeight="500"
-                  color="#fff"
-                  fontSize="1rem"
-                  bg="var(--primarycolor)"
-                  height="2.5rem"
-                  transition={"0.3s ease-in-out"}
-                  _hover={{
-                    border: "1px solid var(--primarycolor)",
-                    backgroundColor: "var(--primarysoftbg)",
-                    color: "var(--primarytext)",
-                  }}
-                  onClick={() => handleSaveAndContinue("business_details")}
-                >
-                  Save & Continue
-                </Button>
-              </VStack>
-            )}
-          </>
-        )}
+              )}
+            </>
+          )}
       </>
     </OnboardingProcess>
   );
@@ -729,10 +724,3 @@ const Process = () => {
 
 export default Process;
 
-{
-  /* <HStack>
-<CTAButton fontWeight="500" text="Import from LinkedIn" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-<CTAButton fontWeight="500" text="Upload your Resume" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-<CTAButton fontWeight="500" text="Fill out manually (15mins)" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
-</HStack> */
-}
