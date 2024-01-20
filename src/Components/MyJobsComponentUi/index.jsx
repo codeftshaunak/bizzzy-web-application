@@ -16,7 +16,7 @@ const MyJobsComponentUi = () => {
         setLoading(true)
         try {
             const response = await userAllJobs();
-            setUserJobs(response.body);
+            setUserJobs(response);
         } catch (error) {
             console.log(error);
         }

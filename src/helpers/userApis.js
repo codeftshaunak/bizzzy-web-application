@@ -23,7 +23,7 @@ const makeApiRequest = async (
 
   try {
     const response = await API(config);
-    return response.data;
+    return response.data.body;
   } catch (error) {
     // Use the error handling hook
     const { handleApiError } = useApiErrorHandling();

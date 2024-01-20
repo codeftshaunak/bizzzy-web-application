@@ -39,7 +39,6 @@ function AlertDeleteDialog({ id, modalIsOpen = true, setModalIsOpen }) {
       const response = await deleteApi({
 
       })
-      // return response.data.body;
     } catch (error) {
       return error;
     }

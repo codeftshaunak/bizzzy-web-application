@@ -52,7 +52,7 @@ const Process = () => {
   const getUserInformation = async () => {
     try {
       const res = await getAllDetailsOfUser();
-      const data = res.body;
+      const data = res;
       setUserDetails(data);
     } catch (error) {
       console.log(error);
@@ -301,7 +301,7 @@ const Process = () => {
   const getCategory = async () => {
     const categories = await getCategories();
     setOptions(
-      categories?.body?.map((item) => ({
+      categories?.map((item) => ({
         value: item.category_name,
         label: item.category_name,
         _id: item._id,

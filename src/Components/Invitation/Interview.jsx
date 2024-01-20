@@ -21,7 +21,7 @@ const Interview = () => {
     const getInvitationDetails = async () => {
         try {
             const response = await invitationDetails(invite_id);
-            setJobDetails(response.body[0]);
+            setJobDetails(response[0]);
         } catch (error) {
             console.error(error);
         }

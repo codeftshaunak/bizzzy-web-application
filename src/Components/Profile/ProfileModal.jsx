@@ -157,7 +157,7 @@ export const ProfileModal = ({
   // Get Profile Details
   const userProfile = async () => {
     const response = await getAllDetailsOfUser();
-    setUserProfileInfo(response?.body);
+    setUserProfileInfo(response);
   };
   useEffect(() => {
     userProfile();
