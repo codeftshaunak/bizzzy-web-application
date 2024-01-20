@@ -23,7 +23,7 @@ const ActiveJobCard = ({ job }) => {
         <Image src="./images/active_job.png" width={"50px"} height={"50px"} />
       </Flex>
       <Box textAlign="center" my={2}>
-        <Link to={`/active-job/submit/${_id}`} className="text-[1.2rem] font-bold capitalize" >
+        <Link className="text-[1.2rem] font-bold capitalize" >
           {title}
         </Link>
         <VStack justifyContent={"space-around"} width={"200px"} margin={"auto"} gap={"1px"}>
@@ -47,3 +47,4 @@ const ActiveJobCard = ({ job }) => {
 };
 
 export default ActiveJobCard;
+

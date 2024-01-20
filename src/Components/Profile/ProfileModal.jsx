@@ -11,7 +11,7 @@ import {
   getAllDetailsOfUser,
 } from "../../helpers/userApis";
 import { Spinner } from "@chakra-ui/react";
-import { getSkills } from "../../helpers/clientApis";
+import { getSkills } from "../../helpers/freelancerApis";
 import { IoMdClose } from "react-icons/io";
 export const customStyles = {
   content: {
@@ -157,7 +157,7 @@ export const ProfileModal = ({
   // Get Profile Details
   const userProfile = async () => {
     const response = await getAllDetailsOfUser();
-    setUserProfileInfo(response?.body);
+    setUserProfileInfo(response);
   };
   useEffect(() => {
     userProfile();
@@ -170,8 +170,8 @@ export const ProfileModal = ({
       const promises = validCategoryIds?.map(async ({ _id }) => {
         try {
           const skills = await getSkills(_id);
-          if (skills && skills.body) {
-            return skills.body?.map((item) => ({
+          if (skills) {
+            return skills?.map((item) => ({
               value: item?.skill_name,
               label: item?.skill_name,
               _id: item?._id,
