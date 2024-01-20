@@ -13,7 +13,7 @@ const ActiveJobSlider = ({ activeJobList }) => {
   //   try {
   //     const response = await userAllJobs();
   //     console.log(response);
-  //     setActiveJobList(response?.body);
+  //     setActiveJobList(response);
   //   } catch (error) {
   //     console.log(error);
   //   }

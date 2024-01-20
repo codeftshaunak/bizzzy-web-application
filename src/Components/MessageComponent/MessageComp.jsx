@@ -189,7 +189,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
-      setreceiverDetails(response.body);
+      setreceiverDetails(response);
     }
   };
 
@@ -208,7 +208,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const senderUser = async () => {
     if (selectedUser) {
       const response = await userById(userId);
-      setSenderDetails(response.body);
+      setSenderDetails(response);
     }
   };
   // console.log({ receiverDetails, senderDetails });

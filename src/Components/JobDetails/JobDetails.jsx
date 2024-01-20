@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getAllJobsProposal, getSingleJobDetails } from "../../helpers/jobApis";
+import { getAllJobsProposal } from "../../helpers/jobApis";
+import { getSingleJobDetails } from "../../helpers/jobApis";
 import StarRatings from "react-star-ratings";
 
 const JobDetails = ({ setPage, setDetails }) => {
@@ -17,9 +18,7 @@ const JobDetails = ({ setPage, setDetails }) => {
   const getDetails = async () => {
     try {
       const response = await getSingleJobDetails(id);
-      setJobDetails(response?.body);
-      setJob(response?.body);
-      setDetails(response?.body[0]);
+      setJobDetails(response);
     } catch (error) {
       console.error("Error fetching job Details:", error);
     }
@@ -48,6 +47,19 @@ const JobDetails = ({ setPage, setDetails }) => {
         ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
         : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
 
+  const getJobDetails = async () => {
+    try {
+      const getJob = await getSingleJobDetails(id);
+      setJob(getJob);
+      setDetails(getJob);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getJobDetails();
+  }, []);
 
   const clientDetails = jobDetails[0]?.client_details[0];
   const hiredPercentage =
