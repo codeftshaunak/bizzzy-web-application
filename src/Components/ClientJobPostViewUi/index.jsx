@@ -263,7 +263,7 @@ export const InviteFreelancer = () => {
       setLoading(true);
       const response = await getSearchFreelancer([""]);
       if (response && response) {
-        setSearchResults(response.body);
+        setSearchResults(response);
       } else {
         console.error("API Response body is undefined");
       }
@@ -279,7 +279,7 @@ export const InviteFreelancer = () => {
       setLoading(true);
       const response = await getSearchFreelancer([""]);
       if (response && response) {
-        setAllFreelancers(response.body);
+        setAllFreelancers(response);
       } else {
         console.error("API Response body is undefined");
       }
@@ -454,8 +454,8 @@ export const InviteFreelancer = () => {
                             alt=""
                           /> */}
                           {!searchResult?.profile_image ||
-                          searchResult?.profile_image == "null" ||
-                          searchResult?.profile_image == null ? (
+                            searchResult?.profile_image == "null" ||
+                            searchResult?.profile_image == null ? (
                             <Avatar
                               name={
                                 searchResult?.firstName + searchResult.lastName

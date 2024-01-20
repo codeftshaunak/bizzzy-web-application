@@ -40,7 +40,7 @@ export const ClientProfilePage = () => {
   const getProfileInformation = async () => {
     try {
       const resp = await getAllDetailsOfUser();
-      setDetails(resp.body);
+      setDetails(resp);
     } catch (error) {
       console.log(error);
     }

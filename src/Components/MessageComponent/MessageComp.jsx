@@ -43,7 +43,7 @@ const MessageComp = () => {
         });
         navigate(`${response.path}`);
       } else {
-        setMessageUsers(response.body);
+        setMessageUsers(response);
       }
     } catch (error) {
       console.error("Error fetching message user:", error);
@@ -59,7 +59,7 @@ const MessageComp = () => {
       if (receiver_id) {
         setSelectedUser(receiver_id);
         const response = await getMessageDetails(receiver_id);
-        setMessageDetails(response.body);
+        setMessageDetails(response);
       }
     } catch (error) {
       console.error("Error fetching message details:", error);
@@ -189,7 +189,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
-      setreceiverDetails(response.body);
+      setreceiverDetails(response);
     }
   };
 
@@ -208,7 +208,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const senderUser = async () => {
     if (selectedUser) {
       const response = await userById(userId);
-      setSenderDetails(response.body);
+      setSenderDetails(response);
     }
   };
   // console.log({ receiverDetails, senderDetails });

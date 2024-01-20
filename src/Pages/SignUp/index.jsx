@@ -42,8 +42,8 @@ export const SignUp = () => {
     selectedOption === "freelancer"
       ? "Apply as a freelancer"
       : selectedOption === "client"
-      ? "Join as a client"
-      : "Create Account";
+        ? "Join as a client"
+        : "Create Account";
 
   return (
     <>
@@ -649,7 +649,7 @@ export const FreelancerSignUp = () => {
   // Get Countries List
   const getVerifiedCountries = async () => {
     const countries = await getCountries();
-    setCountries(countries?.body);
+    setCountries(countries);
   };
   useEffect(() => {
     getVerifiedCountries();
