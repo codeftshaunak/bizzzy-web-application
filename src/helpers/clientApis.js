@@ -29,7 +29,7 @@ export const getProposals = async (data) => {
         token: `${authtoken}`,
       },
     });
-    return response.data.body;
+    return response.data;
   } catch (error) {
     return error;
   }
@@ -61,20 +61,6 @@ export const inviteToJob = async (data) => {
   } catch (error) { }
 };
 
-// export const getHiredListByClient = async () => {
-//     try {
-//         const authtoken = localStorage.getItem("authtoken");
-//         const response = await API.get(`client/all-hired`, {
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 token: `${authtoken}`,
-//             },
-//         })
-//         return response.data.body;
-//     } catch (error) {
-
-//     }
-// }
 
 // ========= Client reviews =======
 
@@ -103,7 +89,7 @@ const makeApiRequest = async (
 
   try {
     const response = await API(config);
-    return response?.data;
+    return response?.data?.body;
   } catch (error) {
     // Use the error handling hook
     const { handleApiError } = useApiErrorHandling();
@@ -141,5 +127,5 @@ export const getCountries = async () =>
   makeApiRequest("get", "/get-countries");
 
 export const getCategories = async () =>
-  makeApiRequest("get", "/category");
+  makeApiRequest("get", "/categories");
 

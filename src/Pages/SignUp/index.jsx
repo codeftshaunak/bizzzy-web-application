@@ -649,7 +649,7 @@ export const FreelancerSignUp = () => {
   // Get Countries List
   const getVerifiedCountries = async () => {
     const countries = await getCountries();
-    setCountries(countries?.body);
+    setCountries(countries);
   };
   useEffect(() => {
     getVerifiedCountries();

@@ -37,7 +37,7 @@ const AgencyUserCard = ({ profile_image, name, professional_role }) => {
             </div> */}
             <div className="p-4 flex">
                 {/* <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]">Switch to Agency Profile</button> */}
-                <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]">Create Your Agency Profile</button>
+                <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => navigate("/agency-build")}>Create Your Agency Profile</button>
             </div>
         </div>
     )

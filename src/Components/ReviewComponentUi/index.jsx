@@ -60,7 +60,7 @@ const index = () => {
   const getResonOptionList = async () => {
     try {
       const response = await getOptionsList(id)
-      setResonOptionList(response?.body?.reasons)
+      setResonOptionList(response?.reasons)
     } catch (error) {
       console.log(error)
     }

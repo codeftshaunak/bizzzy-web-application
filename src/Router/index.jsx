@@ -24,6 +24,7 @@ import SearchFreelancers from "../Pages/SearchFreelancers";
 import Gig from '../Components/Gigs/index';
 import Agency from "../Pages/Agency";
 import { SearchTalents } from "../Components/Search/SearchTalent";
+import AgencyBuild from "../Pages/Agency/AgencyBuild";
 
 const Router = () => {
   return (
@@ -48,6 +49,8 @@ const Router = () => {
             element={<SearchFreelancers />}
           />
 
+          <Route exact path="/agency-build" element={<AgencyBuild />} />
+          <Route exact path="/agency-profile" element={<Agency />} />
           <Route exact path="/agency-dashboard" element={<Agency />} />
 
           <Route exact path="/message" element={<Message />} />

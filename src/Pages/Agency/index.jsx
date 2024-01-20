@@ -5,6 +5,7 @@ import AgencyDashboard from '../../Components/AgencyUI';
 const Agency = () => {
     return (
         <HomeLayout>
+            {/* Agency Dashboard Initialization */}
             <AgencyDashboard />
         </HomeLayout>
     )

@@ -39,7 +39,7 @@ export const ReviewProposal = () => {
     const user = await getFreelancerInfo(freelancer?.userId);
     setUserId(freelancer?.userId);
     setOpen(true);
-    dispatch(setTargetedFreelancer({ ...user?.body }));
+    dispatch(setTargetedFreelancer({ ...user }));
   };
 
   useEffect(() => {
