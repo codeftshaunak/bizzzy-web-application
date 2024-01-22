@@ -1,12 +1,13 @@
 import React from 'react'
 import HomeLayout from '../../Layouts/HomeLayout';
+import AgencyProfile from '../../Components/AgencyUI/AgencyProfile';
 
-const AgencyProfile = () => {
+const AgencyProfilePage = () => {
     return (
         <HomeLayout>
-
+            <AgencyProfile />
         </HomeLayout>
     )
 }
 
-export default AgencyProfile;
+export default AgencyProfilePage;
