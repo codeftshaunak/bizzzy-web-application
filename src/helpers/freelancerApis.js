@@ -68,8 +68,6 @@ export const getSubCategory = async (data) =>
   makeApiRequest('get', `/categories/subcategories?category_id=${data}`)
 
 
-
-
 //Thous function with end points need to recerate again with the following method avobe 
 export const getFreelancers = async (
   skills,
