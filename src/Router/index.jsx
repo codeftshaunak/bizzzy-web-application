@@ -21,7 +21,7 @@ import { InterviewInvitation, OfferInvitation } from "../Pages/Invitation";
 import HireFreelancer from "../Pages/HireFreelancer";
 import PrivateRoutes from "./PrivateRoutes";
 import SearchFreelancers from "../Pages/SearchFreelancers";
-import Gig from '../Components/Gigs/index';
+import Gig from "../Components/Gigs/index";
 import Agency from "../Pages/Agency";
 import { SearchTalents } from "../Components/Search/SearchTalent";
 import AgencyBuild from "../Pages/Agency/AgencyBuild";

@@ -35,7 +35,6 @@ export const GigOverview = ({ activeStep, goForward, goBackward, setPage }) => {
 
   const handleCreateGig = useCallback(async () => {
     // Transform data to the desired format
-
     const transformedData = {
       title: formData.title,
       category: formData.category.category_id,

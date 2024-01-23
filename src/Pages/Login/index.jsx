@@ -70,7 +70,7 @@ const Login = ({ setPage }) => {
     setLoading(true);
     try {
       const response = await getAllDetailsOfUser();
-      setUserInfo(response.body || {});
+      setUserInfo(response || {});
     } catch (error) {
       console.error("Error fetching user details:", error);
     } finally {
