@@ -14,6 +14,7 @@ const JobDetails = ({ setPage, setDetails }) => {
     const response = await getAllJobsProposal();
     setApplyJob(response);
   };
+
   const getDetails = async () => {
     try {
       const response = await getSingleJobDetails(id);
@@ -176,3 +177,4 @@ const JobDetails = ({ setPage, setDetails }) => {
 };
 
 export default JobDetails;
+

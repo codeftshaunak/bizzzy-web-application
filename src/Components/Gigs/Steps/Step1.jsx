@@ -1,8 +1,10 @@
 import { Checkbox, HStack, Input, Textarea, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { GigCreateLayout } from "../GigCreate";
+import { useSelector } from "react-redux";
 
 // validation schema
 const schema = yup.object().shape({
@@ -21,18 +23,33 @@ const defaultValues = {
   },
 };
 
-const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
+  // const editableData = useSelector((state) => state?.freelancer?.editableGig);
+  // const { } = editableData.data;
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control, setValue } = methods;
+  const { handleSubmit, control, setValue, reset } = methods;
 
   // form submit operations
   const onSubmit = (values) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
+
+  // load state
+  useEffect(() => {
+    const changes = defaultValues;
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+
+      if (value) changes[key] = value;
+    });
+
+    reset(changes);
+  }, [formValues, reset]);
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>

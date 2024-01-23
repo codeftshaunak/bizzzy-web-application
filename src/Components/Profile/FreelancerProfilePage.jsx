@@ -10,7 +10,8 @@ import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import ProfileGigCard from "../Gigs/SingleGig/ProfileGigCard";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -134,8 +135,6 @@ export const FreelancerProfilePage = () => {
   //   updatedEducationInfo()
   // })
 
-
-
   const HandleDeleteEducation = (id, type) => {
     setId({ id, type });
     setDeleteModalPage("exprience");
@@ -193,8 +192,8 @@ export const FreelancerProfilePage = () => {
                 }}
               ></div> */}
               {!profile_image ||
-                profile_image == "null" ||
-                profile_image === null ? (
+              profile_image == "null" ||
+              profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
@@ -664,26 +663,40 @@ export const FreelancerProfilePage = () => {
               </div>
             </div>
 
-
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div>
                 <p className="text-[16px] text-[#374151] font-[600] pb-3">
                   Your Gigs
                 </p>
                 <hr />
-                <p className="mt-3">Projects are a new way to earn on Upwork that helps you do more of the work you love to do. Create project offerings that highlight your strengths and attract more clients.
+                <p className="mt-3">
+                  Projects are a new way to earn on Upwork that helps you do
+                  more of the work you love to do. Create project offerings that
+                  highlight your strengths and attract more clients.
                 </p>
-                <Button className="mt-3 border" backgroundColor={"white"} height={"34px"} fontWeight={"400"} borderRadius={"25px"} border={"2px solid  var(--primarytextcolor)"} transition={"0.3s ease-in-out"} _hover={{
-                  color: "white",
-                  backgroundColor: "var(--primarytextcolor)"
-                }} onClick={() => navigate("/freelancer/gig")}>Manage Gigs</Button>
+                <Button
+                  className="mt-3 border"
+                  backgroundColor={"white"}
+                  height={"34px"}
+                  fontWeight={"400"}
+                  borderRadius={"25px"}
+                  border={"2px solid  var(--primarytextcolor)"}
+                  transition={"0.3s ease-in-out"}
+                  _hover={{
+                    color: "white",
+                    backgroundColor: "var(--primarytextcolor)",
+                  }}
+                  onClick={() => navigate("/freelancer/gig")}
+                >
+                  Manage Gigs
+                </Button>
+                <div className="mt-10">
+                  <ProfileGigCard />
+                </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
-
-              </div>
+              <div className="grid grid-cols-3 gap-4"></div>
             </div>
-
 
             {/* ================= work history ====================== */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">

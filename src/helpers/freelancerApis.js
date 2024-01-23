@@ -62,13 +62,12 @@ export const getReportData = async () =>
   makeApiRequest("get", "/reports/freelancer");
 
 export const createGig = async (data) =>
-  makeApiRequest('post', '/freelancer/gig/create', data)
+  makeApiRequest("post", "/freelancer/gig/create", data);
 
 export const getSubCategory = async (data) =>
-  makeApiRequest('get', `/categories/subcategories?category_id=${data}`)
+  makeApiRequest("get", `/categories/subcategories?category_id=${data}`);
 
-
-//Thous function with end points need to recerate again with the following method avobe 
+//Thous function with end points need to recerate again with the following method avobe
 export const getFreelancers = async (
   skills,
   searchText,
@@ -136,4 +135,3 @@ export const getSkills = async (category_id) => {
     throw error;
   }
 };
-
