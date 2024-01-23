@@ -1,9 +1,12 @@
 import { Input, Select, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import * as yup from "yup";
 import { GigCreateLayout } from "../GigCreate";
+import { getAllDetailsOfUser } from "../../../helpers/userApis";
+// import { useSelector } from "react-redux";
 
 // validation schema
 const schema = yup.object().shape({
@@ -17,19 +20,57 @@ const defaultValues = {
   category: {},
   skills: [],
 };
-
-const Step0 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  // const editableData = useSelector((state) => state?.freelancer?.editableGig);
+  // const { title } = editableData.data;
+  // const [localTitle, setLocalTitle] = useState(title || "");
+  // console.log({ editableData });
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control } = methods;
-
+  const { handleSubmit, control, reset } = methods;
+  console.log({ formValues });
   // form submit operations
   const onSubmit = (values) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
+    console.log({ values });
   };
+
+  // load state
+  useEffect(() => {
+    const changes = defaultValues;
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+      if (value) changes[key] = value;
+    });
+
+    reset(changes);
+  }, [formValues, reset]);
+
+  // Get Freelancer Details
+  const getProfileInformation = async () => {
+    try {
+      const resp = await getAllDetailsOfUser();
+      setCategoryOptions(
+        resp?.categories?.map((item) => ({
+          value: item.value,
+          label: item.value,
+          category_id: item._id,
+        }))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProfileInformation();
+  }, []);
+  console.log({ categoryOptions });
 
   return (
     <FormProvider {...methods}>
@@ -71,27 +112,13 @@ const Step0 = ({ submitCallback, onBack, afterSubmit }) => {
               name="category"
               control={control}
               render={({ field }) => (
-                <Select
-                  className="w-full"
-                  {...field}
-                  options={[
-                    {
-                      _id: 1,
-                      category_id: "6586ac7bf89033570689394f",
-                      label: "Chocolate",
-                    },
-                    {
-                      _id: 1,
-                      category_id: "6586ac7bf89033570689394f",
-                      label: "Strawberry",
-                    },
-                    {
-                      _id: 1,
-                      category_id: "6586ac7bf89033570689394f",
-                      label: "Vanilla",
-                    },
-                  ]}
-                />
+                <>
+                  <CreatableSelect
+                    className="w-full"
+                    {...field}
+                    options={categoryOptions}
+                  />
+                </>
               )}
             />
           </VStack>

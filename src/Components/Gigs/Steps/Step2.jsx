@@ -1,40 +1,65 @@
 import { Input, Text, VStack } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { useCallback, useEffect, useState } from "react";
+import { FaCloudUploadAlt, FaSpinner } from "react-icons/fa";
 import { IoMdClose, IoMdVideocam } from "react-icons/io";
 import { uploadImages, uploadMedia } from "../../../helpers/gigApis";
 import { GigCreateLayout } from "../GigCreate";
 
-const Step2 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [tempBlob, setTempBlob] = useState([]);
 
-  // image upload function
-  const handleImageUpload = async (e) => {
-    const files = Array.from(e.target.files);
+  const [selectedVideo, setSelectedVideo] = useState(undefined); // undefined = initial, null = loading
 
-    // Check if the total number of selected images doesn't exceed the limit
-    if (selectedImages.length + files.length <= 3) {
-      // Update state with new files
-      setSelectedImages([...selectedImages, ...files]);
+  // clear Temp Blob
+  const clearTempBlob = () => {
+    setTempBlob((prev) => {
+      prev.forEach((p) => URL.revokeObjectURL(p));
 
-      // Upload images to the server
-      const formData = new FormData();
-      files.forEach((file, index) => {
-        formData.append(`images[${index}]`, file);
-      });
-
-      try {
-        const response = await uploadImages(formData);
-        console.log("Image upload response:", response);
-      } catch (error) {
-        console.error("Error uploading images:", error);
-      }
-    } else {
-      console.log("You can select a maximum of 3 images.");
-    }
+      return [];
+    });
+  };
+  // add temp blob
+  const insertTempBlob = (files = []) => {
+    setTempBlob((prev) => [
+      ...prev,
+      ...files.map((file) => URL.createObjectURL(file)),
+    ]);
   };
 
+  // add selected images
+  const insertSelectedImages = (urls = []) => {
+    setSelectedImages((prev) => [...prev, ...urls]);
+  };
+  // image upload function
+  const handleImageUpload = useCallback(
+    async (e) => {
+      const files = Array.from(e.target.files);
+
+      // Check if the total number of selected images doesn't exceed the limit
+      if (selectedImages.length + files.length <= 3) {
+        // create temporary blob files
+        insertTempBlob(files);
+
+        // prepare form data for file uploading
+        const formData = new FormData();
+        files.forEach((file) => formData.append(`imageFiles`, file));
+
+        try {
+          const response = await uploadImages(formData);
+          console.log("Image upload response:", response);
+          insertSelectedImages(response?.body);
+        } catch (error) {
+          console.error("Error uploading images:", error);
+        } finally {
+          clearTempBlob();
+        }
+      } else {
+        console.log("You can select a maximum of 3 images.");
+      }
+    },
+    [selectedImages]
+  );
   // image delete function
   const handleImageDelete = (indexToRemove) => {
     setSelectedImages((prev) =>
@@ -42,22 +67,31 @@ const Step2 = ({ submitCallback, onBack, afterSubmit }) => {
     );
   };
 
+  // set video to uploading state
+  const setVideoUploading = () => setSelectedVideo(null);
+  // set video to inital state
+  const setVideoInitial = () => setSelectedVideo(undefined);
+  // set video to file url
+  const setVideoUrl = (url) => setSelectedVideo(url);
+
   // video upload function
   const handleVideoUpload = async (e) => {
     const file = e.target.files[0];
 
-    // Update state with the new video file
-    setSelectedVideo(file);
+    // start video uploading
+    setVideoUploading();
 
-    // Upload video to the server
+    // prepare uploading form state
     const formData = new FormData();
-    formData.append("video", file);
+    formData.append("videoFile", file);
 
     try {
       const response = await uploadMedia(formData);
       console.log("Video upload response:", response);
+      setVideoUrl(response?.body);
     } catch (error) {
       console.error("Error uploading video:", error);
+      setVideoInitial();
     }
   };
 
@@ -65,10 +99,6 @@ const Step2 = ({ submitCallback, onBack, afterSubmit }) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     console.log("Dropped file:", file);
-  };
-
-  const handleClick = () => {
-    document.getElementById("fileInput").click();
   };
 
   // on submit fuction
@@ -79,6 +109,15 @@ const Step2 = ({ submitCallback, onBack, afterSubmit }) => {
     });
     afterSubmit();
   }, [afterSubmit, selectedImages, selectedVideo, submitCallback]);
+
+  // load state
+  useEffect(() => {
+    const images = formValues?.images;
+    const video = formValues?.video;
+
+    if (images) setSelectedImages(images);
+    if (video) setSelectedVideo(video);
+  }, [formValues]);
 
   return (
     <GigCreateLayout
@@ -95,13 +134,13 @@ const Step2 = ({ submitCallback, onBack, afterSubmit }) => {
         </p>
         <div className="w-[70%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
           <div className="flex">
-            {selectedImages?.map((image, index) => (
+            {selectedImages?.map((imageUrl, index) => (
               <div
                 key={index}
                 className="rounded border border-green-300 mr-2 relative"
               >
                 <img
-                  src={URL.createObjectURL(image)}
+                  src={imageUrl}
                   alt={`Selected ${index + 1}`}
                   className="w-20 h-20 object-cover rounded"
                 />
@@ -111,6 +150,21 @@ const Step2 = ({ submitCallback, onBack, afterSubmit }) => {
                 >
                   <IoMdClose />
                 </span>
+              </div>
+            ))}
+            {tempBlob?.map((imageUrl, index) => (
+              <div
+                key={index}
+                className="rounded border-2 border-red-300 mr-2 relative"
+              >
+                <img
+                  src={imageUrl}
+                  alt={`Selected ${index + 1}`}
+                  className="w-20 h-20 object-cover rounded"
+                />
+                <div className="absolute top-0 left-0 w-full h-full bg-gray-800/20 flex items-center justify-center">
+                  <FaSpinner className="animate-spin" />
+                </div>
               </div>
             ))}
           </div>
@@ -143,37 +197,46 @@ const Step2 = ({ submitCallback, onBack, afterSubmit }) => {
         </div>
       </div>
 
-      {/* image manage code end */}
-
       <VStack alignItems={"start"}>
-        <label htmlFor="fileInput" className="text-xl font-[600] pb-0 mb-0">
-          Project Videos
-        </label>
+        <label className="text-xl font-[600] pb-0 mb-0">Project Videos</label>
         <p className="mt-0 mb-2">Upload one video (.mp4), up to 10MB.</p>
-        <VStack
-          textAlign={"center"}
-          backgroundColor={"var(--secondarycolor)"}
-          padding={"2rem 2rem"}
-          className="shadow-lg rounded-lg cursor-pointer"
-          onDrop={handleDrop}
-          onClick={handleClick}
-          onDragOver={(e) => e.preventDefault()}
-        >
-          <label htmlFor="fileInput">
-            <IoMdVideocam size={"1.6rem"} />
+        {selectedVideo === undefined && (
+          <label htmlFor="videoInput">
+            <VStack
+              textAlign={"center"}
+              backgroundColor={"var(--secondarycolor)"}
+              padding={"2rem 2rem"}
+              className="shadow-lg rounded-lg cursor-pointer"
+              onDrop={handleDrop}
+              onDragOver={(e) => e.preventDefault()}
+            >
+              <IoMdVideocam size={"1.6rem"} />
+              <Text>
+                Drag video here or <br /> <strong>browse</strong>
+              </Text>
+              <Input
+                id="videoInput"
+                type="file"
+                accept="video/*"
+                name="videoFile"
+                onChange={handleVideoUpload}
+                style={{ display: "none" }} // Hide the actual input
+              />
+            </VStack>
           </label>
-          <Text>
-            Drag video here or <br /> <strong>browse</strong>
-          </Text>
-          <Input
-            id="videoInput"
-            type="file"
-            accept="video/*"
-            name="videoFile"
-            onChange={handleVideoUpload}
-            style={{ display: "none" }} // Hide the actual input
-          />
-        </VStack>
+        )}
+
+        {selectedVideo === null && (
+          <div className="aspect-video flex items-center justify-center bg-gray-700 w-[200px]">
+            <FaSpinner className="animate-spin" />
+          </div>
+        )}
+
+        {selectedVideo && (
+          <div className="aspect-video">
+            <video className="w-full h-full" src={selectedVideo}></video>
+          </div>
+        )}
       </VStack>
     </GigCreateLayout>
   );

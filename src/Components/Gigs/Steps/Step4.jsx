@@ -7,6 +7,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import {
   Controller,
   FormProvider,
@@ -33,12 +34,12 @@ const defaultValues = {
   privacy_notice: false,
 };
 
-const Step4 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control, setValue } = methods;
+  const { handleSubmit, control, setValue, reset } = methods;
 
   const { fields: faqFields, append: appendFaq } = useFieldArray({
     control,
@@ -54,6 +55,19 @@ const Step4 = ({ submitCallback, onBack, afterSubmit }) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
+
+  // load state
+  useEffect(() => {
+    const changes = defaultValues;
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+
+      if (value) changes[key] = value;
+    });
+
+    reset(changes);
+  }, [formValues, reset]);
 
   return (
     <FormProvider {...methods}>
