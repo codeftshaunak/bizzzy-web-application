@@ -21,6 +21,7 @@ const ManageProject = ({ setPage }) => {
             color: "white",
             backgroundColor: "var(--primarytextcolor)",
           }}
+          zIndex={0}
           onClick={() => setPage(2)}
         >
           Create New Gig

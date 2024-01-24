@@ -1,6 +1,5 @@
 import {
   Step,
-  StepDescription,
   StepIcon,
   StepIndicator,
   StepNumber,
@@ -8,7 +7,6 @@ import {
   StepSeparator,
   StepStatus,
   Text,
-  StepTitle,
   Stepper,
   useSteps,
 } from "@chakra-ui/react";

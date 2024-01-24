@@ -3,7 +3,6 @@ import authReducer from "./authSlice/authSlice"; // Import your auth slice
 import clientSlice from "./clientSlice/clientSlice"; // Import your auth slice
 import profileReducer from "./authSlice/profileSlice";
 import HireFreelancerReducer from "./features/HireFreelancerSlice";
-import FreelancerReducer from "./freelancerSlice/FreelancerSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +10,6 @@ const store = configureStore({
     profile: profileReducer,
     client: clientSlice,
     HireFreelancer: HireFreelancerReducer,
-    freelancer: FreelancerReducer,
   },
 });
 

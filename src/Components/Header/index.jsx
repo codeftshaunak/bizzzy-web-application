@@ -573,18 +573,14 @@ export const AuthHeader = ({ role }) => {
                   onClick={() => handleProfileButton()}
                 >
                   {profile_image != "null" && profile_image != null ? (
-                    <img
-                      src={profile_image}
-                      width={"60px"}
-                      style={{ borderRadius: "20px" }}
-                    />
+                    <img src={profile_image} style={{ borderRadius: "20px" }} />
                   ) : (
                     <Avatar name={name} boxSize="40px" />
                   )}
                 </div>
 
                 {openInfo && (
-                  <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
+                  <div className="absolute bg-white p-2 rounded-lg right-[36px] top-3 w-[120px] gap-5 border-slate-200 border transition-all z-50">
                     <div
                       className="flex justify-around items-center w-full cursor-pointer mt-1 hover:bg-gray-200/20 py-1 px-2 rounded"
                       onClick={handleUserProfile}

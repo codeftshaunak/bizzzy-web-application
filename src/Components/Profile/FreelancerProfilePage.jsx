@@ -11,7 +11,7 @@ import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
 import { useNavigate } from "react-router-dom";
-import ProfileGigCard from "../Gigs/SingleGig/ProfileGigCard";
+import { ProfileGigCards } from "../Gigs/SingleGig/ProfileGigCards";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -691,7 +691,7 @@ export const FreelancerProfilePage = () => {
                   Manage Gigs
                 </Button>
                 <div className="mt-10">
-                  <ProfileGigCard />
+                  <ProfileGigCards />
                 </div>
               </div>
 

@@ -1,30 +1,22 @@
 import { useState } from "react";
-import SingleGigDetails from "./SingleGigDetails";
 import { useToast } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import { AiOutlineShareAlt } from "react-icons/ai";
-import { useDispatch } from "react-redux";
-import { setEditableGig } from "../../../redux/freelancerSlice/FreelancerSlice";
-import { UpdateWithStepper } from "../Gigsteper";
 import { deleteFreelancerGig } from "../../../helpers/gigApis";
+import { useNavigate } from "react-router-dom";
 
 const SingleGig = ({ gig, getAllGigs }) => {
-  const [isOpenDetails, setIsOpenDetails] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [isMenu, setIsMenu] = useState(false);
-  const dispatch = useDispatch();
-  const { title, images } = gig;
+  const { title, images, _id } = gig;
   const toast = useToast();
-  const gigData = gig;
+  const navigate = useNavigate();
 
-  const handleEditableGig = () => {
-    gigData.skills = gig.skills?.map((item) => ({ value: item, label: item }));
-    const updatedGig = {
-      isEditable: true,
-      data: gigData,
-    };
-    dispatch(setEditableGig(updatedGig));
-    setIsEdit(true);
+  // handle details & edit button
+  const handleGigEdit = () => {
+    navigate(`/freelancer/gig/edit/${_id}`);
+  };
+  const handleGigDetails = () => {
+    navigate(`/freelancer/gig/details/${_id}`);
   };
 
   const handleDelete = async () => {
@@ -52,7 +44,11 @@ const SingleGig = ({ gig, getAllGigs }) => {
         onMouseLeave={() => setIsMenu(false)}
       >
         <div className="flex gap-3 items-center">
-          <img src={images[0]} className="h-16 w-28 bg-cover" />
+          {/* <img src={images[0]} className="h-16 w-28 bg-cover" /> */}
+          <div
+            className={` h-16 w-28 bg-cover`}
+            style={{ backgroundImage: `url(${images[0]})` }}
+          ></div>
           <div>
             <h4 className="text-lg font-semibold text-gray-600">{title}</h4>
           </div>
@@ -84,13 +80,13 @@ const SingleGig = ({ gig, getAllGigs }) => {
                     <div className="w-4 h-4 shadow bg-white absolute -right-1 top-[45%] rotate-45 -z-10"></div>
                     <div
                       className="px-3 py-1 hover:bg-gray-200/20 rounded cursor-pointer transition"
-                      onClick={() => setIsOpenDetails(true)}
+                      onClick={handleGigDetails}
                     >
                       Details
                     </div>
                     <div
                       className="px-3 py-1 hover:bg-gray-200/20 rounded cursor-pointer transition"
-                      onClick={handleEditableGig}
+                      onClick={handleGigEdit}
                     >
                       Edit
                     </div>
@@ -107,14 +103,6 @@ const SingleGig = ({ gig, getAllGigs }) => {
           }
         </div>
       </div>
-      {isOpenDetails && (
-        <SingleGigDetails gig={gig} setIsOpenDetails={setIsOpenDetails} />
-      )}
-      {isEdit && (
-        <div className="absolute top-0 -left-0 w-full h-fit bg-white/90 backdrop-filter backdrop-blur-2xl p-5 z-50 border rounded-md -mt-1">
-          <UpdateWithStepper setIsEdit={setIsEdit} />
-        </div>
-      )}
     </>
   );
 };
