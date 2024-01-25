@@ -71,22 +71,22 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
 
   // form submit operations
   const onSubmit = (values) => {
-    submitCallback(values); // this will update the parent state
-    afterSubmit(); // this will perform task after updating the state
+    const data = submitCallback(values); // this will update the parent state
+    console.log({ values });
+    afterSubmit(data); // this will perform task after updating the state
   };
 
   // load state
   useEffect(() => {
-    const changes = defaultValues;
+    const changes = {};
 
     Object.keys(defaultValues).map((key) => {
       const value = formValues?.[key];
-
-      if (value) changes[key] = value;
+      changes[key] = value === undefined ? defaultValues[key] : value;
     });
 
     reset(changes);
-  }, [formValues, reset]);
+  }, [formValues]);
 
   return (
     <FormProvider {...methods}>
@@ -107,20 +107,23 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="project_description.project_summary"
               control={control}
-              render={({ field, fieldState }) => (
-                <>
-                  <Textarea
-                    {...field}
-                    placeholder="You will get a fantastic deliverable that drives impact"
-                    marginTop={"5px"}
-                  />
-                  {fieldState.error && (
-                    <p style={{ color: "red", marginTop: "5px" }}>
-                      {fieldState.error.message}
-                    </p>
-                  )}
-                </>
-              )}
+              render={({ field, fieldState }) => {
+                console.log(field);
+                return (
+                  <>
+                    <Textarea
+                      {...field}
+                      placeholder="You will get a fantastic deliverable that drives impact"
+                      marginTop={"5px"}
+                    />
+                    {fieldState.error && (
+                      <p style={{ color: "red", marginTop: "5px" }}>
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </>
+                );
+              }}
             />
           </VStack>
 

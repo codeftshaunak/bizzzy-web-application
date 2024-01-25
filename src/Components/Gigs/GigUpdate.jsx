@@ -8,30 +8,7 @@ import Step4 from "./Steps/Step4";
 import { getGigDetails, updateFreelancerGig } from "../../helpers/gigApis";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-export const GigUpdate = ({
-  activeStep,
-  setActiveStep,
-  goBackward,
-  goForward,
-  setIsEdit,
-}) => {
-  return (
-    <GigOverview
-      activeStep={activeStep}
-      setActiveStep={setActiveStep}
-      goBackward={goBackward}
-      goForward={goForward}
-      setIsEdit={setIsEdit}
-    />
-  );
-};
-
-export const GigOverview = ({
-  activeStep,
-  goForward,
-  goBackward,
-  setIsEdit,
-}) => {
+export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
   const [gigData, setGigData] = useState({});
   const [formData, setFormData] = useState({});
   const toast = useToast();
@@ -64,6 +41,7 @@ export const GigOverview = ({
 
   useEffect(() => {
     gigDetails();
+    console.log("click");
   }, []);
 
   const handleCreateGig = useCallback(async () => {

@@ -6,67 +6,57 @@ import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
 import Step3 from "./Steps/Step3";
 import Step4 from "./Steps/Step4";
+import { useNavigate } from "react-router-dom";
 
-export const GigCreate = ({
-  activeStep,
-  setActiveStep,
-  goBackward,
-  goForward,
-  setPage,
-}) => {
-  return (
-    <GigOverview
-      activeStep={activeStep}
-      setActiveStep={setActiveStep}
-      goBackward={goBackward}
-      goForward={goForward}
-      setPage={setPage}
-    />
-  );
-};
-
-export const GigOverview = ({ activeStep, goForward, goBackward, setPage }) => {
+export const GigCreate = ({ activeStep, goForward, goBackward }) => {
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   // update form data with previous data
-  const updateFormData = (newData) => {
-    setFormData((prev) => ({ ...prev, ...newData }));
-  };
+  const updateFormData = useCallback(
+    (newData) => {
+      const data = { ...formData, ...newData };
+      setFormData((prev) => ({ ...prev, ...newData }));
+      return data;
+    },
+    [formData]
+  );
 
-  const handleCreateGig = useCallback(async () => {
+  const handleCreateGig = useCallback(async (data) => {
     // Transform data to the desired format
+    console.log({ data });
     const transformedData = {
-      title: formData.title,
-      category: formData.category.category_id,
-      sub_category: formData.sub_category._id,
-      skills: formData.skills.map((skill) => skill.label),
+      title: data.title,
+      category: data.category.category_id,
+      sub_category: data.sub_category._id,
+      skills: data.skills.map((skill) => skill.label),
       pricing: {
-        custom_title: formData.pricing.custom_title,
-        custom_description: formData.pricing.custom_description,
-        service_price: parseInt(formData.pricing.service_price),
-        delivery_days: parseInt(formData.pricing.delivery_days),
-        revisions: parseInt(formData.pricing.revisions),
-        service_options: formData.pricing.service_options,
+        custom_title: data.pricing.custom_title,
+        custom_description: data.pricing.custom_description,
+        service_price: parseInt(data.pricing.service_price),
+        delivery_days: parseInt(data.pricing.delivery_days),
+        revisions: parseInt(data.pricing.revisions),
+        service_options: data.pricing.service_options,
       },
-      images: formData.images || [],
-      video: formData.video || "",
-      requirements: formData.requirements || [],
-      steps: formData.steps || [],
+      images: data.images || [],
+      video: data.video || "",
+      requirements: data.requirements || [],
+      steps: data.steps || [],
       project_description: {
-        project_summary: formData?.project_description?.project_summary,
-        faqs: formData?.project_description?.faqs,
+        project_summary: data?.project_description?.project_summary,
+        faqs: data?.project_description?.faqs,
       },
-      terms: formData.terms,
-      privacy_notice: formData.privacy_notice,
+      terms: data.terms,
+      privacy_notice: data.privacy_notice,
     };
     console.log(transformedData);
     const response = await createGig(transformedData);
     console.log(response);
-    setPage(1);
-  }, [formData]);
+    navigate(-1);
+  }, []);
 
   const firstPageGoBackward = () => {
-    setPage(1);
+    navigate(-1);
   };
 
   return (

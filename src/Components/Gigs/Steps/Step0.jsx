@@ -53,14 +53,14 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const [subCategoryId, setSubCategoryId] = useState(null);
   const [categoryOptions, setCategoryOptions] = useState(null);
   const [subCategoryOptions, setSubCategoryOptions] = useState(null);
-  const [skillOptions, setSkillOptions] = useState(null);
+  const [skillOptions, setSkillOptions] = useState([]);
 
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
   const { handleSubmit, control, reset } = methods;
-  console.log({ formValues });
+
   // form submit operations
   const onSubmit = (values) => {
     submitCallback(values); // this will update the parent state
@@ -70,17 +70,15 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
 
   // load state
   useEffect(() => {
-    const changes = defaultValues;
+    const changes = {};
 
     Object.keys(defaultValues).map((key) => {
       const value = formValues?.[key];
-      if (value) changes[key] = value;
+      changes[key] = value === undefined ? defaultValues[key] : value;
     });
 
     reset(changes);
-  }, [formValues, reset]);
-
-  console.log({ categoryId, subCategoryId });
+  }, [formValues]);
 
   // Get All Category of freelancer
   const allCategory = async () => {

@@ -28,6 +28,7 @@ import AgencyBuild from "../Pages/Agency/AgencyBuild";
 import AgencyProfilePage from "../Pages/Agency/Profile";
 import GigDetails from "../Components/Gigs/GigDetails/GigDetails";
 import GigEdit from "../Components/Gigs/GigEdit/GigEdit";
+import GigCreate from "../Components/Gigs/GigCreate/GigCreate";
 
 const Router = () => {
   return (
@@ -60,6 +61,7 @@ const Router = () => {
           <Route exact path="/freelancer" element={<Profile />} />
           <Route exact path="/freelancer/:id" element={<Profile />} />
           <Route exact path="/freelancer/gig" element={<Gig />} />
+          <Route exact path="/freelancer/gig/create" element={<GigCreate />} />
           <Route
             exact
             path="/freelancer/gig/details/:id"

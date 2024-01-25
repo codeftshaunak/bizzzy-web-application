@@ -82,16 +82,16 @@ const Step3 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
 
   // load state
   useEffect(() => {
-    const changes = defaultValues;
+    const changes = {};
 
     Object.keys(defaultValues).map((key) => {
       const value = formValues?.[key];
-
-      if (value) changes[key] = value;
+      changes[key] = value === undefined ? defaultValues[key] : value;
     });
 
     reset(changes);
-  }, [formValues, reset]);
+  }, [formValues]);
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
