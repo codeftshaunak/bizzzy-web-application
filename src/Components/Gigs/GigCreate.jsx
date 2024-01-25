@@ -12,6 +12,7 @@ export const GigCreate = ({
   setActiveStep,
   goBackward,
   goForward,
+  setPage,
 }) => {
   return (
     <GigOverview
@@ -19,11 +20,12 @@ export const GigCreate = ({
       setActiveStep={setActiveStep}
       goBackward={goBackward}
       goForward={goForward}
+      setPage={setPage}
     />
   );
 };
 
-export const GigOverview = ({ activeStep, goForward, goBackward }) => {
+export const GigOverview = ({ activeStep, goForward, goBackward, setPage }) => {
   const [formData, setFormData] = useState({});
 
   // update form data with previous data
@@ -36,10 +38,12 @@ export const GigOverview = ({ activeStep, goForward, goBackward }) => {
     const transformedData = {
       title: formData.title,
       category: formData.category.category_id,
+      sub_category: formData.sub_category._id,
       skills: formData.skills.map((skill) => skill.label),
       pricing: {
         custom_title: formData.pricing.custom_title,
         custom_description: formData.pricing.custom_description,
+        service_price: parseInt(formData.pricing.service_price),
         delivery_days: parseInt(formData.pricing.delivery_days),
         revisions: parseInt(formData.pricing.revisions),
         service_options: formData.pricing.service_options,
@@ -58,15 +62,21 @@ export const GigOverview = ({ activeStep, goForward, goBackward }) => {
     console.log(transformedData);
     const response = await createGig(transformedData);
     console.log(response);
+    setPage(1);
   }, [formData]);
+
+  const firstPageGoBackward = () => {
+    setPage(1);
+  };
 
   return (
     <div className="w-[90%] pb-10">
       {activeStep === 0 && (
         <Step0
           afterSubmit={goForward}
-          onBack={goBackward}
+          onBack={firstPageGoBackward}
           submitCallback={updateFormData}
+          formValues={formData}
         />
       )}
       {activeStep === 1 && (
@@ -74,6 +84,7 @@ export const GigOverview = ({ activeStep, goForward, goBackward }) => {
           afterSubmit={goForward}
           onBack={goBackward}
           submitCallback={updateFormData}
+          formValues={formData}
         />
       )}
       {activeStep === 2 && (
@@ -81,6 +92,7 @@ export const GigOverview = ({ activeStep, goForward, goBackward }) => {
           afterSubmit={goForward}
           onBack={goBackward}
           submitCallback={updateFormData}
+          formValues={formData}
         />
       )}{" "}
       {activeStep === 3 && (
@@ -88,6 +100,7 @@ export const GigOverview = ({ activeStep, goForward, goBackward }) => {
           afterSubmit={goForward}
           onBack={goBackward}
           submitCallback={updateFormData}
+          formValues={formData}
         />
       )}
       {activeStep === 4 && (
@@ -95,6 +108,7 @@ export const GigOverview = ({ activeStep, goForward, goBackward }) => {
           afterSubmit={handleCreateGig}
           onBack={goBackward}
           submitCallback={updateFormData}
+          formValues={formData}
         />
       )}
     </div>

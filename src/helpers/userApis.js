@@ -1,12 +1,7 @@
 import { API } from "./proxy";
 import { useApiErrorHandling } from "./proxy";
 
-const makeApiRequest = async (
-  method,
-  endpoint,
-  data = null,
-  customHeaders
-) => {
+const makeApiRequest = async (method, endpoint, data = null, customHeaders) => {
   const authtoken = localStorage.getItem("authtoken");
 
   const headers = {

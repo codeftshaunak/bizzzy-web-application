@@ -24,6 +24,7 @@ const ActiveJobCard = ({ job }) => {
       <Box textAlign="center" my={2}>
         <Link to={`/active-job/submit/${_id}`} className="text-[1.2rem] font-bold capitalize" >
           {contract_title?.length > 20 ? contract_title.slice(0, 20) + "..." : contract_title}
+
         </Link>
         <VStack justifyContent={"space-around"} width={"200px"} margin={"auto"} gap={"1px"}>
           <Text fontSize="1rem" color="gray.700" fontWeight={"600"} marginBottom={"0"}>
@@ -46,3 +47,4 @@ const ActiveJobCard = ({ job }) => {
 };
 
 export default ActiveJobCard;
+

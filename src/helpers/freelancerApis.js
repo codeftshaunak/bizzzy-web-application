@@ -62,13 +62,18 @@ export const getReportData = async () =>
   makeApiRequest("get", "/reports/freelancer");
 
 export const createGig = async (data) =>
-  makeApiRequest('post', '/freelancer/gig/create', data)
+  makeApiRequest("post", "/freelancer/gig/create", data);
 
-export const getSubCategory = async (data) =>
-  makeApiRequest('get', `/categories/subcategories?category_id=${data}`)
+export const getSubCategory = async (_id) =>
+  makeApiRequest("get", `/categories/subcategories?category_id=${_id}`);
 
+export const getSkills = async (category_id, sub_category_id) =>
+  makeApiRequest(
+    "get",
+    `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
+  );
 
-//Thous function with end points need to recerate again with the following method avobe 
+//Thous function with end points need to recerate again with the following method avobe
 export const getFreelancers = async (
   skills,
   searchText,
@@ -116,24 +121,23 @@ export const getCategories = async () => {
   }
 };
 
-export const getSkills = async (category_id) => {
-  console.log("categoryId", category_id);
-  try {
-    const authtoken = localStorage.getItem("authtoken");
+// export const getSkills = async (category_id) => {
+//   console.log("categoryId", category_id);
+//   try {
+//     const authtoken = localStorage.getItem("authtoken");
 
-    const response = await API.get(`/categories/skills`, {
-      headers: {
-        "Content-Type": "application/json",
-        token: authtoken,
-      },
-      params: {
-        category_id: category_id,
-      },
-    });
-    return response.data.body;
-  } catch (error) {
-    console.error("Error fetching freelancer data:", error);
-    throw error;
-  }
-};
-
+//     const response = await API.get(`/categories/skills`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         token: authtoken,
+//       },
+//       params: {
+//         category_id: category_id,
+//       },
+//     });
+//     return response.data.body;
+//   } catch (error) {
+//     console.error("Error fetching freelancer data:", error);
+//     throw error;
+//   }
+// };

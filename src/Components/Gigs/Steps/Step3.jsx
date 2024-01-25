@@ -8,6 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import {
   Controller,
   FormProvider,
@@ -30,12 +31,12 @@ const defaultValues = {
   steps: [],
 };
 
-const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step3 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control, setValue } = methods;
+  const { handleSubmit, control, setValue, reset } = methods;
 
   // requirement field array
   const { fields: requirementFields, append: appendRequirement } =
@@ -64,6 +65,19 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
+
+  // load state
+  useEffect(() => {
+    const changes = defaultValues;
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+
+      if (value) changes[key] = value;
+    });
+
+    reset(changes);
+  }, [formValues, reset]);
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -162,7 +176,7 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
                   key={index}
                   alignItems={"start"}
                   width={"100%"}
-                  className="shadow-md rounded-md py-3"
+                  className="shadow-md rounded-md p-3 mt-2"
                 >
                   <label htmlFor="" className="font-semibold">
                     Step {index + 1} title

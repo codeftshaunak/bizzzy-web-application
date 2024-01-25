@@ -1,9 +1,13 @@
-import { Input, Select, VStack } from "@chakra-ui/react";
+import { Input, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import * as yup from "yup";
 import { GigCreateLayout } from "../GigCreate";
+import { getAllDetailsOfUser } from "../../../helpers/userApis";
+import { getSkills, getSubCategory } from "../../../helpers/freelancerApis";
+// import { useSelector } from "react-redux";
 
 // validation schema
 const schema = yup.object().shape({
@@ -15,21 +19,111 @@ const schema = yup.object().shape({
 const defaultValues = {
   title: "",
   category: {},
+  sub_category: {},
   skills: [],
 };
+const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
+  const [categoryId, setCategoryId] = useState(null);
+  const [subCategoryId, setSubCategoryId] = useState(null);
+  const [categoryOptions, setCategoryOptions] = useState(null);
+  const [subCategoryOptions, setSubCategoryOptions] = useState(null);
+  const [skillOptions, setSkillOptions] = useState(null);
 
-const Step0 = ({ submitCallback, onBack, afterSubmit }) => {
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control } = methods;
-
+  const { handleSubmit, control, reset } = methods;
+  console.log({ formValues });
   // form submit operations
   const onSubmit = (values) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
+    console.log({ values });
   };
+
+  // load state
+  useEffect(() => {
+    const changes = defaultValues;
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+      if (value) changes[key] = value;
+    });
+
+    reset(changes);
+  }, [formValues, reset]);
+
+  console.log({ categoryId, subCategoryId });
+
+  // Get All Category of freelancer
+  const allCategory = async () => {
+    try {
+      const resp = await getAllDetailsOfUser();
+      setCategoryOptions(
+        resp?.categories?.map((item) => ({
+          value: item.value,
+          label: item.value,
+          category_id: item._id,
+        }))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // get all sub category of freelancer
+  const allSubCategory = async () => {
+    if (categoryId) {
+      try {
+        console.log(categoryId);
+        const response = await getSubCategory(categoryId);
+        setSubCategoryOptions(
+          response?.map((item) => ({
+            value: item.sub_category_name,
+            label: item.sub_category_name,
+            category_id: item.category_id,
+            _id: item._id,
+          }))
+        );
+        console.log({ response, subCategoryOptions });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  // get all skills of freelancer
+  const allSkills = async () => {
+    try {
+      const response = await getSkills(categoryId, subCategoryId);
+      setSkillOptions(
+        response?.map((item) => ({
+          value: item.skill_name,
+          label: item.skill_name,
+        }))
+      );
+      console.log({ response });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!categoryOptions) {
+      allCategory();
+    }
+
+    allSubCategory();
+  }, [categoryId]);
+
+  useEffect(() => {
+    if (categoryId && subCategoryId) {
+      allSkills();
+    }
+  }, [categoryId, subCategoryId]);
+
+  console.log({ categoryOptions });
 
   return (
     <FormProvider {...methods}>
@@ -71,27 +165,42 @@ const Step0 = ({ submitCallback, onBack, afterSubmit }) => {
               name="category"
               control={control}
               render={({ field }) => (
-                <Select
-                  className="w-full"
-                  {...field}
-                  options={[
-                    {
-                      _id: 1,
-                      category_id: "6586ac7bf89033570689394f",
-                      label: "Chocolate",
-                    },
-                    {
-                      _id: 1,
-                      category_id: "6586ac7bf89033570689394f",
-                      label: "Strawberry",
-                    },
-                    {
-                      _id: 1,
-                      category_id: "6586ac7bf89033570689394f",
-                      label: "Vanilla",
-                    },
-                  ]}
-                />
+                <>
+                  <CreatableSelect
+                    className="w-full"
+                    {...field}
+                    options={categoryOptions}
+                    onChange={(selectedOption) => {
+                      field.onChange(selectedOption);
+                      setCategoryId(selectedOption.category_id);
+                    }}
+                  />
+                </>
+              )}
+            />
+          </VStack>
+          <VStack alignItems={"start"}>
+            <label htmlFor="" className="text-xl font-[600] pb-0">
+              Sub Category
+            </label>
+            <p>
+              Select a sub category that will easy for other to find your gig.
+            </p>
+            <Controller
+              name="sub_category"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <CreatableSelect
+                    className="w-full"
+                    {...field}
+                    options={subCategoryOptions}
+                    onChange={(selectedOption) => {
+                      field.onChange(selectedOption);
+                      setSubCategoryId(selectedOption._id);
+                    }}
+                  />
+                </>
               )}
             />
           </VStack>
@@ -109,12 +218,7 @@ const Step0 = ({ submitCallback, onBack, afterSubmit }) => {
                     className="w-full"
                     isMulti
                     {...field}
-                    options={[
-                      { value: "html", label: "HTML" },
-                      { value: "css", label: "CSS" },
-                      { value: "javascript", label: "JavaScript" },
-                      // Add more skills as needed
-                    ]}
+                    options={skillOptions}
                   />
                 </>
               )}

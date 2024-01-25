@@ -865,6 +865,8 @@ export const FreelancerSignUp = () => {
                     name="country"
                     onChange={handleChange}
                   >
+
+
                     {countries?.map((country) => (
                       <option key={country?._id} value={country?.name}>
                         {country?.name}
@@ -1290,3 +1292,4 @@ export const verifyMail = async () => {
     </OnbardingCardLayout>
   );
 };
+

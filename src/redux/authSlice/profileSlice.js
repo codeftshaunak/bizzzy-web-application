@@ -31,3 +31,4 @@ const profileSlice = createSlice({
 export const { profileData, clearProfileData, agencyData } = profileSlice.actions;
 
 export default profileSlice.reducer;
+

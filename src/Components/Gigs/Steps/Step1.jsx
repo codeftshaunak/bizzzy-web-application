@@ -1,5 +1,6 @@
 import { Checkbox, HStack, Input, Textarea, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { GigCreateLayout } from "../GigCreate";
@@ -15,24 +16,45 @@ const defaultValues = {
   pricing: {
     custom_title: "",
     custom_description: "",
-    delivery_days: 0,
-    revisions: 0,
-    service_options: [],
+    service_price: 10,
+    delivery_days: 2,
+    revisions: 1,
+    service_options: {
+      design_customization: false,
+      content_upload: false,
+      responsive_design: false,
+      source_code: false,
+    },
   },
 };
 
-const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
+  // const editableData = useSelector((state) => state?.freelancer?.editableGig);
+  // const { } = editableData.data;
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control, setValue } = methods;
+  const { handleSubmit, control, setValue, reset } = methods;
 
   // form submit operations
   const onSubmit = (values) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
+
+  // load state
+  useEffect(() => {
+    const changes = defaultValues;
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+
+      if (value) changes[key] = value;
+    });
+
+    reset(changes);
+  }, [formValues, reset]);
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -49,7 +71,7 @@ const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
               name="pricing.custom_title"
               control={control}
               render={({ field }) => (
-                <Textarea
+                <Input
                   {...field}
                   placeholder="Web Application"
                   marginTop={"5px"}
@@ -79,6 +101,25 @@ const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
 
           <HStack alignItems={"center"} justifyContent={"space-between"}>
             <label htmlFor="" className="text-xl font-[600] pb-0">
+              Gig Price
+            </label>
+            <Controller
+              name="pricing.service_price"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="number"
+                  {...field}
+                  marginTop={"5px"}
+                  placeholder={"Price"}
+                  width={"50%"}
+                />
+              )}
+            />
+          </HStack>
+
+          <HStack alignItems={"center"} justifyContent={"space-between"}>
+            <label htmlFor="" className="text-xl font-[600] pb-0">
               Delivery Days
             </label>
             <Controller
@@ -89,7 +130,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
                   type="number"
                   {...field}
                   marginTop={"5px"}
-                  placeholder="3"
                   width={"50%"}
                 />
               )}
@@ -126,6 +166,9 @@ const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
                   e.target.checked
                 );
               }}
+              isChecked={
+                formValues?.pricing?.service_options?.design_customization
+              }
             >
               Design Customization
             </Checkbox>
@@ -138,6 +181,7 @@ const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
                   e.target.checked
                 );
               }}
+              isChecked={formValues?.pricing?.service_options?.content_upload}
             >
               Content Upload
             </Checkbox>
@@ -150,6 +194,9 @@ const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
                   e.target.checked
                 );
               }}
+              isChecked={
+                formValues?.pricing?.service_options?.responsive_design
+              }
             >
               Responsive Design
             </Checkbox>
@@ -162,6 +209,7 @@ const Step1 = ({ submitCallback, onBack, afterSubmit }) => {
                   e.target.checked
                 );
               }}
+              isChecked={formValues?.pricing?.service_options?.source_code}
             >
               Source Code
             </Checkbox>

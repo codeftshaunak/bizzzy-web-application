@@ -21,11 +21,13 @@ import { InterviewInvitation, OfferInvitation } from "../Pages/Invitation";
 import HireFreelancer from "../Pages/HireFreelancer";
 import PrivateRoutes from "./PrivateRoutes";
 import SearchFreelancers from "../Pages/SearchFreelancers";
-import Gig from '../Components/Gigs/index';
+import Gig from "../Components/Gigs/index";
 import Agency from "../Pages/Agency";
 import { SearchTalents } from "../Components/Search/SearchTalent";
 import AgencyBuild from "../Pages/Agency/AgencyBuild";
 import AgencyProfilePage from "../Pages/Agency/Profile";
+import GigDetails from "../Components/Gigs/GigDetails/GigDetails";
+import GigEdit from "../Components/Gigs/GigEdit/GigEdit";
 
 const Router = () => {
   const [cookies, setCookie] = useCookies(['activeagency']);
@@ -79,6 +81,7 @@ const Router = () => {
           <Route path="/freelancer/gig" element={<Gig />} />
           <Route path="/client" element={<Profile />} />
           <Route path="/client/:id" element={<Profile />} />
+
           <Route
             path="/client/hire/:freelancer_id"
             element={<HireFreelancer />}
