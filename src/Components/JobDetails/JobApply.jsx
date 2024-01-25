@@ -15,7 +15,6 @@ const JobApply = ({ setPage, details }) => {
     const { hourly_rate } = currentUser.profile || [];
     const [desireHourlyRate, setDesireHourlyRate] = useState();
     const [selectedFile, setSelectedFile] = useState(null);
-    console.log(selectedFile);
     const [bidDetails, setBidDetails] = useState({
         amount: details?.amount,
         type: details?.job_type == "fixed" ? 'milestone' : 'project',
