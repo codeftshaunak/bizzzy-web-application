@@ -11,8 +11,6 @@ import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
-
-import { useNavigate } from "react-router-dom";
 import { ProfileGigCards } from "../Gigs/SingleGig/ProfileGigCards";
 
 export const FreelancerProfilePage = () => {
@@ -187,8 +185,8 @@ export const FreelancerProfilePage = () => {
                 }}
               ></div> */}
               {!profile_image ||
-              profile_image == "null" ||
-              profile_image === null ? (
+                profile_image == "null" ||
+                profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
