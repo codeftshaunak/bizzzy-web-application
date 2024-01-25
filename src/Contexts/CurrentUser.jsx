@@ -26,6 +26,8 @@ const CurrentUserProvider = ({ children }) => {
     getAgencyDetails()
   }, []);
 
+
+  // context
   return (
     <CurrentUserContext.Provider value={profile} agency={agency}>
       {children}
