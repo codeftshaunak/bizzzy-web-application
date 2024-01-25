@@ -4,7 +4,7 @@ import { UpdateWithStepper } from "../Gigsteper";
 const GigEdit = () => {
   return (
     <HomeLayout>
-      <div className="w-full border rounded-md p-5">
+      <div className="w-full">
         <UpdateWithStepper />
       </div>
     </HomeLayout>

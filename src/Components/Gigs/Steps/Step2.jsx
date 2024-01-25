@@ -1,98 +1,57 @@
 import { Input, Text, VStack } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { FaCloudUploadAlt, FaSpinner } from "react-icons/fa";
+import { FaCloudUploadAlt } from "react-icons/fa";
 import { IoMdClose, IoMdVideocam } from "react-icons/io";
-import { uploadImages, uploadMedia } from "../../../helpers/gigApis";
 import { GigCreateLayout } from "../GigCreate";
 
 const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const [selectedImages, setSelectedImages] = useState([]);
-  const [tempBlob, setTempBlob] = useState([]);
-
-  const [selectedVideo, setSelectedVideo] = useState(undefined); // undefined = initial, null = loading
-
-  // clear Temp Blob
-  const clearTempBlob = () => {
-    setTempBlob((prev) => {
-      prev.forEach((p) => URL.revokeObjectURL(p));
-
-      return [];
-    });
-  };
-  // add temp blob
-  const insertTempBlob = (files = []) => {
-    setTempBlob((prev) => [
-      ...prev,
-      ...files.map((file) => URL.createObjectURL(file)),
-    ]);
-  };
-
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  console.log({ selectedImages });
   // add selected images
-  const insertSelectedImages = (urls = []) => {
-    setSelectedImages((prev) => [...prev, ...urls]);
+  const insertImages = (files) => {
+    setSelectedImages((prev) => [
+      ...prev,
+      ...files.map((f) => ({ file: f, preview: URL.createObjectURL(f) })),
+    ]);
+    formValues;
   };
+  // image delete function
+  const removeImage = (indexToRemove) => {
+    setSelectedImages((prev) =>
+      [...prev].filter((_, index) => index !== indexToRemove)
+    );
+  };
+
   // image upload function
-  const handleImageUpload = useCallback(
+  const handleImageSelect = useCallback(
     async (e) => {
       const files = Array.from(e.target.files);
+      console.log({ files, selectedImages });
 
       // Check if the total number of selected images doesn't exceed the limit
       if (selectedImages.length + files.length <= 3) {
         // create temporary blob files
-        insertTempBlob(files);
-
-        // prepare form data for file uploading
-        const formData = new FormData();
-        files.forEach((file) => formData.append(`imageFiles`, file));
-
-        try {
-          const response = await uploadImages(formData);
-          console.log("Image upload response:", response);
-          insertSelectedImages(response?.body);
-        } catch (error) {
-          console.error("Error uploading images:", error);
-        } finally {
-          clearTempBlob();
-        }
+        insertImages(files);
       } else {
         console.log("You can select a maximum of 3 images.");
       }
     },
     [selectedImages]
   );
-  // image delete function
-  const handleImageDelete = (indexToRemove) => {
-    setSelectedImages((prev) =>
-      [...prev].filter((_, index) => index !== indexToRemove)
-    );
-  };
 
-  // set video to uploading state
-  const setVideoUploading = () => setSelectedVideo(null);
-  // set video to inital state
-  const setVideoInitial = () => setSelectedVideo(undefined);
-  // set video to file url
-  const setVideoUrl = (url) => setSelectedVideo(url);
+  // insert video
+  const insertVideo = (file) => {
+    setSelectedVideo({ file, preview: URL.createObjectURL(file) });
+  };
+  // remove video
+  const removeVideo = () => setSelectedVideo(null);
 
   // video upload function
-  const handleVideoUpload = async (e) => {
+  const handleVideoSelect = async (e) => {
     const file = e.target.files[0];
 
-    // start video uploading
-    setVideoUploading();
-
-    // prepare uploading form state
-    const formData = new FormData();
-    formData.append("videoFile", file);
-
-    try {
-      const response = await uploadMedia(formData);
-      console.log("Video upload response:", response);
-      setVideoUrl(response?.body);
-    } catch (error) {
-      console.error("Error uploading video:", error);
-      setVideoInitial();
-    }
+    insertVideo(file);
   };
 
   const handleDrop = (event) => {
@@ -103,20 +62,22 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
 
   // on submit fuction
   const onSubmit = useCallback(() => {
+    // const response = await handleUpload();
+
     submitCallback({
       images: selectedImages,
       video: selectedVideo,
     });
     afterSubmit();
   }, [afterSubmit, selectedImages, selectedVideo, submitCallback]);
-
+  console.log({ selectedVideo });
   // load state
   useEffect(() => {
     const images = formValues?.images;
     const video = formValues?.video;
 
     if (images) setSelectedImages(images);
-    if (video) setSelectedVideo(video);
+    if (video?.preview !== "") setSelectedVideo(video);
   }, [formValues]);
 
   return (
@@ -134,37 +95,22 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
         </p>
         <div className="w-[70%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
           <div className="flex">
-            {selectedImages?.map((imageUrl, index) => (
+            {selectedImages.map((image, index) => (
               <div
                 key={index}
                 className="rounded border border-green-300 mr-2 relative"
               >
                 <img
-                  src={imageUrl}
+                  src={image.preview}
                   alt={`Selected ${index + 1}`}
                   className="w-20 h-20 object-cover rounded"
                 />
                 <span
                   className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
-                  onClick={() => handleImageDelete(index)}
+                  onClick={() => removeImage(index)}
                 >
                   <IoMdClose />
                 </span>
-              </div>
-            ))}
-            {tempBlob?.map((imageUrl, index) => (
-              <div
-                key={index}
-                className="rounded border-2 border-red-300 mr-2 relative"
-              >
-                <img
-                  src={imageUrl}
-                  alt={`Selected ${index + 1}`}
-                  className="w-20 h-20 object-cover rounded"
-                />
-                <div className="absolute top-0 left-0 w-full h-full bg-gray-800/20 flex items-center justify-center">
-                  <FaSpinner className="animate-spin" />
-                </div>
               </div>
             ))}
           </div>
@@ -173,7 +119,7 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleImageUpload}
+                onChange={handleImageSelect}
                 name="file"
                 multiple
                 style={{ display: "none" }}
@@ -200,7 +146,9 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
       <VStack alignItems={"start"}>
         <label className="text-xl font-[600] pb-0 mb-0">Project Videos</label>
         <p className="mt-0 mb-2">Upload one video (.mp4), up to 10MB.</p>
-        {selectedVideo === undefined && (
+        {(selectedVideo === null ||
+          selectedVideo?.preview === "" ||
+          selectedVideo === undefined) && (
           <label htmlFor="videoInput">
             <VStack
               textAlign={"center"}
@@ -219,27 +167,25 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                 type="file"
                 accept="video/*"
                 name="videoFile"
-                onChange={handleVideoUpload}
+                onChange={handleVideoSelect}
                 style={{ display: "none" }} // Hide the actual input
               />
             </VStack>
           </label>
         )}
 
-        {selectedVideo === null && (
-          <div className="aspect-video flex items-center justify-center bg-gray-700 w-[200px]">
-            <FaSpinner className="animate-spin" />
-          </div>
-        )}
-
         {selectedVideo && (
-          <div className="aspect-video">
-            <video className="w-full h-full" src={selectedVideo}></video>
+          <div className="aspect-video relative">
+            <video
+              className="w-72 h-56 object-cover rounded"
+              src={selectedVideo?.preview}
+            ></video>
+
             <span
-              className="h-7 w-7 bg-red-500/20 rounded-full absolute -top-2 -right-2 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
-              onClick={() => {}}
+              className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
+              onClick={removeVideo}
             >
-              <IoMdClose className="text-2xl" />
+              <IoMdClose />
             </span>
           </div>
         )}

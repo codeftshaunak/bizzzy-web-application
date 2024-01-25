@@ -7,7 +7,22 @@ import { GigCreateLayout } from "../GigCreate";
 
 // validation schema
 const schema = yup.object().shape({
-  // title: yup.string().required("Title is required"),
+  pricing: yup.object().shape({
+    custom_title: yup.string().label("Pricing Title").required(),
+    custom_description: yup.string().label("Description").required(),
+    service_price: yup.number().label("Service Price").required().default(0),
+    delivery_days: yup.number().label("Delivery Days").required().default(0),
+    revisions: yup.number().label("Revisions").required().default(1),
+    service_options: yup.object().shape({
+      design_customization: yup
+        .boolean()
+        .label("Design Customization")
+        .required(),
+      content_upload: yup.boolean().label("Content Upload").required(),
+      responsive_design: yup.boolean().label("Responsive Design").required(),
+      source_code: yup.boolean().label("Source Code").required(),
+    }),
+  }),
   // Define validation rules for other fields if needed
 });
 
@@ -70,12 +85,19 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="pricing.custom_title"
               control={control}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  placeholder="Web Application"
-                  marginTop={"5px"}
-                />
+              render={({ field, fieldState }) => (
+                <>
+                  <Textarea
+                    {...field}
+                    placeholder="Web Application"
+                    marginTop={"5px"}
+                  />
+                  {fieldState.error && (
+                    <p style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </>
               )}
             />
             <p className="text-right w-full">0/30 characters</p>
@@ -88,12 +110,19 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="pricing.custom_description"
               control={control}
-              render={({ field }) => (
-                <Textarea
-                  {...field}
-                  placeholder="Web Application"
-                  marginTop={"5px"}
-                />
+              render={({ field, fieldState }) => (
+                <>
+                  <Textarea
+                    {...field}
+                    placeholder="Web Application"
+                    marginTop={"5px"}
+                  />
+                  {fieldState.error && (
+                    <p style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </>
               )}
             />
             <p className="text-right w-full">0/80 characters</p>
@@ -106,14 +135,26 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="pricing.service_price"
               control={control}
-              render={({ field }) => (
-                <Input
-                  type="number"
-                  {...field}
-                  marginTop={"5px"}
-                  placeholder={"Price"}
-                  width={"50%"}
-                />
+              render={({ field, fieldState }) => (
+                <div className="relative w-1/2">
+                  <Input
+                    type="number"
+                    {...field}
+                    marginTop={"5px"}
+                    width={"100%"}
+                    value={field.value === null ? "" : field.value}
+                    onChange={(e) => {
+                      e.target.value === ""
+                        ? field.onChange(null)
+                        : field.onChange(e.target.value);
+                    }}
+                  />
+                  {fieldState.error && (
+                    <p className="" style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </div>
               )}
             />
           </HStack>
@@ -125,13 +166,26 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="pricing.delivery_days"
               control={control}
-              render={({ field }) => (
-                <Input
-                  type="number"
-                  {...field}
-                  marginTop={"5px"}
-                  width={"50%"}
-                />
+              render={({ field, fieldState }) => (
+                <div className="relative w-1/2">
+                  <Input
+                    type="number"
+                    {...field}
+                    marginTop={"5px"}
+                    width={"100%"}
+                    value={field.value === null ? "" : field.value}
+                    onChange={(e) => {
+                      e.target.value === ""
+                        ? field.onChange(null)
+                        : field.onChange(e.target.value);
+                    }}
+                  />
+                  {fieldState.error && (
+                    <p className="" style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </div>
               )}
             />
           </HStack>
@@ -143,11 +197,18 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="pricing.revisions"
               control={control}
-              render={({ field }) => (
-                <select {...field} className="w-[50%] py-2 px-3 border">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                </select>
+              render={({ field, fieldState }) => (
+                <div className="relative w-1/2">
+                  <select {...field} className="w-[100%] py-2 px-3 border">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
+                  {fieldState.error && (
+                    <p className="" style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </div>
               )}
             />
           </HStack>
@@ -166,9 +227,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={
-                formValues?.pricing?.service_options?.design_customization
-              }
             >
               Design Customization
             </Checkbox>
@@ -181,7 +239,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={formValues?.pricing?.service_options?.content_upload}
             >
               Content Upload
             </Checkbox>
@@ -194,9 +251,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={
-                formValues?.pricing?.service_options?.responsive_design
-              }
             >
               Responsive Design
             </Checkbox>
@@ -209,7 +263,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={formValues?.pricing?.service_options?.source_code}
             >
               Source Code
             </Checkbox>

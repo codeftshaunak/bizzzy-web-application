@@ -5,33 +5,15 @@ import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
 import Step3 from "./Steps/Step3";
 import Step4 from "./Steps/Step4";
-import { getGigDetails, updateFreelancerGig } from "../../helpers/gigApis";
+import {
+  getGigDetails,
+  updateFreelancerGig,
+  uploadImages,
+  uploadMedia,
+} from "../../helpers/gigApis";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-export const GigUpdate = ({
-  activeStep,
-  setActiveStep,
-  goBackward,
-  goForward,
-  setIsEdit,
-}) => {
-  return (
-    <GigOverview
-      activeStep={activeStep}
-      setActiveStep={setActiveStep}
-      goBackward={goBackward}
-      goForward={goForward}
-      setIsEdit={setIsEdit}
-    />
-  );
-};
-
-export const GigOverview = ({
-  activeStep,
-  goForward,
-  goBackward,
-  setIsEdit,
-}) => {
+export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
   const [gigData, setGigData] = useState({});
   const [formData, setFormData] = useState({});
   const toast = useToast();
@@ -41,9 +23,14 @@ export const GigOverview = ({
   const { id } = useParams();
 
   // update form data with previous data
-  const updateFormData = (newData) => {
-    setFormData((prev) => ({ ...prev, ...newData }));
-  };
+  const updateFormData = useCallback(
+    (newData) => {
+      const data = { ...formData, ...newData };
+      setFormData((prev) => ({ ...prev, ...newData }));
+      return data;
+    },
+    [formData]
+  );
 
   const gigDetails = async () => {
     try {
@@ -55,6 +42,9 @@ export const GigOverview = ({
             value: item,
             label: item,
           })) || [],
+        images:
+          response.body[0].images?.map((item) => ({ preview: item })) || [],
+        video: { preview: response.body[0].video || "" },
       };
       setGigData(updatedData);
     } catch (error) {
@@ -64,38 +54,99 @@ export const GigOverview = ({
 
   useEffect(() => {
     gigDetails();
+    console.log("click");
   }, []);
 
-  const handleCreateGig = useCallback(async () => {
+  const handleUpload = useCallback(async () => {
+    const uploadResponse = {};
+    // check existing uploaded or new images
+    const existUploaded = formData.images
+      .filter((item) => !item.hasOwnProperty("file"))
+      .map((item) => item.preview);
+    uploadResponse.images = existUploaded;
+    const readyToUpload = formData.images.filter((item) =>
+      item.hasOwnProperty("file")
+    );
+
+    console.log({ existUploaded, readyToUpload, uploadResponse });
+    if (readyToUpload.length > 0) {
+      // prepare form data for file uploading
+      const imagesFormData = new FormData();
+
+      readyToUpload.forEach((sf) => {
+        if (sf.file) {
+          imagesFormData.append("imageFiles", sf.file);
+        }
+      });
+
+      try {
+        const response = await uploadImages(imagesFormData);
+        console.log("Image upload response:", response);
+
+        // Assuming the response has a "body" property containing uploaded images
+        uploadResponse.images = [
+          ...uploadResponse.images,
+          ...(response?.body || []),
+        ];
+      } catch (error) {
+        console.error("Error uploading images:", error);
+      }
+    }
+
+    if (formData.video?.file) {
+      // prepare uploading form state
+      const videoFormData = new FormData();
+      videoFormData.append("videoFile", formData.video.file);
+
+      try {
+        const response = await uploadMedia(videoFormData);
+        console.log("Video upload response:", response);
+        uploadResponse.video = response?.body;
+      } catch (error) {
+        console.error("Error uploading video:", error);
+      }
+    }
+
+    return uploadResponse;
+  }, [formData.images, formData.video]);
+
+  const handleUpdateGig = async (data) => {
+    console.log({ data });
     // Transform data to the desired format
     const transformedData = {
       _id: gigData._id,
-      title: formData.title,
-      category: formData.category?.category_id,
-      sub_category: formData.sub_category._id,
-      skills: formData.skills.map((skill) => skill.label),
+      title: data?.title,
+      category: data?.category?.category_id,
+      sub_category: data?.sub_category._id,
+      skills: data?.skills.map((skill) => skill.label),
       pricing: {
-        custom_title: formData.pricing.custom_title,
-        custom_description: formData.pricing.custom_description,
-        service_price: parseInt(formData.pricing.service_price),
-        delivery_days: parseInt(formData.pricing.delivery_days),
-        revisions: parseInt(formData.pricing.revisions),
-        service_options: formData.pricing.service_options,
+        custom_title: data?.pricing.custom_title,
+        custom_description: data?.pricing.custom_description,
+        service_price: parseInt(data?.pricing.service_price),
+        delivery_days: parseInt(data?.pricing.delivery_days),
+        revisions: parseInt(data?.pricing.revisions),
+        service_options: data?.pricing.service_options,
       },
-      images: formData.images || [],
-      video: formData.video || "",
-      requirements: formData.requirements || [],
-      steps: formData.steps || [],
+      images: data?.images || [],
+      video: data?.video || "",
+      requirements: data?.requirements || [],
+      steps: data?.steps || [],
       project_description: {
-        project_summary: formData?.project_description?.project_summary,
-        faqs: formData?.project_description?.faqs,
+        project_summary: data?.project_description?.project_summary,
+        faqs: data?.project_description?.faqs,
       },
-      terms: formData.terms,
-      privacy_notice: formData.privacy_notice,
+      terms: data?.terms,
+      privacy_notice: data?.privacy_notice,
     };
     console.log(transformedData);
     try {
-      const response = await updateFreelancerGig(transformedData);
+      const mediaResponse = await handleUpload();
+
+      const response = await updateFreelancerGig({
+        ...transformedData,
+        images: mediaResponse.images,
+        video: mediaResponse.video,
+      });
       if (response?.code === 200) {
         toast({
           title: response.msg,
@@ -104,17 +155,14 @@ export const GigOverview = ({
           colorScheme: "green",
           position: "top-right",
         });
-        if (path === "/freelancer/gig/edit") {
-          navigate("/freelancer");
-        } else {
-          setIsEdit(false);
-        }
+        navigate(-1);
+        setIsEdit(false);
       }
       console.log(response);
     } catch (error) {
       console.log(error);
     }
-  }, [formData]);
+  };
 
   const firstPageGoBackward = () => {
     navigate(-1);
@@ -156,7 +204,7 @@ export const GigOverview = ({
       )}
       {activeStep === 4 && (
         <Step4
-          afterSubmit={handleCreateGig}
+          afterSubmit={handleUpdateGig}
           onBack={goBackward}
           submitCallback={updateFormData}
           formValues={gigData}

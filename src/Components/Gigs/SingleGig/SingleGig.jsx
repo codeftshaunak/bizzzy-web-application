@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
-import { IoIosMore } from "react-icons/io";
+import { IoIosMore, IoMdClose } from "react-icons/io";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { deleteFreelancerGig } from "../../../helpers/gigApis";
 import { useNavigate } from "react-router-dom";
 
 const SingleGig = ({ gig, getAllGigs }) => {
   const [isMenu, setIsMenu] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const { title, images, _id } = gig;
   const toast = useToast();
   const navigate = useNavigate();
@@ -19,21 +20,27 @@ const SingleGig = ({ gig, getAllGigs }) => {
     navigate(`/freelancer/gig/details/${_id}`);
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await deleteFreelancerGig(gig._id);
-      if (response?.code === 200) {
-        toast({
-          title: response.msg,
-          duration: 3000,
-          isClosable: true,
-          colorScheme: "green",
-          position: "top-right",
-        });
-        getAllGigs();
+  const handleDelete = async (value) => {
+    if (value === "modal") {
+      setIsModal(true);
+    } else if (value === "delete") {
+      try {
+        const response = await deleteFreelancerGig(gig._id);
+        if (response?.code === 200) {
+          toast({
+            title: response.msg,
+            duration: 3000,
+            isClosable: true,
+            colorScheme: "green",
+            position: "top-right",
+          });
+          setIsModal(false);
+          getAllGigs();
+        }
+      } catch (error) {
+        console.log(error);
+        setIsModal(false);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -92,7 +99,7 @@ const SingleGig = ({ gig, getAllGigs }) => {
                     </div>
                     <div
                       className="px-3 py-1 hover:bg-gray-200/20 rounded cursor-pointer transition"
-                      onClick={handleDelete}
+                      onClick={() => handleDelete("modal")}
                     >
                       Delete
                     </div>
@@ -103,6 +110,48 @@ const SingleGig = ({ gig, getAllGigs }) => {
           }
         </div>
       </div>
+      {isModal && (
+        <div className="fixed top-0 left-0 flex justify-center items-center z-50 w-full h-full bg-black/30">
+          <div className="bg-white w-[500px] h-72 rounded-lg p-10 relative">
+            {" "}
+            <span
+              className="h-7 w-7 bg-red-100/20 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
+              onClick={() => {
+                setIsModal(false);
+              }}
+            >
+              <IoMdClose className="text-2xl" />
+            </span>
+            <div className="flex flex-col justify-between h-full w-full">
+              <div>
+                <h4 className="text-3xl font-semibold text-center">
+                  Are you wish to proceed?
+                </h4>
+                <p className="mt-3 text-gray-600 text-center">
+                  Deleting this gig is an irreversible action. I would like to
+                  implement a standard naming convention.
+                </p>
+              </div>
+              <div className="flex gap-5 font-semibold mt-auto w-full">
+                <button
+                  onClick={() => {
+                    setIsModal(false);
+                  }}
+                  className="w-full px-5 py-1 border-2 border-green-500 hover:text-white hover:bg-green-500 bg-green-100 rounded-md transition"
+                >
+                  No, Keep it.
+                </button>
+                <button
+                  onClick={() => handleDelete("delete")}
+                  className="w-full px-5 py-1 bg-green-500 hover:bg-green-600 transition rounded-md text-white"
+                >
+                  Yes, Delete!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

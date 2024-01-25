@@ -28,6 +28,7 @@ import AgencyBuild from "../Pages/Agency/AgencyBuild";
 import AgencyProfilePage from "../Pages/Agency/Profile";
 import GigDetails from "../Components/Gigs/GigDetails/GigDetails";
 import GigEdit from "../Components/Gigs/GigEdit/GigEdit";
+import GigCreate from "../Components/Gigs/GigCreate/GigCreate";
 
 const Router = () => {
   const [cookies, setCookie] = useCookies(['activeagency']);
@@ -77,10 +78,18 @@ const Router = () => {
           }
 
 
-          <Route path="/message" element={<Message />} />
-          <Route path="/freelancer/gig" element={<Gig />} />
-          <Route path="/client" element={<Profile />} />
-          <Route path="/client/:id" element={<Profile />} />
+          <Route exact path="/message" element={<Message />} />
+          <Route exact path="/freelancer/:id" element={<Profile />} />
+          <Route exact path="/freelancer/gig" element={<Gig />} />
+          <Route exact path="/freelancer/gig/create" element={<GigCreate />} />
+          <Route
+            exact
+            path="/freelancer/gig/details/:id"
+            element={<GigDetails />}
+          />
+          <Route exact path="/freelancer/gig/edit/:id" element={<GigEdit />} />
+          <Route exact path="/client" element={<Profile />} />
+          <Route exact path="/client/:id" element={<Profile />} />
 
           <Route
             path="/client/hire/:freelancer_id"

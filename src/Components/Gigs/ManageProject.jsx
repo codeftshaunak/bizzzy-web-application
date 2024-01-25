@@ -1,8 +1,10 @@
 import React from "react";
 import { Text, VStack, Box, Button, HStack } from "@chakra-ui/react";
 import GigStatus from "./GigStatus";
+import { useNavigate } from "react-router-dom";
 
-const ManageProject = ({ setPage }) => {
+const ManageProject = () => {
+  const navigate = useNavigate();
   return (
     <VStack width={"100%"}>
       <HStack justifyContent={"space-between"} width={"100%"}>
@@ -22,7 +24,7 @@ const ManageProject = ({ setPage }) => {
             backgroundColor: "var(--primarytextcolor)",
           }}
           zIndex={0}
-          onClick={() => setPage(2)}
+          onClick={() => navigate("/freelancer/gig/create")}
         >
           Create New Gig
         </Button>
@@ -33,7 +35,7 @@ const ManageProject = ({ setPage }) => {
         border={"1px solid #d8d8d8"}
         borderRadius={"5px"}
       >
-        <GigStatus setPage={setPage} />
+        <GigStatus />
       </HStack>
     </VStack>
   );

@@ -10,7 +10,7 @@ import {
 import { getFreelancerGigs } from "../../helpers/gigApis";
 import SingleGig from "./SingleGig/SingleGig";
 
-const GigStatus = ({ setPage }) => {
+const GigStatus = () => {
   const [approvedGigs, setApprovedGigs] = useState([]);
   const [pendingGigs, setPendingGigs] = useState([]);
 
@@ -52,12 +52,7 @@ const GigStatus = ({ setPage }) => {
           <div className="grid gap-5">
             {approvedGigs.length > 0 ? (
               approvedGigs?.map((gig) => (
-                <SingleGig
-                  key={gig?._id}
-                  gig={gig}
-                  setPage={setPage}
-                  getAllGigs={getAllGigs}
-                />
+                <SingleGig key={gig?._id} gig={gig} getAllGigs={getAllGigs} />
               ))
             ) : (
               <Text textAlign={"center"}>
@@ -70,12 +65,7 @@ const GigStatus = ({ setPage }) => {
           <div className="grid gap-5">
             {pendingGigs.length > 0 ? (
               pendingGigs?.map((gig) => (
-                <SingleGig
-                  key={gig?._id}
-                  gig={gig}
-                  setPage={setPage}
-                  getAllGigs={getAllGigs}
-                />
+                <SingleGig key={gig?._id} gig={gig} getAllGigs={getAllGigs} />
               ))
             ) : (
               <Text textAlign={"center"}>
