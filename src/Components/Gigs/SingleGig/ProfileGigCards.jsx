@@ -40,7 +40,12 @@ export const ProfileGigCard = ({ gig }) => {
 
   return (
     <div className="flex gap-10">
-      <img src={images[0]} className="h-44 w-64 bg-cover object-cover" />
+      <div className="h-44 w-64">
+        <div
+          className="h-44 w-64 bg-cover"
+          style={{ backgroundImage: `url(${images[0]})` }}
+        ></div>
+      </div>
       <div className="grid justify-between gap-8">
         <div>
           <h4 className="text-3xl font-semibold">{title}</h4>

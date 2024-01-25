@@ -20,8 +20,27 @@ import { GigCreateLayout } from "../GigCreate";
 
 // validation schema
 const schema = yup.object().shape({
-  // title: yup.string().required("Title is required"),
-  // Define validation rules for other fields if needed
+  project_description: yup
+    .object()
+    .shape({
+      project_summary: yup.string().label("Project Summery").required(),
+      faqs: yup
+        .array(
+          yup.object().shape({
+            question: yup.string().label("Question").required(),
+            answer: yup.string().label("Answer").required(),
+          })
+        )
+        .label("Faq"),
+    })
+    .label("Project Description")
+    .required(),
+  terms: yup.boolean().label("Terms & Condition").default(false).required(),
+  privacy_notice: yup
+    .boolean()
+    .label("Privacy Policy")
+    .default(false)
+    .required(),
 });
 
 // default values for the step
@@ -88,12 +107,19 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="project_description.project_summary"
               control={control}
-              render={({ field }) => (
-                <Textarea
-                  {...field}
-                  placeholder="You will get a fantastic deliverable that drives impact"
-                  marginTop={"5px"}
-                />
+              render={({ field, fieldState }) => (
+                <>
+                  <Textarea
+                    {...field}
+                    placeholder="You will get a fantastic deliverable that drives impact"
+                    marginTop={"5px"}
+                  />
+                  {fieldState.error && (
+                    <p style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </>
               )}
             />
           </VStack>
@@ -123,12 +149,19 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   <Controller
                     name={`project_description.faqs[${index}].question`}
                     control={control}
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        placeholder="Enter the question"
-                        marginTop={"5px"}
-                      />
+                    render={({ field, fieldState }) => (
+                      <>
+                        <Textarea
+                          {...field}
+                          placeholder="Enter the question"
+                          marginTop={"5px"}
+                        />
+                        {fieldState.error && (
+                          <p style={{ color: "red", marginTop: "5px" }}>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </>
                     )}
                   />
                   <label htmlFor="" className="font-semibold">
@@ -137,12 +170,19 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   <Controller
                     name={`project_description.faqs[${index}].answer`}
                     control={control}
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        placeholder="Enter the answer"
-                        marginTop={"5px"}
-                      />
+                    render={({ field, fieldState }) => (
+                      <>
+                        <Textarea
+                          {...field}
+                          placeholder="Enter the answer"
+                          marginTop={"5px"}
+                        />
+                        {fieldState.error && (
+                          <p style={{ color: "red", marginTop: "5px" }}>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </>
                     )}
                   />
                 </VStack>

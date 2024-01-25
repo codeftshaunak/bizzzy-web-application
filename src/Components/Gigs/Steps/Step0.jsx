@@ -11,7 +11,33 @@ import { getSkills, getSubCategory } from "../../../helpers/freelancerApis";
 
 // validation schema
 const schema = yup.object().shape({
-  title: yup.string().required("Title is required"),
+  title: yup.string().label("Title").required(),
+  category: yup
+    .object()
+    .shape({
+      value: yup.string().label("Category value").required(),
+      label: yup.string().label("Category label").required(),
+    })
+    .label("Category")
+    .required(),
+  sub_category: yup
+    .object()
+    .shape({
+      value: yup.string().label("Sub category value").required(),
+      label: yup.string().label("Sub category label").required(),
+    })
+    .label("Sub Category")
+    .required(),
+  skills: yup
+    .array(
+      yup.object().shape({
+        value: yup.string().label("Skill value").required(),
+        label: yup.string().label("Skill label").required(),
+      })
+    )
+    .label("Skills")
+    .min(1)
+    .required(),
   // Define validation rules for other fields if needed
 });
 
@@ -164,19 +190,28 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="category"
               control={control}
-              render={({ field }) => (
-                <>
-                  <CreatableSelect
-                    className="w-full"
-                    {...field}
-                    options={categoryOptions}
-                    onChange={(selectedOption) => {
-                      field.onChange(selectedOption);
-                      setCategoryId(selectedOption.category_id);
-                    }}
-                  />
-                </>
-              )}
+              render={({ field, fieldState }) => {
+                return (
+                  <>
+                    <CreatableSelect
+                      className="w-full"
+                      {...field}
+                      options={categoryOptions}
+                      onChange={(selectedOption) => {
+                        field.onChange(selectedOption);
+                        setCategoryId(selectedOption.category_id);
+                      }}
+                    />
+                    {fieldState.error && (
+                      <p style={{ color: "red", marginTop: "5px" }}>
+                        {fieldState.error?.message ||
+                          fieldState.error?.label?.message ||
+                          fieldState.error?.value?.message}
+                      </p>
+                    )}
+                  </>
+                );
+              }}
             />
           </VStack>
           <VStack alignItems={"start"}>
@@ -189,7 +224,7 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="sub_category"
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <>
                   <CreatableSelect
                     className="w-full"
@@ -200,6 +235,13 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                       setSubCategoryId(selectedOption._id);
                     }}
                   />
+                  {fieldState.error && (
+                    <p style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error?.message ||
+                        fieldState.error?.label?.message ||
+                        fieldState.error?.value?.message}
+                    </p>
+                  )}
                 </>
               )}
             />
@@ -212,7 +254,7 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             <Controller
               name="skills"
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <>
                   <CreatableSelect
                     className="w-full"
@@ -220,6 +262,13 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                     {...field}
                     options={skillOptions}
                   />
+                  {fieldState.error && (
+                    <p style={{ color: "red", marginTop: "5px" }}>
+                      {fieldState.error?.message ||
+                        fieldState.error?.label?.message ||
+                        fieldState.error?.value?.message}
+                    </p>
+                  )}
                 </>
               )}
             />
