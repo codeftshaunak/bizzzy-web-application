@@ -20,7 +20,6 @@ const JobCard = ({ jobs }) => {
                 addSuffix: true,
               }
             );
-            console.log({ job });
 
             return (
               <div key={index}>

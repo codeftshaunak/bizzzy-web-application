@@ -2,11 +2,12 @@ import React from 'react';
 import { HStack, Image, VStack, Box, Text, Button, Avatar } from '@chakra-ui/react';
 import { RiEdit2Fill, RiDeleteBin2Fill } from "react-icons/ri";
 import { AgencyBodyLayout } from './AgencyBody';
+import { useCookies } from 'react-cookie';
 
 const AgencyProfileHeader = ({ agency }) => {
-    console.log(agency);
     const { agency_name, agency_tagline, agency_coverImage, agency_profileImage } = agency;
-
+    const [cookies, setCookie] = useCookies(['activeagency']);
+    const activeagency = cookies.activeagency;
     return (
         <VStack width={"100%"} position={"relative"}>
             <VStack width={"100%"} position={"relative"}>
@@ -72,7 +73,7 @@ const AgencyProfileHeader = ({ agency }) => {
                         </VStack>
                     </HStack>
 
-                    <Button backgroundColor={"var(--primarycolor)"} width={"210px"} border={"2px solid white"} color={"white"} borderRadius={"25px"} transition={"0.6s ease-in-out"} _hover={{
+                    <Button onClick={() => setCookie('activeagency', false)} backgroundColor={"var(--primarycolor)"} width={"210px"} border={"2px solid white"} color={"white"} borderRadius={"25px"} transition={"0.6s ease-in-out"} _hover={{
                         background: "transparent",
                         border: "2px solid var(--primarycolor)",
                         color: "black"
