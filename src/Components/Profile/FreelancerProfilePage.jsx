@@ -199,7 +199,7 @@ export const FreelancerProfilePage = () => {
             </div>
             <div className="flex flex-col justify-start">
               <p className="text-[24px] text-[#374151] font-semibold pl-3">
-                {firstName + ' ' + lastName.slice(0, 1) + '.'}
+                {firstName + ' ' + lastName?.slice(0, 1) + '.'}
               </p>
               <HStack className="text-[16px] text-[#374151] font-[400]">
                 <CiLocationOn />

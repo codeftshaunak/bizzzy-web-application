@@ -219,7 +219,6 @@ export const ProfileModal = ({
   // };
 
   const handleSaveAndContinue = async (data) => {
-    console.log(data, "data");
     try {
       if (data === "category") {
         // Handle saving categories
@@ -229,6 +228,9 @@ export const ProfileModal = ({
         const response = await updateFreelancerProfile({
           categories: selectedCategories,
         });
+
+        console.log({ response });
+
         if (response.code === 405) {
           toast({
             title: response.msg,
