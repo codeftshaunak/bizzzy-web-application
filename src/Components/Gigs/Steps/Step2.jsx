@@ -2,19 +2,19 @@ import { Input, Text, VStack } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { IoMdClose, IoMdVideocam } from "react-icons/io";
-import { uploadImages, uploadMedia } from "../../../helpers/gigApis";
 import { GigCreateLayout } from "../GigCreate";
 
 const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
-
+  console.log({ selectedImages });
   // add selected images
   const insertImages = (files) => {
     setSelectedImages((prev) => [
       ...prev,
       ...files.map((f) => ({ file: f, preview: URL.createObjectURL(f) })),
     ]);
+    formValues;
   };
   // image delete function
   const removeImage = (indexToRemove) => {
@@ -60,63 +60,25 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
     console.log("Dropped file:", file);
   };
 
-  // handle upload
-  const handleUpload = useCallback(async () => {
-    const uploadResponse = {};
-    if (selectedImages.length) {
-      // prepare form data for file uploading
-      const imagesFormData = new FormData();
-      selectedImages.forEach((sf) => {
-        if (!sf.file) return;
-        imagesFormData.append(`imageFiles`, sf.file);
-      });
-      try {
-        const response = await uploadImages(imagesFormData);
-        console.log("Image upload response:", response);
-        uploadResponse.images = response?.body;
-      } catch (error) {
-        console.error("Error uploading images:", error);
-      }
-    }
-
-    if (selectedVideo && selectedVideo?.file) {
-      // prepare uploading form state
-      const videoFormData = new FormData();
-      videoFormData.append("videoFile", selectedVideo);
-
-      try {
-        const response = await uploadMedia(videoFormData);
-        console.log("Video upload response:", response);
-        uploadResponse.video = response?.body;
-      } catch (error) {
-        console.error("Error uploading video:", error);
-      }
-    }
-
-    return uploadResponse;
-  }, [selectedImages, selectedVideo]);
-
   // on submit fuction
-  const onSubmit = useCallback(async () => {
-    const response = await handleUpload();
+  const onSubmit = useCallback(() => {
+    // const response = await handleUpload();
 
     submitCallback({
-      images: response.images,
-      video: response.video,
+      images: selectedImages,
+      video: selectedVideo,
     });
     afterSubmit();
   }, [afterSubmit, selectedImages, selectedVideo, submitCallback]);
-
+  console.log({ selectedVideo });
   // load state
   useEffect(() => {
     const images = formValues?.images;
     const video = formValues?.video;
 
-    if (images) setSelectedImages(images.map((i) => ({ preview: i })));
-    if (video) setSelectedVideo({ preview: video });
+    if (images) setSelectedImages(images);
+    if (video?.preview !== "") setSelectedVideo(video);
   }, [formValues]);
-
-  console.log({ selectedImages });
 
   return (
     <GigCreateLayout
@@ -184,7 +146,9 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
       <VStack alignItems={"start"}>
         <label className="text-xl font-[600] pb-0 mb-0">Project Videos</label>
         <p className="mt-0 mb-2">Upload one video (.mp4), up to 10MB.</p>
-        {selectedVideo === null && (
+        {(selectedVideo === null ||
+          selectedVideo?.preview === "" ||
+          selectedVideo === undefined) && (
           <label htmlFor="videoInput">
             <VStack
               textAlign={"center"}
@@ -213,7 +177,7 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
         {selectedVideo && (
           <div className="aspect-video relative">
             <video
-              className="w-full h-full"
+              className="w-72 h-56 object-cover rounded"
               src={selectedVideo?.preview}
             ></video>
 

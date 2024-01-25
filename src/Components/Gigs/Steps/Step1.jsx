@@ -10,9 +10,9 @@ const schema = yup.object().shape({
   pricing: yup.object().shape({
     custom_title: yup.string().label("Pricing Title").required(),
     custom_description: yup.string().label("Description").required(),
-    service_price: yup.number().label("Service Price").required(),
-    delivery_days: yup.number().label("Delivery Days").required(),
-    revisions: yup.number().label("Revisions").required(),
+    service_price: yup.number().label("Service Price").required().default(0),
+    delivery_days: yup.number().label("Delivery Days").required().default(0),
+    revisions: yup.number().label("Revisions").required().default(1),
     service_options: yup.object().shape({
       design_customization: yup
         .boolean()
@@ -141,8 +141,13 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                     type="number"
                     {...field}
                     marginTop={"5px"}
-                    placeholder="$"
                     width={"100%"}
+                    value={field.value === null ? "" : field.value}
+                    onChange={(e) => {
+                      e.target.value === ""
+                        ? field.onChange(null)
+                        : field.onChange(e.target.value);
+                    }}
                   />
                   {fieldState.error && (
                     <p className="" style={{ color: "red", marginTop: "5px" }}>
@@ -162,20 +167,25 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
               name="pricing.delivery_days"
               control={control}
               render={({ field, fieldState }) => (
-                <>
+                <div className="relative w-1/2">
                   <Input
                     type="number"
                     {...field}
                     marginTop={"5px"}
-                    placeholder="3"
-                    width={"50%"}
+                    width={"100%"}
+                    value={field.value === null ? "" : field.value}
+                    onChange={(e) => {
+                      e.target.value === ""
+                        ? field.onChange(null)
+                        : field.onChange(e.target.value);
+                    }}
                   />
                   {fieldState.error && (
-                    <p style={{ color: "red", marginTop: "5px" }}>
+                    <p className="" style={{ color: "red", marginTop: "5px" }}>
                       {fieldState.error.message}
                     </p>
                   )}
-                </>
+                </div>
               )}
             />
           </HStack>
@@ -188,17 +198,17 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
               name="pricing.revisions"
               control={control}
               render={({ field, fieldState }) => (
-                <>
-                  <select {...field} className="w-[50%] py-2 px-3 border">
+                <div className="relative w-1/2">
+                  <select {...field} className="w-[100%] py-2 px-3 border">
                     <option value="1">1</option>
                     <option value="2">2</option>
                   </select>
                   {fieldState.error && (
-                    <p style={{ color: "red", marginTop: "5px" }}>
+                    <p className="" style={{ color: "red", marginTop: "5px" }}>
                       {fieldState.error.message}
                     </p>
                   )}
-                </>
+                </div>
               )}
             />
           </HStack>
@@ -217,9 +227,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={
-                formValues?.pricing?.service_options?.design_customization
-              }
             >
               Design Customization
             </Checkbox>
@@ -232,7 +239,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={formValues?.pricing?.service_options?.content_upload}
             >
               Content Upload
             </Checkbox>
@@ -245,9 +251,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={
-                formValues?.pricing?.service_options?.responsive_design
-              }
             >
               Responsive Design
             </Checkbox>
@@ -260,7 +263,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   e.target.checked
                 );
               }}
-              isChecked={formValues?.pricing?.service_options?.source_code}
             >
               Source Code
             </Checkbox>

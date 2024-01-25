@@ -126,17 +126,17 @@ const GigDetails = () => {
                     <h4 className="text-3xl font-semibold">{title}</h4>
                     <div className="flex gap-5 justify-between mt-3 rounded p-3">
                       <div className="flex items-center gap-10">
-                        <div className="flex gap-5">
+                        <div className="w-full">
                           <Carousel showThumbs={false}>
                             {images?.map((url) => (
                               <div
                                 key={url}
-                                className="h-[600px] bg-cover rounded-md cursor-pointer hover:grayscale transition"
+                                className="h-[600px] w-full bg-cover rounded-md cursor-pointer hover:grayscale transition"
                                 style={{ backgroundImage: `url(${url})` }}
                                 onClick={() => setIsFullImg(url)}
                               ></div>
                             ))}
-                            <div className="relative flex items-center justify-center">
+                            <div className="relative flex items-center justify-center w-full">
                               <video
                                 ref={videoRef}
                                 src={video}

@@ -51,7 +51,7 @@ export const ProfileGigCard = ({ gig }) => {
           <h4 className="text-2xl font-semibold">{title}</h4>
           <div className="font-semibold text-gray-600 mt-6">
             <span className="bg-green-50 px-3 py-2 rounded-full mr-6">
-              From $50
+              From ${pricing?.service_price}
             </span>
             <span>{pricing?.delivery_days} days delivery</span>
           </div>

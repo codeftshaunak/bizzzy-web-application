@@ -7,6 +7,7 @@ import Step2 from "./Steps/Step2";
 import Step3 from "./Steps/Step3";
 import Step4 from "./Steps/Step4";
 import { useNavigate } from "react-router-dom";
+import { uploadImages, uploadMedia } from "../../helpers/gigApis";
 
 export const GigCreate = ({ activeStep, goForward, goBackward }) => {
   const [formData, setFormData] = useState({});
@@ -22,9 +23,43 @@ export const GigCreate = ({ activeStep, goForward, goBackward }) => {
     [formData]
   );
 
-  const handleCreateGig = useCallback(async (data) => {
+  const handleUpload = useCallback(async () => {
+    const uploadResponse = {};
+    if (formData?.images?.length) {
+      // prepare form data for file uploading
+      const imagesFormData = new FormData();
+      formData.images.forEach((sf) => {
+        if (!sf.file) return;
+        imagesFormData.append(`imageFiles`, sf.file);
+      });
+      try {
+        const response = await uploadImages(imagesFormData);
+        console.log("Image upload response:", response);
+        uploadResponse.images = response?.body;
+      } catch (error) {
+        console.error("Error uploading images:", error);
+      }
+    }
+
+    if (formData.video && formData.video?.file) {
+      // prepare uploading form state
+      const videoFormData = new FormData();
+      videoFormData.append("videoFile", formData.video.file);
+
+      try {
+        const response = await uploadMedia(videoFormData);
+        console.log("Video upload response:", response);
+        uploadResponse.video = response?.body;
+      } catch (error) {
+        console.error("Error uploading video:", error);
+      }
+    }
+
+    return uploadResponse;
+  }, [formData.images, formData.video]);
+
+  const handleCreateGig = async (data) => {
     // Transform data to the desired format
-    console.log({ data });
     const transformedData = {
       title: data.title,
       category: data.category.category_id,
@@ -49,11 +84,22 @@ export const GigCreate = ({ activeStep, goForward, goBackward }) => {
       terms: data.terms,
       privacy_notice: data.privacy_notice,
     };
-    console.log(transformedData);
-    const response = await createGig(transformedData);
-    console.log(response);
-    navigate(-1);
-  }, []);
+
+    try {
+      const mediaResponse = await handleUpload();
+      if (mediaResponse.images) {
+        const response = await createGig({
+          ...transformedData,
+          images: mediaResponse.images,
+          video: mediaResponse.video,
+        });
+        console.log({ mediaResponse, response });
+        navigate(-1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const firstPageGoBackward = () => {
     navigate(-1);
