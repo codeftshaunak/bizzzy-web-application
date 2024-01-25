@@ -58,3 +58,6 @@ export const updateFreelancerGig = async (data) =>
 
 export const deleteFreelancerGig = async (_id) =>
   makeApiRequest("delete", `/freelancer/gig/delete?gig_id=${_id}`);
+
+export const getGigDetails = async (_id) =>
+  makeApiRequest("get", `/freelancer/gig/getbyGigId?gig_id=${_id}`);

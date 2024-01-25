@@ -1,13 +1,12 @@
 import { Button, HStack, Text, useToast } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Step0 from "./Steps/Step0";
 import Step1 from "./Steps/Step1";
 import Step2 from "./Steps/Step2";
 import Step3 from "./Steps/Step3";
 import Step4 from "./Steps/Step4";
-import { useDispatch, useSelector } from "react-redux";
-import { updateFreelancerGig } from "../../helpers/gigApis";
-import { setEditableGig } from "../../redux/freelancerSlice/FreelancerSlice";
+import { getGigDetails, updateFreelancerGig } from "../../helpers/gigApis";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export const GigUpdate = ({
   activeStep,
@@ -33,34 +32,52 @@ export const GigOverview = ({
   goBackward,
   setIsEdit,
 }) => {
+  const [gigData, setGigData] = useState({});
   const [formData, setFormData] = useState({});
-  const editableData = useSelector((state) => state?.freelancer?.editableGig);
   const toast = useToast();
-  const dispatch = useDispatch();
+  const location = useLocation();
+  const path = location.pathname;
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   // update form data with previous data
   const updateFormData = (newData) => {
     setFormData((prev) => ({ ...prev, ...newData }));
   };
 
-  const emptyEditableGig = () => {
-    const updatedGig = {
-      isEditable: false,
-      data: {},
-    };
-    dispatch(setEditableGig(updatedGig));
+  const gigDetails = async () => {
+    try {
+      const response = await getGigDetails(id);
+      const updatedData = {
+        ...response.body[0],
+        skills:
+          response.body[0].skills?.map((item) => ({
+            value: item,
+            label: item,
+          })) || [],
+      };
+      setGigData(updatedData);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    gigDetails();
+  }, []);
 
   const handleCreateGig = useCallback(async () => {
     // Transform data to the desired format
     const transformedData = {
-      _id: editableData.data._id,
+      _id: gigData._id,
       title: formData.title,
       category: formData.category?.category_id,
+      sub_category: formData.sub_category._id,
       skills: formData.skills.map((skill) => skill.label),
       pricing: {
         custom_title: formData.pricing.custom_title,
         custom_description: formData.pricing.custom_description,
+        service_price: parseInt(formData.pricing.service_price),
         delivery_days: parseInt(formData.pricing.delivery_days),
         revisions: parseInt(formData.pricing.revisions),
         service_options: formData.pricing.service_options,
@@ -79,7 +96,6 @@ export const GigOverview = ({
     console.log(transformedData);
     try {
       const response = await updateFreelancerGig(transformedData);
-      setIsEdit(false);
       if (response?.code === 200) {
         toast({
           title: response.msg,
@@ -88,18 +104,20 @@ export const GigOverview = ({
           colorScheme: "green",
           position: "top-right",
         });
-        emptyEditableGig();
+        if (path === "/freelancer/gig/edit") {
+          navigate("/freelancer");
+        } else {
+          setIsEdit(false);
+        }
       }
       console.log(response);
     } catch (error) {
       console.log(error);
-      emptyEditableGig();
     }
   }, [formData]);
 
   const firstPageGoBackward = () => {
-    setIsEdit(false);
-    emptyEditableGig();
+    navigate(-1);
   };
 
   return (
@@ -109,7 +127,7 @@ export const GigOverview = ({
           afterSubmit={goForward}
           onBack={firstPageGoBackward}
           submitCallback={updateFormData}
-          formValues={editableData.data}
+          formValues={gigData}
         />
       )}
       {activeStep === 1 && (
@@ -117,7 +135,7 @@ export const GigOverview = ({
           afterSubmit={goForward}
           onBack={goBackward}
           submitCallback={updateFormData}
-          formValues={editableData.data}
+          formValues={gigData}
         />
       )}
       {activeStep === 2 && (
@@ -125,7 +143,7 @@ export const GigOverview = ({
           afterSubmit={goForward}
           onBack={goBackward}
           submitCallback={updateFormData}
-          formValues={editableData.data}
+          formValues={gigData}
         />
       )}{" "}
       {activeStep === 3 && (
@@ -133,7 +151,7 @@ export const GigOverview = ({
           afterSubmit={goForward}
           onBack={goBackward}
           submitCallback={updateFormData}
-          formValues={editableData.data}
+          formValues={gigData}
         />
       )}
       {activeStep === 4 && (
@@ -141,7 +159,7 @@ export const GigOverview = ({
           afterSubmit={handleCreateGig}
           onBack={goBackward}
           submitCallback={updateFormData}
-          formValues={editableData.data}
+          formValues={gigData}
         />
       )}
     </div>

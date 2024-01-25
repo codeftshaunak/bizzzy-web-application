@@ -38,10 +38,12 @@ export const GigOverview = ({ activeStep, goForward, goBackward, setPage }) => {
     const transformedData = {
       title: formData.title,
       category: formData.category.category_id,
+      sub_category: formData.sub_category._id,
       skills: formData.skills.map((skill) => skill.label),
       pricing: {
         custom_title: formData.pricing.custom_title,
         custom_description: formData.pricing.custom_description,
+        service_price: parseInt(formData.pricing.service_price),
         delivery_days: parseInt(formData.pricing.delivery_days),
         revisions: parseInt(formData.pricing.revisions),
         service_options: formData.pricing.service_options,

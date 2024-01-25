@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { getFreelancerGigs } from "../../helpers/gigApis";
 import SingleGig from "./SingleGig/SingleGig";
-import { getAllDetailsOfUser } from "../../helpers/userApis";
 
 const GigStatus = ({ setPage }) => {
   const [approvedGigs, setApprovedGigs] = useState([]);
