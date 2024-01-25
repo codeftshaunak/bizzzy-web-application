@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ClientProfileCard from "./ProfileCard";
 import { getClientJobs, getHiredListByClient } from "../../helpers/clientApis";
 import AgencyTopbar from "./AgencyTopbar";
-import UserProfileCard from "../UserProfileCard";
+import UserProfileCard from "./../FindJobUi/UserCard";
+import AgencyUserCard from "../FindJobUi/AgencyUserCard";
 
 const AgencyDashboard = () => {
     const navigate = useNavigate();
@@ -22,7 +23,6 @@ const AgencyDashboard = () => {
             }
         });
     }
-
 
     const getClientPostedJob = async () => {
         try {
@@ -104,12 +104,13 @@ const AgencyDashboard = () => {
                 </div>
 
                 <div className="w-[300px] flex flex-col m-auto justify-center items-center">
+                    <AgencyUserCard />
+                    <br />
                     <UserProfileCard />
-                    <UserProfileCard />
-                    <button className="bg-[#16A34A] text-[#fff] border-2 border-[#16A34A] text-md w-[90%] ml-[26px] text-center mt-4  rounded-md font-semibold py-1" onClick={() => navigate("/search-freelancers")}>
+                    <button className="bg-[#16A34A] text-[#fff] border-2 border-[#16A34A] text-md w-[90%] text-center mt-4  rounded-md font-semibold py-1" onClick={() => navigate("/search-freelancers")}>
                         Invite Freelancer To Your Agency
                     </button>
-                    <button className="bg-[#ebebeb] text-[#2c2c2c] border border-[#707070] text-md w-[90%] ml-[26px] text-center mt-4  rounded-md font-semibold py-1">
+                    <button className="bg-[#ebebeb] text-[#2c2c2c] border border-[#707070] text-md w-[90%] text-center mt-4  rounded-md font-semibold py-1">
                         Your Agency Settings
                     </button>
                 </div>

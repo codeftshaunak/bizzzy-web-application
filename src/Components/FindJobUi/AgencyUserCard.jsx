@@ -1,24 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
-const AgencyUserCard = ({ profile_image, name, professional_role }) => {
+const AgencyUserCard = () => {
     const navigate = useNavigate();
+    const [cookies, setCookie] = useCookies(['activeagency']);
+    const activeagency = cookies.activeagency;
+    const agency = useSelector((state) => state.profile.agency);
+    const { agency_name, agency_tagline, agency_profileImage } = agency || [];
+
+
+    const handleSwitching = () => {
+        if (!activeagency) {
+            setCookie('activeagency', true)
+        } else {
+            navigate(`/agency-profile`)
+        }
+    }
 
     return (
-        <div className="border border-tertiary rounded-2xl">
+        <div className="border border-tertiary rounded-2xl w-[300px] m-auto">
             <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                {profile_image == null ? (
-                    <Avatar name={name} />
+                {agency_profileImage == null ? (
+                    <Avatar name={agency_name} />
                 ) : (
                     <img
-                        src={profile_image}
+                        src={agency_profileImage}
                         alt="avatar"
                         className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
                     />
                 )}
-                <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/freelancer`)}>{name}</div>
-                <div className="text-sm text-gray-300">{professional_role}</div>
+                <div className="text-2xl font-medium cursor-pointer">{agency_name}</div>
+                <div className="text-sm text-gray-300">{agency_tagline}</div>
                 <div className="flex items-center">
                     <div className="star-filled"></div>
                     <div className="star-filled"></div>
@@ -36,8 +51,10 @@ const AgencyUserCard = ({ profile_image, name, professional_role }) => {
                 </div>
             </div> */}
             <div className="p-4 flex">
-                {/* <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]">Switch to Agency Profile</button> */}
-                <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => navigate("/agency-build")}>Create Your Agency Profile</button>
+                {
+                    agency ? <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => handleSwitching()}>{activeagency ? 'Visit Your Agency Profile' : 'Switch To Agency Profile'}</button>
+                        : <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => navigate("/agency-build")}>Create Your Agency Profile</button>
+                }
             </div>
         </div>
     )

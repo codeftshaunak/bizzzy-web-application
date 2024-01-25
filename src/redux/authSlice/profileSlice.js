@@ -16,6 +16,10 @@ const profileSlice = createSlice({
             state.profile = profile;
             localStorage.setItem("bizzzy_user", JSON.stringify(profile));
         },
+        agencyData: (state, action) => {
+            const { agency } = action.payload;
+            state.agency = agency;
+        },
         clearProfileData: (state) => {
             state.profile = {};
             localStorage.removeItem('bizzzy_user'); // Remove 'role' from local storage
@@ -24,6 +28,6 @@ const profileSlice = createSlice({
 
 });
 
-export const { profileData, clearProfileData } = profileSlice.actions;
+export const { profileData, clearProfileData, agencyData } = profileSlice.actions;
 
 export default profileSlice.reducer;

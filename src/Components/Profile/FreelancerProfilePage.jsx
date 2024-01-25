@@ -5,12 +5,12 @@ import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
 import { HStack, VStack, Avatar, Box, Text, Button } from "@chakra-ui/react";
-import { getAllDetailsOfUser, updateFreelancer } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -20,6 +20,8 @@ export const FreelancerProfilePage = () => {
   const [deleteModalPage, setDeleteModalPage] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [id, setId] = useState({ id: "", type: "" });
+
+  const profile = useSelector((state) => state.profile);
   const {
     firstName,
     lastName,
@@ -32,12 +34,14 @@ export const FreelancerProfilePage = () => {
     experience,
     education,
     portfolio,
-  } = details || [];
+  } = profile.profile || [];
+
   const [localTime, setLocalTime] = useState();
 
   function openModal() {
     setModalIsOpen(true);
   }
+
   async function getCurrentTimeAndLocation() {
     try {
       const currentDate = new Date();
@@ -54,18 +58,7 @@ export const FreelancerProfilePage = () => {
   setTimeout(() => {
     getCurrentTimeAndLocation();
   }, 1000);
-  const getProfileInformation = async () => {
-    try {
-      const resp = await getAllDetailsOfUser();
-      setDetails(resp);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  useEffect(() => {
-    getProfileInformation();
-  }, [modalIsOpen]);
 
   function closeModal() {
     setModalIsOpen(false);
@@ -206,7 +199,7 @@ export const FreelancerProfilePage = () => {
             </div>
             <div className="flex flex-col justify-start">
               <p className="text-[24px] text-[#374151] font-semibold pl-3">
-                {firstName + (lastName ? " " + lastName.split(" ")[0] : "")}
+                {firstName + ' ' + lastName.slice(0, 1) + '.'}
               </p>
               <HStack className="text-[16px] text-[#374151] font-[400]">
                 <CiLocationOn />
@@ -698,7 +691,7 @@ export const FreelancerProfilePage = () => {
                 </p>
                 <div className="h-[2px] w-[60px] bg-[#16A34A]"></div>
               </div>
-              {details?.work_history?.map((item, index) => (
+              {profile?.work_history?.map((item, index) => (
                 <ReviewCard key={index} workDetails={item} />
               ))}
             </div>
