@@ -235,6 +235,12 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
         {selectedVideo && (
           <div className="aspect-video">
             <video className="w-full h-full" src={selectedVideo}></video>
+            <span
+              className="h-7 w-7 bg-red-500/20 rounded-full absolute -top-2 -right-2 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
+              onClick={() => {}}
+            >
+              <IoMdClose className="text-2xl" />
+            </span>
           </div>
         )}
       </VStack>
