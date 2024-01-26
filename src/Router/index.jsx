@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 import Onboarding from "../Pages/Onboarding";
 import Login from "../Pages/Login";
 import Home from "../Pages/Home";
@@ -31,7 +31,7 @@ import GigEdit from "../Components/Gigs/GigEdit/GigEdit";
 import GigCreate from "../Components/Gigs/GigCreate/GigCreate";
 
 const Router = () => {
-  const [cookies, setCookie] = useCookies(['activeagency']);
+  const [cookies, setCookie] = useCookies(["activeagency"]);
   const activeagency = cookies.activeagency;
 
   return (
@@ -48,35 +48,35 @@ const Router = () => {
 
           <Route path="/search-job" element={<SearchPage />} />
           <Route path="/search-talent" element={<SearchTalents />} />
-          <Route
-            path="/search-freelancers"
-            element={<SearchFreelancers />}
-          />
-          {
-            activeagency ? <>
+          <Route path="/search-freelancers" element={<SearchFreelancers />} />
+          {activeagency ? (
+            <>
               <Route path="/agency-build" element={<AgencyBuild />} />
               <Route path="/agency-profile" element={<AgencyProfilePage />} />
               <Route path="/agency-dashboard" element={<Agency />} />
-            </> : <>
+            </>
+          ) : (
+            <>
               <Route path="/agency-build" element={<AgencyBuild />} />
               <Route path="/agency-profile" element={<Profile />} />
               <Route path="/agency-dashboard" element={<FindJob />} />
             </>
-          }
-          {
-            !activeagency ? <>
+          )}
+          {!activeagency ? (
+            <>
               <Route path="/freelancer" element={<Profile />} />
               <Route path="/freelancer/:id" element={<Profile />} />
               <Route path="/find-job" element={<FindJob />} />
               <Route path="/find-job/:id" element={<ApplyJob />} />
-            </> : <>
+            </>
+          ) : (
+            <>
               <Route path="/freelancer" element={<AgencyProfilePage />} />
               <Route path="/freelancer/:id" element={<Profile />} />
               <Route path="/find-job" element={<Agency />} />
               <Route path="/find-job/:id" element={<ApplyJob />} />
             </>
-          }
-
+          )}
 
           <Route exact path="/message" element={<Message />} />
           <Route exact path="/freelancer/:id" element={<Profile />} />
@@ -95,33 +95,21 @@ const Router = () => {
             path="/client/hire/:freelancer_id"
             element={<HireFreelancer />}
           />
-          <Route
-            path="/userprofile-setting"
-            element={<ProfileSetting />}
-          />
+          <Route path="/userprofile-setting" element={<ProfileSetting />} />
           <Route path="/tracker" element={<TimeTracker />} />
           <Route path="/client-dashboard" element={<ClientDashBoard />} />
-          <Route
-            path="/client-jobdetails"
-            element={<ClientJobPostView />}
-          />
+          <Route path="/client-jobdetails" element={<ClientJobPostView />} />
           <Route
             path="/client-jobdetails/:id"
             element={<ClientJobPostView />}
           />
           <Route path="/my-stats" element={<Report />} />
-          <Route
-            path="/message/invitation"
-            element={<InterviewInvitation />}
-          />
+          <Route path="/message/invitation" element={<InterviewInvitation />} />
           <Route path="/message/offer" element={<OfferInvitation />} />
           <Route path="/submit-review/:job_id" element={<Review />} />
           <Route path="/end-contract/:job_id" element={<Review />} />
           <Route path="/my-jobs" element={<MyJobPage />} />
-          <Route
-            path="/active-job/submit/:id"
-            element={<EndContract />}
-          />
+          <Route path="/active-job/submit/:id" element={<EndContract />} />
           <Route path="/endcotract/:id" element={<EndContract />} />
         </Route>
       </Routes>
