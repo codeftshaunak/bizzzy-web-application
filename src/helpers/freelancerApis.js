@@ -78,12 +78,13 @@ export const getFreelancers = async (
   skills,
   searchText,
   hourlyRateMin,
-  hourlyRateMax
+  hourlyRateMax,
+  selectedSubCategory,
 ) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
     const skillsValues = skills.map((skill) => skill.value).join(",");
-    console.log("skillsValues", skillsValues);
+    const subcategoryValue = selectedSubCategory.map((category)=> category.value).join(",")
 
     const response = await API.get("/search-freelancers", {
       headers: {
@@ -95,6 +96,7 @@ export const getFreelancers = async (
         skills: skillsValues,
         hourlyRateMin: hourlyRateMin,
         hourlyRateMax: hourlyRateMax,
+        subCategoryId: subcategoryValue
       },
     });
     return response.data.body;
