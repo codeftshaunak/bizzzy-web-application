@@ -47,7 +47,7 @@ const schema = yup.object().shape({
 const defaultValues = {
   project_description: {
     project_summary: "",
-    faqs: [],
+    faqs: [{ question: "", answer: "" }],
   },
   terms: false,
   privacy_notice: false,
@@ -62,9 +62,9 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
 
   const { fields: faqFields, append: appendFaq } = useFieldArray({
     control,
-    name: "faqs",
+    name: "project_description.faqs",
   });
-
+  console.log({ control });
   const addFaq = () => {
     appendFaq({ question: "", answer: "" });
   };
@@ -87,7 +87,7 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
 
     reset(changes);
   }, [formValues]);
-
+  console.log({ faqFields });
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -134,7 +134,11 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             >
               Frequently asked questions (optional)
             </label>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+            <p>
+              Provide answers to common questions your clients may have about
+              your project. Feel free to include details that will help them
+              better understand your work process.
+            </p>
             <VStack width={"100%"}>
               {faqFields.map((faq, index) => (
                 <VStack
@@ -147,7 +151,7 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   className="shadow-md rounded-md"
                 >
                   <label htmlFor="" className="font-semibold">
-                    Question
+                    Question {index + 1}
                   </label>
                   <Controller
                     name={`project_description.faqs[${index}].question`}

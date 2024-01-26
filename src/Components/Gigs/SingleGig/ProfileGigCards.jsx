@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getFreelancerGigs } from "../../../helpers/gigApis";
 import { useNavigate } from "react-router-dom";
+import { Carousel } from "react-responsive-carousel";
 
 export const ProfileGigCards = () => {
   const [approvedGigs, setApprovedGigs] = useState([]);
@@ -22,10 +23,12 @@ export const ProfileGigCards = () => {
     getAllGigs();
   }, []);
   return (
-    <div className="grid gap-8">
-      {approvedGigs?.map((gig) => (
-        <ProfileGigCard key={gig._id} gig={gig} />
-      ))}
+    <div className="max-w-[905px]">
+      <Carousel showThumbs={false}>
+        {approvedGigs?.map((gig) => (
+          <ProfileGigCard key={gig._id} gig={gig} />
+        ))}
+      </Carousel>
     </div>
   );
 };
@@ -39,7 +42,7 @@ export const ProfileGigCard = ({ gig }) => {
   };
 
   return (
-    <div className="flex gap-10">
+    <div className="flex gap-10 w-full mb-5">
       <div className="h-44 w-64">
         <div
           className="h-44 w-64 bg-cover"
