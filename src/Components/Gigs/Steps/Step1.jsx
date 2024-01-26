@@ -64,6 +64,7 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   console.log({ errors });
   // form submit operations
   const onSubmit = (values) => {
+    console.log({ values });
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };

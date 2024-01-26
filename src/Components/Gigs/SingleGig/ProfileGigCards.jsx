@@ -22,6 +22,7 @@ export const ProfileGigCards = () => {
   useEffect(() => {
     getAllGigs();
   }, []);
+
   return (
     <div className="max-w-[905px]">
       <Carousel showThumbs={false}>
@@ -51,7 +52,7 @@ export const ProfileGigCard = ({ gig }) => {
       </div>
       <div className="grid justify-between gap-8">
         <div>
-          <h4 className="text-2xl font-semibold">{title}</h4>
+          <h4 className="text-2xl font-semibold text-left">{title}</h4>
           <div className="font-semibold text-gray-600 mt-6">
             <span className="bg-green-50 px-3 py-2 rounded-full mr-6">
               From ${pricing?.service_price}
