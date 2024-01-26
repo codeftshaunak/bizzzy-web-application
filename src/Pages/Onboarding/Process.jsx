@@ -128,6 +128,7 @@ const Process = () => {
             const response = await updateFreelancerProfile({
               categories: selectedCategories,
             });
+            console.log(response);
             if (response.code === 405) {
               toast({
                 title: response.msg,

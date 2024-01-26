@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
@@ -13,6 +14,7 @@ import {
 import { Spinner } from "@chakra-ui/react";
 import { getSkills } from "../../helpers/freelancerApis";
 import { IoMdClose } from "react-icons/io";
+
 export const customStyles = {
   content: {
     top: "50%",
@@ -34,7 +36,11 @@ export const ProfileModal = ({
   selectedEducation,
   inputChange,
 }) => {
-  const [userProfileInfo, setUserProfileInfo] = useState(null);
+  // const [userProfileInfo, setUserProfileInfo] = useState(null);
+
+  const userProfileInfo = useSelector((state) => state.profile.profile);
+
+
   const toast = useToast();
   const animatedComponents = makeAnimated();
   const [options, setOptions] = useState(null);
@@ -154,14 +160,6 @@ export const ProfileModal = ({
     setSelectedOptions(selectedValues || []);
   };
 
-  // Get Profile Details
-  const userProfile = async () => {
-    const response = await getAllDetailsOfUser();
-    setUserProfileInfo(response);
-  };
-  useEffect(() => {
-    userProfile();
-  }, [closeModal]);
 
   // Handle Updating Skills Methods
   const getCategorySkills = async (categoryIds) => {
@@ -221,7 +219,6 @@ export const ProfileModal = ({
   // };
 
   const handleSaveAndContinue = async (data) => {
-    console.log(data, "data");
     try {
       if (data === "category") {
         // Handle saving categories
@@ -231,6 +228,9 @@ export const ProfileModal = ({
         const response = await updateFreelancerProfile({
           categories: selectedCategories,
         });
+
+        console.log({ response });
+
         if (response.code === 405) {
           toast({
             title: response.msg,

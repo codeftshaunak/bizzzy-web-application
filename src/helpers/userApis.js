@@ -18,7 +18,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders) => {
 
   try {
     const response = await API(config);
-    return response.data.body;
+    return response.data.body ? response.data.body : response.data;
   } catch (error) {
     // Use the error handling hook
     const { handleApiError } = useApiErrorHandling();
@@ -34,7 +34,6 @@ export const uploadImage = async (data) =>
   makeApiRequest("post", "/user-profile-image", data, "multipart/form-data");
 
 export const updateFreelancer = async (data) => {
-  console.log({ data });
   return makeApiRequest("PUT", "/edit-profile", data);
 };
 

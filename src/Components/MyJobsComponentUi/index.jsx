@@ -53,7 +53,7 @@ const MyJobsComponentUi = () => {
                                 color: "black"
                             }}
                                 onClick={() => navigate("/find-job")}
-                            >Vist For New Opportunity</Button>
+                            >Visit For New Opportunity</Button>
                         </VStack>
                     }
 
@@ -69,7 +69,7 @@ const MyJobsComponentUi = () => {
                                 color: "black"
                             }}
                                 onClick={() => navigate("/find-job")}
-                            >Vist For New Opportunity</Button>
+                            >Visit For New Opportunity</Button>
                         </VStack>
                     } */}
 
