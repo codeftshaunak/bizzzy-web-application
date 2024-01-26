@@ -10,6 +10,7 @@ const AgencyProfile = () => {
 
     const getAgencyDetails = async () => {
         const response = await getAgency();
+        console.log(response);
         setAgency(response)
     }
 
