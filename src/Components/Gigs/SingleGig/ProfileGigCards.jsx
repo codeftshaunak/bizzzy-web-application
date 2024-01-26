@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getFreelancerGigs } from "../../../helpers/gigApis";
 import { useNavigate } from "react-router-dom";
+import { Carousel } from "react-responsive-carousel";
 
 export const ProfileGigCards = () => {
   const [approvedGigs, setApprovedGigs] = useState([]);
@@ -21,11 +22,14 @@ export const ProfileGigCards = () => {
   useEffect(() => {
     getAllGigs();
   }, []);
+
   return (
-    <div className="grid gap-8">
-      {approvedGigs?.map((gig) => (
-        <ProfileGigCard key={gig._id} gig={gig} />
-      ))}
+    <div className="max-w-[905px]">
+      <Carousel showThumbs={false}>
+        {approvedGigs?.map((gig) => (
+          <ProfileGigCard key={gig._id} gig={gig} />
+        ))}
+      </Carousel>
     </div>
   );
 };
@@ -39,7 +43,7 @@ export const ProfileGigCard = ({ gig }) => {
   };
 
   return (
-    <div className="flex gap-10">
+    <div className="flex gap-10 w-full mb-5">
       <div className="h-44 w-64">
         <div
           className="h-44 w-64 bg-cover"
@@ -48,7 +52,7 @@ export const ProfileGigCard = ({ gig }) => {
       </div>
       <div className="grid justify-between gap-8">
         <div>
-          <h4 className="text-2xl font-semibold">{title}</h4>
+          <h4 className="text-2xl font-semibold text-left">{title}</h4>
           <div className="font-semibold text-gray-600 mt-6">
             <span className="bg-green-50 px-3 py-2 rounded-full mr-6">
               From ${pricing?.service_price}

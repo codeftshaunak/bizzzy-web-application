@@ -41,8 +41,8 @@ const schema = yup.object().shape({
 
 // default values for the step
 const defaultValues = {
-  requirements: [],
-  steps: [],
+  requirements: [{ requirement: "", required: false }],
+  steps: [{ step_title: "", description: "" }],
 };
 
 const Step3 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
@@ -195,7 +195,7 @@ const Step3 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                   key={index}
                   alignItems={"start"}
                   width={"100%"}
-                  className="shadow-md rounded-md p-3 mt-2"
+                  className="shadow rounded-md p-3 mt-2"
                 >
                   <label htmlFor="" className="font-semibold">
                     Step {index + 1} title

@@ -13,17 +13,22 @@ const schema = yup.object().shape({
     service_price: yup.number().label("Service Price").required().default(0),
     delivery_days: yup.number().label("Delivery Days").required().default(0),
     revisions: yup.number().label("Revisions").required().default(1),
-    service_options: yup.object().shape({
-      design_customization: yup
-        .boolean()
-        .label("Design Customization")
-        .required(),
-      content_upload: yup.boolean().label("Content Upload").required(),
-      responsive_design: yup.boolean().label("Responsive Design").required(),
-      source_code: yup.boolean().label("Source Code").required(),
-    }),
+    service_options: yup
+      .object()
+      .shape({
+        design_customization: yup.boolean(),
+        content_upload: yup.boolean(),
+        responsive_design: yup.boolean(),
+        source_code: yup.boolean(),
+      })
+      .test(
+        "atLeastOneRequired",
+        "Please select at least one service option.",
+        (value) => {
+          return Object.values(value).some((option) => option === true);
+        }
+      ),
   }),
-  // Define validation rules for other fields if needed
 });
 
 // default values for the step
@@ -44,16 +49,22 @@ const defaultValues = {
 };
 
 const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
-  // const editableData = useSelector((state) => state?.freelancer?.editableGig);
-  // const { } = editableData.data;
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control, setValue, reset } = methods;
-
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    clearErrors,
+    formState: { errors },
+  } = methods;
+  console.log({ errors });
   // form submit operations
   const onSubmit = (values) => {
+    console.log({ values });
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
@@ -61,15 +72,15 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   // load state
   useEffect(() => {
     const changes = defaultValues;
-
+    console.log("click");
     Object.keys(defaultValues).map((key) => {
       const value = formValues?.[key];
-
-      if (value) changes[key] = value;
+      changes[key] = value === undefined ? defaultValues[key] : value;
     });
-
+    console.log({ changes });
     reset(changes);
-  }, [formValues, reset]);
+  }, [formValues]);
+  console.log({ formValues });
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -213,59 +224,100 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             />
           </HStack>
 
-          {/* Checkbox for each service option */}
           <VStack alignItems={"start"} width={"100%"}>
             <label htmlFor="" className="text-2xl font-[600] pb-0 mb-4">
               Services Options
             </label>
-            <Checkbox
-              colorScheme="green"
-              size="lg"
-              onChange={(e) => {
-                setValue(
-                  "pricing.service_options.design_customization",
-                  e.target.checked
-                );
-              }}
-            >
-              Design Customization
-            </Checkbox>
-            <Checkbox
-              colorScheme="green"
-              size="lg"
-              onChange={(e) => {
-                setValue(
-                  "pricing.service_options.content_upload",
-                  e.target.checked
-                );
-              }}
-            >
-              Content Upload
-            </Checkbox>
-            <Checkbox
-              colorScheme="green"
-              size="lg"
-              onChange={(e) => {
-                setValue(
-                  "pricing.service_options.responsive_design",
-                  e.target.checked
-                );
-              }}
-            >
-              Responsive Design
-            </Checkbox>
-            <Checkbox
-              colorScheme="green"
-              size="lg"
-              onChange={(e) => {
-                setValue(
-                  "pricing.service_options.source_code",
-                  e.target.checked
-                );
-              }}
-            >
-              Source Code
-            </Checkbox>
+
+            <Controller
+              name="pricing.service_options.design_customization"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  colorScheme="green"
+                  size="lg"
+                  isChecked={field.value}
+                  onChange={(e) => {
+                    setValue(
+                      "pricing.service_options.design_customization",
+                      e.target.checked
+                    );
+                    clearErrors("pricing.service_options");
+                  }}
+                >
+                  Design Customization
+                </Checkbox>
+              )}
+            />
+
+            <Controller
+              name="pricing.service_options.content_upload"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  colorScheme="green"
+                  size="lg"
+                  isChecked={field.value}
+                  onChange={(e) => {
+                    setValue(
+                      "pricing.service_options.content_upload",
+                      e.target.checked
+                    );
+                    clearErrors("pricing.service_options");
+                  }}
+                >
+                  Content Upload
+                </Checkbox>
+              )}
+            />
+
+            <Controller
+              name="pricing.service_options.responsive_design"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  colorScheme="green"
+                  size="lg"
+                  isChecked={field.value}
+                  onChange={(e) => {
+                    setValue(
+                      "pricing.service_options.responsive_design",
+                      e.target.checked
+                    );
+                    clearErrors("pricing.service_options");
+                  }}
+                >
+                  Responsive Design
+                </Checkbox>
+              )}
+            />
+
+            <Controller
+              name="pricing.service_options.source_code"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  colorScheme="green"
+                  size="lg"
+                  isChecked={field.value}
+                  onChange={(e) => {
+                    setValue(
+                      "pricing.service_options.source_code",
+                      e.target.checked
+                    );
+                    clearErrors("pricing.service_options");
+                  }}
+                >
+                  Source Code
+                </Checkbox>
+              )}
+            />
+
+            {errors.pricing?.service_options && (
+              <p className="" style={{ color: "red", marginTop: "5px" }}>
+                {errors.pricing?.service_options?.root?.message}
+              </p>
+            )}
           </VStack>
         </GigCreateLayout>
       </form>

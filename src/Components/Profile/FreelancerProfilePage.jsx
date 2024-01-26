@@ -656,7 +656,7 @@ export const FreelancerProfilePage = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex flex-col gap-[24px]  border-[1px] pt-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div>
                 <p className="text-[16px] text-[#374151] font-[600] pb-3">
                   Your Gigs
@@ -667,23 +667,13 @@ export const FreelancerProfilePage = () => {
                   more of the work you love to do. Create project offerings that
                   highlight your strengths and attract more clients.
                 </p>
-                <Button
-                  className="mt-3 border"
-                  backgroundColor={"white"}
-                  height={"34px"}
-                  fontWeight={"400"}
-                  borderRadius={"25px"}
-                  border={"2px solid  var(--primarytextcolor)"}
-                  transition={"0.3s ease-in-out"}
-                  _hover={{
-                    color: "white",
-                    backgroundColor: "var(--primarytextcolor)",
-                  }}
+                <button
+                  className="text-start px-5 py-1 rounded-full border-2 border-[var(--primarytextcolor)] hover:text-white hover:bg-[var(--primarytextcolor)] transition h-fit w-fit font-semibold mt-3"
                   onClick={() => navigate("/freelancer/gig")}
                 >
                   Manage Gigs
-                </Button>
-                <div className="mt-10">
+                </button>
+                <div className="mt-10 w-full">
                   <ProfileGigCards />
                 </div>
               </div>

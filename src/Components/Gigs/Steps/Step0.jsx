@@ -15,24 +15,24 @@ const schema = yup.object().shape({
   category: yup
     .object()
     .shape({
-      value: yup.string().label("Category value").required(),
-      label: yup.string().label("Category label").required(),
+      value: yup.string().label("Category").required(),
+      label: yup.string().label("Category").required(),
     })
     .label("Category")
     .required(),
   sub_category: yup
     .object()
     .shape({
-      value: yup.string().label("Sub category value").required(),
-      label: yup.string().label("Sub category label").required(),
+      value: yup.string().label("Sub category").required(),
+      label: yup.string().label("Sub category").required(),
     })
     .label("Sub Category")
     .required(),
   skills: yup
     .array(
       yup.object().shape({
-        value: yup.string().label("Skill value").required(),
-        label: yup.string().label("Skill label").required(),
+        value: yup.string().label("Skill").required(),
+        label: yup.string().label("Skill").required(),
       })
     )
     .label("Skills")
@@ -166,11 +166,7 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
               control={control}
               render={({ field, fieldState }) => (
                 <>
-                  <Input
-                    {...field}
-                    placeholder="You will get a fantastic deliverable that drives impact"
-                    marginTop="5px"
-                  />
+                  <Input {...field} marginTop="5px" />
                   {fieldState.error && (
                     <p style={{ color: "red", marginTop: "5px" }}>
                       {fieldState.error.message}
@@ -199,6 +195,12 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                         field.onChange(selectedOption);
                         setCategoryId(selectedOption.category_id);
                       }}
+                      // isValidNewOption={(inputValue, selectOptions) =>
+                      //   inputValue.trim() !== "" &&
+                      //   !selectOptions.find(
+                      //     (option) => option.label === inputValue
+                      //   )
+                      // }
                     />
                     {fieldState.error && (
                       <p style={{ color: "red", marginTop: "5px" }}>
