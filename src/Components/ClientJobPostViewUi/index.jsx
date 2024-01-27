@@ -263,7 +263,11 @@ export const InviteFreelancer = () => {
       setLoading(true);
       const response = await getSearchFreelancer([""]);
       if (response && response) {
+<<<<<<< HEAD
         setSearchResults(response);
+=======
+        setSearchResults(response.body);
+>>>>>>> parent of db37502 (seperating the git create steps)
       } else {
         console.error("API Response body is undefined");
       }
@@ -279,7 +283,11 @@ export const InviteFreelancer = () => {
       setLoading(true);
       const response = await getSearchFreelancer([""]);
       if (response && response) {
+<<<<<<< HEAD
         setAllFreelancers(response);
+=======
+        setAllFreelancers(response.body);
+>>>>>>> parent of db37502 (seperating the git create steps)
       } else {
         console.error("API Response body is undefined");
       }
@@ -454,8 +462,13 @@ export const InviteFreelancer = () => {
                             alt=""
                           /> */}
                           {!searchResult?.profile_image ||
+<<<<<<< HEAD
                             searchResult?.profile_image == "null" ||
                             searchResult?.profile_image == null ? (
+=======
+                          searchResult?.profile_image == "null" ||
+                          searchResult?.profile_image == null ? (
+>>>>>>> parent of db37502 (seperating the git create steps)
                             <Avatar
                               name={
                                 searchResult?.firstName + searchResult.lastName

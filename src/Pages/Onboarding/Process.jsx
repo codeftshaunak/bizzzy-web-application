@@ -32,12 +32,20 @@ import {
 import { BsBack, BsBackspaceFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+<<<<<<< HEAD
 import { getCategories, getSkills } from "../../helpers/freelancerApis";
+=======
+import { getCategories, getSkills } from "../../helpers/clientApis";
+>>>>>>> parent of db37502 (seperating the git create steps)
 
 const animatedComponents = makeAnimated();
 
 const Process = () => {
   const [page, setPage] = useState(0);
+<<<<<<< HEAD
+=======
+  console.log({ page: page });
+>>>>>>> parent of db37502 (seperating the git create steps)
   const toast = useToast();
   const navigate = useNavigate();
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,14 +53,21 @@ const Process = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [options, setOptions] = useState([]);
   const [skillOptions, setSkillOptions] = useState([]);
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
   const [skillSelectedOptions, setSkillSelectedOptions] = useState([]);
   const role = useSelector((state) => state.auth.role);
 
   const getUserInformation = async () => {
     try {
       const res = await getAllDetailsOfUser();
+<<<<<<< HEAD
       const data = res;
+=======
+      const data = res.body;
+>>>>>>> parent of db37502 (seperating the git create steps)
       setUserDetails(data);
     } catch (error) {
       console.log(error);
@@ -89,7 +104,11 @@ const Process = () => {
       userDetails?.skills?.length > 0 &&
       userDetails?.professional_role?.length > 0
     ) {
+<<<<<<< HEAD
       navigate("/profile");
+=======
+      navigate("/freelancer");
+>>>>>>> parent of db37502 (seperating the git create steps)
     }
     if (
       userDetails?.briefDescription?.length > 0 &&
@@ -128,7 +147,10 @@ const Process = () => {
             const response = await updateFreelancerProfile({
               categories: selectedCategories,
             });
+<<<<<<< HEAD
             console.log(response);
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -182,6 +204,10 @@ const Process = () => {
               hourly_rate: inputValues.hourly_rate,
               description: inputValues.description,
             });
+<<<<<<< HEAD
+=======
+            console.log({ info: response });
+>>>>>>> parent of db37502 (seperating the git create steps)
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -218,6 +244,10 @@ const Process = () => {
             const response = await updateFreelancerProfile({
               skills: selectedCategories,
             });
+<<<<<<< HEAD
+=======
+            console.log({ skills: response });
+>>>>>>> parent of db37502 (seperating the git create steps)
             if (response.code == 405) {
               toast({
                 title: response.msg,
@@ -227,7 +257,11 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
+<<<<<<< HEAD
               navigate("/profile");
+=======
+              navigate("/freelancer");
+>>>>>>> parent of db37502 (seperating the git create steps)
             } else if (response.code === 200) {
               toast({
                 title: "Skils Added Successfully",
@@ -237,7 +271,11 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
+<<<<<<< HEAD
               navigate("/profile");
+=======
+              navigate("/freelancer");
+>>>>>>> parent of db37502 (seperating the git create steps)
             }
           }
         }
@@ -264,6 +302,10 @@ const Process = () => {
               business_name: businessDetails.business_name,
               brief_description: businessDetails.brief_description,
             });
+<<<<<<< HEAD
+=======
+            console.log({ businessDetails: response });
+>>>>>>> parent of db37502 (seperating the git create steps)
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -302,7 +344,11 @@ const Process = () => {
   const getCategory = async () => {
     const categories = await getCategories();
     setOptions(
+<<<<<<< HEAD
       categories?.map((item) => ({
+=======
+      categories?.body?.map((item) => ({
+>>>>>>> parent of db37502 (seperating the git create steps)
         value: item.category_name,
         label: item.category_name,
         _id: item._id,
@@ -321,8 +367,13 @@ const Process = () => {
       const promises = validCategoryIds?.map(async ({ _id }) => {
         try {
           const skills = await getSkills(_id);
+<<<<<<< HEAD
           if (skills) {
             return skills.map((item) => ({
+=======
+          if (skills && skills.body) {
+            return skills.body?.map((item) => ({
+>>>>>>> parent of db37502 (seperating the git create steps)
               value: item?.skill_name,
               label: item?.skill_name,
               category_id: item?.category_id,
@@ -347,6 +398,10 @@ const Process = () => {
   };
 
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    console.log({ page });
+>>>>>>> parent of db37502 (seperating the git create steps)
     if (userDetails.categories?.length > 0 && page === 4) {
       getCategorySkills(userDetails?.categories);
     }
@@ -461,6 +516,10 @@ const Process = () => {
                   onChange={handleSelectChange}
                   value={selectedOptions}
                 />
+<<<<<<< HEAD
+=======
+                {console.log({ selectedOptions })}
+>>>>>>> parent of db37502 (seperating the git create steps)
                 <Button
                   fontWeight="500"
                   color="#fff"
@@ -634,6 +693,7 @@ const Process = () => {
             )}
           </>
         )) || (
+<<<<<<< HEAD
             <>
               {role == 2 && page == 2 && (
                 <VStack
@@ -718,9 +778,106 @@ const Process = () => {
               )}
             </>
           )}
+=======
+          <>
+            {role == 2 && page == 2 && (
+              <VStack
+                justifyContent="start"
+                alignItems="start"
+                width="630px"
+                gap="30px"
+                color="var(--primarytext)"
+              >
+                <Box
+                  backgroundColor="var(--primarysoftbg)"
+                  color="var(--primarytextcolor)"
+                  padding="0rem 0.8rem"
+                  borderRadius="5px"
+                >
+                  Create your Profile
+                </Box>
+                <Box>
+                  <Text fontSize="40px" fontWeight="500">
+                    How would you like to tell us about yourself?
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="15px" fontWeight="400">
+                    We need to get a sense of your education, experience and
+                    categories. It’s quickest to import your information, you
+                    can edit it before your profile goes live.
+                  </Text>
+                </Box>
+                <VStack width={"full"} alignItems={"start"}>
+                  <Text mb="0px">{"Write Your Business Name"}</Text>
+                  <Input
+                    variant="outline"
+                    required
+                    placeholder="Write Your Business Name"
+                    width={"100%"}
+                    value={businessDetails?.business_name}
+                    onChange={(e) =>
+                      setBusinessDetails({
+                        ...businessDetails,
+                        business_name: e.target.value,
+                      })
+                    }
+                  />
+                </VStack>
+
+                <VStack width={"full"} alignItems={"start"}>
+                  <Text mb="0px">{"Write Your Business Details"}</Text>
+                  <Textarea
+                    required
+                    variant="outline"
+                    placeholder="Write Your Business Details"
+                    width={"100%"}
+                    style={{ resize: "none" }}
+                    rows={5}
+                    value={businessDetails?.brief_description}
+                    onChange={(e) =>
+                      setBusinessDetails({
+                        ...businessDetails,
+                        brief_description: e.target.value,
+                      })
+                    }
+                  />
+                </VStack>
+                <Button
+                  fontWeight="500"
+                  color="#fff"
+                  fontSize="1rem"
+                  bg="var(--primarycolor)"
+                  height="2.5rem"
+                  transition={"0.3s ease-in-out"}
+                  _hover={{
+                    border: "1px solid var(--primarycolor)",
+                    backgroundColor: "var(--primarysoftbg)",
+                    color: "var(--primarytext)",
+                  }}
+                  onClick={() => handleSaveAndContinue("business_details")}
+                >
+                  Save & Continue
+                </Button>
+              </VStack>
+            )}
+          </>
+        )}
+>>>>>>> parent of db37502 (seperating the git create steps)
       </>
     </OnboardingProcess>
   );
 };
 
 export default Process;
+<<<<<<< HEAD
+=======
+
+{
+  /* <HStack>
+<CTAButton fontWeight="500" text="Import from LinkedIn" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
+<CTAButton fontWeight="500" text="Upload your Resume" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
+<CTAButton fontWeight="500" text="Fill out manually (15mins)" color="var(--secondarytext)" border="1px solid var(--bordersecondary)" fontSize="1rem" bg="var(--secondarycolor)" height="2.5rem" />
+</HStack> */
+}
+>>>>>>> parent of db37502 (seperating the git create steps)

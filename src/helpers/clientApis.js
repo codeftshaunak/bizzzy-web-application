@@ -29,7 +29,11 @@ export const getProposals = async (data) => {
         token: `${authtoken}`,
       },
     });
+<<<<<<< HEAD
     return response.data;
+=======
+    return response.data.body;
+>>>>>>> parent of db37502 (seperating the git create steps)
   } catch (error) {
     return error;
   }
@@ -61,6 +65,23 @@ export const inviteToJob = async (data) => {
   } catch (error) { }
 };
 
+<<<<<<< HEAD
+=======
+// export const getHiredListByClient = async () => {
+//     try {
+//         const authtoken = localStorage.getItem("authtoken");
+//         const response = await API.get(`client/all-hired`, {
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 token: `${authtoken}`,
+//             },
+//         })
+//         return response.data.body;
+//     } catch (error) {
+
+//     }
+// }
+>>>>>>> parent of db37502 (seperating the git create steps)
 
 // ========= Client reviews =======
 
@@ -89,7 +110,11 @@ const makeApiRequest = async (
 
   try {
     const response = await API(config);
+<<<<<<< HEAD
     return response?.data?.body;
+=======
+    return response?.data;
+>>>>>>> parent of db37502 (seperating the git create steps)
   } catch (error) {
     // Use the error handling hook
     const { handleApiError } = useApiErrorHandling();
@@ -98,7 +123,10 @@ const makeApiRequest = async (
   }
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
 export const getSearchFreelancer = async (keywords) =>
   makeApiRequest("get", "/search-freelancers", keywords);
 
@@ -127,5 +155,15 @@ export const getCountries = async () =>
   makeApiRequest("get", "/get-countries");
 
 export const getCategories = async () =>
+<<<<<<< HEAD
   makeApiRequest("get", "/categories");
 
+=======
+  makeApiRequest("get", "/category");
+
+export const getSkills = async (categoryId) =>
+  makeApiRequest("get", `/skills?category_id=${categoryId}`);
+
+export const getSingleJobDetails = async (id) =>
+  makeApiRequest("get", `/job/get-job?job_id=${id}`);
+>>>>>>> parent of db37502 (seperating the git create steps)

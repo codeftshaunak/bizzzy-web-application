@@ -18,7 +18,10 @@ import {
   getCategories,
   getFreelancers,
   getSkills,
+<<<<<<< HEAD
   getSubCategory,
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
 } from "../../helpers/freelancerApis";
 import Select from "react-select";
 
@@ -187,9 +190,12 @@ export const SearchTalents = () => {
   const [hourlyRateMax, setHourlyRateMax] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState(null);
   const [categorySkills, setCategorySkills] = useState([]);
+<<<<<<< HEAD
   const [shouldCallAPI, setShouldCallAPI] = useState(false);
   const [subCategory, setSubCategory] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
 
   // hourly rate
 
@@ -205,7 +211,10 @@ export const SearchTalents = () => {
       }
     });
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
   // category function
   const handleCategoryChange = (value) => {
     setSelectedCategories(value);
@@ -223,6 +232,13 @@ export const SearchTalents = () => {
     setSearchText(searchText);
   };
 
+<<<<<<< HEAD
+=======
+  // console.log("selectedTalents", selectedTalents);
+  // console.log("hourlyRate", hourlyRate);
+  // console.log("Skills", skills);
+
+>>>>>>> parent of db37502 (seperating the git create steps)
   // calling freelancers API
   useEffect(() => {
     const fetchFreelancers = async () => {
@@ -232,8 +248,12 @@ export const SearchTalents = () => {
           skills,
           searchText,
           hourlyRateMin,
+<<<<<<< HEAD
           hourlyRateMax,
           selectedSubCategory
+=======
+          hourlyRateMax
+>>>>>>> parent of db37502 (seperating the git create steps)
         );
         setFreelancerData(freelancers);
       } catch (error) {
@@ -243,8 +263,12 @@ export const SearchTalents = () => {
       }
     };
     fetchFreelancers();
+<<<<<<< HEAD
   }, [skills, searchText, hourlyRateMin, hourlyRateMax, selectedSubCategory]);
 
+=======
+  }, [skills, searchText, hourlyRateMin, hourlyRateMax]);
+>>>>>>> parent of db37502 (seperating the git create steps)
 
   // Calling Category ApI
 
@@ -263,6 +287,7 @@ export const SearchTalents = () => {
     fetchCategory();
   }, []);
 
+<<<<<<< HEAD
   // ===== get subcategory
   useEffect(() => {
     const fetchSubCategory = async () => {
@@ -280,6 +305,12 @@ export const SearchTalents = () => {
   }, [selectedCategories]);
 
   // calling skills API
+=======
+  console.log(categoryData);
+
+  // calling skills API
+
+>>>>>>> parent of db37502 (seperating the git create steps)
   useEffect(() => {
     const fetchSkills = async () => {
       try {
@@ -322,6 +353,7 @@ export const SearchTalents = () => {
     }
   };
 
+<<<<<<< HEAD
   // handel subcategory
   const handleSubCategoryChange = (value) => {
     setSelectedSubCategory(value)
@@ -335,6 +367,26 @@ export const SearchTalents = () => {
         label: skill?.skill_name,
       }))
     : [];
+=======
+  // console.log(selectedTalents);
+  // console.log(hourlyRateMin);
+  // console.log(hourlyRateMax);
+  console.log("categorySkills", categorySkills);
+  console.log("selectedCategories", selectedCategories);
+
+  // const options = [
+  //   { value: "programming", label: "programming" },
+  //   { value: "markating", label: "markating" },
+  //   { value: "Frontend", label: "Frontend" },
+  //   { value: "Angoler", label: "Angoler" },
+  //   { value: "HTML", label: "HTML" },
+  // ];
+
+  const options = categorySkills?.map((skill) => ({
+    value: skill?.skill_name,
+    label: skill?.skill_name,
+  }));
+>>>>>>> parent of db37502 (seperating the git create steps)
 
   return (
     <div className="w-full mx-auto">
@@ -375,6 +427,7 @@ export const SearchTalents = () => {
                   onChange={(value) => handleCategoryChange(value)}
                 >
                   <Stack spacing={2} direction="column">
+<<<<<<< HEAD
                     {categoryData?.map((category) => (
                       <VStack key={category?._id} spacing={2} align="start">
                         <Radio colorScheme="green" value={category?._id}>
@@ -402,13 +455,30 @@ export const SearchTalents = () => {
                             </VStack>
                           )}
                       </VStack>
+=======
+                    {/* <Radio colorScheme="green" value="6586ac7bf89063570489595c">
+                      All
+                    </Radio> */}
+                    {categoryData?.map((category) => (
+                      <Radio
+                        key={category?._id}
+                        colorScheme="green"
+                        value={category?._id}
+                      >
+                        {category?.category_name}
+                      </Radio>
+>>>>>>> parent of db37502 (seperating the git create steps)
                     ))}
                   </Stack>
                 </RadioGroup>
               </VStack>
             </VStack>
 
+<<<<<<< HEAD
             {/* <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
+=======
+            <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
+>>>>>>> parent of db37502 (seperating the git create steps)
               <Text fontWeight={"600"}>Experience</Text>
               <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
                 <Checkbox onChange={() => handleExperienceChange("Entry")}>
@@ -423,7 +493,11 @@ export const SearchTalents = () => {
                   Expert
                 </Checkbox>
               </VStack>
+<<<<<<< HEAD
             </VStack> */}
+=======
+            </VStack>
+>>>>>>> parent of db37502 (seperating the git create steps)
 
             <VStack
               alignItems={"flex-start"}
@@ -457,7 +531,29 @@ export const SearchTalents = () => {
               </RadioGroup>
             </VStack>
           </VStack>
+<<<<<<< HEAD
         
+=======
+          {/* <div className="mt-6 relative">
+            <img
+              className="w-full"
+              src="/images/dashboard/banner.png"
+              alt="banner"
+            />
+            <div className="flex flex-col gap-3 absolute bottom-3 left-3">
+              <div className="text-3xl text-secondary font-bold">
+                Earn Hourly
+              </div>
+              <div className="text-sm text-secondary">
+                Download the Bizzzy time tracker app to start working hourly
+                contracts.
+              </div>
+              <button className="bg-primary text-secondary rounded h-[36px] w-[130px]">
+                Download Now
+              </button>
+            </div>
+          </div> */}
+>>>>>>> parent of db37502 (seperating the git create steps)
         </div>
         <div className="w-full mt-8">
           <div className="text-xl font-semibold mb-4">

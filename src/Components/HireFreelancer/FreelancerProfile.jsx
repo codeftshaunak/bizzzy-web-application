@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
 import { Heading, Box, Flex, Avatar } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
@@ -24,7 +27,11 @@ const FreelancerProfile = () => {
       )}
       <Box>
         <Heading as="h4" size="md" className="text-green-600">
+<<<<<<< HEAD
           {firstName} {lastName?.slice(0, 1)}.
+=======
+          {firstName} {lastName.slice(0, 1)}.
+>>>>>>> parent of db37502 (seperating the git create steps)
         </Heading>
         <Heading as="h5" size="sm">
           {professional_role}

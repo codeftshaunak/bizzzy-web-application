@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDetailsOfUser } from "../helpers/userApis";
@@ -37,3 +38,21 @@ const CurrentUserProvider = ({ children }) => {
 };
 
 export { CurrentUserProvider, CurrentUserContext };
+=======
+import { createContext } from "react";
+import { useSelector } from "react-redux";
+
+const CurrentUserContext = createContext();
+
+const CurrentUserProvider = ({ children }) => {
+  const profile = useSelector((state) => state.profile);
+
+  return (
+    <CurrentUserContext.Provider value={profile}>
+      {children}
+    </CurrentUserContext.Provider>
+  );
+};
+
+export { CurrentUserProvider, CurrentUserContext };
+>>>>>>> parent of db37502 (seperating the git create steps)

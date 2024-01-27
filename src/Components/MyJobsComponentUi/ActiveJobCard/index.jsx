@@ -3,11 +3,20 @@ import { IoBagOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 
 const ActiveJobCard = ({ job }) => {
+<<<<<<< HEAD
   const { _id, job_type, contract_title, hourly_rate, experience } = job || [];
   const navigate = useNavigate()
   return (
     <VStack
       className="border p-4 m-2 rounded h-[200px] w-[280px] my-auto mx-auto relative shadow-lg"
+=======
+  console.log({ "jobbbb": job });
+  const { _id, job_type, title, amount, experience } = job || [];
+  const navigate = useNavigate()
+  return (
+    <VStack
+      className="border p-4 m-2 rounded h-[180px] w-[280px] my-auto mx-auto relative shadow-lg"
+>>>>>>> parent of db37502 (seperating the git create steps)
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
@@ -23,8 +32,12 @@ const ActiveJobCard = ({ job }) => {
       </Flex>
       <Box textAlign="center" my={2}>
         <Link to={`/active-job/submit/${_id}`} className="text-[1.2rem] font-bold capitalize" >
+<<<<<<< HEAD
           {contract_title?.length > 20 ? contract_title.slice(0, 20) + "..." : contract_title}
 
+=======
+          {title}
+>>>>>>> parent of db37502 (seperating the git create steps)
         </Link>
         <VStack justifyContent={"space-around"} width={"200px"} margin={"auto"} gap={"1px"}>
           <Text fontSize="1rem" color="gray.700" fontWeight={"600"} marginBottom={"0"}>
@@ -35,6 +48,7 @@ const ActiveJobCard = ({ job }) => {
                 : ""}
           </Text>
           <Text fontSize="1rem" color="gray.700" fontWeight={"600"}>
+<<<<<<< HEAD
             Rate/Budget: ${hourly_rate}
           </Text>
         </VStack>
@@ -42,9 +56,21 @@ const ActiveJobCard = ({ job }) => {
       {/* <Box position={"absolute"} fontWeight={"600"} backgroundColor={"var(--primarycolor)"} padding={"1px 8px"} color={"white"} top={"10px"} borderRadius={"5px"} right={"10px"}>
         <Text>{experience}</Text>
       </Box> */}
+=======
+            Budget: ${amount}
+          </Text>
+        </VStack>
+      </Box>
+      <Box position={"absolute"} fontWeight={"600"} backgroundColor={"var(--primarycolor)"} padding={"1px 8px"} color={"white"} top={"10px"} borderRadius={"5px"} right={"10px"}>
+        <Text>{experience}</Text>
+      </Box>
+>>>>>>> parent of db37502 (seperating the git create steps)
     </VStack>
   );
 };
 
 export default ActiveJobCard;
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)

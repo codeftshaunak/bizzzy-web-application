@@ -7,7 +7,11 @@ import { getClientJobs } from "../../helpers/clientApis";
 const JobDetails = () => {
   const [jobsTitle, setJobsTitle] = useState([]);
   const profile = useSelector((state) => state?.profile?.profile);
+<<<<<<< HEAD
 
+=======
+  console.log(profile);
+>>>>>>> parent of db37502 (seperating the git create steps)
   const [formData, setFormData] = useState({
     hiring_team: "",
     job_title: "",
@@ -65,10 +69,18 @@ const JobDetails = () => {
           required
         >
           <option
+<<<<<<< HEAD
             value={`${profile?.business_name && profile?.business_name !== "null"
               ? profile.business_name
               : profile?.name
               }
+=======
+            value={`${
+              profile?.business_name && profile?.business_name !== "null"
+                ? profile.business_name
+                : profile?.name
+            }
+>>>>>>> parent of db37502 (seperating the git create steps)
             &apos;s Team`}
           >
             {profile?.business_name && profile?.business_name !== "null"
@@ -120,4 +132,7 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)

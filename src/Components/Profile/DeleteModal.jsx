@@ -39,6 +39,10 @@ function AlertDeleteDialog({ id, modalIsOpen = true, setModalIsOpen }) {
       const response = await deleteApi({
 
       })
+<<<<<<< HEAD
+=======
+      // return response.data.body;
+>>>>>>> parent of db37502 (seperating the git create steps)
     } catch (error) {
       return error;
     }
