@@ -416,11 +416,7 @@ export const AuthHeader = ({ role }) => {
   };
 
   const handleUserProfile = () => {
-    if (role == 1) {
-      navigate("/freelancer");
-    } else {
-      navigate("/client");
-    }
+    navigate("/profile");
   };
 
   const navigate = useNavigate();

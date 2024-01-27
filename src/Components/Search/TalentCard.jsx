@@ -76,6 +76,7 @@ const TalentCard = ({ freelancerData, loading }) => {
                       </p>
                     </div>
                   </div>
+                  {/* Navigation */}
                   <div>
                     <Stack direction="row" spacing={4} align="center">
                       <Link to={`/freelancer/${freelancer?.user_id}`}>

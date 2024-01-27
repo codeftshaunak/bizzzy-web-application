@@ -18,6 +18,7 @@ export const customStyles = {
   },
 };
 export const UserProfile = () => {
+  // Initial data from context
   const { profile, agency, hasAgency, activeAgency } = useContext(CurrentUserContext);
   const role = useSelector((state) => state.auth.role);
 
