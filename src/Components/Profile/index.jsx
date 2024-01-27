@@ -1,6 +1,10 @@
 import { useSelector } from "react-redux";
 import { FreelancerProfilePage } from "./FreelancerProfilePage";
 import { ClientProfilePage } from "./ClientProfilePage";
+import AgencyProfile from "../AgencyUI/AgencyProfile";
+import { useContext } from "react";
+import { CurrentUserContext } from "../../Contexts/CurrentUser";
+
 export const customStyles = {
   content: {
     top: "50%",
@@ -14,11 +18,15 @@ export const customStyles = {
   },
 };
 export const UserProfile = () => {
+  const { profile, agency, hasAgency, activeAgency } = useContext(CurrentUserContext);
   const role = useSelector((state) => state.auth.role);
+
   return (
     <div className="w-[100%] m-auto">
-      {(role == 1 && <FreelancerProfilePage />) ||
-        (role == 2 && <ClientProfilePage />)}
+      {
+        hasAgency && activeAgency ? <AgencyProfile /> : (role == 1 && <FreelancerProfilePage />) ||
+          (role == 2 && <ClientProfilePage />)
+      }
     </div>
   );
 };

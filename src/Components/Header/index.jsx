@@ -22,6 +22,7 @@ import {
   BsSend,
 } from "react-icons/bs";
 import { useState } from "react";
+import { useCookies } from 'react-cookie';
 import { AiFillSetting } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
@@ -398,8 +399,10 @@ export const Header = () => {
 export const AuthHeader = ({ role }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+  const [cookie, setCookie] = useCookies(['activeagency']);
+
   const profile = useSelector((state) => state.profile);
-  const { profile_image, name } = profile.profile || [];
+  const { profile_image, firstName, lastName } = profile.profile || [];
   const handleProfileButton = () => {
     setOpenInfo(!openInfo);
   };
@@ -407,6 +410,7 @@ export const AuthHeader = ({ role }) => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    setCookie('activeagency', false);
     dispatch(clearAuthData()); // Dispatch the clearAuthData action to reset the state
     dispatch(clearProfileData()); // Dispatch the clearAuthData action to reset the state
   };
@@ -575,7 +579,7 @@ export const AuthHeader = ({ role }) => {
                   {profile_image != "null" && profile_image != null ? (
                     <img src={profile_image} style={{ borderRadius: "20px" }} />
                   ) : (
-                    <Avatar name={name} boxSize="40px" />
+                    <Avatar name={firstName + ' ' + lastName} boxSize="40px" />
                   )}
                 </div>
 

@@ -33,7 +33,7 @@ const AgencyUserCard = () => {
                     />
                 )}
                 <div className="text-2xl font-medium cursor-pointer">{agency_name}</div>
-                <div className="text-sm text-gray-300">{agency_tagline}</div>
+                <div className="text-sm text-gray-300 text-center">{agency_tagline}</div>
                 <div className="flex items-center">
                     <div className="star-filled"></div>
                     <div className="star-filled"></div>
