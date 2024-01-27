@@ -7,22 +7,15 @@ import ActiveJobCard from "../ActiveJobCard";
 import { userAllJobs } from "../../../helpers/jobApis";
 
 const ActiveJobSlider = ({ activeJobList }) => {
-<<<<<<< HEAD
 
   console.log(activeJobList);
-=======
->>>>>>> parent of db37502 (seperating the git create steps)
   // const [activeJobList, setActiveJobList] = useState([]);
 
   // const userAllJobsDatas = async () => {
   //   try {
   //     const response = await userAllJobs();
   //     console.log(response);
-<<<<<<< HEAD
   //     setActiveJobList(response);
-=======
-  //     setActiveJobList(response?.body);
->>>>>>> parent of db37502 (seperating the git create steps)
   //   } catch (error) {
   //     console.log(error);
   //   }

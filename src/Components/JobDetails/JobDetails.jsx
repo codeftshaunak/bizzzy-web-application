@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-<<<<<<< HEAD
 import { getAllJobsProposal } from "../../helpers/jobApis";
 import { getSingleJobDetails } from "../../helpers/jobApis";
-=======
-import { getAllJobsProposal, getJobById } from "../../helpers/jobApis";
-import { getSingleJobDetails } from "../../helpers/clientApis";
->>>>>>> parent of db37502 (seperating the git create steps)
 import StarRatings from "react-star-ratings";
 
 const JobDetails = ({ setPage, setDetails }) => {
@@ -19,18 +14,11 @@ const JobDetails = ({ setPage, setDetails }) => {
     const response = await getAllJobsProposal();
     setApplyJob(response);
   };
-<<<<<<< HEAD
 
   const getDetails = async () => {
     try {
       const response = await getSingleJobDetails(id);
       setJobDetails(response);
-=======
-  const getDetails = async () => {
-    try {
-      const response = await getSingleJobDetails(id);
-      setJobDetails(response?.body);
->>>>>>> parent of db37502 (seperating the git create steps)
     } catch (error) {
       console.error("Error fetching job Details:", error);
     }
@@ -56,21 +44,12 @@ const JobDetails = ({ setPage, setDetails }) => {
     days > 0
       ? `${days} day${days !== 1 ? "s" : ""} ago`
       : hours > 0
-<<<<<<< HEAD
         ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
         : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
 
   const getJobDetails = async () => {
     try {
       const getJob = await getSingleJobDetails(id);
-=======
-      ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
-      : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
-
-  const getJobDetails = async () => {
-    try {
-      const getJob = await getJobById(id);
->>>>>>> parent of db37502 (seperating the git create steps)
       setJob(getJob);
       setDetails(getJob);
     } catch (error) {
@@ -198,7 +177,3 @@ const JobDetails = ({ setPage, setDetails }) => {
 };
 
 export default JobDetails;
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of db37502 (seperating the git create steps)

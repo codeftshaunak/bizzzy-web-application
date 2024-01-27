@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { Button, HStack, Progress, VStack } from "@chakra-ui/react";
 import { useNavigate } from 'react-router-dom'
@@ -24,13 +23,6 @@ const AgencyTopbar = () => {
         getAllJobList();
     }, []);
 
-=======
-import React from 'react';
-import { Button, HStack, Progress, VStack } from "@chakra-ui/react";
-
-
-const AgencyTopbar = () => {
->>>>>>> parent of db37502 (seperating the git create steps)
     return (
         <div>
             <div className="w-[75%] py-5">
@@ -72,11 +64,7 @@ const AgencyTopbar = () => {
                     {/* <div className="text-sm font-medium text-gray-300 p-2">Most Recent Jobs</div> */}
                 </div>
                 <div className="border border-tertiary rounded-2xl overflow-auto">
-<<<<<<< HEAD
                     <JobCard jobs={leatestJob} />
-=======
-                    {/* <JobCard jobs={leatestJob} /> */}
->>>>>>> parent of db37502 (seperating the git create steps)
                 </div>
                 <div className="text-center p-5">
                     <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/search-job")}>

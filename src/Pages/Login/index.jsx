@@ -13,15 +13,8 @@ import {
   Stack,
   HStack,
   IconButton,
-<<<<<<< HEAD
   useToast,
   Skeleton, SkeletonText
-=======
-  InputGroup,
-  InputRightElement,
-  useToast,
-  Skeleton, SkeletonCircle, SkeletonText
->>>>>>> parent of db37502 (seperating the git create steps)
 } from "@chakra-ui/react"; // Import Chakra-UI components
 import OnbardingCardLayout from "../../Layouts/CardLayout/OnbardingCardLayout";
 import { signIn } from "../../helpers/apiRequest";
@@ -52,14 +45,6 @@ const Login = ({ setPage }) => {
   };
 
   const [showPassword, setShowPassword] = useState(false);
-<<<<<<< HEAD
-=======
-  const [userInfo, setUserInfo] = useState({
-    categories: [],
-    skills: [],
-    hourly_rate: null,
-  });
->>>>>>> parent of db37502 (seperating the git create steps)
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -74,20 +59,6 @@ const Login = ({ setPage }) => {
     });
   };
 
-<<<<<<< HEAD
-=======
-  const userDetails = async () => {
-    setLoading(true);
-    try {
-      const response = await getAllDetailsOfUser();
-      setUserInfo(response.body || {});
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
->>>>>>> parent of db37502 (seperating the git create steps)
 
 
 
@@ -98,10 +69,6 @@ const Login = ({ setPage }) => {
     if (response.code === 200) {
       const { role, token } = response.body;
       dispatch(setAuthData({ role: role, authtoken: token }));
-<<<<<<< HEAD
-=======
-      dispatch(profileData({ profile: response.body }));
->>>>>>> parent of db37502 (seperating the git create steps)
       toast({
         title: response.msg,
         status: "success",
@@ -111,11 +78,7 @@ const Login = ({ setPage }) => {
       });
       setLoading(true)
       const res = await getAllDetailsOfUser();
-<<<<<<< HEAD
       const data = res;
-=======
-      const data = res?.body;
->>>>>>> parent of db37502 (seperating the git create steps)
       const detailsFound =
         data?.categories?.length > 0 &&
         data?.skills?.length > 0 &&

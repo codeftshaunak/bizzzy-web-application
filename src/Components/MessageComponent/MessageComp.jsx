@@ -43,11 +43,7 @@ const MessageComp = () => {
         });
         navigate(`${response.path}`);
       } else {
-<<<<<<< HEAD
         setMessageUsers(response);
-=======
-        setMessageUsers(response.body);
->>>>>>> parent of db37502 (seperating the git create steps)
       }
     } catch (error) {
       console.error("Error fetching message user:", error);
@@ -63,11 +59,7 @@ const MessageComp = () => {
       if (receiver_id) {
         setSelectedUser(receiver_id);
         const response = await getMessageDetails(receiver_id);
-<<<<<<< HEAD
         setMessageDetails(response);
-=======
-        setMessageDetails(response.body);
->>>>>>> parent of db37502 (seperating the git create steps)
       }
     } catch (error) {
       console.error("Error fetching message details:", error);
@@ -177,7 +169,6 @@ const MessageComp = () => {
         <Card className="px-10 py-2">
           <h2>Submit works</h2>
         </Card>
-<<<<<<< HEAD
         <div className="mt-6 relative w-full">
           <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
           <div className="flex flex-col gap-3 absolute bottom-3 left-3">
@@ -186,8 +177,6 @@ const MessageComp = () => {
             <button className="bg-primary text-secondary rounded h-[36px] w-[130px]">Download Now</button>
           </div>
         </div>
-=======
->>>>>>> parent of db37502 (seperating the git create steps)
       </VStack>
     </HStack>
   );
@@ -208,11 +197,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
-<<<<<<< HEAD
       setreceiverDetails(response);
-=======
-      setreceiverDetails(response.body);
->>>>>>> parent of db37502 (seperating the git create steps)
     }
   };
 
@@ -231,11 +216,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const senderUser = async () => {
     if (selectedUser) {
       const response = await userById(userId);
-<<<<<<< HEAD
       setSenderDetails(response);
-=======
-      setSenderDetails(response.body);
->>>>>>> parent of db37502 (seperating the git create steps)
     }
   };
   // console.log({ receiverDetails, senderDetails });

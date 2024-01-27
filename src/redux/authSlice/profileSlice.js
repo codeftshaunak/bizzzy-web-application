@@ -16,13 +16,10 @@ const profileSlice = createSlice({
             state.profile = profile;
             localStorage.setItem("bizzzy_user", JSON.stringify(profile));
         },
-<<<<<<< HEAD
         agencyData: (state, action) => {
             const { agency } = action.payload;
             state.agency = agency;
         },
-=======
->>>>>>> parent of db37502 (seperating the git create steps)
         clearProfileData: (state) => {
             state.profile = {};
             localStorage.removeItem('bizzzy_user'); // Remove 'role' from local storage
@@ -31,13 +28,7 @@ const profileSlice = createSlice({
 
 });
 
-<<<<<<< HEAD
 export const { profileData, clearProfileData, agencyData } = profileSlice.actions;
 
 export default profileSlice.reducer;
 
-=======
-export const { profileData, clearProfileData } = profileSlice.actions;
-
-export default profileSlice.reducer;
->>>>>>> parent of db37502 (seperating the git create steps)
