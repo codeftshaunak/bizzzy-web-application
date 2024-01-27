@@ -60,7 +60,11 @@ const index = () => {
   const getResonOptionList = async () => {
     try {
       const response = await getOptionsList(id)
+<<<<<<< HEAD
       setResonOptionList(response?.reasons)
+=======
+      setResonOptionList(response?.body?.reasons)
+>>>>>>> parent of db37502 (seperating the git create steps)
     } catch (error) {
       console.log(error)
     }

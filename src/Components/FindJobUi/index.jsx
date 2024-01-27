@@ -287,4 +287,3 @@ export const Filter = ({ handleContractTypeChange, handleExperienceChange, handl
         </VStack>
     );
 };
-

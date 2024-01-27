@@ -16,7 +16,11 @@ const MyJobsComponentUi = () => {
         setLoading(true)
         try {
             const response = await userAllJobs();
+<<<<<<< HEAD
             setUserJobs(response);
+=======
+            setUserJobs(response.body);
+>>>>>>> parent of db37502 (seperating the git create steps)
         } catch (error) {
             console.log(error);
         }
@@ -53,7 +57,11 @@ const MyJobsComponentUi = () => {
                                 color: "black"
                             }}
                                 onClick={() => navigate("/find-job")}
+<<<<<<< HEAD
                             >Visit For New Opportunity</Button>
+=======
+                            >Vist For New Opportunity</Button>
+>>>>>>> parent of db37502 (seperating the git create steps)
                         </VStack>
                     }
 
@@ -69,7 +77,11 @@ const MyJobsComponentUi = () => {
                                 color: "black"
                             }}
                                 onClick={() => navigate("/find-job")}
+<<<<<<< HEAD
                             >Visit For New Opportunity</Button>
+=======
+                            >Vist For New Opportunity</Button>
+>>>>>>> parent of db37502 (seperating the git create steps)
                         </VStack>
                     } */}
 

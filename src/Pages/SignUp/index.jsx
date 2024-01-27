@@ -42,8 +42,13 @@ export const SignUp = () => {
     selectedOption === "freelancer"
       ? "Apply as a freelancer"
       : selectedOption === "client"
+<<<<<<< HEAD
         ? "Join as a client"
         : "Create Account";
+=======
+      ? "Join as a client"
+      : "Create Account";
+>>>>>>> parent of db37502 (seperating the git create steps)
 
   return (
     <>
@@ -619,7 +624,10 @@ export const FreelancerSignUp = () => {
   const navigate = useNavigate();
   const [verifyShow, setVerifyShow] = useState(false);
   const [countries, setCountries] = useState([]);
+<<<<<<< HEAD
   console.log({ countries });
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
   const toast = useToast();
   const iconsStyle = {
     fontSize: "1.5rem",
@@ -650,7 +658,11 @@ export const FreelancerSignUp = () => {
   // Get Countries List
   const getVerifiedCountries = async () => {
     const countries = await getCountries();
+<<<<<<< HEAD
     setCountries(countries);
+=======
+    setCountries(countries?.body);
+>>>>>>> parent of db37502 (seperating the git create steps)
   };
   useEffect(() => {
     getVerifiedCountries();
@@ -865,11 +877,17 @@ export const FreelancerSignUp = () => {
                     name="country"
                     onChange={handleChange}
                   >
+<<<<<<< HEAD
 
 
                     {countries?.map((country) => (
                       <option key={country?._id} value={country?.name}>
                         {country?.name}
+=======
+                    {countries?.map((country) => (
+                      <option key={country?._id} value={country?.country_name}>
+                        {country?.country_name}
+>>>>>>> parent of db37502 (seperating the git create steps)
                       </option>
                     ))}
                   </Select>
@@ -1292,4 +1310,7 @@ export const verifyMail = async () => {
     </OnbardingCardLayout>
   );
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)

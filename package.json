@@ -27,7 +27,10 @@
     "react": "^18.2.0",
     "react-awesome-reveal": "^4.2.5",
     "react-calendar": "^4.6.1",
+<<<<<<< HEAD
     "react-cookie": "^7.0.1",
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "react-icons": "^4.11.0",

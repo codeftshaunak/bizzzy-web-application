@@ -21,7 +21,11 @@ const Interview = () => {
     const getInvitationDetails = async () => {
         try {
             const response = await invitationDetails(invite_id);
+<<<<<<< HEAD
             setJobDetails(response[0]);
+=======
+            setJobDetails(response.body[0]);
+>>>>>>> parent of db37502 (seperating the git create steps)
         } catch (error) {
             console.error(error);
         }

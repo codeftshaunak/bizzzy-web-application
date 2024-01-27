@@ -3,7 +3,10 @@ import authReducer from "./authSlice/authSlice"; // Import your auth slice
 import clientSlice from "./clientSlice/clientSlice"; // Import your auth slice
 import profileReducer from "./authSlice/profileSlice";
 import HireFreelancerReducer from "./features/HireFreelancerSlice";
+<<<<<<< HEAD
 import activeUserSlice from './switchSlice/switchSlice';
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
 
 const store = configureStore({
   reducer: {
@@ -11,7 +14,10 @@ const store = configureStore({
     profile: profileReducer,
     client: clientSlice,
     HireFreelancer: HireFreelancerReducer,
+<<<<<<< HEAD
     activeagency: activeUserSlice
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
   },
 });
 

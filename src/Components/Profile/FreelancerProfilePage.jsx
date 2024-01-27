@@ -5,13 +5,20 @@ import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
 import { HStack, VStack, Avatar, Box, Text, Button } from "@chakra-ui/react";
+<<<<<<< HEAD
+=======
+import { getAllDetailsOfUser, updateFreelancer } from "../../helpers/userApis";
+>>>>>>> parent of db37502 (seperating the git create steps)
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { useSelector } from "react-redux";
 import { ProfileGigCards } from "../Gigs/SingleGig/ProfileGigCards";
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -21,8 +28,11 @@ export const FreelancerProfilePage = () => {
   const [deleteModalPage, setDeleteModalPage] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [id, setId] = useState({ id: "", type: "" });
+<<<<<<< HEAD
 
   const profile = useSelector((state) => state.profile);
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
   const {
     firstName,
     lastName,
@@ -35,14 +45,21 @@ export const FreelancerProfilePage = () => {
     experience,
     education,
     portfolio,
+<<<<<<< HEAD
   } = profile.profile || [];
 
+=======
+  } = details || [];
+>>>>>>> parent of db37502 (seperating the git create steps)
   const [localTime, setLocalTime] = useState();
 
   function openModal() {
     setModalIsOpen(true);
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of db37502 (seperating the git create steps)
   async function getCurrentTimeAndLocation() {
     try {
       const currentDate = new Date();
@@ -59,7 +76,22 @@ export const FreelancerProfilePage = () => {
   setTimeout(() => {
     getCurrentTimeAndLocation();
   }, 1000);
+<<<<<<< HEAD
 
+=======
+  const getProfileInformation = async () => {
+    try {
+      const resp = await getAllDetailsOfUser();
+      setDetails(resp.body);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProfileInformation();
+  }, [modalIsOpen]);
+>>>>>>> parent of db37502 (seperating the git create steps)
 
   function closeModal() {
     setModalIsOpen(false);
@@ -128,6 +160,11 @@ export const FreelancerProfilePage = () => {
   //   updatedEducationInfo()
   // })
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> parent of db37502 (seperating the git create steps)
   const HandleDeleteEducation = (id, type) => {
     setId({ id, type });
     setDeleteModalPage("exprience");
@@ -198,7 +235,11 @@ export const FreelancerProfilePage = () => {
             </div>
             <div className="flex flex-col justify-start">
               <p className="text-[24px] text-[#374151] font-semibold pl-3">
+<<<<<<< HEAD
                 {firstName + ' ' + lastName?.slice(0, 1) + '.'}
+=======
+                {firstName + (lastName ? " " + lastName.split(" ")[0] : "")}
+>>>>>>> parent of db37502 (seperating the git create steps)
               </p>
               <HStack className="text-[16px] text-[#374151] font-[400]">
                 <CiLocationOn />
@@ -656,12 +697,18 @@ export const FreelancerProfilePage = () => {
               </div>
             </div>
 
+<<<<<<< HEAD
             <div className="flex flex-col gap-[24px]  border-[1px] pt-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+=======
+
+            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+>>>>>>> parent of db37502 (seperating the git create steps)
               <div>
                 <p className="text-[16px] text-[#374151] font-[600] pb-3">
                   Your Gigs
                 </p>
                 <hr />
+<<<<<<< HEAD
                 <p className="mt-3">
                   Projects are a new way to earn on Upwork that helps you do
                   more of the work you love to do. Create project offerings that
@@ -681,6 +728,22 @@ export const FreelancerProfilePage = () => {
               <div className="grid grid-cols-3 gap-4"></div>
             </div>
 
+=======
+                <p className="mt-3">Projects are a new way to earn on Upwork that helps you do more of the work you love to do. Create project offerings that highlight your strengths and attract more clients.
+                </p>
+                <Button className="mt-3 border" backgroundColor={"white"} height={"34px"} fontWeight={"400"} borderRadius={"25px"} border={"2px solid  var(--primarytextcolor)"} transition={"0.3s ease-in-out"} _hover={{
+                  color: "white",
+                  backgroundColor: "var(--primarytextcolor)"
+                }} onClick={() => navigate("/freelancer/gig")}>Manage Gigs</Button>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+
+              </div>
+            </div>
+
+
+>>>>>>> parent of db37502 (seperating the git create steps)
             {/* ================= work history ====================== */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
@@ -694,7 +757,11 @@ export const FreelancerProfilePage = () => {
                 </p>
                 <div className="h-[2px] w-[60px] bg-[#16A34A]"></div>
               </div>
+<<<<<<< HEAD
               {profile?.work_history?.map((item, index) => (
+=======
+              {details?.work_history?.map((item, index) => (
+>>>>>>> parent of db37502 (seperating the git create steps)
                 <ReviewCard key={index} workDetails={item} />
               ))}
             </div>
