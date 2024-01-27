@@ -73,7 +73,7 @@ export const getSkills = async (category_id, sub_category_id) =>
     `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
   );
 
-//Thous function with end points need to recerate again with the following method avobe
+//Thous function with end points need to recerate again with the following method
 export const getFreelancers = async (
   skills,
   searchText,
@@ -123,23 +123,3 @@ export const getCategories = async () => {
   }
 };
 
-// export const getSkills = async (category_id) => {
-//   console.log("categoryId", category_id);
-//   try {
-//     const authtoken = localStorage.getItem("authtoken");
-
-//     const response = await API.get(`/categories/skills`, {
-//       headers: {
-//         "Content-Type": "application/json",
-//         token: authtoken,
-//       },
-//       params: {
-//         category_id: category_id,
-//       },
-//     });
-//     return response.data.body;
-//   } catch (error) {
-//     console.error("Error fetching freelancer data:", error);
-//     throw error;
-//   }
-// };
