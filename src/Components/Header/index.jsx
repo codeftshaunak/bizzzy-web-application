@@ -22,6 +22,7 @@ import {
   BsSend,
 } from "react-icons/bs";
 import { useState } from "react";
+import { useCookies } from 'react-cookie';
 import { AiFillSetting } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
@@ -398,8 +399,10 @@ export const Header = () => {
 export const AuthHeader = ({ role }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+  const [cookie, setCookie] = useCookies(['activeagency']);
+
   const profile = useSelector((state) => state.profile);
-  const { profile_image, name } = profile.profile || [];
+  const { profile_image, firstName, lastName } = profile.profile || [];
   const handleProfileButton = () => {
     setOpenInfo(!openInfo);
   };
@@ -407,16 +410,13 @@ export const AuthHeader = ({ role }) => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    setCookie('activeagency', false);
     dispatch(clearAuthData()); // Dispatch the clearAuthData action to reset the state
     dispatch(clearProfileData()); // Dispatch the clearAuthData action to reset the state
   };
 
   const handleUserProfile = () => {
-    if (role == 1) {
-      navigate("/freelancer");
-    } else {
-      navigate("/client");
-    }
+    navigate("/profile");
   };
 
   const navigate = useNavigate();
@@ -573,18 +573,14 @@ export const AuthHeader = ({ role }) => {
                   onClick={() => handleProfileButton()}
                 >
                   {profile_image != "null" && profile_image != null ? (
-                    <img
-                      src={profile_image}
-                      width={"60px"}
-                      style={{ borderRadius: "20px" }}
-                    />
+                    <img src={profile_image} style={{ borderRadius: "20px" }} />
                   ) : (
-                    <Avatar name={name} boxSize="40px" />
+                    <Avatar name={firstName + ' ' + lastName} boxSize="40px" />
                   )}
                 </div>
 
                 {openInfo && (
-                  <div className="absolute bg-white p-2 rounded-lg right-[30px] top-3 w-[120px] gap-5 border-slate-200 border transition-all">
+                  <div className="absolute bg-white p-2 rounded-lg right-[36px] top-3 w-[120px] gap-5 border-slate-200 border transition-all z-50">
                     <div
                       className="flex justify-around items-center w-full cursor-pointer mt-1 hover:bg-gray-200/20 py-1 px-2 rounded"
                       onClick={handleUserProfile}

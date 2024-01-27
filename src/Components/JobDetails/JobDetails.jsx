@@ -177,4 +177,3 @@ const JobDetails = ({ setPage, setDetails }) => {
 };
 
 export default JobDetails;
-

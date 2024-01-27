@@ -62,25 +62,29 @@ export const getReportData = async () =>
   makeApiRequest("get", "/reports/freelancer");
 
 export const createGig = async (data) =>
-  makeApiRequest('post', '/freelancer/gig/create', data)
+  makeApiRequest("post", "/freelancer/gig/create", data);
 
-export const getSubCategory = async (data) =>
-  makeApiRequest('get', `/categories/subcategories?category_id=${data}`)
+export const getSubCategory = async (_id) =>
+  makeApiRequest("get", `/categories/subcategories?category_id=${_id}`);
 
+export const getSkills = async (category_id, sub_category_id) =>
+  makeApiRequest(
+    "get",
+    `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
+  );
 
-
-
-//Thous function with end points need to recerate again with the following method avobe 
+//Thous function with end points need to recerate again with the following method
 export const getFreelancers = async (
   skills,
   searchText,
   hourlyRateMin,
-  hourlyRateMax
+  hourlyRateMax,
+  selectedSubCategory,
 ) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
     const skillsValues = skills.map((skill) => skill.value).join(",");
-    console.log("skillsValues", skillsValues);
+    const subcategoryValue = selectedSubCategory.map((category)=> category.value).join(",")
 
     const response = await API.get("/search-freelancers", {
       headers: {
@@ -92,6 +96,7 @@ export const getFreelancers = async (
         skills: skillsValues,
         hourlyRateMin: hourlyRateMin,
         hourlyRateMax: hourlyRateMax,
+        subCategoryId: subcategoryValue
       },
     });
     return response.data.body;
@@ -109,27 +114,6 @@ export const getCategories = async () => {
       headers: {
         "Content-Type": "application/json",
         token: authtoken,
-      },
-    });
-    return response.data.body;
-  } catch (error) {
-    console.error("Error fetching freelancer data:", error);
-    throw error;
-  }
-};
-
-export const getSkills = async (category_id) => {
-  console.log("categoryId", category_id);
-  try {
-    const authtoken = localStorage.getItem("authtoken");
-
-    const response = await API.get(`/categories/skills`, {
-      headers: {
-        "Content-Type": "application/json",
-        token: authtoken,
-      },
-      params: {
-        category_id: category_id,
       },
     });
     return response.data.body;

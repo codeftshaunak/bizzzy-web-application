@@ -1,5 +1,5 @@
 import { Button, Image, Text, VStack, Avatar } from "@chakra-ui/react";
-const AgencyProfile = ({ data }) => {
+const AgencyProfileCard = ({ data }) => {
     return (
         <VStack color="var(--primarytext)" gap={"5"}>
             {/* {data?.profile_image ? (
@@ -18,7 +18,7 @@ const AgencyProfile = ({ data }) => {
                 width="80px"
                 borderRadius="full"
             />
-            {/* 
+            {/*
             <VStack gap={"0"}>
                 <Text fontSize="1.2rem" marginBottom={"2"} fontWeight={"bold"}>
                     {data?.name}
@@ -43,4 +43,4 @@ const AgencyProfile = ({ data }) => {
     );
 };
 
-export default AgencyProfile;
+export default AgencyProfileCard;

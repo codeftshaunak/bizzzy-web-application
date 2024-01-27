@@ -196,6 +196,8 @@ export const ClientProfilePage = () => {
           </div>
         </div>
       </div>
+
+      {/* Initial profile modal */}
       <ProfileModal
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}

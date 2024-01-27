@@ -13,10 +13,8 @@ import {
   Stack,
   HStack,
   IconButton,
-  InputGroup,
-  InputRightElement,
   useToast,
-  Skeleton, SkeletonCircle, SkeletonText
+  Skeleton, SkeletonText
 } from "@chakra-ui/react"; // Import Chakra-UI components
 import OnbardingCardLayout from "../../Layouts/CardLayout/OnbardingCardLayout";
 import { signIn } from "../../helpers/apiRequest";
@@ -47,11 +45,6 @@ const Login = ({ setPage }) => {
   };
 
   const [showPassword, setShowPassword] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    categories: [],
-    skills: [],
-    hourly_rate: null,
-  });
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -66,17 +59,6 @@ const Login = ({ setPage }) => {
     });
   };
 
-  const userDetails = async () => {
-    setLoading(true);
-    try {
-      const response = await getAllDetailsOfUser();
-      setUserInfo(response || {});
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
 
@@ -87,7 +69,6 @@ const Login = ({ setPage }) => {
     if (response.code === 200) {
       const { role, token } = response.body;
       dispatch(setAuthData({ role: role, authtoken: token }));
-      dispatch(profileData({ profile: response.body }));
       toast({
         title: response.msg,
         status: "success",
@@ -97,7 +78,7 @@ const Login = ({ setPage }) => {
       });
       setLoading(true)
       const res = await getAllDetailsOfUser();
-      const data = res?.body;
+      const data = res;
       const detailsFound =
         data?.categories?.length > 0 &&
         data?.skills?.length > 0 &&

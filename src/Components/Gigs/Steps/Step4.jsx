@@ -7,6 +7,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import {
   Controller,
   FormProvider,
@@ -19,42 +20,74 @@ import { GigCreateLayout } from "../GigCreate";
 
 // validation schema
 const schema = yup.object().shape({
-  // title: yup.string().required("Title is required"),
-  // Define validation rules for other fields if needed
+  project_description: yup
+    .object()
+    .shape({
+      project_summary: yup.string().label("Project Summery").required(),
+      faqs: yup
+        .array(
+          yup.object().shape({
+            question: yup.string().label("Question").required(),
+            answer: yup.string().label("Answer").required(),
+          })
+        )
+        .label("Faq"),
+    })
+    .label("Project Description")
+    .required(),
+  terms: yup.boolean().label("Terms & Condition").default(false).required(),
+  privacy_notice: yup
+    .boolean()
+    .label("Privacy Policy")
+    .default(false)
+    .required(),
 });
 
 // default values for the step
 const defaultValues = {
   project_description: {
     project_summary: "",
-    faqs: [],
+    faqs: [{ question: "", answer: "" }],
   },
   terms: false,
   privacy_notice: false,
 };
 
-const Step4 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control, setValue } = methods;
+  const { handleSubmit, control, setValue, reset } = methods;
 
   const { fields: faqFields, append: appendFaq } = useFieldArray({
     control,
-    name: "faqs",
+    name: "project_description.faqs",
   });
-
+  console.log({ control });
   const addFaq = () => {
     appendFaq({ question: "", answer: "" });
   };
 
   // form submit operations
   const onSubmit = (values) => {
-    submitCallback(values); // this will update the parent state
-    afterSubmit(); // this will perform task after updating the state
+    const data = submitCallback(values); // this will update the parent state
+    console.log({ values });
+    afterSubmit(data); // this will perform task after updating the state
   };
 
+  // load state
+  useEffect(() => {
+    const changes = {};
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+      changes[key] = value === undefined ? defaultValues[key] : value;
+    });
+
+    reset(changes);
+  }, [formValues]);
+  console.log({ faqFields });
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,13 +107,23 @@ const Step4 = ({ submitCallback, onBack, afterSubmit }) => {
             <Controller
               name="project_description.project_summary"
               control={control}
-              render={({ field }) => (
-                <Textarea
-                  {...field}
-                  placeholder="You will get a fantastic deliverable that drives impact"
-                  marginTop={"5px"}
-                />
-              )}
+              render={({ field, fieldState }) => {
+                console.log(field);
+                return (
+                  <>
+                    <Textarea
+                      {...field}
+                      placeholder="You will get a fantastic deliverable that drives impact"
+                      marginTop={"5px"}
+                    />
+                    {fieldState.error && (
+                      <p style={{ color: "red", marginTop: "5px" }}>
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </>
+                );
+              }}
             />
           </VStack>
 
@@ -91,7 +134,11 @@ const Step4 = ({ submitCallback, onBack, afterSubmit }) => {
             >
               Frequently asked questions (optional)
             </label>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+            <p>
+              Provide answers to common questions your clients may have about
+              your project. Feel free to include details that will help them
+              better understand your work process.
+            </p>
             <VStack width={"100%"}>
               {faqFields.map((faq, index) => (
                 <VStack
@@ -104,17 +151,24 @@ const Step4 = ({ submitCallback, onBack, afterSubmit }) => {
                   className="shadow-md rounded-md"
                 >
                   <label htmlFor="" className="font-semibold">
-                    Question
+                    Question {index + 1}
                   </label>
                   <Controller
                     name={`project_description.faqs[${index}].question`}
                     control={control}
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        placeholder="Enter the question"
-                        marginTop={"5px"}
-                      />
+                    render={({ field, fieldState }) => (
+                      <>
+                        <Textarea
+                          {...field}
+                          placeholder="Enter the question"
+                          marginTop={"5px"}
+                        />
+                        {fieldState.error && (
+                          <p style={{ color: "red", marginTop: "5px" }}>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </>
                     )}
                   />
                   <label htmlFor="" className="font-semibold">
@@ -123,12 +177,19 @@ const Step4 = ({ submitCallback, onBack, afterSubmit }) => {
                   <Controller
                     name={`project_description.faqs[${index}].answer`}
                     control={control}
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        placeholder="Enter the answer"
-                        marginTop={"5px"}
-                      />
+                    render={({ field, fieldState }) => (
+                      <>
+                        <Textarea
+                          {...field}
+                          placeholder="Enter the answer"
+                          marginTop={"5px"}
+                        />
+                        {fieldState.error && (
+                          <p style={{ color: "red", marginTop: "5px" }}>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </>
                     )}
                   />
                 </VStack>

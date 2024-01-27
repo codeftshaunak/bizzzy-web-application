@@ -4,16 +4,16 @@ import { HStack, Box, Input, Textarea, Button, FormControl, FormLabel, Select, u
 import { getCategories, getCountries } from '../../helpers/clientApis';
 import { getSubCategory } from '../../helpers/freelancerApis';
 import { createAgency } from '../../helpers/agencyApis';
+import { useNavigate } from 'react-router-dom';
 
 const CreateForm = () => {
     const { handleSubmit, watch, register } = useForm();
+    const selectedCategory = watch('agency_services.category');
     const [countries, setCountries] = useState([]);
     const [category, setCategory] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
+    const navigate = useNavigate();
     const toast = useToast();
-
-    const selectedCategory = watch('agency_services.category');
-    console.log({ subCategories });
 
     const getCountriesList = async () => {
         try {
@@ -35,6 +35,7 @@ const CreateForm = () => {
     }
 
     const getSubCategoryList = async (category_id) => {
+        console.log({ category_id });
         try {
             const response = await getSubCategory(category_id);
             setSubCategories(response)
@@ -71,6 +72,7 @@ const CreateForm = () => {
                     position: 'top',
                     isClosable: true,
                 })
+                navigate("/agency-profile");
             }
         } catch (error) {
             console.log(error);
@@ -114,11 +116,11 @@ const CreateForm = () => {
                         </Select>
                     </FormControl>
 
-                    {selectedCategory && (
+                    {subCategories.length > 0 && (
                         <FormControl mb={4}>
                             <FormLabel fontSize={"xl"}>Services Sub-Category</FormLabel>
                             <Select {...register('agency_services.subCategory')} placeholder='Select Your Sub-Category' fontSize={"1.1rem"} required>
-                                {subCategories.map((subCategory) => (
+                                {subCategories?.map((subCategory) => (
                                     <option key={subCategory._id} value={subCategory._id}>
                                         {subCategory.sub_category_name}
                                     </option>
@@ -127,7 +129,11 @@ const CreateForm = () => {
                         </FormControl>
                     )}
 
-                    <Button type="submit" backgroundColor="var(--primarycolor)" color={"white"} borderRadius={"25px"}>Continue</Button>
+                    <Button type="submit" backgroundColor="var(--primarycolor)" color={"white"} borderRadius={"25px"} border={"2px solid white"} transition={"0.5s ease-in-out"} _hover={{
+                        border: "2px solid var(--primarycolor)",
+                        background: "white",
+                        color: "var(--primarycolor)"
+                    }}>Continue</Button>
                 </form>
             </Box>
         </HStack>

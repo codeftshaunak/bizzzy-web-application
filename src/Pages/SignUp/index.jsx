@@ -619,6 +619,7 @@ export const FreelancerSignUp = () => {
   const navigate = useNavigate();
   const [verifyShow, setVerifyShow] = useState(false);
   const [countries, setCountries] = useState([]);
+  console.log({ countries });
   const toast = useToast();
   const iconsStyle = {
     fontSize: "1.5rem",
@@ -1291,4 +1292,3 @@ export const verifyMail = async () => {
     </OnbardingCardLayout>
   );
 };
-

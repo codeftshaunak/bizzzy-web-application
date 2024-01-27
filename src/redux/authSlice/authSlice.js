@@ -23,8 +23,8 @@ const authSlice = createSlice({
     clearAuthData: (state) => {
       state.role = '';
       state.authtoken = '';
-      localStorage.removeItem('role'); // Remove 'role' from local storage
-      localStorage.removeItem('authtoken'); // Remove 'authtoken' from local storage
+      localStorage.removeItem('role');
+      localStorage.removeItem('authtoken');
     },
   },
 });

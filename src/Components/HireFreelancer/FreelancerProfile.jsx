@@ -1,4 +1,3 @@
-
 import { Heading, Box, Flex, Avatar } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 

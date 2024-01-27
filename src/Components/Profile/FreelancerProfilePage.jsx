@@ -5,12 +5,13 @@ import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
 import { HStack, VStack, Avatar, Box, Text, Button } from "@chakra-ui/react";
-import { getAllDetailsOfUser, updateFreelancer } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { ProfileGigCards } from "../Gigs/SingleGig/ProfileGigCards";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -20,6 +21,8 @@ export const FreelancerProfilePage = () => {
   const [deleteModalPage, setDeleteModalPage] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [id, setId] = useState({ id: "", type: "" });
+
+  const profile = useSelector((state) => state.profile);
   const {
     firstName,
     lastName,
@@ -32,7 +35,8 @@ export const FreelancerProfilePage = () => {
     experience,
     education,
     portfolio,
-  } = details || [];
+  } = profile.profile || [];
+
   const [localTime, setLocalTime] = useState();
 
   function openModal() {
@@ -54,18 +58,6 @@ export const FreelancerProfilePage = () => {
   setTimeout(() => {
     getCurrentTimeAndLocation();
   }, 1000);
-  const getProfileInformation = async () => {
-    try {
-      const resp = await getAllDetailsOfUser();
-      setDetails(resp);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getProfileInformation();
-  }, [modalIsOpen]);
 
   function closeModal() {
     setModalIsOpen(false);
@@ -133,8 +125,6 @@ export const FreelancerProfilePage = () => {
   // useEffect(() => {
   //   updatedEducationInfo()
   // })
-
-
 
   const HandleDeleteEducation = (id, type) => {
     setId({ id, type });
@@ -206,7 +196,7 @@ export const FreelancerProfilePage = () => {
             </div>
             <div className="flex flex-col justify-start">
               <p className="text-[24px] text-[#374151] font-semibold pl-3">
-                {firstName + (lastName ? " " + lastName.split(" ")[0] : "")}
+                {firstName + ' ' + lastName?.slice(0, 1) + '.'}
               </p>
               <HStack className="text-[16px] text-[#374151] font-[400]">
                 <CiLocationOn />
@@ -664,26 +654,30 @@ export const FreelancerProfilePage = () => {
               </div>
             </div>
 
-
-            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex flex-col gap-[24px]  border-[1px] pt-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div>
                 <p className="text-[16px] text-[#374151] font-[600] pb-3">
                   Your Gigs
                 </p>
                 <hr />
-                <p className="mt-3">Projects are a new way to earn on Upwork that helps you do more of the work you love to do. Create project offerings that highlight your strengths and attract more clients.
+                <p className="mt-3">
+                  Projects are a new way to earn on Upwork that helps you do
+                  more of the work you love to do. Create project offerings that
+                  highlight your strengths and attract more clients.
                 </p>
-                <Button className="mt-3 border" backgroundColor={"white"} height={"34px"} fontWeight={"400"} borderRadius={"25px"} border={"2px solid  var(--primarytextcolor)"} transition={"0.3s ease-in-out"} _hover={{
-                  color: "white",
-                  backgroundColor: "var(--primarytextcolor)"
-                }} onClick={() => navigate("/freelancer/gig")}>Manage Gigs</Button>
+                <button
+                  className="text-start px-5 py-1 rounded-full border-2 border-[var(--primarytextcolor)] hover:text-white hover:bg-[var(--primarytextcolor)] transition h-fit w-fit font-semibold mt-3"
+                  onClick={() => navigate("/freelancer/gig")}
+                >
+                  Manage Gigs
+                </button>
+                <div className="mt-10 w-full">
+                  <ProfileGigCards />
+                </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
-
-              </div>
+              <div className="grid grid-cols-3 gap-4"></div>
             </div>
-
 
             {/* ================= work history ====================== */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
@@ -698,7 +692,7 @@ export const FreelancerProfilePage = () => {
                 </p>
                 <div className="h-[2px] w-[60px] bg-[#16A34A]"></div>
               </div>
-              {details?.work_history?.map((item, index) => (
+              {profile?.work_history?.map((item, index) => (
                 <ReviewCard key={index} workDetails={item} />
               ))}
             </div>

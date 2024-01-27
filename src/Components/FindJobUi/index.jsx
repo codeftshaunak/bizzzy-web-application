@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { getAllJobs, searchJobs } from '../../helpers/jobApis';
 import JobCard from './JobCard';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useSelector } from 'react-redux'
-import UserCard from './UserCard';
+import UserProfileCard from './UserCard';
 import AgencyUserCard from './AgencyUserCard';
 
 export const AllJobs = () => {
@@ -14,8 +15,9 @@ export const AllJobs = () => {
     const reverseJob = jobs?.slice().reverse();
     const leatestJob = reverseJob.slice(0, 4);
     const navigate = useNavigate();
-    const profile = useSelector((state) => state.profile);
-    const { name, profile_image, professional_role, id } = profile.profile || [];
+    const [cookies] = useCookies(['activeagency']);
+    const activeagency = cookies.activeagency;
+
     const getAllJobList = async () => {
         try {
             const response = await getAllJobs();
@@ -80,72 +82,17 @@ export const AllJobs = () => {
                     </div>
                 </div>
                 <div className="w-[25%] pl-6">
-                    {/* <div className="border border-tertiary rounded-2xl">
-                        <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                            {profile_image == null ? (
-                                <Avatar name={name} />
-                            ) : (
-                                <img
-                                    src={profile_image}
-                                    alt="avatar"
-                                    className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
-                                />
-                            )}
-                            <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/freelancer`)}>{name}</div>
-                            <div className="text-sm text-gray-300">{professional_role}</div>
-                            <div className="flex items-center">
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="text-sm font-medium">5.0 of 4 Reviews</div>
-                            </div>
-                        </div>
-                        <div className="p-4">
-                            <div className="text-sm text-gray-400">Complete your Profile</div>
-                            <div className="flex gap-4 items-center mt-3">
-                                <div className="w-[80%] h-[5px] bg-green-600 rounded-2xl"></div>
-                                <div className="text-xs font-semibold">100%</div>
-                            </div>
-                        </div>
-                    </div> */}
-
-                    <UserCard profile_image={profile_image} name={name} professional_role={professional_role} />
-                    <br />
-                    <AgencyUserCard profile_image={profile_image} name={name} professional_role={professional_role} />
-
-                    {/* <div className="border border-tertiary rounded-2xl">
-                        <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                            {profile_image == null ? (
-                                <Avatar name={name} />
-                            ) : (
-                                <img
-                                    src={profile_image}
-                                    alt="avatar"
-                                    className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
-                                />
-                            )}
-                            <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/freelancer`)}>{name}</div>
-                            <div className="text-sm text-gray-300">{professional_role}</div>
-                            <div className="flex items-center">
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="text-sm font-medium">5.0 of 4 Reviews</div>
-                            </div>
-                        </div>
-                        <div className="p-4">
-                            <div className="text-sm text-gray-400">Complete your Profile</div>
-                            <div className="flex gap-4 items-center mt-3">
-                                <div className="w-[80%] h-[5px] bg-green-600 rounded-2xl"></div>
-                                <div className="text-xs font-semibold">100%</div>
-                            </div>
-                        </div>
-                    </div> */}
-
+                    {
+                        activeagency ? <>
+                            <AgencyUserCard />
+                            <br />
+                            <UserProfileCard />
+                        </> : <>
+                            <UserProfileCard />
+                            <br />
+                            <AgencyUserCard />
+                        </>
+                    }
                     <div className="mt-6 relative">
                         <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
                         <div className="flex flex-col gap-3 absolute bottom-3 left-3">
@@ -171,8 +118,7 @@ export const SearchJobPage = () => {
     const [contractType, setContractType] = useState([]);
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
-    const { name, profile_image, professional_role, id } = profile.profile || [];
-
+    const { name, profile_image, professional_role, id, agency_profile } = profile.profile || [];
 
     const handleSearch = () => {
         const lowerCaseSearchTerm = searchTerm?.toLowerCase();
@@ -262,32 +208,7 @@ export const SearchJobPage = () => {
         <div className='w-full mx-auto'>
             <div className="py-6 px-8 flex w-full">
                 <div className="w-[40%] pr-6">
-                    <div className="border border-tertiary rounded-2xl">
-                        <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                            {profile_image == null ? (
-                                <Avatar name={name} />
-                            ) : (
-                                <img
-                                    src={profile_image}
-                                    alt="avatar"
-                                    className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
-                                />
-                            )}
-                            <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate("/freelancer")}>{name}</div>
-                            <div className="text-sm text-gray-300">{professional_role}</div>
-                            <div className="flex items-center">
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="text-sm font-medium">5.0 of 4 Reviews</div>
-                            </div>
-                        </div>
-                        <div className="p-4">
-                            <button className="bg-primary text-secondary rounded h-[36px] w-full" onClick={() => navigate("/freelancer")}>View Your Profile</button>
-                        </div>
-                    </div>
+                    <UserProfileCard />
                     <Filter
                         handleCategoryChange={handleCategoryChange}
                         handleContractTypeChange={handleContractTypeChange}
@@ -366,4 +287,3 @@ export const Filter = ({ handleContractTypeChange, handleExperienceChange, handl
         </VStack>
     );
 };
-

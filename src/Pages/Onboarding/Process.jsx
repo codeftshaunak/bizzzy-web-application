@@ -3,26 +3,15 @@ import OnboardingProcess from "../../Layouts/CardLayout/OnboardingProcess";
 import {
   Box,
   Button,
-  Checkbox,
   HStack,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
   Textarea,
   VStack,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { CiUser } from "react-icons/ci";
 import { TbClick, TbReceipt } from "react-icons/tb";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import CTAButton from "../../Components/CTAButton";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import {
@@ -45,7 +34,6 @@ const Process = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [options, setOptions] = useState([]);
   const [skillOptions, setSkillOptions] = useState([]);
-
   const [skillSelectedOptions, setSkillSelectedOptions] = useState([]);
   const role = useSelector((state) => state.auth.role);
 
@@ -89,7 +77,7 @@ const Process = () => {
       userDetails?.skills?.length > 0 &&
       userDetails?.professional_role?.length > 0
     ) {
-      navigate("/freelancer");
+      navigate("/profile");
     }
     if (
       userDetails?.briefDescription?.length > 0 &&
@@ -128,6 +116,7 @@ const Process = () => {
             const response = await updateFreelancerProfile({
               categories: selectedCategories,
             });
+            console.log(response);
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -226,7 +215,7 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
-              navigate("/freelancer");
+              navigate("/profile");
             } else if (response.code === 200) {
               toast({
                 title: "Skils Added Successfully",
@@ -236,7 +225,7 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
-              navigate("/freelancer");
+              navigate("/profile");
             }
           }
         }
@@ -321,7 +310,7 @@ const Process = () => {
         try {
           const skills = await getSkills(_id);
           if (skills) {
-            return skills?.map((item) => ({
+            return skills.map((item) => ({
               value: item?.skill_name,
               label: item?.skill_name,
               category_id: item?.category_id,
@@ -723,4 +712,3 @@ const Process = () => {
 };
 
 export default Process;
-
