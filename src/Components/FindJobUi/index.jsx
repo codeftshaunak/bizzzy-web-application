@@ -208,32 +208,7 @@ export const SearchJobPage = () => {
         <div className='w-full mx-auto'>
             <div className="py-6 px-8 flex w-full">
                 <div className="w-[40%] pr-6">
-                    <div className="border border-tertiary rounded-2xl">
-                        <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                            {profile_image == null ? (
-                                <Avatar name={name} />
-                            ) : (
-                                <img
-                                    src={profile_image}
-                                    alt="avatar"
-                                    className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
-                                />
-                            )}
-                            <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate("/freelancer")}>{name}</div>
-                            <div className="text-sm text-gray-300">{professional_role}</div>
-                            <div className="flex items-center">
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="text-sm font-medium">5.0 of 4 Reviews</div>
-                            </div>
-                        </div>
-                        <div className="p-4">
-                            <button className="bg-primary text-secondary rounded h-[36px] w-full" onClick={() => navigate("/freelancer")}>View Your Profile</button>
-                        </div>
-                    </div>
+                    <UserProfileCard />
                     <Filter
                         handleCategoryChange={handleCategoryChange}
                         handleContractTypeChange={handleContractTypeChange}

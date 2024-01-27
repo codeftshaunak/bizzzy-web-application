@@ -18,7 +18,7 @@ const UserProfileCard = () => {
                             className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
                         />
                     )}
-                    <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/freelancer`)}>{name}</div>
+                    <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/profile`)}>{name}</div>
                     <div className="text-sm text-gray-300">{professional_role}</div>
                     <div className="flex items-center">
                         <div className="star-filled"></div>

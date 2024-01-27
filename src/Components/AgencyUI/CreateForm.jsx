@@ -8,14 +8,12 @@ import { useNavigate } from 'react-router-dom';
 
 const CreateForm = () => {
     const { handleSubmit, watch, register } = useForm();
+    const selectedCategory = watch('agency_services.category');
     const [countries, setCountries] = useState([]);
     const [category, setCategory] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
     const navigate = useNavigate();
     const toast = useToast();
-
-    const selectedCategory = watch('agency_services.category');
-    console.log({ selectedCategory });
 
     const getCountriesList = async () => {
         try {

@@ -15,11 +15,11 @@ const UserProfileCard = () => {
         if (activeagency) {
             setCookie('activeagency', false)
         } else {
-            navigate(`/freelancer`)
+            navigate(`/profile`)
         }
     }
     return (
-        <div className="border border-tertiary rounded-2xl w-[300px] m-auto">
+        <div className="border border-tertiary rounded-2xl w-full m-auto">
             <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
                 {profile_image == null ? (
                     <Avatar name={firstName + ' ' + lastName} />
@@ -30,7 +30,7 @@ const UserProfileCard = () => {
                         className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
                     />
                 )}
-                <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/freelancer`)}>{firstName + ' ' + lastName?.slice(0, 1) + '.'}</div>
+                <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate(`/profile`)}>{firstName + ' ' + lastName?.slice(0, 1) + '.'}</div>
                 <div className="text-sm text-gray-300">{professional_role}</div>
                 <div className="flex items-center">
                     <div className="star-filled"></div>
