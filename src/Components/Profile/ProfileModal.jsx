@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { useSelector } from 'react-redux';
-=======
->>>>>>> parent of db37502 (seperating the git create steps)
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
@@ -15,14 +12,9 @@ import {
   getAllDetailsOfUser,
 } from "../../helpers/userApis";
 import { Spinner } from "@chakra-ui/react";
-<<<<<<< HEAD
 import { getSkills } from "../../helpers/freelancerApis";
 import { IoMdClose } from "react-icons/io";
 
-=======
-import { getSkills } from "../../helpers/clientApis";
-import { IoMdClose } from "react-icons/io";
->>>>>>> parent of db37502 (seperating the git create steps)
 export const customStyles = {
   content: {
     top: "50%",
@@ -44,15 +36,11 @@ export const ProfileModal = ({
   selectedEducation,
   inputChange,
 }) => {
-<<<<<<< HEAD
   // const [userProfileInfo, setUserProfileInfo] = useState(null);
 
   const userProfileInfo = useSelector((state) => state.profile.profile);
 
 
-=======
-  const [userProfileInfo, setUserProfileInfo] = useState(null);
->>>>>>> parent of db37502 (seperating the git create steps)
   const toast = useToast();
   const animatedComponents = makeAnimated();
   const [options, setOptions] = useState(null);
@@ -172,17 +160,6 @@ export const ProfileModal = ({
     setSelectedOptions(selectedValues || []);
   };
 
-<<<<<<< HEAD
-=======
-  // Get Profile Details
-  const userProfile = async () => {
-    const response = await getAllDetailsOfUser();
-    setUserProfileInfo(response?.body);
-  };
-  useEffect(() => {
-    userProfile();
-  }, [closeModal]);
->>>>>>> parent of db37502 (seperating the git create steps)
 
   // Handle Updating Skills Methods
   const getCategorySkills = async (categoryIds) => {
@@ -191,13 +168,8 @@ export const ProfileModal = ({
       const promises = validCategoryIds?.map(async ({ _id }) => {
         try {
           const skills = await getSkills(_id);
-<<<<<<< HEAD
           if (skills) {
             return skills?.map((item) => ({
-=======
-          if (skills && skills.body) {
-            return skills.body?.map((item) => ({
->>>>>>> parent of db37502 (seperating the git create steps)
               value: item?.skill_name,
               label: item?.skill_name,
               _id: item?._id,
@@ -247,10 +219,6 @@ export const ProfileModal = ({
   // };
 
   const handleSaveAndContinue = async (data) => {
-<<<<<<< HEAD
-=======
-    console.log(data, "data");
->>>>>>> parent of db37502 (seperating the git create steps)
     try {
       if (data === "category") {
         // Handle saving categories
@@ -260,12 +228,9 @@ export const ProfileModal = ({
         const response = await updateFreelancerProfile({
           categories: selectedCategories,
         });
-<<<<<<< HEAD
 
         console.log({ response });
 
-=======
->>>>>>> parent of db37502 (seperating the git create steps)
         if (response.code === 405) {
           toast({
             title: response.msg,

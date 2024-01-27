@@ -23,13 +23,8 @@ const authSlice = createSlice({
     clearAuthData: (state) => {
       state.role = '';
       state.authtoken = '';
-<<<<<<< HEAD
       localStorage.removeItem('role');
       localStorage.removeItem('authtoken');
-=======
-      localStorage.removeItem('role'); // Remove 'role' from local storage
-      localStorage.removeItem('authtoken'); // Remove 'authtoken' from local storage
->>>>>>> parent of db37502 (seperating the git create steps)
     },
   },
 });

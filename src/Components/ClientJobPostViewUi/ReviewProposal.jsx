@@ -39,11 +39,7 @@ export const ReviewProposal = () => {
     const user = await getFreelancerInfo(freelancer?.userId);
     setUserId(freelancer?.userId);
     setOpen(true);
-<<<<<<< HEAD
     dispatch(setTargetedFreelancer({ ...user }));
-=======
-    dispatch(setTargetedFreelancer({ ...user?.body }));
->>>>>>> parent of db37502 (seperating the git create steps)
   };
 
   useEffect(() => {

@@ -3,11 +3,7 @@ import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
   const location = useLocation();
-<<<<<<< HEAD
   const auth = useSelector((state) => state?.auth?.authtoken.length > 10);
-=======
-  const auth = useSelector((state) => state?.auth?.authtoken.length > 10); //dummy checking purpose
->>>>>>> parent of db37502 (seperating the git create steps)
 
   return auth ? (
     <Outlet />

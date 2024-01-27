@@ -48,10 +48,6 @@ const HireFreelancerPage = () => {
           colorScheme: "green",
           position: "top-right",
         });
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of db37502 (seperating the git create steps)
         navigate("/client-dashboard");
       }
       setIsContinue(false);
@@ -98,14 +94,8 @@ const HireFreelancerPage = () => {
           <div className="font-semibold text-right flex items-center justify-end gap-10 mt-10">
             <button className="text-green-500">Cancel</button>
             <button
-<<<<<<< HEAD
               className={`py-2 px-5 text-white cursor-pointer rounded-full bg-green-500 w-fit flex items-center ${(!isChecked || isContinue) && "opacity-50 cursor-not-allowed"
                 }`}
-=======
-              className={`py-2 px-5 text-white cursor-pointer rounded-full bg-green-500 w-fit flex items-center ${
-                (!isChecked || isContinue) && "opacity-50 cursor-not-allowed"
-              }`}
->>>>>>> parent of db37502 (seperating the git create steps)
               disabled={!isChecked || isContinue}
             >
               {isContinue && (
@@ -130,7 +120,3 @@ const HireFreelancerPage = () => {
 };
 
 export default HireFreelancerPage;
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of db37502 (seperating the git create steps)

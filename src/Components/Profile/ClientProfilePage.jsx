@@ -40,11 +40,7 @@ export const ClientProfilePage = () => {
   const getProfileInformation = async () => {
     try {
       const resp = await getAllDetailsOfUser();
-<<<<<<< HEAD
       setDetails(resp);
-=======
-      setDetails(resp.body);
->>>>>>> parent of db37502 (seperating the git create steps)
     } catch (error) {
       console.log(error);
     }
@@ -200,11 +196,8 @@ export const ClientProfilePage = () => {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
 
       {/* Initial profile modal */}
-=======
->>>>>>> parent of db37502 (seperating the git create steps)
       <ProfileModal
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}

@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-import React from "react";
-import portfoliobg from "../../assets/portfoliobg.png";
->>>>>>> parent of db37502 (seperating the git create steps)
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
