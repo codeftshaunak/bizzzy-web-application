@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  activeagency: false, // assuming you want to set 'freelancer' as the initial active user
+  activeagency: false, 
 };
 
 const activeUserSlice = createSlice({
