@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import OnboardingProcess from "../../Layouts/CardLayout/OnboardingProcess";
 import {
@@ -21,7 +22,11 @@ import {
 import { BsBack, BsBackspaceFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getCategories, getSkills } from "../../helpers/freelancerApis";
+import {
+  getCategories,
+  getSkills,
+  getSubCategory,
+} from "../../helpers/freelancerApis";
 
 const animatedComponents = makeAnimated();
 
@@ -36,6 +41,9 @@ const Process = () => {
   const [skillOptions, setSkillOptions] = useState([]);
   const [skillSelectedOptions, setSkillSelectedOptions] = useState([]);
   const role = useSelector((state) => state.auth.role);
+  const [selectedSubCategory, setSeletedSubCategory] = useState([]);
+  const [subCategoryOption, setSubCategoryOption] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const getUserInformation = async () => {
     try {
@@ -68,12 +76,18 @@ const Process = () => {
   });
 
   const handleSelectChange = (selectedValues) => {
+    setSelectedCategory(selectedValues?._id);
     setSelectedOptions(selectedValues || []);
+  };
+
+  const handleSelectSubCategoryChange = (selectedValues) => {
+    setSeletedSubCategory(selectedValues || []);
   };
 
   const autoProcess = () => {
     if (
       userDetails?.categories?.length > 0 &&
+      userDetails?.sub_categories?.length > 0 &&
       userDetails?.skills?.length > 0 &&
       userDetails?.professional_role?.length > 0
     ) {
@@ -109,14 +123,31 @@ const Process = () => {
               isClosable: true,
             });
           } else {
-            const selectedCategories = selectedOptions?.map((option) => ({
-              value: option.value,
-              _id: option._id,
-            }));
+            const selectedCategories =
+              selectedOptions && !Array.isArray(selectedOptions)
+                ? [selectedOptions].map((option) => ({
+                    value: option.value,
+                    _id: option._id,
+                  }))
+                : [];
+
+            const subCategoriesValue =
+              selectedSubCategory && Array.isArray(selectedSubCategory)
+                ? selectedSubCategory.map((option) => ({
+                    value: option.value,
+                    _id: option._id,
+                  }))
+                : [];
+
+            console.log(subCategoriesValue, "selectedSubCategory2");
+
             const response = await updateFreelancerProfile({
               categories: selectedCategories,
+              sub_categories: subCategoriesValue,
             });
-            console.log(response);
+
+            console.log(response, "response|====");
+
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -126,6 +157,7 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
+              setSeletedSubCategory([]);
               setPage(3);
             } else if (response.code === 200) {
               toast({
@@ -136,6 +168,7 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
+              setSeletedSubCategory([]);
               setPage(3);
             }
           }
@@ -200,9 +233,10 @@ const Process = () => {
               position: "top",
             });
           } else {
-            const selectedCategories = selectedOptions?.map(
+            const selectedCategories = selectedOptions.map(
               (option) => option.value
             );
+            console.log(selectedCategories);
             const response = await updateFreelancerProfile({
               skills: selectedCategories,
             });
@@ -300,6 +334,31 @@ const Process = () => {
   useEffect(() => {
     getCategory();
   }, []);
+
+  // Handle Sub Category
+  const getSubCategoryData = async () => {
+    try {
+      const subcategories = await getSubCategory(selectedCategory);
+
+      if (Array.isArray(subcategories)) {
+        setSubCategoryOption(
+          subcategories.map((item) => ({
+            value: item.sub_category_name,
+            label: item.sub_category_name,
+            _id: item._id,
+          }))
+        );
+      } else {
+        setSubCategoryOption([]);
+      }
+    } catch (error) {
+      setSubCategoryOption([]);
+    }
+  };
+
+  useEffect(() => {
+    getSubCategoryData();
+  }, [selectedCategory]);
 
   // Handle Skills Options Category Wise
   const getCategorySkills = async (categoryIds) => {
@@ -442,13 +501,24 @@ const Process = () => {
                 <Select
                   placeholder="Select Your Category"
                   className="w-[400px]"
-                  closeMenuOnSelect={false}
+                  closeMenuOnSelect={true}
                   components={animatedComponents}
-                  isMulti
                   options={options}
                   onChange={handleSelectChange}
                   value={selectedOptions}
                 />
+
+                <Select
+                  placeholder="Select Your Sub Category"
+                  className="w-[400px]"
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={subCategoryOption}
+                  onChange={handleSelectSubCategoryChange}
+                  value={selectedSubCategory}
+                />
+
                 <Button
                   fontWeight="500"
                   color="#fff"
@@ -622,90 +692,90 @@ const Process = () => {
             )}
           </>
         )) || (
-            <>
-              {role == 2 && page == 2 && (
-                <VStack
-                  justifyContent="start"
-                  alignItems="start"
-                  width="630px"
-                  gap="30px"
-                  color="var(--primarytext)"
+          <>
+            {role == 2 && page == 2 && (
+              <VStack
+                justifyContent="start"
+                alignItems="start"
+                width="630px"
+                gap="30px"
+                color="var(--primarytext)"
+              >
+                <Box
+                  backgroundColor="var(--primarysoftbg)"
+                  color="var(--primarytextcolor)"
+                  padding="0rem 0.8rem"
+                  borderRadius="5px"
                 >
-                  <Box
-                    backgroundColor="var(--primarysoftbg)"
-                    color="var(--primarytextcolor)"
-                    padding="0rem 0.8rem"
-                    borderRadius="5px"
-                  >
-                    Create your Profile
-                  </Box>
-                  <Box>
-                    <Text fontSize="40px" fontWeight="500">
-                      How would you like to tell us about yourself?
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="15px" fontWeight="400">
-                      We need to get a sense of your education, experience and
-                      categories. It’s quickest to import your information, you
-                      can edit it before your profile goes live.
-                    </Text>
-                  </Box>
-                  <VStack width={"full"} alignItems={"start"}>
-                    <Text mb="0px">{"Write Your Business Name"}</Text>
-                    <Input
-                      variant="outline"
-                      required
-                      placeholder="Write Your Business Name"
-                      width={"100%"}
-                      value={businessDetails?.business_name}
-                      onChange={(e) =>
-                        setBusinessDetails({
-                          ...businessDetails,
-                          business_name: e.target.value,
-                        })
-                      }
-                    />
-                  </VStack>
-
-                  <VStack width={"full"} alignItems={"start"}>
-                    <Text mb="0px">{"Write Your Business Details"}</Text>
-                    <Textarea
-                      required
-                      variant="outline"
-                      placeholder="Write Your Business Details"
-                      width={"100%"}
-                      style={{ resize: "none" }}
-                      rows={5}
-                      value={businessDetails?.brief_description}
-                      onChange={(e) =>
-                        setBusinessDetails({
-                          ...businessDetails,
-                          brief_description: e.target.value,
-                        })
-                      }
-                    />
-                  </VStack>
-                  <Button
-                    fontWeight="500"
-                    color="#fff"
-                    fontSize="1rem"
-                    bg="var(--primarycolor)"
-                    height="2.5rem"
-                    transition={"0.3s ease-in-out"}
-                    _hover={{
-                      border: "1px solid var(--primarycolor)",
-                      backgroundColor: "var(--primarysoftbg)",
-                      color: "var(--primarytext)",
-                    }}
-                    onClick={() => handleSaveAndContinue("business_details")}
-                  >
-                    Save & Continue
-                  </Button>
+                  Create your Profile
+                </Box>
+                <Box>
+                  <Text fontSize="40px" fontWeight="500">
+                    How would you like to tell us about yourself?
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="15px" fontWeight="400">
+                    We need to get a sense of your education, experience and
+                    categories. It’s quickest to import your information, you
+                    can edit it before your profile goes live.
+                  </Text>
+                </Box>
+                <VStack width={"full"} alignItems={"start"}>
+                  <Text mb="0px">{"Write Your Business Name"}</Text>
+                  <Input
+                    variant="outline"
+                    required
+                    placeholder="Write Your Business Name"
+                    width={"100%"}
+                    value={businessDetails?.business_name}
+                    onChange={(e) =>
+                      setBusinessDetails({
+                        ...businessDetails,
+                        business_name: e.target.value,
+                      })
+                    }
+                  />
                 </VStack>
-              )}
-            </>
-          )}
+
+                <VStack width={"full"} alignItems={"start"}>
+                  <Text mb="0px">{"Write Your Business Details"}</Text>
+                  <Textarea
+                    required
+                    variant="outline"
+                    placeholder="Write Your Business Details"
+                    width={"100%"}
+                    style={{ resize: "none" }}
+                    rows={5}
+                    value={businessDetails?.brief_description}
+                    onChange={(e) =>
+                      setBusinessDetails({
+                        ...businessDetails,
+                        brief_description: e.target.value,
+                      })
+                    }
+                  />
+                </VStack>
+                <Button
+                  fontWeight="500"
+                  color="#fff"
+                  fontSize="1rem"
+                  bg="var(--primarycolor)"
+                  height="2.5rem"
+                  transition={"0.3s ease-in-out"}
+                  _hover={{
+                    border: "1px solid var(--primarycolor)",
+                    backgroundColor: "var(--primarysoftbg)",
+                    color: "var(--primarytext)",
+                  }}
+                  onClick={() => handleSaveAndContinue("business_details")}
+                >
+                  Save & Continue
+                </Button>
+              </VStack>
+            )}
+          </>
+        )}
       </>
     </OnboardingProcess>
   );

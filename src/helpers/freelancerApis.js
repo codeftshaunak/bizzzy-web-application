@@ -84,7 +84,11 @@ export const getFreelancers = async (
   try {
     const authtoken = localStorage.getItem("authtoken");
     const skillsValues = skills.map((skill) => skill.value).join(",");
-    const subcategoryValue = selectedSubCategory.map((category)=> category.value).join(",")
+    // const subcategoryValue = selectedSubCategory.map((category)=> category.value).join(",")
+    const subcategoryValue =
+    selectedSubCategory && selectedSubCategory.length > 0
+      ? selectedSubCategory.map((category) => category.value).join(",")
+      : null;
 
     const response = await API.get("/search-freelancers", {
       headers: {
@@ -96,7 +100,7 @@ export const getFreelancers = async (
         skills: skillsValues,
         hourlyRateMin: hourlyRateMin,
         hourlyRateMax: hourlyRateMax,
-        subCategoryId: subcategoryValue
+        ...(subcategoryValue && { subCategoryId: subcategoryValue }),
       },
     });
     return response.data.body;
