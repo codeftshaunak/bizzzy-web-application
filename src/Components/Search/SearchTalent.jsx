@@ -187,7 +187,6 @@ export const SearchTalents = () => {
   const [hourlyRateMax, setHourlyRateMax] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState(null);
   const [categorySkills, setCategorySkills] = useState([]);
-  const [shouldCallAPI, setShouldCallAPI] = useState(false);
   const [subCategory, setSubCategory] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
@@ -325,6 +324,8 @@ export const SearchTalents = () => {
   const handleSubCategoryChange = (value) => {
     setSelectedSubCategory(value)
   };
+
+  console.log(freelancerData, "freelancerData==============}}'")
 
   console.log(selectedSubCategory, "selectedSubCategory")
 
