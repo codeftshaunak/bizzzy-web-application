@@ -208,8 +208,6 @@ export const SearchTalents = () => {
     setSearchText(searchText);
   };
 
-  // calling freelancers API
-
   // Define fetchFreelancers function
   const fetchFreelancers = useCallback(async () => {
     try {
