@@ -1,4 +1,4 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDetailsOfUser } from "../helpers/userApis";
 import { useCookies } from "react-cookie";
@@ -11,14 +11,21 @@ const CurrentUserProvider = ({ children }) => {
   const profile = useSelector((state) => state.profile);
   const agency = useSelector((state) => state.profile.agency);
   const [cookies, setCookie] = useCookies(["activeagency"]);
+  const [userAgencyLoading, setUserAgencyLoading] = useState(false);
   const activeAgency = cookies.activeagency;
   const hasAgency = profile?.profile?.agency_profile;
 
   const getUserDetails = async () => {
-    const resp = await getAllDetailsOfUser();
-    dispatch(profileData({ profile: resp }));
-    const response = await getAgency();
-    dispatch(agencyData({ agency: response }));
+    try {
+      setUserAgencyLoading(true);
+      const resp = await getAllDetailsOfUser();
+      dispatch(profileData({ profile: resp }));
+      const response = await getAgency();
+      dispatch(agencyData({ agency: response }));
+      setUserAgencyLoading(false)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -26,7 +33,7 @@ const CurrentUserProvider = ({ children }) => {
   }, []);
 
   return (
-    <CurrentUserContext.Provider value={{ profile, agency, hasAgency, activeAgency, getUserDetails }}>
+    <CurrentUserContext.Provider value={{ profile, agency, hasAgency, activeAgency, getUserDetails, userAgencyLoading }}>
       {children}
     </CurrentUserContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { getAllJobs, searchJobs } from '../../helpers/jobApis';
 import JobCard from './JobCard';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { BiSearchAlt } from 'react-icons/bi';
 import { useSelector } from 'react-redux'
 import UserProfileCard from './UserCard';
 import AgencyUserCard from './AgencyUserCard';
+import { CurrentUserContext } from '../../Contexts/CurrentUser';
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -15,8 +16,7 @@ export const AllJobs = () => {
     const reverseJob = jobs?.slice().reverse();
     const leatestJob = reverseJob.slice(0, 4);
     const navigate = useNavigate();
-    const [cookies] = useCookies(['activeagency']);
-    const activeagency = cookies.activeagency;
+    const { hasAgency, activeAgency } = useContext(CurrentUserContext);
 
     const getAllJobList = async () => {
         try {
@@ -83,7 +83,7 @@ export const AllJobs = () => {
                 </div>
                 <div className="w-[25%] pl-6">
                     {
-                        activeagency ? <>
+                        hasAgency && activeAgency ? <>
                             <AgencyUserCard />
                             <br />
                             <UserProfileCard />
@@ -119,6 +119,7 @@ export const SearchJobPage = () => {
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
     const { name, profile_image, professional_role, id, agency_profile } = profile.profile || [];
+    const { hasAgency, activeAgency } = useContext(CurrentUserContext);
 
     const handleSearch = () => {
         const lowerCaseSearchTerm = searchTerm?.toLowerCase();
@@ -208,7 +209,17 @@ export const SearchJobPage = () => {
         <div className='w-full mx-auto'>
             <div className="py-6 px-8 flex w-full">
                 <div className="w-[40%] pr-6">
-                    <UserProfileCard />
+                    {
+                        hasAgency && activeAgency ? <>
+                            <AgencyUserCard />
+                            <br />
+                            <UserProfileCard />
+                        </> : <>
+                            <UserProfileCard />
+                            <br />
+                            <AgencyUserCard />
+                        </>
+                    }
                     <Filter
                         handleCategoryChange={handleCategoryChange}
                         handleContractTypeChange={handleContractTypeChange}
