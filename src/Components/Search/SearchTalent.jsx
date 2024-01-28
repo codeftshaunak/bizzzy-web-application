@@ -21,6 +21,7 @@ import {
 } from "../../helpers/freelancerApis";
 import Select from "react-select";
 
+
 export const Talents = () => {
   const profile = useSelector((state) => state.profile);
   const { name, profile_image, professional_role } = profile.profile || [];

@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../../Contexts/CurrentUser';
-import UserCardSkeleton from '../Loading/UserCardSkeleton';
+import UserCardSkeleton from '../LoadingComponent/UserCardSkeleton';
 
 const UserProfileCard = () => {
     const navigate = useNavigate();

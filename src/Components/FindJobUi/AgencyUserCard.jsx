@@ -5,7 +5,7 @@ import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { CurrentUserContext } from '../../Contexts/CurrentUser';
-import UserCardSkeleton from '../Loading/UserCardSkeleton';
+import UserCardSkeleton from '../LoadingComponent/UserCardSkeleton';
 
 const AgencyUserCard = () => {
     const navigate = useNavigate();

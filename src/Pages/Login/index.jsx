@@ -24,7 +24,7 @@ import { setAuthData } from "../../redux/authSlice/authSlice"; // Import your ac
 import { profileData } from "../../redux/authSlice/profileSlice"; // Import your actions
 import { getAllDetailsOfUser } from "../../helpers/userApis";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
-import LoadingButton from "../../Components/Loading/LoadingButton";
+import LoadingButton from "../../Components/LoadingComponent/LoadingButton";
 
 const Login = ({ setPage }) => {
   const toast = useToast();
