@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { CurrentUserContext } from '../../Contexts/CurrentUser';
 
 const AgencyUserCard = () => {
     const navigate = useNavigate();
-    const [cookies, setCookie] = useCookies(['activeagency']);
-    const activeagency = cookies.activeagency;
+    const { hasAgency, activeAgency } = useContext(CurrentUserContext);
+    const [cookies, setCookie] = useCookies(["activeagency"]);
     const agency = useSelector((state) => state.profile.agency);
     const { agency_name, agency_tagline, agency_profileImage } = agency || [];
-
+    console.log(agency);
 
     const handleSwitching = () => {
-        if (!activeagency) {
+        if (!activeAgency) {
             setCookie('activeagency', true)
         } else {
             navigate(`/agency-profile`)
@@ -52,7 +53,7 @@ const AgencyUserCard = () => {
             </div> */}
             <div className="p-4 flex">
                 {
-                    agency ? <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => handleSwitching()}>{activeagency ? 'Visit Your Agency Profile' : 'Switch To Agency Profile'}</button>
+                    !agency?.isError ? <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => handleSwitching()}>{activeAgency && hasAgency ? 'Visit Your Agency Profile' : 'Switch To Agency Profile'}</button>
                         : <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => navigate("/agency-build")}>Create Your Agency Profile</button>
                 }
             </div>
