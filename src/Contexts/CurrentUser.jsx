@@ -15,9 +15,9 @@ const CurrentUserProvider = ({ children }) => {
   const hasAgency = profile?.profile?.agency_profile;
 
   const getUserDetails = async () => {
-    const response = await getAgency();
     const resp = await getAllDetailsOfUser();
     dispatch(profileData({ profile: resp }));
+    const response = await getAgency();
     dispatch(agencyData({ agency: response }));
   };
 
