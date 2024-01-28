@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { CurrentUserContext } from '../../Contexts/CurrentUser';
 
 const UserProfileCard = () => {
     const navigate = useNavigate();
+    const { hasAgency, activeAgency } = useContext(CurrentUserContext);
     const [cookies, setCookie] = useCookies(['activeagency']);
     const activeagency = cookies.activeagency;
     const profile = useSelector((state) => state.profile.profile);
+    console.log({ profile });
     const { profile_image, firstName, lastName, professional_role } = profile || [];
 
     const handleSwitching = () => {

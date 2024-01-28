@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CiUser } from "react-icons/ci";
 import { BsEye, BsEyeSlash } from "react-icons/bs"; // For the show/hide password functionality
 import CTAButton from "../../Components/CTAButton";
@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { setAuthData } from "../../redux/authSlice/authSlice"; // Import your actions
 import { profileData } from "../../redux/authSlice/profileSlice"; // Import your actions
 import { getAllDetailsOfUser } from "../../helpers/userApis";
+import { CurrentUserContext } from "../../Contexts/CurrentUser";
 
 const Login = ({ setPage }) => {
   const toast = useToast();
@@ -30,6 +31,7 @@ const Login = ({ setPage }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  const { getUserDetails } = useContext(CurrentUserContext);
 
   const iconsStyle = {
     fontSize: "1.5rem",
@@ -69,6 +71,7 @@ const Login = ({ setPage }) => {
     if (response.code === 200) {
       const { role, token } = response.body;
       dispatch(setAuthData({ role: role, authtoken: token }));
+      getUserDetails();
       toast({
         title: response.msg,
         status: "success",
@@ -76,7 +79,7 @@ const Login = ({ setPage }) => {
         isClosable: true,
         position: "top-right",
       });
-      setLoading(true)
+      setLoading(true);
       const res = await getAllDetailsOfUser();
       const data = res;
       const detailsFound =

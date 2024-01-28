@@ -914,7 +914,7 @@ export const FreelancerSignUp = () => {
                 />
                 <Text fontWeight={"500"}>
                   Already Have an Account?{" "}
-                  <span className="text-[var(--primarytextcolor)]">Login</span>
+                  <span className="text-[var(--primarytextcolor)] cursor-pointer" onClick={() => navigate("/login")}>Login</span>
                 </Text>
               </VStack>
             </VStack>
