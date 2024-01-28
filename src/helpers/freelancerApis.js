@@ -73,22 +73,25 @@ export const getSkills = async (category_id, sub_category_id) =>
     `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
   );
 
-//Thous function with end points need to recerate again with the following method
+
+
+// Update the function signature
 export const getFreelancers = async (
   skills,
   searchText,
   hourlyRateMin,
   hourlyRateMax,
-  selectedSubCategory,
+  selectedSubCategories,  // Use an array for sub-categories
 ) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
     const skillsValues = skills.map((skill) => skill.value).join(",");
-    // const subcategoryValue = selectedSubCategory.map((category)=> category.value).join(",")
     const subcategoryValue =
-    selectedSubCategory && selectedSubCategory.length > 0
-      ? selectedSubCategory.map((category) => category.value).join(",")
-      : null;
+      selectedSubCategories && selectedSubCategories.length > 0
+        ? selectedSubCategories.map((category) => category.value).join(",")
+        : null;
+    
+    console.log(subcategoryValue)    
 
     const response = await API.get("/search-freelancers", {
       headers: {
@@ -109,6 +112,7 @@ export const getFreelancers = async (
     throw error;
   }
 };
+
 
 export const getCategories = async () => {
   try {
