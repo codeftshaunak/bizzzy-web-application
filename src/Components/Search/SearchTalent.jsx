@@ -1,6 +1,5 @@
 import {
   Box,
-  Checkbox,
   HStack,
   Input,
   Text,
@@ -13,7 +12,7 @@ import {
 import { BiSearchAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import TalentCard from "./TalentCard";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   getCategories,
   getFreelancers,
@@ -21,14 +20,6 @@ import {
   getSubCategory,
 } from "../../helpers/freelancerApis";
 import Select from "react-select";
-
-const CategoryOption = [
-  { value: "programming", label: "programming" },
-  { value: "markating", label: "markating" },
-  { value: "Frontend", label: "Frontend" },
-  { value: "Angoler", label: "Angoler" },
-  { value: "HTML", label: "HTML" },
-];
 
 export const Talents = () => {
   const profile = useSelector((state) => state.profile);
@@ -204,10 +195,6 @@ export const SearchTalents = () => {
       }
     });
   };
-  // category function
-  const handleCategoryChange = (value) => {
-    setSelectedCategories(value);
-  };
 
   const handleSelectChange = (selectedOptions) => {
     setSkills(selectedOptions);
@@ -221,11 +208,12 @@ export const SearchTalents = () => {
     setSearchText(searchText);
   };
 
-  // calling freelancers API
-  useEffect(() => {
-    const fetchFreelancers = async () => {
-      try {
-        setLoading(true);
+  // Define fetchFreelancers function
+  const fetchFreelancers = useCallback(async () => {
+    try {
+      setLoading(true);
+      // Check if a subcategory is selected
+      if (selectedSubCategory) {
         const freelancers = await getFreelancers(
           skills,
           searchText,
@@ -234,28 +222,44 @@ export const SearchTalents = () => {
           selectedSubCategory
         );
         setFreelancerData(freelancers);
-      } catch (error) {
-        console.error("Error fetching freelancer data:", error);
-      } finally {
-        setLoading(false);
+      } else {
+        // If no subcategory is selected, fetch all freelancers
+        const freelancers = await getFreelancers(
+          skills,
+          searchText,
+          hourlyRateMin,
+          hourlyRateMax,
+          selectedCategories
+        );
+        setFreelancerData(freelancers);
       }
-    };
-    fetchFreelancers();
-  }, [skills, searchText, hourlyRateMin, hourlyRateMax, selectedSubCategory]);
+    } catch (error) {
+      console.error("Error fetching freelancer data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [
+    skills,
+    searchText,
+    hourlyRateMin,
+    hourlyRateMax,
+    selectedCategories,
+    selectedSubCategory,
+  ]);
 
+  useEffect(() => {
+    fetchFreelancers();
+  }, [fetchFreelancers]);
 
   // Calling Category ApI
 
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        setLoading(true);
         const category = await getCategories();
         setCategoryData(category);
       } catch (error) {
         console.error("Error fetching freelancer data:", error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchCategory();
@@ -320,28 +324,25 @@ export const SearchTalents = () => {
     }
   };
 
-  // handel subcategory
-  const handleSubCategoryChange = (value) => {
-    setSelectedSubCategory(value)
+  // category function
+  const handleCategoryChange = (value) => {
+    if (selectedCategories !== value) {
+      setSelectedCategories(value);
+      fetchFreelancers(value, null);
+      setSelectedSubCategory(null);
+    }
   };
 
-  console.log(freelancerData, "freelancerData==============}}'")
-
-  console.log(selectedSubCategory, "selectedSubCategory")
-
-  const options = Array.isArray(categorySkills)
-    ? categorySkills.map((skill) => ({
-      value: skill?.skill_name,
-      label: skill?.skill_name,
-    }))
-    : [];
+  // handel subcategory
+  const handleSubCategoryChange = (value) => {
+    setSelectedSubCategory(value);
+  };
 
   return (
     <div className="w-full mx-auto">
       <div className="py-6 px-8 flex  w-full">
         <div className="w-[40%] pr-6">
           {/* filtering items */}
-
           <VStack
             marginTop={"1rem"}
             alignItems={"start"}
@@ -352,32 +353,19 @@ export const SearchTalents = () => {
               Search Your Talents
             </Text>
 
-            {categorySkills?.length && (
-              <VStack alignItems={"flex-start"} w={"full"}>
-                <Text fontWeight={"600"} className="mb-3">
-                  Skills
-                </Text>
-                <Select
-                  className="w-full"
-                  isMulti
-                  options={options}
-                  onChange={handleSelectChange}
-                  value={skills}
-                />
-              </VStack>
-            )}
-
             <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
               <Text fontWeight={"600"}>Category</Text>
               <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"} mt={1}>
-                <RadioGroup
-                  defaultValue="2"
-                  onChange={(value) => handleCategoryChange(value)}
-                >
+                <RadioGroup defaultValue="2">
                   <Stack spacing={2} direction="column">
                     {categoryData?.map((category) => (
                       <VStack key={category?._id} spacing={2} align="start">
-                        <Radio colorScheme="green" value={category?._id}>
+                        <Radio
+                          colorScheme="green"
+                          value={category?._id}
+                          isChecked={selectedCategories === category?._id}
+                          onChange={() => handleCategoryChange(category?._id)}
+                        >
                           {category?.category_name}
                         </Radio>
                         {selectedCategories === category?._id &&
@@ -407,23 +395,6 @@ export const SearchTalents = () => {
                 </RadioGroup>
               </VStack>
             </VStack>
-
-            {/* <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
-              <Text fontWeight={"600"}>Experience</Text>
-              <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"}>
-                <Checkbox onChange={() => handleExperienceChange("Entry")}>
-                  Entry Level
-                </Checkbox>
-                <Checkbox
-                  onChange={() => handleExperienceChange("Intermediate")}
-                >
-                  Intermediate
-                </Checkbox>
-                <Checkbox onChange={() => handleExperienceChange("Expert")}>
-                  Expert
-                </Checkbox>
-              </VStack>
-            </VStack> */}
 
             <VStack
               alignItems={"flex-start"}
@@ -457,7 +428,6 @@ export const SearchTalents = () => {
               </RadioGroup>
             </VStack>
           </VStack>
-
         </div>
         <div className="w-full mt-8">
           <div className="text-xl font-semibold mb-4">
@@ -495,7 +465,6 @@ export const SearchTalents = () => {
               </button>
             </HStack>
           </form>
-          {/* <div className="text-xl font-semibold mb-4">Latest Job Posts</div> */}
           <div className=" mt-10 w-[100%]">
             <TalentCard freelancerData={freelancerData} loading={loading} />
           </div>
