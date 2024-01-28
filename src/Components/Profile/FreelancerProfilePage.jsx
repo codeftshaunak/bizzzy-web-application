@@ -135,7 +135,7 @@ export const FreelancerProfilePage = () => {
   return (
     <ProfileContainer>
       <div className="w-[90%] justify-center m-auto flex flex-col gap-[24px]">
-        <div className="w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+        <div className="w-[100%] flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
               <div
@@ -216,36 +216,12 @@ export const FreelancerProfilePage = () => {
           </div>
         </div>
         <div className="flex gap-[24px]">
-          <div className="flex flex-1 gap-[24px]  flex-col w-full">
+          <div className="flex flex-1 gap-[24px] flex-col w-full">
             {/* ==================== Freelance Stats ====================== */}
-            <div className="flex w-[full] relative flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex w-[400px] relative flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <p className="text-[20px] text-[#374151] font-[600] ">
                 Freelance Stats
               </p>
-              {/* <hr className="  border-t-[#D1D5DB] " /> */}
-              {/* <div className="flex items-center justify-between">
-                <div className="flex flex-col items-start gap-[8px]">
-                  <p className="text-[18px] text-[#374151] font-[600]">
-                    $400K+
-                  </p>
-                  <p className="text-[12px] text-[#374151] font-[500]">
-                    Total Earnings
-                  </p>
-                </div>
-                <div className="flex flex-col items-start gap-[8px]">
-                  <p className="text-[18px] text-[#374151] font-[600]">145 </p>
-                  <p className="text-[12px] text-[#374151] font-[500]">
-                    Total Jobs
-                  </p>
-                </div>
-                <div className="flex flex-col items-start gap-[8px]">
-                  <p className="text-[18px] text-[#374151] font-[600]">680</p>
-                  <p className="text-[12px] text-[#374151] font-[500]">
-                    Total Hours
-                  </p>
-                </div>
-              </div> */}
-
               <VStack
                 backgroundColor={"#f4f5f787"}
                 height={"80px"}
@@ -255,26 +231,12 @@ export const FreelancerProfilePage = () => {
                 <Text fontWeight={"600"} top={"8rem"} textAlign={"center"}>
                   Updated Freelancer Stats <br /> Coming Soon
                 </Text>
-
-                {/* <div className="flex items-center justify-between">
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg font-semibold">$400K+</p>
-                    <p className="text-sm font-medium">Total Earnings</p>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg font-semibold">145</p>
-                    <p className="text-sm font-medium">Total Jobs</p>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg font-semibold">680</p>
-                    <p className="text-sm font-medium">Total Hours</p>
-                  </div>
-                </div> */}
               </VStack>
             </div>
             {/* ==================== Freelance Stats ====================== */}
+
             {/* ==================== Education ====================== */}
-            <div className="flex  flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex w-[400px] flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Education
@@ -391,7 +353,7 @@ export const FreelancerProfilePage = () => {
             </div>
             {/* ==================== Education ====================== */}
             {/* ==================== Experience ====================== */}
-            <div className="flex flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg w-[400px]">
               <div className="flex items-center justify-between">
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Experience
@@ -514,7 +476,7 @@ export const FreelancerProfilePage = () => {
             </div>
             {/* ==================== Basic info ====================== */}
           </div>
-          <div className="flex-[2] flex flex-col gap-[24px]">
+          <div className="flex-[2] flex flex-col gap-[24px]  w-[860px]">
             <div className="flex flex-col gap-5  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex gap-[16px] justify-between">
                 <p className="text-[20px] text-[#374151] font-[600] w-[480px]">
