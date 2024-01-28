@@ -1,20 +1,17 @@
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { Avatar, Button, HStack, Stack, Spinner } from "@chakra-ui/react";
+import { Avatar, Button, HStack, Stack, Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+
 const TalentCard = ({ freelancerData, loading }) => {
-  // console.log("freelancerData", freelancerData);
   if (loading) {
     return (
-      <div className="text-center">
-        <Spinner
-          backgroundColor={"#"}
-          width={"3rem"}
-          height={"3rem"}
-          color="red"
-        />
-      </div>
+      <Box padding='6' boxShadow='lg' bg='white'>
+        <SkeletonCircle size='10' />
+        <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+      </Box>
     );
   }
+
   if (freelancerData.length === 0) {
     return (
       <div>
@@ -22,6 +19,7 @@ const TalentCard = ({ freelancerData, loading }) => {
       </div>
     );
   }
+
   return (
     <div>
       <div>
@@ -29,11 +27,6 @@ const TalentCard = ({ freelancerData, loading }) => {
           return (
             <div key={freelancer?._id} className="flex gap-8 pb-5 items-center">
               <div className="w-[150px] h-[150px]">
-                {/* <img
-          src="https://c.animaapp.com/LZ3BWujk/img/rectangle-26-1@2x.png"
-          alt=""
-        /> */}
-
                 {freelancer.profile_image === null ? (
                   <Avatar
                     name={freelancer?.firstName?.slice(0)}
@@ -89,29 +82,9 @@ const TalentCard = ({ freelancerData, loading }) => {
                           View Profile
                         </Button>
                       </Link>
-                      {/* <Button
-                        colorScheme="#16A34A"
-                        variant="outline"
-                        size={"md"}
-                        bg={"#16A34A"}
-                        color={"#fff"}
-                      >
-                        View Profile
-                      </Button> */}
                     </Stack>
                   </div>
                 </div>
-
-                {/* <div>
-          <Button
-            colorScheme="#16A34A"
-            variant="outline"
-            size={"xs"}
-            color={"#16A34A"}
-          >
-            Available now
-          </Button>
-        </div> */}
 
                 <div>
                   <p className="text-sm font-medium text-[#6B7280]">
