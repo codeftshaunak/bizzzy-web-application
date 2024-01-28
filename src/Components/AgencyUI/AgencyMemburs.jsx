@@ -4,7 +4,7 @@ import AgencyFreelancerCard from './AgencyFreelancerCard'
 
 const AgencyMemburs = () => {
     return (
-        <div>
+        <div className='w-[300px]'>
             <AgencyTitle>Your Agency Members</AgencyTitle>
             <AgencyFreelancerCard />
         </div>

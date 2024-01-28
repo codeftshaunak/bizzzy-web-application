@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HStack, Box, Input, Textarea, Button, FormControl, FormLabel, Select, useToast } from '@chakra-ui/react';
 import { getCategories, getCountries } from '../../helpers/clientApis';
 import { getSubCategory } from '../../helpers/freelancerApis';
 import { createAgency } from '../../helpers/agencyApis';
 import { useNavigate } from 'react-router-dom';
+import { CurrentUserContext } from '../../Contexts/CurrentUser';
 
 const CreateForm = () => {
     const { handleSubmit, watch, register } = useForm();
+    const { getUserDetails } = useContext(CurrentUserContext);
     const selectedCategory = watch('agency_services.category');
     const [countries, setCountries] = useState([]);
     const [category, setCategory] = useState([]);
@@ -60,7 +62,7 @@ const CreateForm = () => {
                 toast({
                     title: response.message,
                     status: 'error',
-                    duration: 9000,
+                    duration: 3000,
                     position: 'top',
                     isClosable: true,
                 })
@@ -68,10 +70,11 @@ const CreateForm = () => {
                 toast({
                     title: 'Your agency profile created successfully.',
                     status: 'success',
-                    duration: 9000,
+                    duration: 3000,
                     position: 'top',
                     isClosable: true,
-                })
+                });
+                getUserDetails();
                 navigate("/agency-profile");
             }
         } catch (error) {

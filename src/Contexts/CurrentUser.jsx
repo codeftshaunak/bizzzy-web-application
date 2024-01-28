@@ -14,23 +14,19 @@ const CurrentUserProvider = ({ children }) => {
   const activeAgency = cookies.activeagency;
   const hasAgency = profile?.profile?.agency_profile;
 
-  const getUserProfile = async () => {
+  const getUserDetails = async () => {
+    const response = await getAgency();
     const resp = await getAllDetailsOfUser();
     dispatch(profileData({ profile: resp }));
+    dispatch(agencyData({ agency: response }));
   };
 
-  const getAgencyDetails = async () => {
-    const response = await getAgency();
-    dispatch(agencyData({ agency: response }));
-  }
-
   useEffect(() => {
-    getUserProfile();
-    getAgencyDetails()
+    getUserDetails();
   }, []);
 
   return (
-    <CurrentUserContext.Provider value={{ profile, agency, hasAgency, activeAgency }}>
+    <CurrentUserContext.Provider value={{ profile, agency, hasAgency, activeAgency, getUserDetails }}>
       {children}
     </CurrentUserContext.Provider>
   );

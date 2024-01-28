@@ -60,10 +60,8 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
     console.log("Dropped file:", file);
   };
 
-  // on submit fuction
+  // onSubmit fuction
   const onSubmit = useCallback(() => {
-    // const response = await handleUpload();
-
     submitCallback({
       images: selectedImages,
       video: selectedVideo,
@@ -149,30 +147,30 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
         {(selectedVideo === null ||
           selectedVideo?.preview === "" ||
           selectedVideo === undefined) && (
-          <label htmlFor="videoInput">
-            <VStack
-              textAlign={"center"}
-              backgroundColor={"var(--secondarycolor)"}
-              padding={"2rem 2rem"}
-              className="shadow-lg rounded-lg cursor-pointer"
-              onDrop={handleDrop}
-              onDragOver={(e) => e.preventDefault()}
-            >
-              <IoMdVideocam size={"1.6rem"} />
-              <Text>
-                Drag video here or <br /> <strong>browse</strong>
-              </Text>
-              <Input
-                id="videoInput"
-                type="file"
-                accept="video/*"
-                name="videoFile"
-                onChange={handleVideoSelect}
-                style={{ display: "none" }} // Hide the actual input
-              />
-            </VStack>
-          </label>
-        )}
+            <label htmlFor="videoInput">
+              <VStack
+                textAlign={"center"}
+                backgroundColor={"var(--secondarycolor)"}
+                padding={"2rem 2rem"}
+                className="shadow-lg rounded-lg cursor-pointer"
+                onDrop={handleDrop}
+                onDragOver={(e) => e.preventDefault()}
+              >
+                <IoMdVideocam size={"1.6rem"} />
+                <Text>
+                  Drag video here or <br /> <strong>browse</strong>
+                </Text>
+                <Input
+                  id="videoInput"
+                  type="file"
+                  accept="video/*"
+                  name="videoFile"
+                  onChange={handleVideoSelect}
+                  style={{ display: "none" }} // Hide the actual input
+                />
+              </VStack>
+            </label>
+          )}
 
         {selectedVideo && (
           <div className="aspect-video relative">
