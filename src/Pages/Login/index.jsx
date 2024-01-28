@@ -24,6 +24,7 @@ import { setAuthData } from "../../redux/authSlice/authSlice"; // Import your ac
 import { profileData } from "../../redux/authSlice/profileSlice"; // Import your actions
 import { getAllDetailsOfUser } from "../../helpers/userApis";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
+import LoadingButton from "../../Components/Loading/LoadingButton";
 
 const Login = ({ setPage }) => {
   const toast = useToast();
@@ -48,6 +49,7 @@ const Login = ({ setPage }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loginBtnLoading, setLoginBtnLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -65,9 +67,9 @@ const Login = ({ setPage }) => {
 
 
   const handleLogin = async (e) => {
+    setLoginBtnLoading(true)
     e.preventDefault();
     const response = await signIn(formData);
-    console.log(response);
     if (response.code === 200) {
       const { role, token } = response.body;
       dispatch(setAuthData({ role: role, authtoken: token }));
@@ -111,6 +113,8 @@ const Login = ({ setPage }) => {
       });
       navigate("/login");
     }
+    setLoginBtnLoading(false)
+    setLoading(false);
   };
 
   const toggleShowPassword = () => {
@@ -185,16 +189,19 @@ const Login = ({ setPage }) => {
                   onClick={toggleShowPassword}
                 />
               </Flex>
-              <CTAButton
-                text="Continue with Email"
-                bg="var(--primarycolor)"
-                color="#fff"
-                fontWeight="500"
-                height="2.5rem"
-                borderRadius="5px"
-                fontSize="1rem"
-                onClick={(e) => handleLogin(e)}
-              />
+              {
+                loginBtnLoading ? <LoadingButton /> : <CTAButton
+                  text="Continue with Email"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  onClick={(e) => handleLogin(e)}
+                />
+              }
+
               <Divider text="Or" dwidth="180px" />
               <HStack justifyContent="space-between" width="100%">
                 <Box style={iconsStyle} color="#3789f4">

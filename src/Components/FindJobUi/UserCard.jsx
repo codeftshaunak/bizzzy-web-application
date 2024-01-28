@@ -4,25 +4,24 @@ import { useCookies } from 'react-cookie';
 import { Box, Checkbox, HStack, Image, Input, Select, Text, VStack, Avatar } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../../Contexts/CurrentUser';
+import UserCardSkeleton from '../Loading/UserCardSkeleton';
 
 const UserProfileCard = () => {
     const navigate = useNavigate();
-    const { hasAgency, activeAgency } = useContext(CurrentUserContext);
-    const [cookies, setCookie] = useCookies(['activeagency']);
-    const activeagency = cookies.activeagency;
+    const [cookies, setCookie] = useCookies(["activeagency"]);
+    const { hasAgency, activeAgency, userAgencyLoading } = useContext(CurrentUserContext);
     const profile = useSelector((state) => state.profile.profile);
-    console.log({ profile });
     const { profile_image, firstName, lastName, professional_role } = profile || [];
 
     const handleSwitching = () => {
-        if (activeagency) {
+        if (activeAgency) {
             setCookie('activeagency', false)
         } else {
             navigate(`/profile`)
         }
     }
     return (
-        <div className="border border-tertiary rounded-2xl w-full m-auto">
+        userAgencyLoading ? <UserCardSkeleton /> : <div className="border border-tertiary rounded-2xl w-full m-auto">
             <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
                 {profile_image == null ? (
                     <Avatar name={firstName + ' ' + lastName} />
@@ -45,7 +44,7 @@ const UserProfileCard = () => {
                 </div>
             </div>
             {
-                activeagency ? <div className="p-4 flex">
+                hasAgency && activeAgency ? <div className="p-4 flex">
                     <button className="text-center w-[90%] text-white font-semibold py-2 rounded-md m-auto bg-[var(--primarycolor)]" onClick={() => handleSwitching()}>{'Switch Freelancer Profile'}</button>
                 </div> : <div className="p-4">
                     <div className="text-sm text-gray-400">Complete your Profile</div>
