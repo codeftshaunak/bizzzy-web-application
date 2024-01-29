@@ -13,13 +13,13 @@ import { AgencyBodyLayout } from "./AgencyBody";
 import { useCookies } from "react-cookie";
 import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyProfileHeader = ({ agency }) => {
+const AgencyProfileHeader = ({ agency, setIsUpdate }) => {
   const {
     agency_name,
     agency_tagline,
     agency_coverImage,
     agency_profileImage,
-  } = agency;
+  } = agency || {};
   const [cookies, setCookie] = useCookies(["activeagency"]);
   const activeagency = cookies.activeagency;
   const [isModal, setIsModal] = useState(false);
@@ -224,6 +224,7 @@ const AgencyProfileHeader = ({ agency }) => {
           setIsModal={setIsModal}
           title={modalType}
           data={modalData}
+          setIsUpdate={setIsUpdate}
         />
       )}
     </>

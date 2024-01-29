@@ -7,10 +7,11 @@ import { IoTime } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
 import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyRightBar = ({ agency }) => {
+const AgencyRightBar = ({ agency, setIsUpdate }) => {
   const [isModal, setIsModal] = useState(false);
   const [modalType, setIsModalType] = useState("");
-  console.log({ agency });
+  const { agency_hourlyRate } = agency || {};
+
   const handleUpdate = (type) => {
     setIsModal(true);
     setIsModalType(type);
@@ -29,7 +30,7 @@ const AgencyRightBar = ({ agency }) => {
         <Box position={"relative"} mb={"1rem"}>
           <Text> Hourly Rate</Text>
           <Text fontSize={"1.3rem"} fontWeight={"600"}>
-            $15.00
+            $ {agency_hourlyRate}
           </Text>
           <VStack
             backgroundColor={"white"}
@@ -63,7 +64,7 @@ const AgencyRightBar = ({ agency }) => {
         </Box>
 
         <Box position={"relative"} mb={"1rem"}>
-          <AgencyTitle>Office Location</AgencyTitle>
+          <AgencyTitle setIsUpdate={setIsUpdate}>Office Location</AgencyTitle>
           <Box>
             <HStack>
               <MdLocationPin fontSize={"1.2rem"} />
@@ -77,7 +78,9 @@ const AgencyRightBar = ({ agency }) => {
         </Box>
 
         <VStack gap={"10px"} alignItems={"flex-start"}>
-          <AgencyTitle noAdded={true}>Company Information</AgencyTitle>
+          <AgencyTitle noAdded={true} setIsUpdate={setIsUpdate}>
+            Company Information
+          </AgencyTitle>
           <VStack gap={"10px"} alignItems={"flex-start"}>
             <HStack>
               <VStack
@@ -183,6 +186,7 @@ const AgencyRightBar = ({ agency }) => {
           isModal={isModal}
           setIsModal={setIsModal}
           title={modalType}
+          setIsUpdate={setIsUpdate}
         />
       )}
     </>

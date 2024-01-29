@@ -3,7 +3,7 @@ import { HStack, VStack, Box } from "@chakra-ui/react";
 import AgencyLeftbar from "./AgencyLeftbar";
 import AgencyRightBar from "./AgencyRightBar";
 
-const AgencyBody = ({ agency }) => {
+const AgencyBody = ({ agency, setIsUpdate }) => {
   console.log({ agency });
   return (
     <AgencyBodyLayout>
@@ -13,8 +13,8 @@ const AgencyBody = ({ agency }) => {
         paddingY={"20px"}
         position={"relative"}
       >
-        <AgencyLeftbar agency={agency} />
-        <AgencyRightBar agency={agency} />
+        <AgencyLeftbar agency={agency} setIsUpdate={setIsUpdate} />
+        <AgencyRightBar agency={agency} setIsUpdate={setIsUpdate} />
       </Box>
     </AgencyBodyLayout>
   );

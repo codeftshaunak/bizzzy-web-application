@@ -4,7 +4,8 @@ import AgencyTitle from "./AgencyTitle";
 import { getCategories, getSubCategory } from "../../helpers/freelancerApis";
 import { RiDeleteBin6Fill, RiEdit2Fill } from "react-icons/ri";
 
-const AgencyServices = ({ agency_services }) => {
+const AgencyServices = ({ agency, setIsUpdate }) => {
+  const { agency_services, agency_skills } = agency || {};
   const { category, subCategory } = agency_services || {};
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
@@ -47,7 +48,9 @@ const AgencyServices = ({ agency_services }) => {
     <>
       {" "}
       <VStack alignItems="flex-start" gap={5} width="95%">
-        <AgencyTitle isValue={false}>Services</AgencyTitle>
+        <AgencyTitle data={agency_services} setIsUpdate={setIsUpdate}>
+          Services
+        </AgencyTitle>
         {selectedCategory && (
           <HStack
             className="border p-4 rounded-md"
@@ -99,7 +102,23 @@ const AgencyServices = ({ agency_services }) => {
           </HStack>
         )}
 
-        <AgencyTitle isValue={false}>Skills</AgencyTitle>
+        <AgencyTitle
+          isValue={!!agency_skills}
+          data={agency_services}
+          setIsUpdate={setIsUpdate}
+        >
+          Skills
+        </AgencyTitle>
+        <div className="flex gap-2">
+          {agency_skills?.map((item) => (
+            <span
+              key={item}
+              className="px-2 h-fit bg-gray-50 border rounded-full"
+            >
+              {item}
+            </span>
+          ))}
+        </div>
       </VStack>
       {/* Updated Information */}
     </>

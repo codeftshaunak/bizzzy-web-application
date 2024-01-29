@@ -1,11 +1,15 @@
 import AgencyTitle from "./AgencyTitle";
 import { Text } from "@chakra-ui/react";
 
-const AgencyOverview = ({ overview }) => {
+const AgencyOverview = ({ overview, setIsUpdate }) => {
   return (
     <>
       <div>
-        <AgencyTitle isValue={false} data={overview}>
+        <AgencyTitle
+          data={overview}
+          setIsUpdate={setIsUpdate}
+          isValue={!!overview}
+        >
           Overview
         </AgencyTitle>
         <Text>{overview}</Text>
