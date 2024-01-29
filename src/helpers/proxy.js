@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// export const BASE_URL = `http://localhost:5002/api/v1`;
-// export const socketURL = 'http://localhost:5002/'
+export const BASE_URL = `http://localhost:5002/api/v1`;
+export const socketURL = "http://localhost:5002/";
 
-export const socketURL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/`;
-export const BASE_URL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/api/v1`;
+// export const socketURL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/`;
+// export const BASE_URL = `https://bizzzy-test-dev-6ffd12d31812.herokuapp.com/api/v1`;
 
 const authToken = localStorage.getItem("authtoken");
 export const API = axios.create({
@@ -21,15 +21,15 @@ export const useApiErrorHandling = () => {
       path: "/login",
       message: msg,
       isError: true,
-    }
+    };
   };
 
-  const handleErrorResponse=(msg)=>{
+  const handleErrorResponse = (msg) => {
     return {
       message: msg,
       isError: true,
-    }
-  }
+    };
+  };
 
   const handleApiError = (error) => {
     console.error("API Error:", error.response.data);
@@ -61,6 +61,6 @@ export const useApiErrorHandling = () => {
   );
 
   return {
-    handleApiError
+    handleApiError,
   };
 };
