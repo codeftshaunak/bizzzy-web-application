@@ -75,11 +75,14 @@ export const AllJobs = () => {
                     <div className="border border-tertiary rounded-2xl overflow-auto">
                         <JobCard jobs={leatestJob} />
                     </div>
-                    <div className="text-center p-5">
-                        <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/search-job")}>
-                            See More
-                        </button>
-                    </div>
+                    {
+                        leatestJob?.length > 0 && <div className="text-center p-5">
+                            <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/search-job")}>
+                                See More
+                            </button>
+                        </div>
+                    }
+
                 </div>
                 <div className="w-[25%] pl-6">
                     {

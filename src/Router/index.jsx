@@ -43,24 +43,15 @@ const Router = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/create-job" element={<JobPost />} />
-
           <Route path="/search-job" element={<SearchPage />} />
           <Route path="/search-talent" element={<SearchTalents />} />
           <Route path="/search-freelancers" element={<SearchFreelancers />} />
-
           <Route path="/agency-build" element={<AgencyBuild />} />
-          <Route path="/agency-profile" element={<AgencyProfilePage />} />
           <Route path="/agency-dashboard" element={<Agency />} />
-
-          {/* hhhh */}
-
-          {/* <Route path="/freelancer" element={<Profile />} /> */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/find-job" element={<FindJob />} />
           <Route path="/find-job/:id" element={<ApplyJob />} />
-
-
           <Route exact path="/message" element={<Message />} />
           <Route exact path="/freelancer/gig" element={<Gig />} />
           <Route exact path="/freelancer/gig/create" element={<GigCreate />} />
@@ -72,7 +63,6 @@ const Router = () => {
           <Route exact path="/freelancer/gig/edit/:id" element={<GigEdit />} />
           <Route exact path="/client" element={<Profile />} />
           <Route exact path="/client/:id" element={<Profile />} />
-
           <Route
             path="/client/hire/:freelancer_id"
             element={<HireFreelancer />}
@@ -94,7 +84,6 @@ const Router = () => {
           <Route path="/active-job/submit/:id" element={<EndContract />} />
           <Route path="/endcotract/:id" element={<EndContract />} />
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
