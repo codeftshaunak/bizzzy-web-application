@@ -19,7 +19,7 @@ const AgencyUserCard = () => {
         if (!activeAgency) {
             setCookie('activeagency', true)
         } else {
-            navigate(`/agency-profile`)
+            navigate(`/profile`)
         }
     }
 
