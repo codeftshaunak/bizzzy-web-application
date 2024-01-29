@@ -6,6 +6,7 @@ export const API = axios.create({
 });
 
 export const getAllJobs = async () => {
+  // eslint-disable-next-line no-useless-catch
   try {
     const authtoken = localStorage.getItem("authtoken");
     const response = await API.get("/job/get-all", {
@@ -21,21 +22,50 @@ export const getAllJobs = async () => {
   }
 };
 
-export const searchJobs = async (searchQuery) => {
-  const authToken = localStorage.getItem("authtoken");
+export const getJobs = async (searchTerm, category, experience, contractType) => {
   try {
-    const response = await API.post('/job/search', searchQuery, {
-      headers: {
-        "Content-Type": "application/json",
-        token: authToken,
-      },
-    });
-    return response.data.data;
+      const authtoken = localStorage.getItem("authtoken");
+      const experienceValues = experience ? experience.map((exp) => exp).join(",") : "";
+      const contractValue = contractType ? contractType.map((contact) => contact).join(",") : "";
+
+       console.log(searchTerm, "searchTerm")
+
+      const response = await API.get("/job/search", {
+          headers: {
+              "Content-Type": "application/json",
+              "token": authtoken,
+          },
+          params: {
+              searchTerm: searchTerm || "",  // Set default to empty string if not provided
+              experience: experienceValues,
+              contract: contractValue,
+              category: category || "",  // Set default to empty string if not provided
+          },
+      });
+
+      return response.data.body;
   } catch (error) {
-    console.error("API Error:", error.message);
-    throw error;
+      console.error("Error fetching freelancer data:", error);
+      throw error;
   }
 };
+
+ 
+// export const getJobs = async (searchQuery) => {
+//   const authToken = localStorage.getItem("authtoken");
+//   try {
+//     const response = await API.post('/job/search', searchQuery, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         token: authToken,
+//       },
+//     });
+//     return response.data.data;
+//   } catch (error) {
+//     console.error("API Error:", error.message);
+//     throw error;
+//   }
+// };
 
 
 export const getInvitedFreelancer = async () => {
