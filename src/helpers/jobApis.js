@@ -22,51 +22,31 @@ export const getAllJobs = async () => {
   }
 };
 
-export const getJobs = async (searchTerm, category, experience, contractType) => {
+export const getJobs = async ( category, searchTerm,experience, contractType) => {
   try {
-      const authtoken = localStorage.getItem("authtoken");
-      const experienceValues = experience ? experience.map((exp) => exp).join(",") : "";
-      const contractValue = contractType ? contractType.map((contact) => contact).join(",") : "";
+    const authtoken = localStorage.getItem("authtoken");
+    const experienceValues = experience ? experience.map((exp) => exp).join(",") : "";
+    const contractValue = contractType ? contractType.map((contact) => contact).join(",") : "";
 
-       console.log(searchTerm, "searchTerm")
+    const response = await API.get("/job/search", {
+      headers: {
+        "Content-Type": "application/json",
+        "token": authtoken,
+      },
+      params: {
+        searchTerm: searchTerm || "",
+        experience: experienceValues,
+        job_type: contractValue,
+        category: category ? category.map((cat) => cat.value).join(",") : "",
+      },
+    });
 
-      const response = await API.get("/job/search", {
-          headers: {
-              "Content-Type": "application/json",
-              "token": authtoken,
-          },
-          params: {
-              searchTerm: searchTerm || "",  // Set default to empty string if not provided
-              experience: experienceValues,
-              contract: contractValue,
-              category: category || "",  // Set default to empty string if not provided
-          },
-      });
-
-      return response.data.body;
+    return response.data.body;
   } catch (error) {
-      console.error("Error fetching freelancer data:", error);
-      throw error;
+    console.error("Error fetching job data:", error);
+    throw error;
   }
 };
-
- 
-// export const getJobs = async (searchQuery) => {
-//   const authToken = localStorage.getItem("authtoken");
-//   try {
-//     const response = await API.post('/job/search', searchQuery, {
-//       headers: {
-//         "Content-Type": "application/json",
-//         token: authToken,
-//       },
-//     });
-//     return response.data.data;
-//   } catch (error) {
-//     console.error("API Error:", error.message);
-//     throw error;
-//   }
-// };
-
 
 export const getInvitedFreelancer = async () => {
   try {

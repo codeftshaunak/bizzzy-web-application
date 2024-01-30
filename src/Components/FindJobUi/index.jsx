@@ -9,17 +9,21 @@ import {
   HStack,
   Image,
   Input,
-  Select,
   Text,
   VStack,
   Avatar,
 } from "@chakra-ui/react";
+import Select from "react-select";
 import { BiSearchAlt, BiXCircle } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import UserProfileCard from "./UserCard";
 import AgencyUserCard from "./AgencyUserCard";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
 import { getCategories } from "../../helpers/freelancerApis";
+// import { makeAnimated } from 'react-select/animated';
+
+
+// const animatedComponents = makeAnimated();
 
 export const AllJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -183,30 +187,32 @@ export const AllJobs = () => {
 
 export const SearchJobPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(null);
   const [experience, setExperience] = useState([]);
   const [contractType, setContractType] = useState([]);
-
   const { hasAgency, activeAgency } = useContext(CurrentUserContext);
-  const [categoryData, setCategoryData] = useState([]);
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState();
-  const [showHighlightedSearchTerm, setShowHighlightedSearchTerm] = useState(false);
+  const [showHighlightedSearchTerm, setShowHighlightedSearchTerm] =
+    useState(false);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const fetchCategoryData = async () => {
-    try {
-      const response = await getCategories();
-      setCategoryData(response);
-    } catch (error) {
-      console.log(error);
-    }
+  // Handle Category
+  const getCategory = async () => {
+    const categories = await getCategories();
+    setCategoryOptions(
+      categories?.map((item) => ({
+        value: item._id,
+        label: item.category_name,
+      }))
+    );
   };
-
   useEffect(() => {
-    fetchCategoryData();
+    getCategory();
   }, []);
+
 
 
   //  ====== search job
@@ -214,18 +220,10 @@ export const SearchJobPage = () => {
     try {
       setLoading(true);
       if (category) {
-        const jobs = await getJobs(
-          category,
-          experience,
-          contractType
-        );
+        const jobs = await getJobs(category,null, experience, contractType);
         setJobsData(jobs);
       } else {
-        const jobs = await getJobs(
-          category,
-          experience,
-          contractType
-        );
+        const jobs = await getJobs(null,null, experience, contractType);
         setJobsData(jobs);
       }
     } catch (error) {
@@ -234,76 +232,135 @@ export const SearchJobPage = () => {
       setLoading(false);
     }
   }, [category, contractType, experience]);
-
+ 
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
-
-  // const handleSearch = async () => {
-  //   try {
-  //     setLoading(true);
-  //     if (searchTerm.trim() !== "") {
-  //       const jobs = await getJobs(searchTerm, category, experience, contractType);
-  //       setJobsData(jobs);
-
-  //       navigate(`/search-job?searchTerm=${encodeURIComponent(searchTerm)}`);
-  //     } else {
-  //       // Handle the case where searchTerm is empty (e.g., show all jobs)
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching job data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleSearch = async () => {
     try {
       setLoading(true);
       if (searchTerm.trim() !== "") {
-        const jobs = await getJobs(searchTerm, category, experience, contractType);
+        const jobs = await getJobs(
+          null,
+          searchTerm,
+          experience,
+          contractType
+        );
         setJobsData(jobs);
         setShowHighlightedSearchTerm(true);
         navigate(`/search-job?searchTerm=${encodeURIComponent(searchTerm)}`);
       } else {
-        setShowHighlightedSearchTerm(false); 
+        setShowHighlightedSearchTerm(false);
       }
     } catch (error) {
       console.error("Error fetching job data:", error);
     } finally {
       setLoading(false);
-      // setShowHighlightedSearchTerm(false); 
+      // setShowHighlightedSearchTerm(false);
     }
   };
-  
+
+  // const handleCategoryChange = (value) => {
+  //   setCategory(value);
+  // };
 
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  };
+  // const handleExperienceChange = (experienceLevel) => {
+  //   setExperience((prev) => {
+  //     const updatedExperience = prev.includes(experienceLevel)
+  //       ? prev.filter((level) => level !== experienceLevel)
+  //       : [...prev, experienceLevel];
+  //     return updatedExperience;
+  //   });
+  // };
 
-  const handleExperienceChange = (experienceLevel) => {
+  // const handleContractTypeChange = (contractTypeValue) => {
+  //   setContractType((prev) => {
+  //     const updatedContractType = prev.includes(contractTypeValue)
+  //       ? prev.filter((type) => type !== contractTypeValue)
+  //       : [...prev, contractTypeValue];
+  //     return updatedContractType;
+  //   });
+  // };
+
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    navigateWithFilters();
+};
+
+const handleExperienceChange = (experienceLevel) => {
     setExperience((prev) => {
-      const updatedExperience = prev.includes(experienceLevel)
-        ? prev.filter((level) => level !== experienceLevel)
-        : [...prev, experienceLevel];
-      return updatedExperience;
+        const updatedExperience = prev.includes(experienceLevel)
+            ? prev.filter((level) => level !== experienceLevel)
+            : [...prev, experienceLevel];
+        return updatedExperience;
     });
-  };
+    navigateWithFilters();
+};
 
-  const handleContractTypeChange = (contractTypeValue) => {
+const handleContractTypeChange = (contractTypeValue) => {
     setContractType((prev) => {
-      const updatedContractType = prev.includes(contractTypeValue)
-        ? prev.filter((type) => type !== contractTypeValue)
-        : [...prev, contractTypeValue];
-      return updatedContractType;
+        const updatedContractType = prev.includes(contractTypeValue)
+            ? prev.filter((type) => type !== contractTypeValue)
+            : [...prev, contractTypeValue];
+        return updatedContractType;
     });
-  };
+    navigateWithFilters();
+};
+
+const navigateWithFilters = async () => {
+    try {
+        setLoading(true);
+
+        const params = new URLSearchParams();
+
+        // Append search term to URL parameters
+        if (searchTerm.trim() !== "") {
+            params.append("searchTerm", searchTerm);
+        }
+
+        // Append category to URL parameters
+        if (category) {
+            params.append("category", category.map((cat) => cat.value).join(","));
+        }
+
+        // Append experience to URL parameters
+        if (experience.length > 0) {
+            params.append("experience", experience.join(","));
+        }
+
+        // Append contractType to URL parameters
+        if (contractType.length > 0) {
+            params.append("contractType", contractType.join(","));
+        }
+
+        // Fetch jobs using the updated parameters
+        const jobs = await getJobs(
+            category,
+            searchTerm,
+            experience,
+            contractType
+        );
+
+        // Update state with fetched jobs
+        setJobsData(jobs);
+        setShowHighlightedSearchTerm(true);
+
+        // Append the search parameters to the URL and navigate
+        navigate(`/search-job?${params.toString()}`);
+    } catch (error) {
+        console.error("Error fetching job data:", error);
+    } finally {
+        setLoading(false);
+    }
+};
+  
 
   const clearSearch = () => {
     setSearchTerm("");
     fetchJobs();
-    setShowHighlightedSearchTerm(false); 
+    setShowHighlightedSearchTerm(false);
     navigate("/search-job");
   };
 
@@ -328,7 +385,10 @@ export const SearchJobPage = () => {
             handleCategoryChange={handleCategoryChange}
             handleContractTypeChange={handleContractTypeChange}
             handleExperienceChange={handleExperienceChange}
-            categoryData={categoryData}
+            categoryOptions={categoryOptions}
+            setCategory={setCategory}
+            setCategoryOptions={setCategoryOptions}
+            category={category}
           />
           <div className="mt-6 relative">
             <img
@@ -407,7 +467,11 @@ export const SearchJobPage = () => {
           </HStack>
           <div className="text-xl font-semibold mb-4">Latest Job Posts</div>
           <div className="border border-tertiary rounded-2xl overflow-auto w-[100%]">
-          <JobCard jobs={jobsData} searchTerm={searchTerm} showHighlightedSearchTerm={showHighlightedSearchTerm} />
+            <JobCard
+              jobs={jobsData}
+              searchTerm={searchTerm}
+              showHighlightedSearchTerm={showHighlightedSearchTerm}
+            />
           </div>
         </div>
       </div>
@@ -419,8 +483,11 @@ export const Filter = ({
   handleContractTypeChange,
   handleExperienceChange,
   handleCategoryChange,
-  categoryData,
+  categoryOptions,
+  category,
 }) => {
+
+
   return (
     <VStack
       marginTop={"1rem"}
@@ -435,17 +502,14 @@ export const Filter = ({
       <VStack alignItems={"flex-start"} w={"full"}>
         <Text fontWeight={"600"}>Category</Text>
         <Select
-          placeholder="Search By Category"
+          placeholder="Select Your Category"
+          className="w-[400px]"
+          isMulti
+          closeMenuOnSelect={true}
+          options={categoryOptions}
           onChange={handleCategoryChange}
-        >
-          {categoryData.map((category) => {
-            return (
-              <option key={category._id} value={category._id}>
-                {category.category_name}
-              </option>
-            );
-          })}
-        </Select>
+          value={category}
+        />
       </VStack>
 
       <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
