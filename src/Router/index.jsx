@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import Onboarding from "../Pages/Onboarding";
 import Login from "../Pages/Login";
 import Home from "../Pages/Home";
@@ -29,10 +28,9 @@ import AgencyProfilePage from "../Pages/Agency/Profile";
 import GigDetails from "../Components/Gigs/GigDetails/GigDetails";
 import GigEdit from "../Components/Gigs/GigEdit/GigEdit";
 import GigCreate from "../Components/Gigs/GigCreate/GigCreate";
+import NotFound from "../Pages/404/NotFound";
 
 const Router = () => {
-  const [cookies, setCookie] = useCookies(["activeagency"]);
-  const activeagency = cookies.activeagency;
 
   return (
     <BrowserRouter>
@@ -45,41 +43,16 @@ const Router = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/create-job" element={<JobPost />} />
-
           <Route path="/search-job" element={<SearchPage />} />
           <Route path="/search-talent" element={<SearchTalents />} />
           <Route path="/search-freelancers" element={<SearchFreelancers />} />
-          {activeagency ? (
-            <>
-              <Route path="/agency-build" element={<AgencyBuild />} />
-              <Route path="/agency-profile" element={<AgencyProfilePage />} />
-              <Route path="/agency-dashboard" element={<Agency />} />
-            </>
-          ) : (
-            <>
-              <Route path="/agency-build" element={<AgencyBuild />} />
-              <Route path="/agency-profile" element={<Profile />} />
-              <Route path="/agency-dashboard" element={<FindJob />} />
-            </>
-          )}
-          {!activeagency ? (
-            <>
-              <Route path="/freelancer" element={<Profile />} />
-              <Route path="/freelancer/:id" element={<Profile />} />
-              <Route path="/find-job" element={<FindJob />} />
-              <Route path="/find-job/:id" element={<ApplyJob />} />
-            </>
-          ) : (
-            <>
-              <Route path="/freelancer" element={<AgencyProfilePage />} />
-              <Route path="/freelancer/:id" element={<Profile />} />
-              <Route path="/find-job" element={<Agency />} />
-              <Route path="/find-job/:id" element={<ApplyJob />} />
-            </>
-          )}
-
+          <Route path="/agency-build" element={<AgencyBuild />} />
+          <Route path="/agency-dashboard" element={<Agency />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/find-job" element={<FindJob />} />
+          <Route path="/find-job/:id" element={<ApplyJob />} />
           <Route exact path="/message" element={<Message />} />
-          <Route exact path="/freelancer/:id" element={<Profile />} />
           <Route exact path="/freelancer/gig" element={<Gig />} />
           <Route exact path="/freelancer/gig/create" element={<GigCreate />} />
           <Route
@@ -90,7 +63,6 @@ const Router = () => {
           <Route exact path="/freelancer/gig/edit/:id" element={<GigEdit />} />
           <Route exact path="/client" element={<Profile />} />
           <Route exact path="/client/:id" element={<Profile />} />
-
           <Route
             path="/client/hire/:freelancer_id"
             element={<HireFreelancer />}
@@ -112,6 +84,7 @@ const Router = () => {
           <Route path="/active-job/submit/:id" element={<EndContract />} />
           <Route path="/endcotract/:id" element={<EndContract />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

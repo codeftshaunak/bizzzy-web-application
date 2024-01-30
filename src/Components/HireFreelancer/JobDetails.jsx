@@ -7,7 +7,6 @@ import { getClientJobs } from "../../helpers/clientApis";
 const JobDetails = () => {
   const [jobsTitle, setJobsTitle] = useState([]);
   const profile = useSelector((state) => state?.profile?.profile);
-
   const [formData, setFormData] = useState({
     hiring_team: "",
     job_title: "",
@@ -120,4 +119,3 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
-

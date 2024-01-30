@@ -22,6 +22,7 @@ const profileSlice = createSlice({
         },
         clearProfileData: (state) => {
             state.profile = {};
+            state.agency = {}
             localStorage.removeItem('bizzzy_user'); // Remove 'role' from local storage
         },
     },

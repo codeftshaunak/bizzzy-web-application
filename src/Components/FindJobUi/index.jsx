@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { getAllJobs, searchJobs } from '../../helpers/jobApis';
 import JobCard from './JobCard';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { BiSearchAlt } from 'react-icons/bi';
 import { useSelector } from 'react-redux'
 import UserProfileCard from './UserCard';
 import AgencyUserCard from './AgencyUserCard';
+import { CurrentUserContext } from '../../Contexts/CurrentUser';
 
 export const AllJobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -15,8 +16,7 @@ export const AllJobs = () => {
     const reverseJob = jobs?.slice().reverse();
     const leatestJob = reverseJob.slice(0, 4);
     const navigate = useNavigate();
-    const [cookies] = useCookies(['activeagency']);
-    const activeagency = cookies.activeagency;
+    const { hasAgency, activeAgency } = useContext(CurrentUserContext);
 
     const getAllJobList = async () => {
         try {
@@ -75,15 +75,18 @@ export const AllJobs = () => {
                     <div className="border border-tertiary rounded-2xl overflow-auto">
                         <JobCard jobs={leatestJob} />
                     </div>
-                    <div className="text-center p-5">
-                        <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/search-job")}>
-                            See More
-                        </button>
-                    </div>
+                    {
+                        leatestJob?.length > 0 && <div className="text-center p-5">
+                            <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/search-job")}>
+                                See More
+                            </button>
+                        </div>
+                    }
+
                 </div>
                 <div className="w-[25%] pl-6">
                     {
-                        activeagency ? <>
+                        hasAgency && activeAgency ? <>
                             <AgencyUserCard />
                             <br />
                             <UserProfileCard />
@@ -119,6 +122,7 @@ export const SearchJobPage = () => {
     const navigate = useNavigate();
     const profile = useSelector((state) => state.profile);
     const { name, profile_image, professional_role, id, agency_profile } = profile.profile || [];
+    const { hasAgency, activeAgency } = useContext(CurrentUserContext);
 
     const handleSearch = () => {
         const lowerCaseSearchTerm = searchTerm?.toLowerCase();
@@ -208,32 +212,17 @@ export const SearchJobPage = () => {
         <div className='w-full mx-auto'>
             <div className="py-6 px-8 flex w-full">
                 <div className="w-[40%] pr-6">
-                    <div className="border border-tertiary rounded-2xl">
-                        <div className="flex flex-col items-center gap-1 pt-6 pb-4 border-b border-tertiary">
-                            {profile_image == null ? (
-                                <Avatar name={name} />
-                            ) : (
-                                <img
-                                    src={profile_image}
-                                    alt="avatar"
-                                    className="h-[90px] w-[90px] rounded-full border-4 border-tertiary"
-                                />
-                            )}
-                            <div className="text-2xl font-medium cursor-pointer" onClick={() => navigate("/freelancer")}>{name}</div>
-                            <div className="text-sm text-gray-300">{professional_role}</div>
-                            <div className="flex items-center">
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="star-filled"></div>
-                                <div className="text-sm font-medium">5.0 of 4 Reviews</div>
-                            </div>
-                        </div>
-                        <div className="p-4">
-                            <button className="bg-primary text-secondary rounded h-[36px] w-full" onClick={() => navigate("/freelancer")}>View Your Profile</button>
-                        </div>
-                    </div>
+                    {
+                        hasAgency && activeAgency ? <>
+                            <AgencyUserCard />
+                            <br />
+                            <UserProfileCard />
+                        </> : <>
+                            <UserProfileCard />
+                            <br />
+                            <AgencyUserCard />
+                        </>
+                    }
                     <Filter
                         handleCategoryChange={handleCategoryChange}
                         handleContractTypeChange={handleContractTypeChange}
@@ -312,4 +301,3 @@ export const Filter = ({ handleContractTypeChange, handleExperienceChange, handl
         </VStack>
     );
 };
-

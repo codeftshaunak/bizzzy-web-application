@@ -98,7 +98,6 @@ const makeApiRequest = async (
   }
 };
 
-
 export const getSearchFreelancer = async (keywords) =>
   makeApiRequest("get", "/search-freelancers", keywords);
 

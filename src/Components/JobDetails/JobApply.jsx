@@ -7,7 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CurrentUserContext } from '../../Contexts/CurrentUser';
 
 const JobApply = ({ setPage, details }) => {
-    console.log({ details });
+    const details_new = details[0]
+    console.log(details_new);
 
     const { quill, quillRef } = useQuill();
     const [coverLetter, setCoverLetter] = useState('');
@@ -16,8 +17,8 @@ const JobApply = ({ setPage, details }) => {
     const [desireHourlyRate, setDesireHourlyRate] = useState();
     const [selectedFile, setSelectedFile] = useState(null);
     const [bidDetails, setBidDetails] = useState({
-        amount: details?.amount,
-        type: details?.job_type == "fixed" ? 'milestone' : 'project',
+        amount: details_new?.amount,
+        type: details_new?.job_type == "fixed" ? 'milestone' : 'project',
         customBidAmount: null,
         coverLetter: '',
     });
@@ -110,7 +111,7 @@ const JobApply = ({ setPage, details }) => {
             <Box className="flex gap-2 py-6">
                 <img src="/icons/home.svg" alt="home" />
                 <img src="/icons/chevron-right.svg" alt="arrow right" />
-                <Box className='cursor-pointer' onClick={() => setPage(1)}>{details?.title}</Box>
+                <Box className='cursor-pointer' onClick={() => setPage(1)}>{details_new?.title}</Box>
                 <img src="/icons/chevron-right.svg" alt="arrow right" />
                 <Box>Submit Proposal</Box>
             </Box>
@@ -120,12 +121,12 @@ const JobApply = ({ setPage, details }) => {
                     <Box className="w-[96%] border border-tertiary rounded-2xl p-6">
                         <Box fontWeight="semibold">Job details</Box>
                         <br />
-                        <Box className="capitalize" dangerouslySetInnerHTML={{ __html: details?.description }} />
+                        <Box className="capitalize" dangerouslySetInnerHTML={{ __html: details_new?.description }} />
                     </Box>
                 </Box>
 
                 <Box w="60%">
-                    {details?.job_type == "fixed" && (
+                    {details_new?.job_type == "fixed" && (
                         <Box w="full" className="w-full">
                             <Box className="w-full">
                                 <Box className="border border-tertiary rounded-2xl p-6 mb-4">
@@ -140,7 +141,7 @@ const JobApply = ({ setPage, details }) => {
                                     <BidDetailsSection
                                         label="Write Your Amount For Milestone."
                                         placeholder="$100.00"
-                                        details={details}
+                                        details={details_new}
                                         bidAmount={bidDetails.customBidAmount}
                                         setBidAmount={(value) => setBidDetails((prev) => ({ ...prev, customBidAmount: value }))}
                                         serviceFee={calculateServiceFee()}
@@ -153,7 +154,7 @@ const JobApply = ({ setPage, details }) => {
                                         placeholder="$100.00"
                                         bidAmount={bidDetails.amount}
                                         setBidAmount={(value) => setBidDetails((prev) => ({ ...prev, amount: value }))}
-                                        details={details}
+                                        details={details_new}
                                         serviceFee={calculateServiceFee()}
                                     />
                                 )}
@@ -185,13 +186,13 @@ const JobApply = ({ setPage, details }) => {
                         </Box>
                     )}
 
-                    {details?.job_type == "hourly" && (
+                    {details_new?.job_type == "hourly" && (
                         <Box w="full">
                             <Box className="border border-tertiary rounded-2xl p-6 mb-4">
                                 <Box fontWeight="semibold" mb={2}>What is the rate you'd like to bid for this job?</Box>
                                 <HStack justifyContent="space-between" fontSize="0.9rem">
                                     <Box>Your Profile Rate: ${hourly_rate}/hr</Box>
-                                    <Box>Client Budget: ${details?.amount}/hr</Box>
+                                    <Box>Client Budget: ${details_new?.amount}/hr</Box>
                                 </HStack>
 
                                 <Box mt={4}>What is the hourly rate for bid in this job?</Box>
@@ -240,10 +241,10 @@ const JobApply = ({ setPage, details }) => {
     );
 };
 
-const BidDetailsSection = ({ label, placeholder, bidAmount, setBidAmount, serviceFee, details }) => (
+const BidDetailsSection = ({ label, placeholder, bidAmount, setBidAmount, serviceFee, details_new }) => (
     <Box className="border border-tertiary rounded-2xl p-6 mb-4">
         <Box fontWeight="semibold" mb={2} textTransform="capitalize">{label}</Box>
-        <p className="mb-2">Client Budget: ${details?.amount}</p>
+        <p className="mb-2">Client Budget: ${details_new?.amount}</p>
 
         <input
             className="rounded-md border border-tertiary p-1 w-full"
@@ -266,5 +267,4 @@ const BidDetailsSection = ({ label, placeholder, bidAmount, setBidAmount, servic
 );
 
 export default JobApply;
-
 

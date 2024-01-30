@@ -2,6 +2,7 @@ import { formatDistanceToNow } from "date-fns";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Text, HStack } from "@chakra-ui/react";
+import AllJobCardSkeleton from "../LoadingComponent/AllJobCardSkeleton";
 
 const JobCard = ({ jobs }) => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const JobCard = ({ jobs }) => {
 
   return (
     <>
-      <div>
+      <div className="w-full">
         {jobs?.length > 0 ? (
           jobs?.map((job, index) => {
             const formattedDate = formatDistanceToNow(
@@ -107,7 +108,11 @@ const JobCard = ({ jobs }) => {
         ) : (
           <>
             <div className="text-center p-5">
-              <h3>No Jobs Available For Now🎁</h3>
+              {
+                [1, 2, 3, 4].map(() => (
+                  <AllJobCardSkeleton />
+                ))
+              }
             </div>
           </>
         )}
