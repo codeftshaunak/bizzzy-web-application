@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { VStack, HStack } from '@chakra-ui/react';
-import AgencyProfileHeader from './AgencyProfileHeader';
-import AgencyBody from './AgencyBody';
-import { getAgency } from '../../helpers/agencyApis';
-
+import React, { useEffect, useState } from "react";
+import { VStack, HStack } from "@chakra-ui/react";
+import AgencyProfileHeader from "./AgencyProfileHeader";
+import AgencyBody from "./AgencyBody";
+import { getAgency } from "../../helpers/agencyApis";
 
 const AgencyProfile = () => {
-    const [agency, setAgency] = useState([]);
+  const [agency, setAgency] = useState({});
+  const [isUpdate, setIsUpdate] = useState(null);
+  const getAgencyDetails = async () => {
+    const response = await getAgency();
+    setAgency(response);
+  };
 
-    const getAgencyDetails = async () => {
-        const response = await getAgency();
-        console.log(response);
-        setAgency(response)
-    }
+  useEffect(() => {
+    getAgencyDetails();
+  }, [isUpdate]);
 
-    useEffect(() => {
-        getAgencyDetails()
-    }, []);
+  return (
+    <VStack width={"100%"}>
+      <AgencyProfileHeader agency={agency} setIsUpdate={setIsUpdate} />
+      <AgencyBody agency={agency} setIsUpdate={setIsUpdate} />
+    </VStack>
+  );
+};
 
-    return (
-        <VStack width={"100%"}>
-            <AgencyProfileHeader agency={agency} />
-            <AgencyBody agency={agency} />
-        </VStack>
-    )
-}
-
-export default AgencyProfile
+export default AgencyProfile;

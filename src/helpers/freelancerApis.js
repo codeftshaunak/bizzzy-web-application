@@ -73,15 +73,13 @@ export const getSkills = async (category_id, sub_category_id) =>
     `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
   );
 
-
-
 // Update the function signature
 export const getFreelancers = async (
   skills,
   searchText,
   hourlyRateMin,
   hourlyRateMax,
-  selectedSubCategories,  // Use an array for sub-categories
+  selectedSubCategories // Use an array for sub-categories
 ) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
@@ -90,8 +88,8 @@ export const getFreelancers = async (
       selectedSubCategories && selectedSubCategories.length > 0
         ? selectedSubCategories.map((category) => category.value).join(",")
         : null;
-    
-    console.log(subcategoryValue)    
+
+    console.log(subcategoryValue);
 
     const response = await API.get("/search-freelancers", {
       headers: {
@@ -113,7 +111,6 @@ export const getFreelancers = async (
   }
 };
 
-
 export const getCategories = async () => {
   try {
     const authtoken = localStorage.getItem("authtoken");
@@ -131,3 +128,6 @@ export const getCategories = async () => {
   }
 };
 
+// Updated Agency Profile of Freelancer
+export const updateAgencyProfile = async (data) =>
+  makeApiRequest("put", "/agency/update", data);

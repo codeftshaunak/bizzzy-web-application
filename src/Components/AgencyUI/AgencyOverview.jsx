@@ -1,17 +1,21 @@
-import React from 'react'
-import AgencyTitle from './AgencyTitle';
-import { Text } from '@chakra-ui/react'
+import AgencyTitle from "./AgencyTitle";
+import { Text } from "@chakra-ui/react";
 
-const AgencyOverview = ({ overview }) => {
+const AgencyOverview = ({ overview, setIsUpdate }) => {
+  return (
+    <>
+      <div>
+        <AgencyTitle
+          data={overview}
+          setIsUpdate={setIsUpdate}
+          isValue={!!overview}
+        >
+          Overview
+        </AgencyTitle>
+        <Text>{overview}</Text>
+      </div>
+    </>
+  );
+};
 
-    return (
-        <div>
-            <AgencyTitle isValue={false}>Overview</AgencyTitle>
-            <Text>
-                {overview}
-            </Text>
-        </div>
-    )
-}
-
-export default AgencyOverview
+export default AgencyOverview;
