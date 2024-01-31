@@ -122,9 +122,7 @@ export const deleteMessage = async (id) =>
 export const resendEmailVerification = async (email) =>
   makeApiRequest("post", "/email/resend-verification", email);
 
-export const getCountries = async () =>
-  makeApiRequest("get", "/get-countries");
 
-export const getCategories = async () =>
-  makeApiRequest("get", "/categories");
+
+
 
