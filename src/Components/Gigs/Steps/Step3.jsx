@@ -8,6 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import {
   Controller,
   FormProvider,
@@ -20,22 +21,36 @@ import { GigCreateLayout } from "../GigCreate";
 
 // validation schema
 const schema = yup.object().shape({
-  // title: yup.string().required("Title is required"),
-  // Define validation rules for other fields if needed
+  requirements: yup
+    .array(
+      yup.object().shape({
+        requirement: yup.string().label("Title").required(),
+        required: yup.boolean().label("Required").default(false).required(),
+      })
+    )
+    .label("Requirements"),
+  steps: yup
+    .array(
+      yup.object().shape({
+        step_title: yup.string().label("Title").required(),
+        description: yup.string().label("Description").required(),
+      })
+    )
+    .label("Requirements"),
 });
 
 // default values for the step
 const defaultValues = {
-  requirements: [],
-  steps: [],
+  requirements: [{ requirement: "", required: false }],
+  steps: [{ step_title: "", description: "" }],
 };
 
-const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
+const Step3 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { handleSubmit, control, setValue } = methods;
+  const { handleSubmit, control, setValue, reset } = methods;
 
   // requirement field array
   const { fields: requirementFields, append: appendRequirement } =
@@ -64,6 +79,19 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
+
+  // load state
+  useEffect(() => {
+    const changes = {};
+
+    Object.keys(defaultValues).map((key) => {
+      const value = formValues?.[key];
+      changes[key] = value === undefined ? defaultValues[key] : value;
+    });
+
+    reset(changes);
+  }, [formValues]);
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -96,7 +124,7 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
                     <Controller
                       name={`requirements[${index}].requirement`} // Use index to create unique names
                       control={control}
-                      render={({ field }) => (
+                      render={({ field, fieldState }) => (
                         <>
                           <Textarea
                             {...field}
@@ -120,6 +148,11 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
                               Client needs to answer before I can start working
                             </Text>
                           </HStack>
+                          {fieldState.error && (
+                            <p style={{ color: "red", marginTop: "5px" }}>
+                              {fieldState.error.message}
+                            </p>
+                          )}
                         </>
                       )}
                     />
@@ -162,7 +195,7 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
                   key={index}
                   alignItems={"start"}
                   width={"100%"}
-                  className="shadow-md rounded-md py-3"
+                  className="shadow rounded-md p-3 mt-2"
                 >
                   <label htmlFor="" className="font-semibold">
                     Step {index + 1} title
@@ -171,12 +204,19 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
                   <Controller
                     name={`steps[${index}].step_title`} // Unique name using index
                     control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        placeholder="Enter step title"
-                        marginTop={"5px"}
-                      />
+                    render={({ field, fieldState }) => (
+                      <>
+                        <Input
+                          {...field}
+                          placeholder="Enter step title"
+                          marginTop={"5px"}
+                        />
+                        {fieldState.error && (
+                          <p style={{ color: "red", marginTop: "5px" }}>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </>
                     )}
                   />
                   <br />
@@ -186,12 +226,19 @@ const Step3 = ({ submitCallback, onBack, afterSubmit }) => {
                   <Controller
                     name={`steps[${index}].description`} // Unique name using index
                     control={control}
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        placeholder="Enter step description"
-                        marginTop={"5px"}
-                      />
+                    render={({ field, fieldState }) => (
+                      <>
+                        <Textarea
+                          {...field}
+                          placeholder="Enter step description"
+                          marginTop={"5px"}
+                        />
+                        {fieldState.error && (
+                          <p style={{ color: "red", marginTop: "5px" }}>
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </>
                     )}
                   />
                 </VStack>

@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 const HomeLayout = (props) => {
     const token = useSelector((state) => state.auth.authtoken);
     const role = useSelector((state) => state.auth.role);
-    console.log(role);
     return (
         <VStack width={"full"} spacing={0} gap={"5"}>
             {token ? <AuthHeader role={role} /> : <Header />}

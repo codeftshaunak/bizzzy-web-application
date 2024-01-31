@@ -16,7 +16,7 @@ const MyJobsComponentUi = () => {
         setLoading(true)
         try {
             const response = await userAllJobs();
-            setUserJobs(response.body);
+            setUserJobs(response);
         } catch (error) {
             console.log(error);
         }
@@ -53,7 +53,7 @@ const MyJobsComponentUi = () => {
                                 color: "black"
                             }}
                                 onClick={() => navigate("/find-job")}
-                            >Vist For New Opportunity</Button>
+                            >Visit For New Opportunity</Button>
                         </VStack>
                     }
 
@@ -69,7 +69,7 @@ const MyJobsComponentUi = () => {
                                 color: "black"
                             }}
                                 onClick={() => navigate("/find-job")}
-                            >Vist For New Opportunity</Button>
+                            >Visit For New Opportunity</Button>
                         </VStack>
                     } */}
 

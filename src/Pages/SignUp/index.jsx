@@ -8,6 +8,7 @@ import {
   FormControl,
   InputRightElement,
   Button,
+  IconButton,
   InputGroup,
   Checkbox,
   Image,
@@ -17,7 +18,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { CiUser } from "react-icons/ci";
 import CTAButton from "../../Components/CTAButton";
-import { BsFacebook, BsApple } from "react-icons/bs";
+import { BsFacebook, BsApple, BsEyeSlash, BsEye } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { BiChevronDown } from "react-icons/bi";
 import Divider from "../../Components/Divider/Divider";
@@ -852,10 +853,12 @@ export const FreelancerSignUp = () => {
                     type={show ? "text" : "password"}
                     placeholder="Enter password"
                   />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={() => handleClick()}>
-                      {show ? "Hide" : "Show"}
-                    </Button>
+                  <InputRightElement width="2.8rem">
+                    <IconButton
+                      aria-label={show ? "Hide Password" : "Show Password"}
+                      icon={show ? <BsEyeSlash /> : <BsEye />}
+                      onClick={() => handleClick()
+                      } />
                   </InputRightElement>
                 </InputGroup>
                 <InputGroup>
@@ -913,7 +916,7 @@ export const FreelancerSignUp = () => {
                 />
                 <Text fontWeight={"500"}>
                   Already Have an Account?{" "}
-                  <span className="text-[var(--primarytextcolor)]">Login</span>
+                  <span className="text-[var(--primarytextcolor)] cursor-pointer" onClick={() => navigate("/login")}>Login</span>
                 </Text>
               </VStack>
             </VStack>
@@ -1291,4 +1294,3 @@ export const verifyMail = async () => {
     </OnbardingCardLayout>
   );
 };
-

@@ -1,5 +1,4 @@
-import { API } from "./proxy";
-import { useApiErrorHandling } from "./proxy";
+import { API, useApiErrorHandling } from "./proxy";
 
 const makeApiRequest = async (
   method,
@@ -13,6 +12,7 @@ const makeApiRequest = async (
   const headers = {
     ...customHeaders,
     token: authtoken,
+    "Content-Type": contentType,
   };
 
   const config = {
@@ -41,6 +41,23 @@ export const uploadImages = async (data) =>
     "multipart/form-data"
   );
 
-export const uploadMedia = async (data) => {
+export const uploadMedia = async (data) =>
   makeApiRequest("POST", "/upload/video", data, {}, "multipart/form-data");
-};
+
+export const getFreelancerGigs = async () =>
+  makeApiRequest("get", `/freelancer/gig`);
+
+export const updateFreelancerGig = async (data) =>
+  makeApiRequest(
+    "patch",
+    `/freelancer/gig/update?gig_id=${data._id}`,
+    data,
+    {},
+    "application/json"
+  );
+
+export const deleteFreelancerGig = async (_id) =>
+  makeApiRequest("delete", `/freelancer/gig/delete?gig_id=${_id}`);
+
+export const getGigDetails = async (_id) =>
+  makeApiRequest("get", `/freelancer/gig/getbyGigId?gig_id=${_id}`);

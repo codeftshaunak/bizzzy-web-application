@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from "react";
 import OnboardingProcess from "../../Layouts/CardLayout/OnboardingProcess";
 import {
   Box,
   Button,
-  Checkbox,
   HStack,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
   Textarea,
   VStack,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { CiUser } from "react-icons/ci";
 import { TbClick, TbReceipt } from "react-icons/tb";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import CTAButton from "../../Components/CTAButton";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import {
@@ -32,7 +22,12 @@ import {
 import { BsBack, BsBackspaceFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getCategories, getSkills } from "../../helpers/freelancerApis";
+import {
+  getCategories,
+  getSkills,
+  getSubCategory,
+} from "../../helpers/freelancerApis";
+import { CurrentUserContext } from "../../Contexts/CurrentUser";
 
 const animatedComponents = makeAnimated();
 
@@ -45,14 +40,16 @@ const Process = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [options, setOptions] = useState([]);
   const [skillOptions, setSkillOptions] = useState([]);
-
   const [skillSelectedOptions, setSkillSelectedOptions] = useState([]);
   const role = useSelector((state) => state.auth.role);
-
+  const [selectedSubCategory, setSeletedSubCategory] = useState([]);
+  const [subCategoryOption, setSubCategoryOption] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const { getUserDetails } = useContext(CurrentUserContext)
   const getUserInformation = async () => {
     try {
       const res = await getAllDetailsOfUser();
-      const data = res.body;
+      const data = res;
       setUserDetails(data);
     } catch (error) {
       console.log(error);
@@ -80,16 +77,22 @@ const Process = () => {
   });
 
   const handleSelectChange = (selectedValues) => {
+    setSelectedCategory(selectedValues?._id);
     setSelectedOptions(selectedValues || []);
+  };
+
+  const handleSelectSubCategoryChange = (selectedValues) => {
+    setSeletedSubCategory(selectedValues || []);
   };
 
   const autoProcess = () => {
     if (
       userDetails?.categories?.length > 0 &&
+      userDetails?.sub_categories?.length > 0 &&
       userDetails?.skills?.length > 0 &&
       userDetails?.professional_role?.length > 0
     ) {
-      navigate("/freelancer");
+      navigate("/profile");
     }
     if (
       userDetails?.briefDescription?.length > 0 &&
@@ -121,13 +124,30 @@ const Process = () => {
               isClosable: true,
             });
           } else {
-            const selectedCategories = selectedOptions?.map((option) => ({
-              value: option.value,
-              _id: option._id,
-            }));
+            const selectedCategories =
+              selectedOptions && !Array.isArray(selectedOptions)
+                ? [selectedOptions].map((option) => ({
+                  value: option.value,
+                  _id: option._id,
+                }))
+                : [];
+
+            const subCategoriesValue =
+              selectedSubCategory && Array.isArray(selectedSubCategory)
+                ? selectedSubCategory.map((option) => ({
+                  value: option.value,
+                  _id: option._id,
+                }))
+                : [];
+
+
             const response = await updateFreelancerProfile({
               categories: selectedCategories,
+              sub_categories: subCategoriesValue,
             });
+
+            console.log(response, "response|====");
+
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -137,6 +157,7 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
+              setSeletedSubCategory([]);
               setPage(3);
             } else if (response.code === 200) {
               toast({
@@ -147,6 +168,7 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
+              setSeletedSubCategory([]);
               setPage(3);
             }
           }
@@ -198,6 +220,7 @@ const Process = () => {
                 isClosable: true,
                 position: "top-right",
               });
+              getUserDetails();
               setPage(4);
             }
           }
@@ -211,7 +234,7 @@ const Process = () => {
               position: "top",
             });
           } else {
-            const selectedCategories = selectedOptions?.map(
+            const selectedCategories = selectedOptions.map(
               (option) => option.value
             );
             const response = await updateFreelancerProfile({
@@ -226,7 +249,7 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
-              navigate("/freelancer");
+              // navigate("/profile");
             } else if (response.code === 200) {
               toast({
                 title: "Skils Added Successfully",
@@ -236,7 +259,8 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
-              navigate("/freelancer");
+              getUserDetails();
+              navigate("/profile");
             }
           }
         }
@@ -301,7 +325,7 @@ const Process = () => {
   const getCategory = async () => {
     const categories = await getCategories();
     setOptions(
-      categories?.body?.map((item) => ({
+      categories?.map((item) => ({
         value: item.category_name,
         label: item.category_name,
         _id: item._id,
@@ -312,6 +336,31 @@ const Process = () => {
     getCategory();
   }, []);
 
+  // Handle Sub Category
+  const getSubCategoryData = async () => {
+    try {
+      const subcategories = await getSubCategory(selectedCategory);
+
+      if (Array.isArray(subcategories)) {
+        setSubCategoryOption(
+          subcategories.map((item) => ({
+            value: item.sub_category_name,
+            label: item.sub_category_name,
+            _id: item._id,
+          }))
+        );
+      } else {
+        setSubCategoryOption([]);
+      }
+    } catch (error) {
+      setSubCategoryOption([]);
+    }
+  };
+
+  useEffect(() => {
+    getSubCategoryData();
+  }, [selectedCategory]);
+
   // Handle Skills Options Category Wise
   const getCategorySkills = async (categoryIds) => {
     try {
@@ -321,7 +370,7 @@ const Process = () => {
         try {
           const skills = await getSkills(_id);
           if (skills) {
-            return skills?.map((item) => ({
+            return skills.map((item) => ({
               value: item?.skill_name,
               label: item?.skill_name,
               category_id: item?.category_id,
@@ -443,6 +492,7 @@ const Process = () => {
                     How would you like to tell us about yourself?
                   </Text>
                 </Box>
+                
                 <Box>
                   <Text fontSize="15px" fontWeight="400">
                     We need to get a sense of your education, experience and
@@ -453,13 +503,24 @@ const Process = () => {
                 <Select
                   placeholder="Select Your Category"
                   className="w-[400px]"
-                  closeMenuOnSelect={false}
+                  closeMenuOnSelect={true}
                   components={animatedComponents}
-                  isMulti
                   options={options}
                   onChange={handleSelectChange}
                   value={selectedOptions}
                 />
+
+                <Select
+                  placeholder="Select Your Sub Category"
+                  className="w-[400px]"
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={subCategoryOption}
+                  onChange={handleSelectSubCategoryChange}
+                  value={selectedSubCategory}
+                />
+
                 <Button
                   fontWeight="500"
                   color="#fff"
@@ -723,4 +784,3 @@ const Process = () => {
 };
 
 export default Process;
-

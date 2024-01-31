@@ -5,12 +5,13 @@ import { BsLink45Deg, BsPlus } from "react-icons/bs";
 import PortfolioCard from "./PortfolioCard";
 import ReviewCard from "./ReviewCard";
 import { HStack, VStack, Avatar, Box, Text, Button } from "@chakra-ui/react";
-import { getAllDetailsOfUser, updateFreelancer } from "../../helpers/userApis";
 import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { ProfileGigCards } from "../Gigs/SingleGig/ProfileGigCards";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -20,6 +21,8 @@ export const FreelancerProfilePage = () => {
   const [deleteModalPage, setDeleteModalPage] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [id, setId] = useState({ id: "", type: "" });
+
+  const profile = useSelector((state) => state.profile);
   const {
     firstName,
     lastName,
@@ -32,7 +35,8 @@ export const FreelancerProfilePage = () => {
     experience,
     education,
     portfolio,
-  } = details || [];
+  } = profile.profile || [];
+
   const [localTime, setLocalTime] = useState();
 
   function openModal() {
@@ -54,18 +58,6 @@ export const FreelancerProfilePage = () => {
   setTimeout(() => {
     getCurrentTimeAndLocation();
   }, 1000);
-  const getProfileInformation = async () => {
-    try {
-      const resp = await getAllDetailsOfUser();
-      setDetails(resp.body);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getProfileInformation();
-  }, [modalIsOpen]);
 
   function closeModal() {
     setModalIsOpen(false);
@@ -134,8 +126,6 @@ export const FreelancerProfilePage = () => {
   //   updatedEducationInfo()
   // })
 
-
-
   const HandleDeleteEducation = (id, type) => {
     setId({ id, type });
     setDeleteModalPage("exprience");
@@ -145,7 +135,7 @@ export const FreelancerProfilePage = () => {
   return (
     <ProfileContainer>
       <div className="w-[90%] justify-center m-auto flex flex-col gap-[24px]">
-        <div className="w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+        <div className="w-[100%] flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
               <div
@@ -206,7 +196,7 @@ export const FreelancerProfilePage = () => {
             </div>
             <div className="flex flex-col justify-start">
               <p className="text-[24px] text-[#374151] font-semibold pl-3">
-                {firstName + (lastName ? " " + lastName.split(" ")[0] : "")}
+                {firstName + ' ' + lastName?.slice(0, 1) + '.'}
               </p>
               <HStack className="text-[16px] text-[#374151] font-[400]">
                 <CiLocationOn />
@@ -226,36 +216,12 @@ export const FreelancerProfilePage = () => {
           </div>
         </div>
         <div className="flex gap-[24px]">
-          <div className="flex flex-1 gap-[24px]  flex-col w-full">
+          <div className="flex flex-1 gap-[24px] flex-col w-full">
             {/* ==================== Freelance Stats ====================== */}
-            <div className="flex w-[full] relative flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex w-[400px] relative flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <p className="text-[20px] text-[#374151] font-[600] ">
                 Freelance Stats
               </p>
-              {/* <hr className="  border-t-[#D1D5DB] " /> */}
-              {/* <div className="flex items-center justify-between">
-                <div className="flex flex-col items-start gap-[8px]">
-                  <p className="text-[18px] text-[#374151] font-[600]">
-                    $400K+
-                  </p>
-                  <p className="text-[12px] text-[#374151] font-[500]">
-                    Total Earnings
-                  </p>
-                </div>
-                <div className="flex flex-col items-start gap-[8px]">
-                  <p className="text-[18px] text-[#374151] font-[600]">145 </p>
-                  <p className="text-[12px] text-[#374151] font-[500]">
-                    Total Jobs
-                  </p>
-                </div>
-                <div className="flex flex-col items-start gap-[8px]">
-                  <p className="text-[18px] text-[#374151] font-[600]">680</p>
-                  <p className="text-[12px] text-[#374151] font-[500]">
-                    Total Hours
-                  </p>
-                </div>
-              </div> */}
-
               <VStack
                 backgroundColor={"#f4f5f787"}
                 height={"80px"}
@@ -265,26 +231,12 @@ export const FreelancerProfilePage = () => {
                 <Text fontWeight={"600"} top={"8rem"} textAlign={"center"}>
                   Updated Freelancer Stats <br /> Coming Soon
                 </Text>
-
-                {/* <div className="flex items-center justify-between">
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg font-semibold">$400K+</p>
-                    <p className="text-sm font-medium">Total Earnings</p>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg font-semibold">145</p>
-                    <p className="text-sm font-medium">Total Jobs</p>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-lg font-semibold">680</p>
-                    <p className="text-sm font-medium">Total Hours</p>
-                  </div>
-                </div> */}
               </VStack>
             </div>
             {/* ==================== Freelance Stats ====================== */}
+
             {/* ==================== Education ====================== */}
-            <div className="flex  flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex w-[400px] flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex items-center justify-between">
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Education
@@ -401,7 +353,7 @@ export const FreelancerProfilePage = () => {
             </div>
             {/* ==================== Education ====================== */}
             {/* ==================== Experience ====================== */}
-            <div className="flex flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex flex-col gap-[24px] border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg w-[400px]">
               <div className="flex items-center justify-between">
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Experience
@@ -524,7 +476,7 @@ export const FreelancerProfilePage = () => {
             </div>
             {/* ==================== Basic info ====================== */}
           </div>
-          <div className="flex-[2] flex flex-col gap-[24px]">
+          <div className="flex-[2] flex flex-col gap-[24px]  w-[860px]">
             <div className="flex flex-col gap-5  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div className="flex gap-[16px] justify-between">
                 <p className="text-[20px] text-[#374151] font-[600] w-[480px]">
@@ -664,26 +616,30 @@ export const FreelancerProfilePage = () => {
               </div>
             </div>
 
-
-            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+            <div className="flex flex-col gap-[24px]  border-[1px] pt-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div>
                 <p className="text-[16px] text-[#374151] font-[600] pb-3">
                   Your Gigs
                 </p>
                 <hr />
-                <p className="mt-3">Projects are a new way to earn on Upwork that helps you do more of the work you love to do. Create project offerings that highlight your strengths and attract more clients.
+                <p className="mt-3">
+                  Projects are a new way to earn on Upwork that helps you do
+                  more of the work you love to do. Create project offerings that
+                  highlight your strengths and attract more clients.
                 </p>
-                <Button className="mt-3 border" backgroundColor={"white"} height={"34px"} fontWeight={"400"} borderRadius={"25px"} border={"2px solid  var(--primarytextcolor)"} transition={"0.3s ease-in-out"} _hover={{
-                  color: "white",
-                  backgroundColor: "var(--primarytextcolor)"
-                }} onClick={() => navigate("/freelancer/gig")}>Manage Gigs</Button>
+                <button
+                  className="text-start px-5 py-1 rounded-full border-2 border-[var(--primarytextcolor)] hover:text-white hover:bg-[var(--primarytextcolor)] transition h-fit w-fit font-semibold mt-3"
+                  onClick={() => navigate("/freelancer/gig")}
+                >
+                  Manage Gigs
+                </button>
+                <div className="mt-10 w-full">
+                  <ProfileGigCards />
+                </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
-
-              </div>
+              <div className="grid grid-cols-3 gap-4"></div>
             </div>
-
 
             {/* ================= work history ====================== */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
@@ -698,7 +654,7 @@ export const FreelancerProfilePage = () => {
                 </p>
                 <div className="h-[2px] w-[60px] bg-[#16A34A]"></div>
               </div>
-              {details?.work_history?.map((item, index) => (
+              {profile?.work_history?.map((item, index) => (
                 <ReviewCard key={index} workDetails={item} />
               ))}
             </div>

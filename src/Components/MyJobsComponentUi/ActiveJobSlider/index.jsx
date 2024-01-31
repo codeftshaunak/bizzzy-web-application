@@ -7,13 +7,15 @@ import ActiveJobCard from "../ActiveJobCard";
 import { userAllJobs } from "../../../helpers/jobApis";
 
 const ActiveJobSlider = ({ activeJobList }) => {
+
+  console.log(activeJobList);
   // const [activeJobList, setActiveJobList] = useState([]);
 
   // const userAllJobsDatas = async () => {
   //   try {
   //     const response = await userAllJobs();
   //     console.log(response);
-  //     setActiveJobList(response?.body);
+  //     setActiveJobList(response);
   //   } catch (error) {
   //     console.log(error);
   //   }

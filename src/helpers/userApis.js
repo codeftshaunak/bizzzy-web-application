@@ -1,12 +1,7 @@
 import { API } from "./proxy";
 import { useApiErrorHandling } from "./proxy";
 
-const makeApiRequest = async (
-  method,
-  endpoint,
-  data = null,
-  customHeaders
-) => {
+const makeApiRequest = async (method, endpoint, data = null, customHeaders) => {
   const authtoken = localStorage.getItem("authtoken");
 
   const headers = {
@@ -23,7 +18,7 @@ const makeApiRequest = async (
 
   try {
     const response = await API(config);
-    return response.data;
+    return response.data.body ? response.data.body : response.data;
   } catch (error) {
     // Use the error handling hook
     const { handleApiError } = useApiErrorHandling();
@@ -39,7 +34,6 @@ export const uploadImage = async (data) =>
   makeApiRequest("post", "/user-profile-image", data, "multipart/form-data");
 
 export const updateFreelancer = async (data) => {
-  console.log({ data });
   return makeApiRequest("PUT", "/edit-profile", data);
 };
 

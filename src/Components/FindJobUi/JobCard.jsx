@@ -2,16 +2,28 @@ import { formatDistanceToNow } from "date-fns";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Text, HStack } from "@chakra-ui/react";
+import AllJobCardSkeleton from "../LoadingComponent/AllJobCardSkeleton";
 
-const JobCard = ({ jobs }) => {
+const JobCard = ({ jobs, searchTerm ,showHighlightedSearchTerm}) => {
   const navigate = useNavigate();
+
   const truncateText = (text, maxLength) => {
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
 
+  const highlightSearchTerm = (text) => {
+    if (!searchTerm || !showHighlightedSearchTerm) {
+      return text;
+    }
+
+    const regex = new RegExp(searchTerm, "gi");
+    return text.replace(regex, (match) => `<span class="bg-primary">${match}</span>`);
+  };
+
+
   return (
     <>
-      <div>
+      <div className="w-full">
         {jobs?.length > 0 ? (
           jobs?.map((job, index) => {
             const formattedDate = formatDistanceToNow(
@@ -20,30 +32,33 @@ const JobCard = ({ jobs }) => {
                 addSuffix: true,
               }
             );
-            console.log({ job });
 
             return (
               <div key={index}>
                 <div className="p-8 border-b border-tertiary">
-                  <div className="text-gray-300 text-sm">
-                    {(job?.job_type == "fixed" && " Fixed Budget ") ||
-                      (job?.job_type == "hourly" && "Hourly")}
-                    / {job?.experience} / Est. Budget:
-                    <span className="text-black">${job?.amount}</span> /{" "}
-                    {formattedDate}
-                  </div>
+                  <div
+                    className="text-gray-300 text-sm"
+                    dangerouslySetInnerHTML={{
+                      __html: highlightSearchTerm(
+                        `${(job?.job_type === "fixed" && " Fixed Budget ") ||
+                        (job?.job_type === "hourly" && "Hourly")
+                        } / ${job?.experience} / Est. Budget: $${job?.amount} / ${formattedDate}`
+                      )
+                    }}
+                  />
                   <div
                     className="font-semibold mt-2 mb-2 cursor-pointer text-xl capitalize"
                     onClick={() => {
                       navigate(`/find-job/${job?._id}`);
                     }}
-                  >
-                    {job?.title}
-                  </div>
+                    dangerouslySetInnerHTML={{
+                      __html: highlightSearchTerm(job?.title)
+                    }}
+                  />
                   <div
                     className="space-y-0 text-gray-300"
                     dangerouslySetInnerHTML={{
-                      __html: truncateText(job?.description, 500),
+                      __html: highlightSearchTerm(truncateText(job?.description, 500)),
                     }}
                   />
 
@@ -82,6 +97,7 @@ const JobCard = ({ jobs }) => {
                       5.0 300K+ Spent / United States
                     </div>
                   </div>
+
                   <div className="mt-2">
                     <b>Skills</b>
                     <HStack marginTop={"0.5rem"}>
@@ -95,9 +111,10 @@ const JobCard = ({ jobs }) => {
                           backgroundColor={"var(--bordersecondary)"}
                           color={"var(--primarytext)"}
                           borderRadius={"15px"}
-                        >
-                          {skill}
-                        </Text>
+                          dangerouslySetInnerHTML={{
+                            __html: highlightSearchTerm(skill)
+                          }}
+                        />
                       ))}
                     </HStack>
                   </div>
@@ -108,7 +125,11 @@ const JobCard = ({ jobs }) => {
         ) : (
           <>
             <div className="text-center p-5">
-              <h3>No Jobs Available For Now🎁</h3>
+              {
+                [1, 2, 3, 4].map(() => (
+                  <AllJobCardSkeleton />
+                ))
+              }
             </div>
           </>
         )}
@@ -118,3 +139,4 @@ const JobCard = ({ jobs }) => {
 };
 
 export default JobCard;
+ 

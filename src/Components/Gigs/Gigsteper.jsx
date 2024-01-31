@@ -1,6 +1,5 @@
 import {
   Step,
-  StepDescription,
   StepIcon,
   StepIndicator,
   StepNumber,
@@ -8,12 +7,12 @@ import {
   StepSeparator,
   StepStatus,
   Text,
-  StepTitle,
   Stepper,
   useSteps,
 } from "@chakra-ui/react";
 import { GigCreate } from "./GigCreate";
 import { useCallback } from "react";
+import { GigUpdate } from "./GigUpdate";
 const steps = [
   { title: "Overview", description: "Contact Info" },
   { title: "Pricing", description: "Date & Time" },
@@ -52,7 +51,7 @@ export const GigSteper = ({ activeStep }) => {
   );
 };
 
-export const CreateWithStepper = () => {
+export const CreateWithStepper = ({ setPage }) => {
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
@@ -77,7 +76,42 @@ export const CreateWithStepper = () => {
         setActiveStep={setActiveStep}
         goBackward={goBackward}
         goForward={goForward}
+        setPage={setPage}
       />
+    </>
+  );
+};
+
+export const UpdateWithStepper = ({ setPage, setIsEdit }) => {
+  const { activeStep, setActiveStep } = useSteps({
+    index: 0,
+    count: steps.length,
+  });
+
+  //   move step backward
+  const goBackward = useCallback(() => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    }
+  }, [activeStep, setActiveStep]);
+  // move step forward
+  const goForward = useCallback(() => {
+    setActiveStep(activeStep + 1);
+  }, [activeStep, setActiveStep]);
+
+  return (
+    <>
+      <GigSteper activeStep={activeStep} />
+      <div className="mt-10">
+        <GigUpdate
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+          goBackward={goBackward}
+          goForward={goForward}
+          setPage={setPage}
+          setIsEdit={setIsEdit}
+        />
+      </div>
     </>
   );
 };

@@ -323,4 +323,3 @@ const ActiveJobDetailsComponent = () => {
 };
 
 export default ActiveJobDetailsComponent;
-

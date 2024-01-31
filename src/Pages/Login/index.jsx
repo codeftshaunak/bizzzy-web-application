@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CiUser } from "react-icons/ci";
 import { BsEye, BsEyeSlash } from "react-icons/bs"; // For the show/hide password functionality
 import CTAButton from "../../Components/CTAButton";
@@ -13,10 +13,8 @@ import {
   Stack,
   HStack,
   IconButton,
-  InputGroup,
-  InputRightElement,
   useToast,
-  Skeleton, SkeletonCircle, SkeletonText
+  Skeleton, SkeletonText
 } from "@chakra-ui/react"; // Import Chakra-UI components
 import OnbardingCardLayout from "../../Layouts/CardLayout/OnbardingCardLayout";
 import { signIn } from "../../helpers/apiRequest";
@@ -25,6 +23,8 @@ import { useDispatch } from "react-redux";
 import { setAuthData } from "../../redux/authSlice/authSlice"; // Import your actions
 import { profileData } from "../../redux/authSlice/profileSlice"; // Import your actions
 import { getAllDetailsOfUser } from "../../helpers/userApis";
+import { CurrentUserContext } from "../../Contexts/CurrentUser";
+import LoadingButton from "../../Components/LoadingComponent/LoadingButton";
 
 const Login = ({ setPage }) => {
   const toast = useToast();
@@ -32,6 +32,7 @@ const Login = ({ setPage }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  const { getUserDetails } = useContext(CurrentUserContext);
 
   const iconsStyle = {
     fontSize: "1.5rem",
@@ -47,12 +48,8 @@ const Login = ({ setPage }) => {
   };
 
   const [showPassword, setShowPassword] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    categories: [],
-    skills: [],
-    hourly_rate: null,
-  });
   const [loading, setLoading] = useState(false);
+  const [loginBtnLoading, setLoginBtnLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -66,28 +63,17 @@ const Login = ({ setPage }) => {
     });
   };
 
-  const userDetails = async () => {
-    setLoading(true);
-    try {
-      const response = await getAllDetailsOfUser();
-      setUserInfo(response.body || {});
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
 
   const handleLogin = async (e) => {
+    setLoginBtnLoading(true)
     e.preventDefault();
     const response = await signIn(formData);
-    console.log(response);
     if (response.code === 200) {
       const { role, token } = response.body;
       dispatch(setAuthData({ role: role, authtoken: token }));
-      dispatch(profileData({ profile: response.body }));
+      getUserDetails();
       toast({
         title: response.msg,
         status: "success",
@@ -95,9 +81,9 @@ const Login = ({ setPage }) => {
         isClosable: true,
         position: "top-right",
       });
-      setLoading(true)
+      setLoading(true);
       const res = await getAllDetailsOfUser();
-      const data = res?.body;
+      const data = res;
       const detailsFound =
         data?.categories?.length > 0 &&
         data?.skills?.length > 0 &&
@@ -127,6 +113,8 @@ const Login = ({ setPage }) => {
       });
       navigate("/login");
     }
+    setLoginBtnLoading(false)
+    setLoading(false);
   };
 
   const toggleShowPassword = () => {
@@ -201,16 +189,19 @@ const Login = ({ setPage }) => {
                   onClick={toggleShowPassword}
                 />
               </Flex>
-              <CTAButton
-                text="Continue with Email"
-                bg="var(--primarycolor)"
-                color="#fff"
-                fontWeight="500"
-                height="2.5rem"
-                borderRadius="5px"
-                fontSize="1rem"
-                onClick={(e) => handleLogin(e)}
-              />
+              {
+                loginBtnLoading ? <LoadingButton /> : <CTAButton
+                  text="Continue with Email"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  onClick={(e) => handleLogin(e)}
+                />
+              }
+
               <Divider text="Or" dwidth="180px" />
               <HStack justifyContent="space-between" width="100%">
                 <Box style={iconsStyle} color="#3789f4">

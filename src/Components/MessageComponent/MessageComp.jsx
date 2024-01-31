@@ -169,6 +169,14 @@ const MessageComp = () => {
         <Card className="px-10 py-2">
           <h2>Submit works</h2>
         </Card>
+        <div className="mt-6 relative w-full">
+          <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
+          <div className="flex flex-col gap-3 absolute bottom-3 left-3">
+            <div className="text-3xl text-secondary font-bold">Earn Hourly</div>
+            <div className="text-sm text-secondary">Download the Bizzzy time tracker app to start working hourly contracts.</div>
+            <button className="bg-primary text-secondary rounded h-[36px] w-[130px]">Download Now</button>
+          </div>
+        </div>
       </VStack>
     </HStack>
   );
@@ -189,7 +197,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
-      setreceiverDetails(response.body);
+      setreceiverDetails(response);
     }
   };
 
@@ -208,7 +216,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const senderUser = async () => {
     if (selectedUser) {
       const response = await userById(userId);
-      setSenderDetails(response.body);
+      setSenderDetails(response);
     }
   };
   // console.log({ receiverDetails, senderDetails });
