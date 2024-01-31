@@ -12,6 +12,9 @@ import {
   Text,
   VStack,
   Avatar,
+  RadioGroup,
+  Stack,
+  Radio,
 } from "@chakra-ui/react";
 import Select from "react-select";
 import { BiSearchAlt, BiXCircle } from "react-icons/bi";
@@ -21,7 +24,6 @@ import AgencyUserCard from "./AgencyUserCard";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
 import { getCategories } from "../../helpers/freelancerApis";
 // import { makeAnimated } from 'react-select/animated';
-
 
 // const animatedComponents = makeAnimated();
 
@@ -197,6 +199,18 @@ export const SearchJobPage = () => {
     useState(false);
   const [categoryOptions, setCategoryOptions] = useState([]);
 
+  const [hourlyRateMin, setHourlyRateMin] = useState(null);
+  const [hourlyRateMax, setHourlyRateMax] = useState(null);
+
+  const [hourlyRateShow, setHourlyRateShow] = useState(false);
+  const [fixedRateShow, setFixedRateShow] = useState(false);
+
+  const [fixedRateMin, setFixedRateMin] = useState(null);
+  const [fixRateMax, setFixRateMax] = useState(null);
+
+  // console.log(hourlyRateMin, "hourlyRateMin=====")
+  // console.log(hourlyRateMax, "hourlyRateMax==")
+
   const navigate = useNavigate();
 
   // Handle Category
@@ -213,17 +227,33 @@ export const SearchJobPage = () => {
     getCategory();
   }, []);
 
-
-
   //  ====== search job
   const fetchJobs = useCallback(async () => {
     try {
       setLoading(true);
       if (category) {
-        const jobs = await getJobs(category,null, experience, contractType);
+        const jobs = await getJobs(
+          category,
+          null,
+          experience,
+          contractType,
+          hourlyRateMin,
+          hourlyRateMax,
+          fixedRateMin,
+          fixRateMax
+        );
         setJobsData(jobs);
       } else {
-        const jobs = await getJobs(null,null, experience, contractType);
+        const jobs = await getJobs(
+          null,
+          null,
+          experience,
+          contractType,
+          hourlyRateMin,
+          hourlyRateMax,
+          fixedRateMin,
+          fixRateMax
+        );
         setJobsData(jobs);
       }
     } catch (error) {
@@ -231,8 +261,16 @@ export const SearchJobPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [category, contractType, experience]);
- 
+  }, [
+    category,
+    contractType,
+    experience,
+    fixRateMax,
+    fixedRateMin,
+    hourlyRateMax,
+    hourlyRateMin,
+  ]);
+
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
@@ -245,7 +283,11 @@ export const SearchJobPage = () => {
           null,
           searchTerm,
           experience,
-          contractType
+          contractType,
+          hourlyRateMin,
+          hourlyRateMax,
+          fixedRateMin,
+          fixRateMax
         );
         setJobsData(jobs);
         setShowHighlightedSearchTerm(true);
@@ -261,102 +303,159 @@ export const SearchJobPage = () => {
     }
   };
 
-  // const handleCategoryChange = (value) => {
-  //   setCategory(value);
-  // };
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    navigateWithFilters();
+  };
 
+  const handleExperienceChange = (experienceLevel) => {
+    setExperience((prev) => {
+      const updatedExperience = prev.includes(experienceLevel)
+        ? prev.filter((level) => level !== experienceLevel)
+        : [...prev, experienceLevel];
+      return updatedExperience;
+    });
+    navigateWithFilters();
+  };
 
-  // const handleExperienceChange = (experienceLevel) => {
-  //   setExperience((prev) => {
-  //     const updatedExperience = prev.includes(experienceLevel)
-  //       ? prev.filter((level) => level !== experienceLevel)
-  //       : [...prev, experienceLevel];
-  //     return updatedExperience;
-  //   });
-  // };
+  const navigateWithFilters = async () => {
+    try {
+      setLoading(true);
+
+      const params = new URLSearchParams();
+
+      // Append search term to URL parameters
+      if (searchTerm.trim() !== "") {
+        params.append("searchTerm", searchTerm);
+      }
+
+      // Append category to URL parameters
+      if (category) {
+        params.append("category", category.map((cat) => cat.value).join(","));
+      }
+
+      // Append experience to URL parameters
+      if (experience.length > 0) {
+        params.append("experience", experience.join(","));
+      }
+
+      // Append contractType to URL parameters
+      if (contractType.length > 0) {
+        params.append("contractType", contractType.join(","));
+      }
+
+      // Fetch jobs using the updated parameters
+      const jobs = await getJobs(
+        category,
+        searchTerm,
+        experience,
+        contractType
+      );
+
+      // Update state with fetched jobs
+      setJobsData(jobs);
+      setShowHighlightedSearchTerm(true);
+
+      // Append the search parameters to the URL and navigate
+      navigate(`/search-job?${params.toString()}`);
+    } catch (error) {
+      console.error("Error fetching job data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleHourlyRateChange = (value) => {
+    // Handle hourly rate changes
+    switch (value) {
+      case "1":
+        // Any hourly rate
+        setHourlyRateMin(null);
+        setHourlyRateMax(null);
+        break;
+      case "2":
+        // $10 - 30
+        setHourlyRateMin(10);
+        setHourlyRateMax(30);
+        break;
+      case "3":
+        // $30 - 50
+        setHourlyRateMin(30);
+        setHourlyRateMax(50);
+        break;
+      case "4":
+        // $50 - 100
+        setHourlyRateMin(50);
+        setHourlyRateMax(100);
+        break;
+      case "5":
+        // $100 & above
+        setHourlyRateMin(100);
+        setHourlyRateMax(null);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleFixedRateChange = (value) => {
+    // Handle hourly rate changes
+    switch (value) {
+      case "1":
+        setFixedRateMin(null);
+        setFixRateMax(null);
+        break;
+      case "2":
+        setFixedRateMin(100);
+        setFixRateMax(300);
+        break;
+      case "3":
+        setFixedRateMin(300);
+        setFixRateMax(500);
+        break;
+      case "4":
+        setFixedRateMin(500);
+        setFixRateMax(1000);
+        break;
+      case "5":
+        setFixedRateMin(1000);
+        setFixRateMax(null);
+        break;
+      default:
+        break;
+    }
+  };
 
   // const handleContractTypeChange = (contractTypeValue) => {
+  //   setHourlyRateShow(true);
   //   setContractType((prev) => {
   //     const updatedContractType = prev.includes(contractTypeValue)
   //       ? prev.filter((type) => type !== contractTypeValue)
   //       : [...prev, contractTypeValue];
   //     return updatedContractType;
   //   });
+  //   navigateWithFilters();
   // };
 
-  const handleCategoryChange = (value) => {
-    setCategory(value);
-    navigateWithFilters();
-};
-
-const handleExperienceChange = (experienceLevel) => {
-    setExperience((prev) => {
-        const updatedExperience = prev.includes(experienceLevel)
-            ? prev.filter((level) => level !== experienceLevel)
-            : [...prev, experienceLevel];
-        return updatedExperience;
-    });
-    navigateWithFilters();
-};
-
-const handleContractTypeChange = (contractTypeValue) => {
-    setContractType((prev) => {
-        const updatedContractType = prev.includes(contractTypeValue)
-            ? prev.filter((type) => type !== contractTypeValue)
-            : [...prev, contractTypeValue];
-        return updatedContractType;
-    });
-    navigateWithFilters();
-};
-
-const navigateWithFilters = async () => {
-    try {
-        setLoading(true);
-
-        const params = new URLSearchParams();
-
-        // Append search term to URL parameters
-        if (searchTerm.trim() !== "") {
-            params.append("searchTerm", searchTerm);
-        }
-
-        // Append category to URL parameters
-        if (category) {
-            params.append("category", category.map((cat) => cat.value).join(","));
-        }
-
-        // Append experience to URL parameters
-        if (experience.length > 0) {
-            params.append("experience", experience.join(","));
-        }
-
-        // Append contractType to URL parameters
-        if (contractType.length > 0) {
-            params.append("contractType", contractType.join(","));
-        }
-
-        // Fetch jobs using the updated parameters
-        const jobs = await getJobs(
-            category,
-            searchTerm,
-            experience,
-            contractType
-        );
-
-        // Update state with fetched jobs
-        setJobsData(jobs);
-        setShowHighlightedSearchTerm(true);
-
-        // Append the search parameters to the URL and navigate
-        navigate(`/search-job?${params.toString()}`);
-    } catch (error) {
-        console.error("Error fetching job data:", error);
-    } finally {
-        setLoading(false);
+  const handleContractTypeChange = (contractTypeValue) => {
+    if (contractTypeValue === "fixed") {
+      setFixedRateShow((prev) => !prev);
+      setHourlyRateShow(false);  
+    } else if (contractTypeValue === "hourly") {
+      setHourlyRateShow((prev) => !prev);
+      setFixedRateShow(false);  
     }
-};
   
-
+    setContractType((prev) => {
+      const updatedContractType = prev.includes(contractTypeValue)
+        ? prev.filter((type) => type !== contractTypeValue)
+        : [...prev, contractTypeValue];
+      return updatedContractType;
+    });
+  
+    navigateWithFilters();
+  };
+  
   const clearSearch = () => {
     setSearchTerm("");
     fetchJobs();
@@ -389,6 +488,10 @@ const navigateWithFilters = async () => {
             setCategory={setCategory}
             setCategoryOptions={setCategoryOptions}
             category={category}
+            handleHourlyRateChange={handleHourlyRateChange}
+            handleFixedRateChange={handleFixedRateChange}
+            hourlyRateShow={hourlyRateShow}
+            fixedRateShow={fixedRateShow}
           />
           <div className="mt-6 relative">
             <img
@@ -485,9 +588,11 @@ export const Filter = ({
   handleCategoryChange,
   categoryOptions,
   category,
+  handleHourlyRateChange,
+  handleFixedRateChange,
+  hourlyRateShow,
+  fixedRateShow,
 }) => {
-
-
   return (
     <VStack
       marginTop={"1rem"}
@@ -533,9 +638,74 @@ export const Filter = ({
           <Checkbox onChange={() => handleContractTypeChange("hourly")}>
             Hourly Rate
           </Checkbox>
+          {hourlyRateShow && (
+            <VStack
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              w={"full"}
+            >
+              <RadioGroup
+                padding={"0 0.5rem 0"}
+                defaultValue="1"
+                mt={1}
+                onChange={(value) => handleHourlyRateChange(value)}
+              >
+                <Stack spacing={4} direction="column">
+                  <Radio colorScheme="green" value="1">
+                    Any hourly rate
+                  </Radio>
+                  <Radio colorScheme="green" value="2">
+                    $10 - 30$
+                  </Radio>
+                  <Radio colorScheme="green" value="3">
+                    $30 - 50$
+                  </Radio>
+                  <Radio colorScheme="green" value="4">
+                    $50 - 100$
+                  </Radio>
+                  <Radio colorScheme="green" value="5">
+                    $100 & above
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+            </VStack>
+          )}
+
           <Checkbox onChange={() => handleContractTypeChange("fixed")}>
             Fixed Price
           </Checkbox>
+          {fixedRateShow && (
+            <VStack
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              w={"full"}
+            >
+              <RadioGroup
+                padding={"0 0.5rem 0"}
+                defaultValue="1"
+                mt={1}
+                onChange={(value) => handleFixedRateChange(value)}
+              >
+                <Stack spacing={4} direction="column">
+                  <Radio colorScheme="green" value="1">
+                    Any rate
+                  </Radio>
+                  <Radio colorScheme="green" value="2">
+                    $100 - 300$
+                  </Radio>
+                  <Radio colorScheme="green" value="3">
+                    $300 - 500$
+                  </Radio>
+                  <Radio colorScheme="green" value="4">
+                    $500 - 1000$
+                  </Radio>
+                  <Radio colorScheme="green" value="5">
+                    $1000 & above
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+            </VStack>
+          )}
         </VStack>
       </VStack>
     </VStack>

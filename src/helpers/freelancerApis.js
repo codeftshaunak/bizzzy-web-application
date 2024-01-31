@@ -89,8 +89,6 @@ export const getFreelancers = async (
         ? selectedSubCategories.map((category) => category.value).join(",")
         : null;
 
-    console.log(subcategoryValue);
-
     const response = await API.get("/search-freelancers", {
       headers: {
         "Content-Type": "application/json",

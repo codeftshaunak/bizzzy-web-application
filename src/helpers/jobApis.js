@@ -22,11 +22,17 @@ export const getAllJobs = async () => {
   }
 };
 
-export const getJobs = async ( category, searchTerm,experience, contractType) => {
+export const getJobs = async ( category, searchTerm,experience, contractType,  hourlyRateMin,
+  hourlyRateMax, fixedRateMin,fixedRateMax) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
     const experienceValues = experience ? experience.map((exp) => exp).join(",") : "";
     const contractValue = contractType ? contractType.map((contact) => contact).join(",") : "";
+
+    console.log(hourlyRateMin, hourlyRateMax , "hourlyRateMin================")
+
+    console.log(fixedRateMin, fixedRateMax, "fixedRateMax ============")
+
 
     const response = await API.get("/job/search", {
       headers: {
@@ -37,6 +43,10 @@ export const getJobs = async ( category, searchTerm,experience, contractType) =>
         searchTerm: searchTerm || "",
         experience: experienceValues,
         job_type: contractValue,
+        hourly_rate_min: hourlyRateMin || null,
+        hourly_rate_max: hourlyRateMax || null,
+        fixed_rate_min: fixedRateMin || null,
+        fixed_rate_max: fixedRateMax || null,
         category: category ? category.map((cat) => cat.value).join(",") : "",
       },
     });
