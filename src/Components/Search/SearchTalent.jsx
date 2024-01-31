@@ -353,7 +353,6 @@ export const SearchTalents = () => {
             <Text fontWeight={"500"} fontSize={"1.5rem"}>
               Search Your Talents
             </Text>
-
             <VStack alignItems={"flex-start"} justifyContent={"flex-start"}>
               <Text fontWeight={"600"}>Category</Text>
               <VStack padding={"0 0.5rem 0"} alignItems={"flex-start"} mt={1}>

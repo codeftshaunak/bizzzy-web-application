@@ -26,9 +26,9 @@ import OnbardingCardLayout from "../../Layouts/CardLayout/OnbardingCardLayout";
 import { signUp } from "../../helpers/apiRequest";
 import { useNavigate } from "react-router-dom";
 import {
-  getCountries,
   resendEmailVerification,
 } from "../../helpers/clientApis";
+import { getCountries } from "../../helpers/freelancerApis";
 
 export const SignUp = () => {
   const [selectedOption, setSelectedOption] = useState(null);
