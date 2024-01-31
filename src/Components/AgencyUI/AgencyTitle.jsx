@@ -9,7 +9,6 @@ const AgencyTitle = ({ children, isValue, data, setIsUpdate }) => {
 
   return (
     <>
-      {" "}
       <HStack>
         <Text fontSize={"1.3rem"} fontWeight={"600"} marginBottom={"0px"}>
           {children}

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { HStack, Box, Input, Textarea, Button, FormControl, FormLabel, Select, useToast } from '@chakra-ui/react';
-import { getCategories, getCountries } from '../../helpers/clientApis';
+import { getCategories, getCountries } from '../../helpers/freelancerApis';
 import { getSubCategory } from '../../helpers/freelancerApis';
 import { createAgency } from '../../helpers/agencyApis';
 import { useNavigate } from 'react-router-dom';

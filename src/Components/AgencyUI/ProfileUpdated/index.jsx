@@ -6,8 +6,10 @@ import {
   getCategories,
   getSkills,
   getSubCategory,
-  updateAgencyProfile,
 } from "../../../helpers/freelancerApis";
+import {
+  updateAgencyProfile
+} from "../../../helpers/agencyApis";
 import { useEffect, useState } from "react";
 import { useQuill } from "react-quilljs";
 import { FaCloudUploadAlt } from "react-icons/fa";

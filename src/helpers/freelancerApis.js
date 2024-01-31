@@ -109,23 +109,8 @@ export const getFreelancers = async (
   }
 };
 
-export const getCategories = async () => {
-  try {
-    const authtoken = localStorage.getItem("authtoken");
+export const getCategories = async () =>
+  makeApiRequest("get", "/categories");
 
-    const response = await API.get("/categories", {
-      headers: {
-        "Content-Type": "application/json",
-        token: authtoken,
-      },
-    });
-    return response.data.body;
-  } catch (error) {
-    console.error("Error fetching freelancer data:", error);
-    throw error;
-  }
-};
-
-// Updated Agency Profile of Freelancer
-export const updateAgencyProfile = async (data) =>
-  makeApiRequest("put", "/agency/update", data);
+export const getCountries = async () =>
+  makeApiRequest("get", "/get-countries");
