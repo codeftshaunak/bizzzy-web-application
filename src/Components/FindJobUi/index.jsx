@@ -440,22 +440,22 @@ export const SearchJobPage = () => {
   const handleContractTypeChange = (contractTypeValue) => {
     if (contractTypeValue === "fixed") {
       setFixedRateShow((prev) => !prev);
-      setHourlyRateShow(false);  
+      setHourlyRateShow(false);
     } else if (contractTypeValue === "hourly") {
       setHourlyRateShow((prev) => !prev);
-      setFixedRateShow(false);  
+      setFixedRateShow(false);
     }
-  
+
     setContractType((prev) => {
       const updatedContractType = prev.includes(contractTypeValue)
         ? prev.filter((type) => type !== contractTypeValue)
         : [...prev, contractTypeValue];
       return updatedContractType;
     });
-  
+
     navigateWithFilters();
   };
-  
+
   const clearSearch = () => {
     setSearchTerm("");
     fetchJobs();
@@ -535,7 +535,11 @@ export const SearchJobPage = () => {
           >
             <Input
               placeholder="Search for open positions..."
-              onChange={(e) => setSearchTerm(e.target.value)}
+              // onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowHighlightedSearchTerm(false); // or false, depending on your logic
+              }}
               value={searchTerm}
             />
             {searchTerm && (
