@@ -254,6 +254,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
                       render={({ field: { onChange, ref } }) => (
                         <Select
                           inputRef={ref}
+                          required
                           closeMenuOnSelect={false}
                           onChange={(val) => onChange(val.map((c) => c.value))}
                           options={skills}
