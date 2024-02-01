@@ -125,11 +125,9 @@ const JobCard = ({ jobs, searchTerm ,showHighlightedSearchTerm}) => {
         ) : (
           <>
             <div className="text-center p-5">
-              {
-                [1, 2, 3, 4].map(() => (
-                  <AllJobCardSkeleton />
-                ))
-              }
+              {[1, 2, 3, 4].map((item) => (
+                <AllJobCardSkeleton key={item} />
+              ))}
             </div>
           </>
         )}

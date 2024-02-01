@@ -22,16 +22,25 @@ export const getAllJobs = async () => {
   }
 };
 
-export const getJobs = async ( category, searchTerm,experience, contractType) => {
+export const getJobs = async (
+  category,
+  searchTerm,
+  experience,
+  contractType
+) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
-    const experienceValues = experience ? experience.map((exp) => exp).join(",") : "";
-    const contractValue = contractType ? contractType.map((contact) => contact).join(",") : "";
+    const experienceValues = experience
+      ? experience.map((exp) => exp).join(",")
+      : "";
+    const contractValue = contractType
+      ? contractType.map((contact) => contact).join(",")
+      : "";
 
     const response = await API.get("/job/search", {
       headers: {
         "Content-Type": "application/json",
-        "token": authtoken,
+        token: authtoken,
       },
       params: {
         searchTerm: searchTerm || "",
@@ -51,16 +60,13 @@ export const getJobs = async ( category, searchTerm,experience, contractType) =>
 export const getInvitedFreelancer = async () => {
   try {
     const authToken = localStorage.getItem("authtoken");
-    const response = await API.get(
-      "/freelancers/invited",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          token: authToken,
-        },
-      }
-    );
-    console.log("API Success:", response.data.body);
+    const response = await API.get("/freelancers/invited", {
+      headers: {
+        "Content-Type": "application/json",
+        token: authToken,
+      },
+    });
+
     return response.data.body;
   } catch (error) {
     console.error("API Error:", error.message);
@@ -68,14 +74,12 @@ export const getInvitedFreelancer = async () => {
   }
 };
 
-
-
 export const applyJob = async (data) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
     const response = await API.post(`/job-proposal`, data, {
       headers: {
-        'content-type': 'multipart/form-data',
+        "content-type": "multipart/form-data",
         token: `${authtoken}`,
       },
     });
@@ -110,14 +114,19 @@ export const getAllJobsProposal = async () => {
       },
     });
 
-    console.log(response?.data?.body);
     return response?.data?.body;
   } catch (error) {
     return error;
   }
 };
 
-const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}, params = {}) => {
+const makeApiRequest = async (
+  method,
+  endpoint,
+  data = null,
+  customHeaders = {},
+  params = {}
+) => {
   const authtoken = localStorage.getItem("authtoken");
 
   const headers = {
@@ -131,13 +140,12 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
     url: endpoint,
     headers,
     data,
-    params, 
+    params,
   };
 
   try {
     const response = await API(config);
     return response?.data.body;
-
   } catch (error) {
     const { handleApiError } = useApiErrorHandling();
     handleApiError(error);
@@ -145,9 +153,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
   }
 };
 
-export const userAllJobs = async () =>
-  makeApiRequest('get', '/users/jobs');
+export const userAllJobs = async () => makeApiRequest("get", "/users/jobs");
 
 export const getSingleJobDetails = async (id) =>
   makeApiRequest("get", `/job/get-job?job_id=${id}`);
-

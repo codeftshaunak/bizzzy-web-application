@@ -74,7 +74,7 @@ const MessageComp = () => {
       height="full"
       justifyContent={"space-between"}
       alignItems={"start"}
-    // className="bg-green-500"
+      // className="bg-green-500"
     >
       <Box w="350px">
         <Box position="relative" h="44px" mb={2} mt={6}>
@@ -132,7 +132,11 @@ const MessageComp = () => {
                       <Avatar
                         size="md"
                         round="20px"
-                        name={user?.user_details?.firstName + " " + user?.user_details?.lastName}
+                        name={
+                          user?.user_details?.firstName +
+                          " " +
+                          user?.user_details?.lastName
+                        }
                       />
                     )}
                   </Box>
@@ -146,7 +150,9 @@ const MessageComp = () => {
                       </Text>
                       <Text color="gray.600">7/29/23</Text>
                     </HStack>
-                    <Text fontWeight="semibold" fontSize={"15px"}>Expert Dashboard Designer</Text>
+                    <Text fontWeight="semibold" fontSize={"15px"}>
+                      Expert Dashboard Designer
+                    </Text>
                     <Text color="gray.600">
                       You: {user?.lastMessage.slice(0, 10)}
                     </Text>
@@ -170,11 +176,20 @@ const MessageComp = () => {
           <h2>Submit works</h2>
         </Card>
         <div className="mt-6 relative w-full">
-          <img className="w-full" src="/images/dashboard/banner.png" alt="banner" />
+          <img
+            className="w-full"
+            src="/images/dashboard/banner.png"
+            alt="banner"
+          />
           <div className="flex flex-col gap-3 absolute bottom-3 left-3">
             <div className="text-3xl text-secondary font-bold">Earn Hourly</div>
-            <div className="text-sm text-secondary">Download the Bizzzy time tracker app to start working hourly contracts.</div>
-            <button className="bg-primary text-secondary rounded h-[36px] w-[130px]">Download Now</button>
+            <div className="text-sm text-secondary">
+              Download the Bizzzy time tracker app to start working hourly
+              contracts.
+            </div>
+            <button className="bg-primary text-secondary rounded h-[36px] w-[130px]">
+              Download Now
+            </button>
           </div>
         </div>
       </VStack>
@@ -222,7 +237,6 @@ const MessageBody = ({ data, selectedUser }) => {
   // console.log({ receiverDetails, senderDetails });
   useEffect(() => {
     setMessageData(data);
-    console.log(data);
   }, [data]);
 
   useEffect(() => {
@@ -284,7 +298,11 @@ const MessageBody = ({ data, selectedUser }) => {
             alt="img"
           />
         ) : (
-          <Avatar size="md" round="20px" name={receiverDetails?.firstName + " " + receiverDetails?.lastName} />
+          <Avatar
+            size="md"
+            round="20px"
+            name={receiverDetails?.firstName + " " + receiverDetails?.lastName}
+          />
         )}
         <Flex flexDir="column">
           <Text fontWeight="semibold">
@@ -318,9 +336,8 @@ const MessageBody = ({ data, selectedUser }) => {
             },
             scrollbarWidth: "none",
           }}
-        // className="bg-red-500"
+          // className="bg-red-500"
         >
-          {console.log({ messageData })}
           {messageData?.length > 0 &&
             messageData.map((user, index) => (
               <SingleText
@@ -329,10 +346,10 @@ const MessageBody = ({ data, selectedUser }) => {
                 userId={userId}
                 senderDetails={senderDetails}
                 receiverDetails={receiverDetails}
-              // setIsRepeatedUser={setIsRepeatedUser}
-              // isRepeatedUser={isRepeatedUser}
-              // currentUser={currentUser}
-              // setCurrentUser={setCurrentUser}
+                // setIsRepeatedUser={setIsRepeatedUser}
+                // isRepeatedUser={isRepeatedUser}
+                // currentUser={currentUser}
+                // setCurrentUser={setCurrentUser}
               />
             ))}
         </Box>

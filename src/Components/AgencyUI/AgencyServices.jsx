@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { VStack, Text, HStack } from "@chakra-ui/react";
 import AgencyTitle from "./AgencyTitle";
 import { getCategories, getSubCategory } from "../../helpers/freelancerApis";
 import { RiDeleteBin6Fill, RiEdit2Fill } from "react-icons/ri";
+import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyServices = ({ agency, setIsUpdate }) => {
+const AgencyServices = ({ agency, setAgency }) => {
   const { agency_services, agency_skills } = agency || {};
   const { category, subCategory } = agency_services || {};
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
-  console.log({ categoryList, subCategoryList });
+  const [isModal, setIsModal] = useState(false);
+
   const getCategory = async () => {
     try {
       const resp = await getCategories();
@@ -34,7 +36,6 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
     categoryList?.find((item) => item._id === category) || {};
   const selectedSubCategory =
     subCategoryList?.find((item) => item._id === subCategory) || {};
-  console.log({ selectedCategory, selectedSubCategory });
 
   useEffect(() => {
     getCategory();
@@ -44,11 +45,18 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
     getSubCategoryList();
   }, [category]);
 
+  const handleUpdateService = () => {
+    setIsModal(true);
+  };
   return (
     <>
       {" "}
       <VStack alignItems="flex-start" gap={5} width="95%">
-        <AgencyTitle data={agency_services} setIsUpdate={setIsUpdate}>
+        <AgencyTitle
+          data={agency_services}
+          setAgency={setAgency}
+          isValue={!!agency_services}
+        >
           Services
         </AgencyTitle>
         {selectedCategory && (
@@ -77,26 +85,9 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
                   backgroundColor: "transparent",
                   color: "var(--primarycolor)",
                 }}
+                onClick={handleUpdateService}
               >
                 <RiEdit2Fill fontSize="15px" />
-              </VStack>
-              <VStack
-                backgroundColor="white"
-                borderRadius="50%"
-                width="30px"
-                border="1px solid var(--primarycolor)"
-                height="30px"
-                alignItems="center"
-                justifyContent="center"
-                transition="0.6s ease-in-out"
-                cursor="pointer"
-                _hover={{
-                  border: "2px solid var(--primarycolor)",
-                  backgroundColor: "transparent",
-                  color: "var(--primarycolor)",
-                }}
-              >
-                <RiDeleteBin6Fill fontSize="15px" />
               </VStack>
             </HStack>
           </HStack>
@@ -105,7 +96,7 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
         <AgencyTitle
           isValue={!!agency_skills}
           data={agency_services}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
         >
           Skills
         </AgencyTitle>
@@ -121,6 +112,15 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
         </div>
       </VStack>
       {/* Updated Information */}
+      {isModal && (
+        <AgencyUpdatedModal
+          isModal={isModal}
+          setIsModal={setIsModal}
+          title={"Sub Category"}
+          setAgency={setAgency}
+          data={subCategoryList}
+        />
+      )}
     </>
   );
 };

@@ -7,8 +7,6 @@ import ActiveJobCard from "../ActiveJobCard";
 import { userAllJobs } from "../../../helpers/jobApis";
 
 const ActiveJobSlider = ({ activeJobList }) => {
-
-  console.log(activeJobList);
   // const [activeJobList, setActiveJobList] = useState([]);
 
   // const userAllJobsDatas = async () => {
@@ -65,9 +63,10 @@ const ActiveJobSlider = ({ activeJobList }) => {
   return (
     <div>
       <Slider {...sliderSettings}>
-        {activeJobList.length > 0 && activeJobList?.map((job, index) => {
-          return <ActiveJobCard key={index} job={job} />;
-        })}
+        {activeJobList.length > 0 &&
+          activeJobList?.map((job, index) => {
+            return <ActiveJobCard key={index} job={job} />;
+          })}
       </Slider>
     </div>
   );

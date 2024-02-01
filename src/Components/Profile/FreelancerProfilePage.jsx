@@ -9,9 +9,17 @@ import { CiLocationOn } from "react-icons/ci";
 import { formatTime, getUserLocation } from "../../helpers/formet";
 import { ProfileModal } from "./ProfileModal";
 import AlertDeleteDialog from "./DeleteModal";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ProfileGigCards } from "../Gigs/SingleGig/ProfileGigCards";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+// import required modules
+import { FreeMode, Pagination } from "swiper/modules";
 
 export const FreelancerProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -183,8 +191,8 @@ export const FreelancerProfilePage = () => {
                 }}
               ></div> */}
               {!profile_image ||
-                profile_image == "null" ||
-                profile_image === null ? (
+              profile_image == "null" ||
+              profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
@@ -196,7 +204,7 @@ export const FreelancerProfilePage = () => {
             </div>
             <div className="flex flex-col justify-start">
               <p className="text-[24px] text-[#374151] font-semibold pl-3">
-                {firstName + ' ' + lastName?.slice(0, 1) + '.'}
+                {firstName + " " + lastName?.slice(0, 1) + "."}
               </p>
               <HStack className="text-[16px] text-[#374151] font-[400]">
                 <CiLocationOn />
@@ -608,11 +616,24 @@ export const FreelancerProfilePage = () => {
                   </svg>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
-                {portfolio?.length > 0 &&
-                  portfolio?.map((port, idx) => (
-                    <PortfolioCard key={idx} portfolio={port} />
-                  ))}
+              <div className="-z-0">
+                <Swiper
+                  slidesPerView={3}
+                  spaceBetween={30}
+                  freeMode={true}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  modules={[FreeMode, Pagination]}
+                >
+                  {portfolio?.length > 0 &&
+                    portfolio?.map((port, idx) => (
+                      <SwiperSlide key={idx}>
+                        {" "}
+                        <PortfolioCard key={idx} portfolio={port} />
+                      </SwiperSlide>
+                    ))}
+                </Swiper>
               </div>
             </div>
 

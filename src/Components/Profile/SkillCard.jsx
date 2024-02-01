@@ -1,5 +1,4 @@
 const SkillCard = ({ title }) => {
-  console.log(title);
   return (
     <div className="flex items-center gap-[8px] p-[12px] border-[1px] border-[#D1D5DB] rounded-lg">
       <div className="flex items-center justify-center w-[42px]  h-[42px] rounded-[10px] bg-[#F0FDF4]">

@@ -70,7 +70,9 @@ export const getSubCategory = async (_id) =>
 export const getSkills = async (category_id, sub_category_id) =>
   makeApiRequest(
     "get",
-    `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
+    `/categories/skills?category_id=${category_id}${
+      sub_category_id && `&sub_category_id=${sub_category_id}`
+    }`
   );
 
 // Update the function signature
@@ -88,8 +90,6 @@ export const getFreelancers = async (
       selectedSubCategories && selectedSubCategories.length > 0
         ? selectedSubCategories.map((category) => category.value).join(",")
         : null;
-
-    console.log(subcategoryValue);
 
     const response = await API.get("/search-freelancers", {
       headers: {
@@ -111,8 +111,6 @@ export const getFreelancers = async (
   }
 };
 
-export const getCategories = async () =>
-  makeApiRequest("get", "/categories");
+export const getCategories = async () => makeApiRequest("get", "/categories");
 
-export const getCountries = async () =>
-  makeApiRequest("get", "/get-countries");
+export const getCountries = async () => makeApiRequest("get", "/get-countries");

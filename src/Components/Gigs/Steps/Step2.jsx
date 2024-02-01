@@ -7,7 +7,7 @@ import { GigCreateLayout } from "../GigCreate";
 const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  console.log({ selectedImages });
+
   // add selected images
   const insertImages = (files) => {
     setSelectedImages((prev) => [
@@ -27,7 +27,6 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const handleImageSelect = useCallback(
     async (e) => {
       const files = Array.from(e.target.files);
-      console.log({ files, selectedImages });
 
       // Check if the total number of selected images doesn't exceed the limit
       if (selectedImages.length + files.length <= 3) {
@@ -68,7 +67,7 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
     });
     afterSubmit();
   }, [afterSubmit, selectedImages, selectedVideo, submitCallback]);
-  console.log({ selectedVideo });
+
   // load state
   useEffect(() => {
     const images = formValues?.images;
@@ -147,30 +146,30 @@ const Step2 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
         {(selectedVideo === null ||
           selectedVideo?.preview === "" ||
           selectedVideo === undefined) && (
-            <label htmlFor="videoInput">
-              <VStack
-                textAlign={"center"}
-                backgroundColor={"var(--secondarycolor)"}
-                padding={"2rem 2rem"}
-                className="shadow-lg rounded-lg cursor-pointer"
-                onDrop={handleDrop}
-                onDragOver={(e) => e.preventDefault()}
-              >
-                <IoMdVideocam size={"1.6rem"} />
-                <Text>
-                  Drag video here or <br /> <strong>browse</strong>
-                </Text>
-                <Input
-                  id="videoInput"
-                  type="file"
-                  accept="video/*"
-                  name="videoFile"
-                  onChange={handleVideoSelect}
-                  style={{ display: "none" }} // Hide the actual input
-                />
-              </VStack>
-            </label>
-          )}
+          <label htmlFor="videoInput">
+            <VStack
+              textAlign={"center"}
+              backgroundColor={"var(--secondarycolor)"}
+              padding={"2rem 2rem"}
+              className="shadow-lg rounded-lg cursor-pointer"
+              onDrop={handleDrop}
+              onDragOver={(e) => e.preventDefault()}
+            >
+              <IoMdVideocam size={"1.6rem"} />
+              <Text>
+                Drag video here or <br /> <strong>browse</strong>
+              </Text>
+              <Input
+                id="videoInput"
+                type="file"
+                accept="video/*"
+                name="videoFile"
+                onChange={handleVideoSelect}
+                style={{ display: "none" }} // Hide the actual input
+              />
+            </VStack>
+          </label>
+        )}
 
         {selectedVideo && (
           <div className="aspect-video relative">
