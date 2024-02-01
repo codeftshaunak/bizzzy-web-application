@@ -237,7 +237,6 @@ export const JobPostView = () => {
 
 export const InviteFreelancer = () => {
   const [searchResults, setSearchResults] = useState([]);
-  console.log("searchResult", searchResults);
   const [allFreelancers, setAllFreelancers] = useState([]);
   const [invitedFreelancers, setinvitedFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -251,7 +250,6 @@ export const InviteFreelancer = () => {
   const toast = useToast();
   const location = useLocation();
   const jobDetails = location.state && location?.state?.jobDetails;
-  console.log("Job Details", jobDetails);
   const { amount } = jobDetails || [];
 
   let params = useParams();
@@ -454,8 +452,8 @@ export const InviteFreelancer = () => {
                             alt=""
                           /> */}
                           {!searchResult?.profile_image ||
-                            searchResult?.profile_image == "null" ||
-                            searchResult?.profile_image == null ? (
+                          searchResult?.profile_image == "null" ||
+                          searchResult?.profile_image == null ? (
                             <Avatar
                               name={
                                 searchResult?.firstName + searchResult.lastName
@@ -764,7 +762,6 @@ export const InviteFreelancer = () => {
 };
 
 <ReviewProposal />;
-
 
 export const ClientHire = () => {
   return (

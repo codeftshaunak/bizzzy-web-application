@@ -4,7 +4,7 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FiPlus } from "react-icons/fi";
 import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyTitle = ({ children, isValue, data, setIsUpdate }) => {
+const AgencyTitle = ({ children, isValue, data, setAgency, isHide }) => {
   const [isModal, setIsModal] = useState(false);
 
   return (
@@ -34,27 +34,28 @@ const AgencyTitle = ({ children, isValue, data, setIsUpdate }) => {
             <RiEdit2Fill fontSize={"15px"} />
           </VStack>
         )}
-        {!isValue && (
-          <VStack
-            backgroundColor={"white"}
-            borderRadius={"50%"}
-            width={"30px"}
-            border={"1px solid var(--primarycolor)"}
-            height={"30px"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            transition={"0.6s ease-in-out"}
-            cursor={"pointer"}
-            _hover={{
-              border: "2px solid var(--primarycolor)",
-              backgroundColor: "transparent",
-              color: "var(--primarycolor)",
-            }}
-            onClick={() => setIsModal(true)}
-          >
-            <FiPlus fontSize={"25px"} />
-          </VStack>
-        )}
+        {isHide ||
+          (!isValue && (
+            <VStack
+              backgroundColor={"white"}
+              borderRadius={"50%"}
+              width={"30px"}
+              border={"1px solid var(--primarycolor)"}
+              height={"30px"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              transition={"0.6s ease-in-out"}
+              cursor={"pointer"}
+              _hover={{
+                border: "2px solid var(--primarycolor)",
+                backgroundColor: "transparent",
+                color: "var(--primarycolor)",
+              }}
+              onClick={() => setIsModal(true)}
+            >
+              <FiPlus fontSize={"25px"} />
+            </VStack>
+          ))}
       </HStack>
       {isModal && (
         <AgencyUpdatedModal
@@ -62,7 +63,7 @@ const AgencyTitle = ({ children, isValue, data, setIsUpdate }) => {
           setIsModal={setIsModal}
           title={children}
           data={data}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
         />
       )}
     </>

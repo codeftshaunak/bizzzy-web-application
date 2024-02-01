@@ -1,29 +1,38 @@
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+// import required modules
+import { Pagination } from "swiper/modules";
 
 const PortfolioCard = ({ portfolio }) => {
-  console.log({ portfolio });
-  const { project_name, project_description, technologies, attachements } =
-    portfolio;
+  const { project_name, attachements } = portfolio;
 
   return (
-    <div className="flex flex-col gap-[12px]">
-      <div className="rounded-md overflow-hidden">
+    <div className="flex flex-col rounded-md -z-10">
+      <div className="overflow-hidden">
         {attachements && (
-          <Carousel showThumbs={false}>
+          <Swiper
+            pagination={{
+              dynamicBullets: true,
+            }}
+            modules={[Pagination]}
+          >
             {attachements?.map((item) => (
-              <div key={item}>
+              <SwiperSlide key={item}>
                 <img
                   src={item}
-                  className="h-48 w-full object-cover rounded-3"
+                  className="h-48 w-full object-cover rounded-t"
                 />
-              </div>
+              </SwiperSlide>
             ))}
-          </Carousel>
+          </Swiper>
         )}
       </div>
-      <img src="" alt="" />
-      <p className="text-[14px] text-[#374151] font-[500]">{project_name}</p>
+      <p className="text-[14px] text-[#374151] font-[500] border px-3 py-2 rounded-b">
+        {project_name}
+      </p>
     </div>
   );
 };

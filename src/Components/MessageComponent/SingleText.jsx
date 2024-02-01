@@ -44,7 +44,7 @@ const SingleText = ({
     setIsMenu(false);
     try {
       const response = await await deleteMessage(id);
-      console.log(response);
+
       if (response?.code === 200) {
         toast({
           title: response.msg,
