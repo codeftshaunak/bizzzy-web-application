@@ -283,9 +283,9 @@ const GigDetails = () => {
                   <p className="font-semibold">
                     {pricing?.delivery_days
                       ? `${pricing.delivery_days} days delivery - ${format(
-                          addDays(new Date(), pricing.delivery_days),
-                          "MMM dd, yyyy"
-                        )}`
+                        addDays(new Date(), pricing.delivery_days),
+                        "MMM dd, yyyy"
+                      )}`
                       : null}
                   </p>
                   <p className="text-gray-300 text-sm">

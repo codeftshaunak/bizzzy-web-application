@@ -10,8 +10,7 @@ export const FindJob = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (role == 1) {
-        } else if (role == 2) {
+        if (role == 1) { /* empty */ } else if (role == 2) {
             navigate("/client-dashboard");
         } else {
             navigate("/login");

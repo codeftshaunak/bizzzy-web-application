@@ -46,6 +46,7 @@ const Router = () => {
           <Route path="/search-job" element={<SearchPage />} />
           <Route path="/search-talent" element={<SearchTalents />} />
           <Route path="/search-freelancers" element={<SearchFreelancers />} />
+          <Route path="/freelancer/:id" element={<Profile />} />
           <Route path="/agency-build" element={<AgencyBuild />} />
           <Route path="/agency-dashboard" element={<Agency />} />
           <Route path="/profile" element={<Profile />} />

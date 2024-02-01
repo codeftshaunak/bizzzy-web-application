@@ -41,3 +41,5 @@ export const getAgency = async () => makeApiRequest("get", "/agency");
 
 export const createAgencyProject = async (data) =>
   makeApiRequest("post", "/agency/project", data);
+export const updateAgencyProfile = async (data) =>
+  makeApiRequest("put", "/agency/update", data);

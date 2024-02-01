@@ -489,6 +489,7 @@ const Process = () => {
                     How would you like to tell us about yourself?
                   </Text>
                 </Box>
+                
                 <Box>
                   <Text fontSize="15px" fontWeight="400">
                     We need to get a sense of your education, experience and

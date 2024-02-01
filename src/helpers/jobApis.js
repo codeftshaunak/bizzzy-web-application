@@ -6,6 +6,7 @@ export const API = axios.create({
 });
 
 export const getAllJobs = async () => {
+  // eslint-disable-next-line no-useless-catch
   try {
     const authtoken = localStorage.getItem("authtoken");
     const response = await API.get("/job/get-all", {
@@ -21,18 +22,37 @@ export const getAllJobs = async () => {
   }
 };
 
-export const searchJobs = async (searchQuery) => {
-  const authToken = localStorage.getItem("authtoken");
+export const getJobs = async (
+  category,
+  searchTerm,
+  experience,
+  contractType
+) => {
   try {
-    const response = await API.post("/job/search", searchQuery, {
+    const authtoken = localStorage.getItem("authtoken");
+    const experienceValues = experience
+      ? experience.map((exp) => exp).join(",")
+      : "";
+    const contractValue = contractType
+      ? contractType.map((contact) => contact).join(",")
+      : "";
+
+    const response = await API.get("/job/search", {
       headers: {
         "Content-Type": "application/json",
-        token: authToken,
+        token: authtoken,
+      },
+      params: {
+        searchTerm: searchTerm || "",
+        experience: experienceValues,
+        job_type: contractValue,
+        category: category ? category.map((cat) => cat.value).join(",") : "",
       },
     });
-    return response.data.data;
+
+    return response.data.body;
   } catch (error) {
-    console.error("API Error:", error.message);
+    console.error("Error fetching job data:", error);
     throw error;
   }
 };
