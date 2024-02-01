@@ -3,7 +3,7 @@ import { HStack, VStack, Box } from "@chakra-ui/react";
 import { RiDeleteBin2Fill, RiEdit2Fill } from "react-icons/ri";
 
 const ProjectCard = ({ info }) => {
-  const { project_name } = info || {};
+  const { project_name, project_images } = info || {};
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -14,7 +14,7 @@ const ProjectCard = ({ info }) => {
         onMouseLeave={() => setIsHover(false)}
       >
         <img
-          src="https://buffer.com/library/content/images/2023/10/free-images.jpg"
+          src={project_images[0]}
           alt=""
           className="h-48 w-full bg-cover rounded-md"
         />

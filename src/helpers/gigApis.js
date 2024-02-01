@@ -32,10 +32,10 @@ const makeApiRequest = async (
   }
 };
 
-export const uploadImages = async (data) =>
+export const uploadImages = async (data, query) =>
   makeApiRequest(
     "POST",
-    "/upload/multiple/images",
+    `/upload/multiple/images${query}`,
     data,
     {},
     "multipart/form-data"

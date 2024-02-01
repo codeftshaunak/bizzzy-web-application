@@ -20,8 +20,11 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 // import required modules
 import { Pagination, Navigation } from "swiper/modules";
+import LoadingButton from "../LoadingComponent/LoadingButton";
+import CTAButton from "../CTAButton";
 
 const AgencyProjects = ({ agency, setIsUpdate }) => {
+  const [isLading, setIsLoading] = useState(false);
   const { control, register, handleSubmit, reset } = useForm();
   const [isModal, setIsModal] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -31,6 +34,7 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
   const { agency_services } = agency;
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     const imagesFormData = new FormData();
 
     selectedImages.forEach((sf) => {
@@ -39,16 +43,21 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
 
     try {
       const response = await createAgencyProject(data);
+      const portfolio = response.agency_portfolio.slice(-1)[0];
       if (response?._id) {
         imagesFormData.append("ref", "agency_project_portfolio");
         imagesFormData.append("agency_id", response._id);
-        const attachmentResponse = await uploadImages(imagesFormData);
-        console.log("Image upload response:", attachmentResponse);
+        if (portfolio?._id)
+          await uploadImages(imagesFormData, `?portfolio_id=${portfolio._id}`);
       }
       setIsModal(false);
       setIsUpdate(new Date());
+      setSelectedImages([]);
+      setIsLoading(false);
     } catch (error) {
       setIsModal(false);
+      setSelectedImages([]);
+      setIsLoading(false);
     }
     reset();
   };
@@ -71,9 +80,10 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
   };
 
   useEffect(() => {
-    getAllSkills();
-  }, []);
+    if (skills.length < 1) getAllSkills();
+  }, [agency]);
 
+  // console.log({ skills });
   // --------- Manage Projects
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -208,7 +218,7 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                       placeholder="Project Name"
                       required
-                      {...register("agency_portfolio.project_name")}
+                      {...register("project_name")}
                     />
                   </div>
                   <br />
@@ -223,7 +233,7 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                       placeholder="Description"
                       required
-                      {...register("agency_portfolio.project_description")}
+                      {...register("project_description")}
                     />
                   </div>
                   <br />
@@ -235,7 +245,7 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
                   <div className="w-[100%] outline-none border-[1px] rounded-md">
                     <Controller
                       control={control}
-                      name="agency_portfolio.technologies"
+                      name="technologies"
                       render={({ field: { onChange, ref } }) => (
                         <Select
                           inputRef={ref}
@@ -302,11 +312,20 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
               </div>
             </div>
             <div className="text-right mt-10">
-              <input
-                type="submit"
-                className="w-fit h-fit bg-green-600 hover:bg-green-500 rounded px-10 py-1 text-white font-semibold transition cursor-pointer"
-                value={"Submit"}
-              />
+              {isLading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Submit"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                />
+              )}
             </div>
           </form>
         </AgencyModal>

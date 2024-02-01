@@ -14,6 +14,25 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { Country, State, City } from "country-state-city";
 import { uploadImages } from "../../../helpers/gigApis";
 import { useSelector } from "react-redux";
+import LoadingButton from "../../LoadingComponent/LoadingButton";
+import CTAButton from "../../CTAButton";
+
+const modules = {
+  toolbar: [
+    ["bold", "italic", "underline", "strike"],
+    [{ align: [] }],
+
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["link"],
+    [{ color: [] }, { background: [] }],
+
+    ["clean"],
+  ],
+};
 
 export function AgencyUpdatedModal({
   isModal,
@@ -22,22 +41,7 @@ export function AgencyUpdatedModal({
   data,
   setIsUpdate,
 }) {
-  const modules = {
-    toolbar: [
-      ["bold", "italic", "underline", "strike"],
-      [{ align: [] }],
-
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-
-      [{ size: ["small", false, "large", "huge"] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["link"],
-      [{ color: [] }, { background: [] }],
-
-      ["clean"],
-    ],
-  };
+  const [isLading, setIsLoading] = useState(false);
   const { quill, quillRef } = useQuill({ modules });
   const { control, register, handleSubmit, reset } = useForm();
   const [categoriesInfo, setCategoriesInfo] = useState({});
@@ -70,6 +74,7 @@ export function AgencyUpdatedModal({
 
   // handle update info
   const onSubmit = async (data) => {
+    setIsLoading(true);
     const updatedData =
       title === "Sub Category"
         ? {
@@ -90,9 +95,11 @@ export function AgencyUpdatedModal({
       await updateAgencyProfile(updatedData);
       setIsUpdate(new Date());
       setIsModal(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       setIsModal(false);
+      setIsLoading(false);
     }
     reset();
   };
@@ -525,11 +532,25 @@ export function AgencyUpdatedModal({
               </div>
 
               <div className="text-right mt-10">
-                <input
+                {/* <input
                   type="submit"
                   className="w-fit h-fit bg-green-600 hover:bg-green-500 rounded px-10 py-1 text-white font-semibold transition cursor-pointer"
                   value={"Submit"}
-                />
+                /> */}
+                {isLading ? (
+                  <LoadingButton />
+                ) : (
+                  <CTAButton
+                    text="Submit"
+                    bg="var(--primarycolor)"
+                    color="#fff"
+                    fontWeight="500"
+                    height="2.5rem"
+                    borderRadius="5px"
+                    fontSize="1rem"
+                    type="submit"
+                  />
+                )}
               </div>
             </form>
           </div>
