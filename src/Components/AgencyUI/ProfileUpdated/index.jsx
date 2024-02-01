@@ -39,7 +39,7 @@ export function AgencyUpdatedModal({
   setIsModal,
   title,
   data,
-  setIsUpdate,
+  setAgency,
 }) {
   const [isLading, setIsLoading] = useState(false);
   const { quill, quillRef } = useQuill({ modules });
@@ -92,8 +92,8 @@ export function AgencyUpdatedModal({
     try {
       // const response = await uploadImages(imagesFormData);
       // console.log("Image upload response:", response);
-      await updateAgencyProfile(updatedData);
-      setIsUpdate(new Date());
+      const response = await updateAgencyProfile(updatedData);
+      setAgency(response);
       setIsModal(false);
       setIsLoading(false);
     } catch (error) {

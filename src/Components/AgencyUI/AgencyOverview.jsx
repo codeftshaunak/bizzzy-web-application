@@ -1,13 +1,9 @@
 import AgencyTitle from "./AgencyTitle";
 
-const AgencyOverview = ({ overview, setIsUpdate }) => {
+const AgencyOverview = ({ overview, setAgency }) => {
   return (
     <div>
-      <AgencyTitle
-        data={overview}
-        setIsUpdate={setIsUpdate}
-        isValue={!!overview}
-      >
+      <AgencyTitle data={overview} setAgency={setAgency} isValue={!!overview}>
         Overview
       </AgencyTitle>
       {overview && (

@@ -5,7 +5,7 @@ import { getCategories, getSubCategory } from "../../helpers/freelancerApis";
 import { RiDeleteBin6Fill, RiEdit2Fill } from "react-icons/ri";
 import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyServices = ({ agency, setIsUpdate }) => {
+const AgencyServices = ({ agency, setAgency }) => {
   const { agency_services, agency_skills } = agency || {};
   const { category, subCategory } = agency_services || {};
   const [categoryList, setCategoryList] = useState([]);
@@ -54,7 +54,7 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
       <VStack alignItems="flex-start" gap={5} width="95%">
         <AgencyTitle
           data={agency_services}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
           isValue={!!agency_services}
         >
           Services
@@ -96,7 +96,7 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
         <AgencyTitle
           isValue={!!agency_skills}
           data={agency_services}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
         >
           Skills
         </AgencyTitle>
@@ -117,7 +117,7 @@ const AgencyServices = ({ agency, setIsUpdate }) => {
           isModal={isModal}
           setIsModal={setIsModal}
           title={"Sub Category"}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
           data={subCategoryList}
         />
       )}

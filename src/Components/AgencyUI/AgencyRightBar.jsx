@@ -7,7 +7,7 @@ import { IoTime } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
 import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyRightBar = ({ agency, setIsUpdate }) => {
+const AgencyRightBar = ({ agency, setAgency }) => {
   const [isModal, setIsModal] = useState(false);
   const [modalType, setIsModalType] = useState("");
   const [value, setValue] = useState(null);
@@ -68,7 +68,7 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
 
         <Box position={"relative"} mb={"1rem"}>
           <AgencyTitle
-            setIsUpdate={setIsUpdate}
+            setAgency={setAgency}
             isValue={!!agency_location?.country}
           >
             Office Location
@@ -214,7 +214,7 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
           isModal={isModal}
           setIsModal={setIsModal}
           title={modalType}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
           data={value}
         />
       )}

@@ -23,7 +23,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import LoadingButton from "../LoadingComponent/LoadingButton";
 import CTAButton from "../CTAButton";
 
-const AgencyProjects = ({ agency, setIsUpdate }) => {
+const AgencyProjects = ({ agency, setAgency }) => {
   const [isLading, setIsLoading] = useState(false);
   const { control, register, handleSubmit, reset } = useForm();
   const [isModal, setIsModal] = useState(false);
@@ -47,11 +47,16 @@ const AgencyProjects = ({ agency, setIsUpdate }) => {
       if (response?._id) {
         imagesFormData.append("ref", "agency_project_portfolio");
         imagesFormData.append("agency_id", response._id);
-        if (portfolio?._id)
-          await uploadImages(imagesFormData, `?portfolio_id=${portfolio._id}`);
+        if (portfolio?._id) {
+          const response = await uploadImages(
+            imagesFormData,
+            `?portfolio_id=${portfolio._id}`
+          );
+          setAgency(response.body);
+        }
       }
       setIsModal(false);
-      setIsUpdate(new Date());
+      // setAgency(new Date());
       setSelectedImages([]);
       setIsLoading(false);
     } catch (error) {

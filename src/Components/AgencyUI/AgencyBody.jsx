@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import AgencyLeftbar from "./AgencyLeftbar";
 import AgencyRightBar from "./AgencyRightBar";
 
-const AgencyBody = ({ agency, setIsUpdate }) => {
+const AgencyBody = ({ agency, setAgency }) => {
   return (
     <AgencyBodyLayout>
       <Box
@@ -12,8 +12,8 @@ const AgencyBody = ({ agency, setIsUpdate }) => {
         paddingY={"20px"}
         position={"relative"}
       >
-        <AgencyLeftbar agency={agency} setIsUpdate={setIsUpdate} />
-        <AgencyRightBar agency={agency} setIsUpdate={setIsUpdate} />
+        <AgencyLeftbar agency={agency} setAgency={setAgency} />
+        <AgencyRightBar agency={agency} setAgency={setAgency} />
       </Box>
     </AgencyBodyLayout>
   );

@@ -1,18 +1,45 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
-import { Box, Button, HStack, Select, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Select,
+  useToast,
+  Radio,
+  Stack,
+  RadioGroup,
+} from "@chakra-ui/react";
 import { applyJob } from "../../helpers/jobApis";
 import { useNavigate, useParams } from "react-router-dom";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
 
+const modules = {
+  toolbar: [
+    ["bold", "italic", "underline", "strike"],
+    [{ align: [] }],
+
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["link"],
+    [{ color: [] }, { background: [] }],
+
+    ["clean"],
+  ],
+};
+
 const JobApply = ({ setPage, details }) => {
   const details_new = details[0];
 
-  const { quill, quillRef } = useQuill();
+  const { quill, quillRef } = useQuill({ modules });
+  const [isApplicant, setIsApplicant] = useState("freelancer");
   const [coverLetter, setCoverLetter] = useState("");
-  const currentUser = useContext(CurrentUserContext);
-  const { hourly_rate } = currentUser.profile || [];
+  const { hasAgency, currentUser } = useContext(CurrentUserContext);
+  const { hourly_rate } = currentUser?.profile || [];
   const [desireHourlyRate, setDesireHourlyRate] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
   const [bidDetails, setBidDetails] = useState({
@@ -44,7 +71,7 @@ const JobApply = ({ setPage, details }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await applyJob({
+      const jobData = {
         jobId: id,
         desiredPrice:
           bidDetails.type === "project"
@@ -53,8 +80,15 @@ const JobApply = ({ setPage, details }) => {
         jobType: bidDetails.type,
         coverLetter: coverLetter,
         file: selectedFile,
-      });
+      };
 
+      // if applicant has been agency member then add agency_id
+      if (isApplicant !== "freelancer") {
+        jobData.agency_id = hasAgency;
+      }
+
+      const response = await applyJob(jobData);
+      console.log({ response });
       handleSubmissionResponse(response);
     } catch (error) {
       console.error(error);
@@ -127,8 +161,35 @@ const JobApply = ({ setPage, details }) => {
 
       <Box className="w-full flex justify-between">
         <Box w="100%">
+          {hasAgency && (
+            <Box className="w-[96%] border border-tertiary rounded-2xl p-6 mb-4">
+              <Box fontWeight="semibold" marginBottom="1" className="text-xl">
+                Proposal Type
+              </Box>
+              <Box fontWeight="semibold">
+                Do you want to submit the proposal as a freelancer or as an
+                agency member?
+              </Box>
+              <RadioGroup
+                onChange={setIsApplicant}
+                value={isApplicant}
+                marginTop="4"
+              >
+                <Stack>
+                  <Radio size="lg" value="freelancer" colorScheme="green">
+                    As a freelancer
+                  </Radio>
+                  <Radio size="lg" value="agency_member" colorScheme="green">
+                    As an agency member
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+            </Box>
+          )}
           <Box className="w-[96%] border border-tertiary rounded-2xl p-6">
-            <Box fontWeight="semibold">Job details</Box>
+            <Box fontWeight="semibold" marginBottom="1" className="text-xl">
+              Job details
+            </Box>
             <br />
             <Box
               className="capitalize"

@@ -4,7 +4,7 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FiPlus } from "react-icons/fi";
 import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyTitle = ({ children, isValue, data, setIsUpdate, isHide }) => {
+const AgencyTitle = ({ children, isValue, data, setAgency, isHide }) => {
   const [isModal, setIsModal] = useState(false);
 
   return (
@@ -63,7 +63,7 @@ const AgencyTitle = ({ children, isValue, data, setIsUpdate, isHide }) => {
           setIsModal={setIsModal}
           title={children}
           data={data}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
         />
       )}
     </>
