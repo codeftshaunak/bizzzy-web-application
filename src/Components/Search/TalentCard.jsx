@@ -127,9 +127,9 @@ const TalentCard = ({ freelancerData, loading }) => {
         })}
       </div>
 
-      {
+      {/* {
         isOpenModal && <FreelancerDetailsModal />
-      }
+      } */}
     </div>
   );
 };

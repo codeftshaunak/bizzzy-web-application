@@ -39,13 +39,14 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/verify-email" element={<VerifySuccess />} />
+        <Route path="/search-freelancers" element={<SearchFreelancers />} />
+        <Route path="/search-job" element={<SearchPage />} />
 
         <Route element={<PrivateRoutes />}>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/create-job" element={<JobPost />} />
-          <Route path="/search-job" element={<SearchPage />} />
           <Route path="/search-talent" element={<SearchTalents />} />
-          <Route path="/search-freelancers" element={<SearchFreelancers />} />
+    
           <Route path="/freelancer/:id" element={<Profile />} />
           <Route path="/agency-build" element={<AgencyBuild />} />
           <Route path="/agency-dashboard" element={<Agency />} />
