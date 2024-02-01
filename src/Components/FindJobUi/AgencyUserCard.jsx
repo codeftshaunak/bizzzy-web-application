@@ -13,8 +13,6 @@ const AgencyUserCard = () => {
     const [cookies, setCookie] = useCookies(["activeagency"]);
     const agency = useSelector((state) => state.profile.agency);
     const { agency_name, agency_tagline, agency_profileImage } = agency || [];
-    console.log(agency);
-
     const handleSwitching = () => {
         if (!activeAgency) {
             setCookie('activeagency', true)
