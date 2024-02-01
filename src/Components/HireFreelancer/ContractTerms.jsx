@@ -20,8 +20,6 @@ const ContractTerms = () => {
 
   const dispatch = useDispatch();
 
-  console.log(info);
-
   // update form data and dispatch to Redux
   const handleFormDataChange = (key, value) => {
     let updatedFormData = { ...formData };

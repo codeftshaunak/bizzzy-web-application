@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { Box } from "@chakra-ui/react";
@@ -8,9 +9,11 @@ import {
   getSubCategory,
   updateAgencyProfile,
 } from "../../../helpers/freelancerApis";
-import { useEffect, useState } from "react";
 import { useQuill } from "react-quilljs";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { Country, State, City } from "country-state-city";
+import { uploadImages } from "../../../helpers/gigApis";
+import { useSelector } from "react-redux";
 
 export function AgencyUpdatedModal({
   isModal,
@@ -19,25 +22,79 @@ export function AgencyUpdatedModal({
   data,
   setIsUpdate,
 }) {
-  const { quill, quillRef } = useQuill();
-  const { control, register, handleSubmit } = useForm();
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"],
+      [{ align: [] }],
+
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["link"],
+      [{ color: [] }, { background: [] }],
+
+      ["clean"],
+    ],
+  };
+  const { quill, quillRef } = useQuill({ modules });
+  const { control, register, handleSubmit, reset } = useForm();
   const [categoriesInfo, setCategoriesInfo] = useState({});
   const [subCategories, setSubCategories] = useState([]);
   const [skills, setSkills] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [overview, setOverview] = useState(title === "Overview" ? data : "");
+  const [stateCode, setStateCode] = useState({});
+  const profileCountry = useSelector(
+    (state) => state?.profile?.profile?.location
+  );
+
+  // handle modal close
+  const handleClose = () => {
+    setIsModal(false);
+  };
+  const handleModalClick = (e) => {
+    e.stopPropagation();
+  };
+
+  // handle quill
+  React.useEffect(() => {
+    if (quill) {
+      quill.on("text-change", (_, __, source) => {
+        setOverview(quill.root.innerHTML);
+      });
+      quill.clipboard.dangerouslyPasteHTML(overview);
+    }
+  }, [quill]);
 
   // handle update info
   const onSubmit = async (data) => {
+    const updatedData =
+      title === "Sub Category"
+        ? {
+            agency_services: JSON.parse(data.agency_services),
+          }
+        : title === "Overview"
+        ? { agency_overview: overview }
+        : data;
+
+    const imagesFormData = new FormData();
+    selectedImages.forEach((sf) => {
+      if (sf.file) imagesFormData.append(`imageFiles`, sf.file);
+    });
+
     try {
-      await updateAgencyProfile(data);
+      // const response = await uploadImages(imagesFormData);
+      // console.log("Image upload response:", response);
+      await updateAgencyProfile(updatedData);
       setIsUpdate(new Date());
-      console.log({ data });
       setIsModal(false);
     } catch (error) {
       console.log(error);
       setIsModal(false);
     }
-    console.log("modal", data);
+    reset();
   };
 
   // -------- Manage Services
@@ -46,7 +103,6 @@ export function AgencyUpdatedModal({
       const response = await getCategories();
       setCategoriesInfo({ ...categoriesInfo, categories: response });
     } else if (categoriesInfo?.selectedId) {
-      console.log(categoriesInfo?.selectedId);
       const response = await getSubCategory(categoriesInfo?.selectedId);
       setSubCategories(response);
     }
@@ -54,7 +110,7 @@ export function AgencyUpdatedModal({
 
   // --------- Manage Skills
   const getAllSkills = async () => {
-    if (title === "Skills") {
+    if (title === "Skills" || title === "Projects") {
       try {
         const response = await getSkills(data?.category, data?.category);
         setSkills(
@@ -71,27 +127,53 @@ export function AgencyUpdatedModal({
 
   useEffect(() => {
     getService();
-    if (title === "Skills") getAllSkills();
+    if (title === "Skills" || title === "Projects") getAllSkills();
   }, [categoriesInfo]);
 
-  // --------- Manage Projects
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    setSelectedImages([...selectedImages, file]);
-  };
-  const handleImageDelete = (indexToRemove) => {
-    const updatedImages = selectedImages.filter(
-      (_, index) => index !== indexToRemove
+  // // --------- Manage Projects
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   setSelectedImages([...selectedImages, file]);
+  // };
+  // const handleImageDelete = (indexToRemove) => {
+  //   const updatedImages = selectedImages.filter(
+  //     (_, index) => index !== indexToRemove
+  //   );
+  //   setSelectedImages(updatedImages);
+  // };
+
+  // manage agency location
+  let countryCode;
+  let stateData;
+  let cityData;
+  if (title === "Office Location") {
+    countryCode = Country.getAllCountries().find(
+      (country) => country.name === profileCountry
     );
-    setSelectedImages(updatedImages);
-  };
-  console.log({ categoriesInfo, subCategories });
+    stateData = State.getStatesOfCountry(countryCode?.isoCode).map((state) => ({
+      value: state.name,
+      label: state.name,
+      isoCode: state.isoCode,
+    }));
+    cityData = City.getCitiesOfState(countryCode?.isoCode, stateCode || "").map(
+      (city) => ({
+        value: city.name,
+        label: city.name,
+      })
+    );
+  }
 
   return (
     <div>
       {isModal && (
-        <div className="fixed top-0 left-0 flex justify-center items-center z-50 w-full h-full bg-black/30">
-          <div className="w-[500px] bg-white border rounded-md relative p-5">
+        <div
+          onClick={handleClose}
+          className="fixed top-0 left-0 flex justify-center items-center z-50 w-full h-full bg-black/30"
+        >
+          <div
+            className="w-[500px] bg-white border rounded-md relative p-5"
+            onClick={handleModalClick}
+          >
             <span
               className="h-7 w-7 bg-red-100/20 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
               onClick={() => {
@@ -109,6 +191,7 @@ export function AgencyUpdatedModal({
                   <input
                     type="text"
                     {...register("agency_name")}
+                    required
                     defaultValue={data}
                     className="px-3 py-1 border rounded w-full"
                   />
@@ -118,6 +201,7 @@ export function AgencyUpdatedModal({
                   <input
                     type="text"
                     {...register("agency_tagline")}
+                    required
                     defaultValue={data}
                     className="px-3 py-1 border rounded w-full"
                   />
@@ -125,7 +209,10 @@ export function AgencyUpdatedModal({
                 {/* update overview */}
                 {title === "Overview" && (
                   <div>
-                    <Box w="100%" h={300} ref={quillRef} />
+                    <div
+                      ref={quillRef}
+                      className="w-full h-56 border border-gray-200 rounded-b-md"
+                    />
                   </div>
                 )}
                 {/* update services */}
@@ -142,6 +229,7 @@ export function AgencyUpdatedModal({
                           });
                         },
                       })}
+                      required
                     >
                       {categoriesInfo &&
                         categoriesInfo?.categories?.map((item) => (
@@ -150,7 +238,7 @@ export function AgencyUpdatedModal({
                           </option>
                         ))}
                     </select>
-                    {categoriesInfo?.selectedId && (
+                    {
                       <>
                         <p className="mt-5 font-semibold">
                           Select Sub Category
@@ -158,6 +246,8 @@ export function AgencyUpdatedModal({
                         <select
                           className="px-3 py-1 border rounded w-full"
                           {...register("agency_services.subCategory")}
+                          required
+                          disabled={!categoriesInfo?.selectedId}
                         >
                           {subCategories?.map((item) => (
                             <option key={item._id} value={item._id}>
@@ -166,7 +256,29 @@ export function AgencyUpdatedModal({
                           ))}
                         </select>
                       </>
-                    )}
+                    }
+                  </>
+                )}
+                {title === "Sub Category" && (
+                  <>
+                    <p className="mt-5 font-semibold">Select Sub Category</p>
+                    <select
+                      className="px-3 py-1 border rounded w-full"
+                      {...register("agency_services")}
+                      required
+                    >
+                      {data.map((item) => (
+                        <option
+                          key={item._id}
+                          value={JSON.stringify({
+                            subCategory: item._id,
+                            category: item.category_id,
+                          })}
+                        >
+                          {item.sub_category_name}
+                        </option>
+                      ))}
+                    </select>
                   </>
                 )}
                 {/* update skills */}
@@ -177,15 +289,17 @@ export function AgencyUpdatedModal({
                     render={({ field: { onChange, ref } }) => (
                       <Select
                         inputRef={ref}
+                        closeMenuOnSelect={false}
                         onChange={(val) => onChange(val.map((c) => c.value))}
                         options={skills}
                         isMulti
+                        required
                       />
                     )}
                   />
                 )}
                 {/* update projects */}
-                {title === "Projects" && (
+                {/* {title === "Projects" && (
                   <div className="flex flex-col gap-[16px]">
                     <div className="flex flex-col">
                       <div className="flex flex-col gap-[2px]">
@@ -197,6 +311,8 @@ export function AgencyUpdatedModal({
                             type="text"
                             className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                             placeholder="Project Name"
+                            required
+                            {...register("agency_portfolio.project_name")}
                           />
                         </div>
                         <br />
@@ -210,6 +326,10 @@ export function AgencyUpdatedModal({
                             type="text"
                             className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                             placeholder="Description"
+                            required
+                            {...register(
+                              "agency_portfolio.project_description"
+                            )}
                           />
                         </div>
                         <br />
@@ -219,7 +339,22 @@ export function AgencyUpdatedModal({
                           Technologies
                         </p>
                         <div className="w-[100%] outline-none border-[1px] rounded-md">
-                          <Select closeMenuOnSelect={false} isMulti />
+                          <Controller
+                            control={control}
+                            name="agency_portfolio.technologies"
+                            render={({ field: { onChange, ref } }) => (
+                              <Select
+                                inputRef={ref}
+                                closeMenuOnSelect={false}
+                                onChange={(val) =>
+                                  onChange(val.map((c) => c.value))
+                                }
+                                options={skills}
+                                isMulti
+                                required
+                              />
+                            )}
+                          />
                         </div>
                       </div>
                       <div className="flex flex-col gap-[2px] mt-6">
@@ -279,7 +414,7 @@ export function AgencyUpdatedModal({
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
 
                 {/*------------- Right Side of Agency Profile */}
                 {/* update hourly rate */}
@@ -287,10 +422,106 @@ export function AgencyUpdatedModal({
                   <input
                     type="number"
                     {...register("agency_hourlyRate")}
-                    defaultValue={data}
+                    defaultValue={Number(data)}
+                    required
                     className="px-3 py-1 border rounded w-full"
                   />
                 )}
+                {/* update office location */}
+                {title === "Office Location" && (
+                  <div>
+                    <p>Your Country</p>
+                    <select
+                      className="w-full px-2 py-1 border rounded"
+                      {...register("agency_location.country")}
+                      defaultValue={profileCountry}
+                    >
+                      <option value={profileCountry}>{profileCountry}</option>
+                    </select>
+                    <div className="w-full flex gap-5 mt-3">
+                      <div className="w-1/2">
+                        <p>Select State</p>
+                        <Controller
+                          control={control}
+                          name="agency_location.state"
+                          render={({ field: { onChange, ref } }) => (
+                            <Select
+                              className="w-full"
+                              inputRef={ref}
+                              onChange={(val) => {
+                                onChange(val.value), setStateCode(val.isoCode);
+                              }}
+                              options={[...(stateData || [])]}
+                              required
+                            />
+                          )}
+                        />
+                      </div>
+                      <div className="w-1/2">
+                        <p>Select City</p>
+                        <Controller
+                          control={control}
+                          name="agency_location.street"
+                          render={({ field: { onChange, ref } }) => (
+                            <Select
+                              className="w-full"
+                              inputRef={ref}
+                              onChange={(val, action) => {
+                                if (action.action === "create-option") {
+                                  onChange(action.option.value);
+                                } else {
+                                  onChange(val.value);
+                                }
+                              }}
+                              options={[
+                                ...(cityData || []),
+                                {
+                                  label: "Create New Field",
+                                  value: "__create_new_field__",
+                                },
+                              ]}
+                              required
+                              isDisabled={!stateCode}
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <p>Address</p>
+                      <input
+                        className="w-full px-2 py-1 border rounded"
+                        type="text"
+                        {...register("agency_location.address")}
+                      />
+                    </div>
+                  </div>
+                )}
+                {/* update company info */}
+                {title === "Agency Size" && (
+                  <input
+                    type="number"
+                    {...register("agency_companyInfo.agency_size")}
+                    defaultValue={Number(data)}
+                    required
+                    className="px-3 py-1 border rounded w-full"
+                  />
+                )}
+                {title === "Founded" && (
+                  <input
+                    type="date"
+                    {...register("agency_companyInfo.agency_foundedYear")}
+                    className="px-3 py-1 border rounded w-full"
+                    required
+                  />
+                )}
+                {/* {title === "Client" && (
+                  <input
+                    type="text"
+                    {...register("agency_companyInfo.agency_focus")}
+                    className="px-3 py-1 border rounded w-full"
+                  />
+                )} */}
               </div>
 
               <div className="text-right mt-10">

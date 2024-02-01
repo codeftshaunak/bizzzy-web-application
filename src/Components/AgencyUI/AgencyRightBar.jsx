@@ -10,11 +10,14 @@ import { AgencyUpdatedModal } from "./ProfileUpdated";
 const AgencyRightBar = ({ agency, setIsUpdate }) => {
   const [isModal, setIsModal] = useState(false);
   const [modalType, setIsModalType] = useState("");
-  const { agency_hourlyRate } = agency || {};
+  const [value, setValue] = useState(null);
+  const { agency_hourlyRate, agency_location, agency_companyInfo } =
+    agency || {};
 
-  const handleUpdate = (type) => {
+  const handleUpdate = (type, value) => {
     setIsModal(true);
     setIsModalType(type);
+    setValue(value);
   };
   return (
     <>
@@ -30,7 +33,7 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
         <Box position={"relative"} mb={"1rem"}>
           <Text> Hourly Rate</Text>
           <Text fontSize={"1.3rem"} fontWeight={"600"}>
-            $ {agency_hourlyRate}
+            ${agency_hourlyRate}
           </Text>
           <VStack
             backgroundColor={"white"}
@@ -50,7 +53,7 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
               backgroundColor: "transparent",
               color: "var(--primarycolor)",
             }}
-            onClick={() => handleUpdate("Hourly Rate")}
+            onClick={() => handleUpdate("Hourly Rate", agency_hourlyRate)}
           >
             <RiEdit2Fill fontSize={"15px"} />
           </VStack>
@@ -64,23 +67,30 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
         </Box>
 
         <Box position={"relative"} mb={"1rem"}>
-          <AgencyTitle setIsUpdate={setIsUpdate}>Office Location</AgencyTitle>
+          <AgencyTitle
+            setIsUpdate={setIsUpdate}
+            isValue={!!agency_location?.country}
+          >
+            Office Location
+          </AgencyTitle>
           <Box>
-            <HStack>
-              <MdLocationPin fontSize={"1.2rem"} />
-              <Text>Sylhet, Moulvibazar, 3200</Text>
-            </HStack>
-            <HStack>
+            {!!agency_location?.country && (
+              <HStack>
+                <MdLocationPin fontSize={"1.2rem"} />
+                <Text>
+                  {agency_location?.street}, {agency_location?.state}
+                </Text>
+              </HStack>
+            )}
+            {/* <HStack>
               <IoTime />
               <Text>6:00 Am, 23 Jan 2024</Text>
-            </HStack>
+            </HStack> */}
           </Box>
         </Box>
 
         <VStack gap={"10px"} alignItems={"flex-start"}>
-          <AgencyTitle noAdded={true} setIsUpdate={setIsUpdate}>
-            Company Information
-          </AgencyTitle>
+          <AgencyTitle isHide={true}>Company Information</AgencyTitle>
           <VStack gap={"10px"} alignItems={"flex-start"}>
             <HStack>
               <VStack
@@ -98,9 +108,15 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
                   backgroundColor: "transparent",
                   color: "var(--primarycolor)",
                 }}
-                onClick={() => handleUpdate("Agency Size")}
+                onClick={() =>
+                  handleUpdate("Agency Size", agency_companyInfo?.agency_size)
+                }
               >
-                <FiPlus fontSize={"25px"} />
+                {agency_companyInfo?.agency_size ? (
+                  <RiEdit2Fill />
+                ) : (
+                  <FiPlus fontSize={"25px"} />
+                )}
               </VStack>
               <Text fontSize={"1rem"} fontWeight={"600"}>
                 Add Your Agency Size
@@ -122,9 +138,13 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
                   backgroundColor: "transparent",
                   color: "var(--primarycolor)",
                 }}
-                onClick={() => handleUpdate("founded")}
+                onClick={() => handleUpdate("Founded")}
               >
-                <FiPlus fontSize={"25px"} />
+                {agency_companyInfo?.agency_foundedYear ? (
+                  <RiEdit2Fill />
+                ) : (
+                  <FiPlus fontSize={"25px"} />
+                )}
               </VStack>
               <Text fontSize={"1rem"} fontWeight={"600"}>
                 Add Year Agency Founded
@@ -146,9 +166,13 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
                   backgroundColor: "transparent",
                   color: "var(--primarycolor)",
                 }}
-                onClick={() => handleUpdate("client")}
+                onClick={() => handleUpdate("Client")}
               >
-                <FiPlus fontSize={"25px"} />
+                {agency_companyInfo?.agency_focus ? (
+                  <RiEdit2Fill />
+                ) : (
+                  <FiPlus fontSize={"25px"} />
+                )}
               </VStack>
               <Text fontSize={"1rem"} fontWeight={"600"}>
                 Add Client You Focus
@@ -172,7 +196,11 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
                 }}
                 onClick={() => handleUpdate("Language")}
               >
-                <FiPlus fontSize={"25px"} />
+                {agency_companyInfo?.agency_language ? (
+                  <RiEdit2Fill />
+                ) : (
+                  <FiPlus fontSize={"25px"} />
+                )}
               </VStack>
               <Text fontSize={"1rem"} fontWeight={"600"}>
                 Add Language
@@ -187,6 +215,7 @@ const AgencyRightBar = ({ agency, setIsUpdate }) => {
           setIsModal={setIsModal}
           title={modalType}
           setIsUpdate={setIsUpdate}
+          data={value}
         />
       )}
     </>

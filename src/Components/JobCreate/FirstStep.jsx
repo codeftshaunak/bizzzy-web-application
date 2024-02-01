@@ -5,8 +5,8 @@ import { BiX } from "react-icons/bi";
 import { TagsInput } from "react-tag-input-component";
 import { useFormState } from "../../Contexts/FormContext";
 import { firstStepSchema } from "../../Schema/job-create-schema";
-import { useQuill } from 'react-quilljs';
-import 'quill/dist/quill.snow.css';
+import { useQuill } from "react-quilljs";
+import "quill/dist/quill.snow.css";
 
 function FirstStep({ setStep }) {
   const { insertToFormState, formState } = useFormState();
@@ -27,12 +27,10 @@ function FirstStep({ setStep }) {
     },
   });
 
-
-
   React.useEffect(() => {
     if (quill) {
-      quill.on('text-change', (delta, oldDelta, source) => {
-        setValue("description", quill.root.innerHTML)
+      quill.on("text-change", (delta, oldDelta, source) => {
+        setValue("description", quill.root.innerHTML);
       });
     }
   }, [quill]);
@@ -56,7 +54,7 @@ function FirstStep({ setStep }) {
     if (formState?.job_type) values.job_type = `${formState.job_type}`;
     if (formState?.amount) values.amount = formState.amount;
     if (formState?.file) values.file = formState.file;
-    console.log(values);
+
     reset(values);
   }, [formState]);
 
@@ -284,7 +282,7 @@ function FirstStep({ setStep }) {
                     id="file"
                     className="hidden"
                     onChange={(e) => {
-                      onChange(e.target.files[0])
+                      onChange(e.target.files[0]);
                     }}
                   />
                 </label>

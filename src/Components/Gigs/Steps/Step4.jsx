@@ -64,7 +64,7 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
     control,
     name: "project_description.faqs",
   });
-  console.log({ control });
+
   const addFaq = () => {
     appendFaq({ question: "", answer: "" });
   };
@@ -72,7 +72,7 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   // form submit operations
   const onSubmit = (values) => {
     const data = submitCallback(values); // this will update the parent state
-    console.log({ values });
+
     afterSubmit(data); // this will perform task after updating the state
   };
 
@@ -87,7 +87,7 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
 
     reset(changes);
   }, [formValues]);
-  console.log({ faqFields });
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -108,7 +108,6 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
               name="project_description.project_summary"
               control={control}
               render={({ field, fieldState }) => {
-                console.log(field);
                 return (
                   <>
                     <Textarea

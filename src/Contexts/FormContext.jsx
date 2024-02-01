@@ -2,15 +2,14 @@ import { createContext, useContext, useMemo, useState } from "react";
 
 export const FormContext = createContext({
   formState: {},
-  insertToFormState: (v) => { },
-  clearFormState: () => { },
+  insertToFormState: (v) => {},
+  clearFormState: () => {},
 });
 
 export const useFormState = () => useContext(FormContext);
 
 export const FormStateProvider = ({ children }) => {
   const [formState, setFormState] = useState({});
-  console.log(formState);
   // insert new data to the state
   const insertToFormState = (v) => {
     if (!v) return formState;

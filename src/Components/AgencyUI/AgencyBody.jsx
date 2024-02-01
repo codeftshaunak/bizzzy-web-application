@@ -1,10 +1,9 @@
 import React from "react";
-import { HStack, VStack, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import AgencyLeftbar from "./AgencyLeftbar";
 import AgencyRightBar from "./AgencyRightBar";
 
 const AgencyBody = ({ agency, setIsUpdate }) => {
-  console.log({ agency });
   return (
     <AgencyBodyLayout>
       <Box
