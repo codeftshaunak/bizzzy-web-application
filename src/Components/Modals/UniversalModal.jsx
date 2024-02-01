@@ -1,6 +1,6 @@
 import { IoMdClose } from "react-icons/io";
 
-const AgencyModal = ({ isModal, setIsModal, title, children }) => {
+const UniversalModal = ({ isModal, setIsModal, title, children }) => {
   const handleClose = () => {
     setIsModal(false);
   };
@@ -26,7 +26,9 @@ const AgencyModal = ({ isModal, setIsModal, title, children }) => {
             >
               <IoMdClose className="text-2xl" />
             </span>
-            <h4 className="text-xl font-semibold capitalize mb-3">{title}</h4>
+            {title && (
+              <h4 className="text-xl font-semibold capitalize mb-3">{title}</h4>
+            )}
             <div>{children}</div>
           </div>
         </div>
@@ -35,4 +37,4 @@ const AgencyModal = ({ isModal, setIsModal, title, children }) => {
   );
 };
 
-export default AgencyModal;
+export default UniversalModal;

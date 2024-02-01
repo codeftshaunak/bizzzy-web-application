@@ -16,6 +16,7 @@ import { IoMdClose } from "react-icons/io";
 import LoadingButton from "../LoadingComponent/LoadingButton";
 import CTAButton from "../CTAButton";
 import { profileData } from "../../redux/authSlice/profileSlice";
+import UniversalModal from "../Modals/UniversalModal";
 
 export const customStyles = {
   content: {
@@ -615,7 +616,6 @@ export const ProfileModal = ({
           });
           closeModal();
         } else if (response.code === 200) {
-          userProfile();
           toast({
             title: "Basic Info Updated Successfully",
             status: "success",
@@ -656,44 +656,15 @@ export const ProfileModal = ({
     setSelectedImages(updatedImages);
   };
   return (
-    <Modal
-      isOpen={modalIsOpen}
-      //   onAfterOpen={afterOpenModal}
-      onRequestClose={closeModal}
-      style={customStyles}
-      contentLabel="Example Modal"
-    >
-      <div className="w-[500px] flex flex-col gap-[20px]">
-        <div className="flex items-center justify-between p-[24px] w-full border-b-[1px] border-b-[#F3F4F6] ">
-          <p className="text-[16px] capitalize text-[#374151] ">{modalPage}</p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            cursor={"pointer"}
-            onClick={closeModal}
-          >
-            <path
-              d="M18 6L6 18"
-              stroke="#6B7280"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M6 6L18 18"
-              stroke="#6B7280"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+    <UniversalModal isModal={modalIsOpen} setIsModal={setModalIsOpen}>
+      <div className="w-full flex flex-col gap-[20px]">
+        <p className="text-[16px] capitalize text-[#374151] font-semibold">
+          {modalPage}
+        </p>
+
         {modalPage === "skills" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]">
+            <div className="flex flex-col">
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}
@@ -704,7 +675,7 @@ export const ProfileModal = ({
                 styles={selectStyle}
               />
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -725,7 +696,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "portfolio" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]  pb ">
+            <div className="flex flex-col  pb ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Project Name
@@ -844,7 +815,7 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -865,7 +836,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "education" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]  pb ">
+            <div className="flex flex-col  pb ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Degree Name
@@ -945,7 +916,7 @@ export const ProfileModal = ({
               </HStack>
               <br />
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -966,7 +937,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "educationEdit" && selectedEducation && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]  pb ">
+            <div className="flex flex-col  pb ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Degree Name
@@ -1043,7 +1014,7 @@ export const ProfileModal = ({
               </HStack>
               <br />
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -1064,7 +1035,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "exprience" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Your Company Name
@@ -1183,7 +1154,7 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -1204,7 +1175,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "experienceUpdated" && selectedEducation && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Your Company Name
@@ -1303,7 +1274,7 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -1324,7 +1295,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "editProfile" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                   <input
@@ -1337,7 +1308,7 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -1358,7 +1329,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "basicInformation" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">Title</p>
                 <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
@@ -1403,7 +1374,7 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
               {isLoading ? (
                 <LoadingButton />
               ) : (
@@ -1423,6 +1394,6 @@ export const ProfileModal = ({
           </div>
         )}
       </div>
-    </Modal>
+    </UniversalModal>
   );
 };
