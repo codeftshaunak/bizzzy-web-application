@@ -6,7 +6,8 @@ import { getAgency } from "../../helpers/agencyApis";
 
 const AgencyProfile = () => {
   const [agency, setAgency] = useState({});
-  const [isUpdate, setIsUpdate] = useState(null);
+
+  console.log({ agency });
   const getAgencyDetails = async () => {
     const response = await getAgency();
     setAgency(response);
@@ -14,12 +15,12 @@ const AgencyProfile = () => {
 
   useEffect(() => {
     getAgencyDetails();
-  }, [isUpdate]);
+  }, []);
 
   return (
     <VStack width={"100%"}>
-      <AgencyProfileHeader agency={agency} setIsUpdate={setIsUpdate} />
-      <AgencyBody agency={agency} setIsUpdate={setIsUpdate} />
+      <AgencyProfileHeader agency={agency} setAgency={setAgency} />
+      <AgencyBody agency={agency} setAgency={setAgency} />
     </VStack>
   );
 };

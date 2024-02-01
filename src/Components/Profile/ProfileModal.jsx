@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
@@ -26,6 +26,7 @@ export const customStyles = {
     padding: " 0",
     borderRadius: "12px",
     overflow: "visible",
+    backgroundColor: "white",
   },
 };
 
@@ -39,7 +40,6 @@ export const ProfileModal = ({
   // const [userProfileInfo, setUserProfileInfo] = useState(null);
 
   const userProfileInfo = useSelector((state) => state.profile.profile);
-
 
   const toast = useToast();
   const animatedComponents = makeAnimated();
@@ -160,7 +160,6 @@ export const ProfileModal = ({
     setSelectedOptions(selectedValues || []);
   };
 
-
   // Handle Updating Skills Methods
   const getCategorySkills = async (categoryIds) => {
     try {
@@ -229,8 +228,6 @@ export const ProfileModal = ({
           categories: selectedCategories,
         });
 
-        console.log({ response });
-
         if (response.code === 405) {
           toast({
             title: response.msg,
@@ -282,7 +279,7 @@ export const ProfileModal = ({
         const selectedCategories = selectedOptions.map(
           (option) => option?.value
         );
-        console.log(selectedCategories, "selectedCategories");
+
         const response = await updateFreelancerProfile({
           skills: selectedCategories,
         });
@@ -323,7 +320,6 @@ export const ProfileModal = ({
           portfolioInput.project_description
         );
         // formData.append("technologies", portfolioInput.technologies);
-
 
         const response = await updateFreelancerProfile(formData);
         if (response.code == 405 || response.code == 500) {
@@ -658,7 +654,7 @@ export const ProfileModal = ({
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <div className="w-[500px] flex flex-col gap-[20px] ">
+      <div className="w-[500px] flex flex-col gap-[20px]">
         <div className="flex items-center justify-between p-[24px] w-full border-b-[1px] border-b-[#F3F4F6] ">
           <p className="text-[16px] capitalize text-[#374151] ">{modalPage}</p>
           <svg
@@ -774,7 +770,7 @@ export const ProfileModal = ({
                     isMulti
                     options={options}
                     onChange={handleChange}
-                  // styles={selectStyle}
+                    // styles={selectStyle}
                   />
                 </div>
               </div>

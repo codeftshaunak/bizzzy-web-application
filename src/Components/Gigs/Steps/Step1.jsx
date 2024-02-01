@@ -64,7 +64,6 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   console.log({ errors });
   // form submit operations
   const onSubmit = (values) => {
-    console.log({ values });
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
@@ -72,15 +71,13 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   // load state
   useEffect(() => {
     const changes = defaultValues;
-    console.log("click");
     Object.keys(defaultValues).map((key) => {
       const value = formValues?.[key];
       changes[key] = value === undefined ? defaultValues[key] : value;
     });
-    console.log({ changes });
     reset(changes);
   }, [formValues]);
-  console.log({ formValues });
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
