@@ -18,6 +18,7 @@ import { CurrentUserContext } from "../../Contexts/CurrentUser";
 import UserCardSkeleton from "../LoadingComponent/UserCardSkeleton";
 
 const AgencyUserCard = () => {
+
   const navigate = useNavigate();
   const { hasAgency, activeAgency, userAgencyLoading } =
     useContext(CurrentUserContext);
