@@ -7,7 +7,7 @@ import Select from "react-select/creatable";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import { getSkills, updateAgencyProfile } from "../../helpers/freelancerApis";
+import { getSkills } from "../../helpers/freelancerApis";
 import { FiPlus } from "react-icons/fi";
 import { RiEdit2Fill } from "react-icons/ri";
 import { createAgencyProject } from "../../helpers/agencyApis";
