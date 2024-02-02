@@ -37,15 +37,21 @@ const TalentCard = ({ freelancerData, loading }) => {
     e.preventDefault();
     try {
       const res = await sendAgencyInvitation(formData);
-      toast({
-        title: res.message,
-        status: 'success',
-        duration: '3000'
-      })
-      setFormData({
-        member_position: '',
-        message: ''
-      })
+      if (res.isError) {
+        toast({
+          title: res.message,
+          status: 'warning',
+          duration: '3000'
+        })
+      } else {
+        toast({
+          title: `Invitation successfully sended to ${freelancerData.firstName}`,
+          status: 'success',
+          duration: '3000',
+          position: 'top-right'
+        })
+      }
+      setFormData({ "agency_profile": "", "freelancer_id": '', "member_position": '', "message": '' })
       setIsOpenModal(false);
     } catch (error) {
       console.log(error);
@@ -71,6 +77,7 @@ const TalentCard = ({ freelancerData, loading }) => {
 
   const handleCancel = () => {
     setIsOpenModal(false);
+    setFormData({ "agency_profile": "", "freelancer_id": '', "member_position": '', "message": '' })
   }
 
   useEffect(() => {
@@ -79,7 +86,7 @@ const TalentCard = ({ freelancerData, loading }) => {
       freelancer_id: selectedFreelancer?.user_id,
       agency_profile: hasAgency
     }));
-  }, [selectedFreelancer, hasAgency]);
+  }, [selectedFreelancer, hasAgency, isOpenModal]);
 
   return (
     <div>

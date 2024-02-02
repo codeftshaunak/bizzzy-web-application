@@ -46,5 +46,8 @@ export const getAgency = async () =>
   makeApiRequest("get", "/agency");
 
 export const sendAgencyInvitation = async (data) =>
-  makeApiRequest('post', '/agency/invite', data)
+  makeApiRequest('post', '/agency/invite', data);
+
+export const getAgencyById = async (id) =>
+  makeApiRequest('get', `/agencyById?agency_id=${id}`);
 
