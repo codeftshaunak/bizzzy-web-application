@@ -20,20 +20,6 @@ export const getClientJobs = async () => {
   }
 };
 
-export const getProposals = async (data) => {
-  try {
-    const authtoken = localStorage.getItem("authtoken");
-    const response = await API.get(`/job/${data}/proposal`, {
-      headers: {
-        "Content-Type": "application/json",
-        token: `${authtoken}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return error;
-  }
-};
 
 export const deleteJob = async (data) => {
   try {
@@ -48,21 +34,7 @@ export const deleteJob = async (data) => {
   } catch (error) { }
 };
 
-export const inviteToJob = async (data) => {
-  try {
-    const authtoken = localStorage.getItem("authtoken");
-    const response = await API.post(`invitation-send`, {
-      headers: {
-        "Content-Type": "application/json",
-        token: `${authtoken}`,
-      },
-    });
-    return response.data;
-  } catch (error) { }
-};
 
-
-// ========= Client reviews =======
 
 const makeApiRequest = async (
   method,
@@ -97,6 +69,12 @@ const makeApiRequest = async (
     return error.response?.data;
   }
 };
+
+export const getProposals = async (data) =>
+  makeApiRequest('get', `/job/${data}/proposal`);
+
+export const inviteToJob = async (data) =>
+  makeApiRequest('post', 'invitation-send')
 
 export const getSearchFreelancer = async (keywords) =>
   makeApiRequest("get", "/search-freelancers", keywords);

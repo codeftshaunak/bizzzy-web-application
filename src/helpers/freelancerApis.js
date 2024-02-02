@@ -67,11 +67,12 @@ export const createGig = async (data) =>
 export const getSubCategory = async (_id) =>
   makeApiRequest("get", `/categories/subcategories?category_id=${_id}`);
 
-export const getSkills = async (category_id, sub_category_id) =>
-  makeApiRequest(
-    "get",
-    `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
-  );
+export const getSkills = async (category_id, sub_category_id) => {
+  let url = `/categories/skills?category_id=${category_id}`;
+  if (sub_category_id) url += `&sub_category_id=${sub_category_id}`;
+
+  return makeApiRequest("get", url);
+};
 
 // Update the function signature
 export const getFreelancers = async (
@@ -109,8 +110,6 @@ export const getFreelancers = async (
   }
 };
 
-export const getCategories = async () =>
-  makeApiRequest("get", "/categories");
+export const getCategories = async () => makeApiRequest("get", "/categories");
 
-export const getCountries = async () =>
-  makeApiRequest("get", "/get-countries");
+export const getCountries = async () => makeApiRequest("get", "/get-countries");

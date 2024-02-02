@@ -13,7 +13,7 @@ import { AgencyBodyLayout } from "./AgencyBody";
 import { useCookies } from "react-cookie";
 import { AgencyUpdatedModal } from "./ProfileUpdated";
 
-const AgencyProfileHeader = ({ agency, setIsUpdate }) => {
+const AgencyProfileHeader = ({ agency, setAgency }) => {
   const {
     agency_name,
     agency_tagline,
@@ -224,7 +224,7 @@ const AgencyProfileHeader = ({ agency, setIsUpdate }) => {
           setIsModal={setIsModal}
           title={modalType}
           data={modalData}
-          setIsUpdate={setIsUpdate}
+          setAgency={setAgency}
         />
       )}
     </>

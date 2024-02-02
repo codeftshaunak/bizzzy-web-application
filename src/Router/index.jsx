@@ -29,6 +29,7 @@ import GigDetails from "../Components/Gigs/GigDetails/GigDetails";
 import GigEdit from "../Components/Gigs/GigEdit/GigEdit";
 import GigCreate from "../Components/Gigs/GigCreate/GigCreate";
 import NotFound from "../Pages/404/NotFound";
+import AgencyInvitation from "../Pages/Invitation/AgencyInvitation";
 
 const Router = () => {
 
@@ -50,6 +51,7 @@ const Router = () => {
           <Route path="/freelancer/:id" element={<Profile />} />
           <Route path="/agency-build" element={<AgencyBuild />} />
           <Route path="/agency-dashboard" element={<Agency />} />
+          <Route path="/agency/invitation" element={<AgencyInvitation />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/find-job" element={<FindJob />} />
