@@ -13,9 +13,19 @@ export const ClientProfilePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalPage, setModalPage] = useState("");
   const [details, setDetails] = useState([]);
-  console.log(details);
+
   const {
-    firstName, lastName, location, profile_image, professional_role, hourly_rate, description, skills, experience, briefDescription, businessName,
+    firstName,
+    lastName,
+    location,
+    profile_image,
+    professional_role,
+    hourly_rate,
+    description,
+    skills,
+    experience,
+    briefDescription,
+    businessName,
   } = details || [];
   const [localTime, setLocalTime] = useState();
   function openModal() {
@@ -50,8 +60,8 @@ export const ClientProfilePage = () => {
     getProfileInformation();
   }, [modalIsOpen]);
   const handleInputChange = (name, value) => {
-    selectedEducation(pre => ({ ...pre, [name]: value }))
-  }
+    selectedEducation((pre) => ({ ...pre, [name]: value }));
+  };
   function closeModal() {
     setModalIsOpen(false);
   }
@@ -61,7 +71,15 @@ export const ClientProfilePage = () => {
         <div className=" w-full flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
-              <div style={{ position: "absolute", top: "0px", left: "0px", cursor: "pointer", zIndex: "50" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "0px",
+                  left: "0px",
+                  cursor: "pointer",
+                  zIndex: "50",
+                }}
+              >
                 <div className="flex items-center justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -75,19 +93,29 @@ export const ClientProfilePage = () => {
                       stroke="#6B7280"
                       strokeWidth="1.25"
                       strokeLinecap="round"
-                      strokeLinejoin="round" />
+                      strokeLinejoin="round"
+                    />
                     <path
                       d="M9 4.33301L11.6667 6.99967"
                       stroke="#6B7280"
                       strokeWidth="1.25"
                       strokeLinecap="round"
-                      strokeLinejoin="round" />
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
-              {
-                !profile_image || profile_image == "null" || profile_image === null ? <Avatar name={firstName + " " + lastName} width={"60px"} height={"60px"} /> : <img src={profile_image} className="w-[60px] rounded-full" />
-              }
+              {!profile_image ||
+              profile_image == "null" ||
+              profile_image === null ? (
+                <Avatar
+                  name={firstName + " " + lastName}
+                  width={"60px"}
+                  height={"60px"}
+                />
+              ) : (
+                <img src={profile_image} className="w-[60px] rounded-full" />
+              )}
             </div>
             <div className="flex flex-col justify-start gap-[10px]">
               <p className="text-[24px] text-[#374151] font-semibold">
@@ -163,13 +191,15 @@ export const ClientProfilePage = () => {
                       stroke="#6B7280"
                       strokeWidth="1.25"
                       strokeLinecap="round"
-                      strokeLinejoin="round" />
+                      strokeLinejoin="round"
+                    />
                     <path
                       d="M9 4.33301L11.6667 6.99967"
                       stroke="#6B7280"
                       strokeWidth="1.25"
                       strokeLinecap="round"
-                      strokeLinejoin="round" />
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
@@ -202,7 +232,8 @@ export const ClientProfilePage = () => {
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         modalPage={modalPage}
-        handleInputChange={handleInputChange} />
+        handleInputChange={handleInputChange}
+      />
     </ProfileContainer>
   );
 };

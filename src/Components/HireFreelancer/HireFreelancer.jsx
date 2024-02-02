@@ -39,7 +39,7 @@ const HireFreelancerPage = () => {
 
     try {
       const response = await sendHireFreelancer(body);
-      console.log(response);
+
       if (response?.code === 200) {
         toast({
           title: response.msg,
@@ -94,8 +94,9 @@ const HireFreelancerPage = () => {
           <div className="font-semibold text-right flex items-center justify-end gap-10 mt-10">
             <button className="text-green-500">Cancel</button>
             <button
-              className={`py-2 px-5 text-white cursor-pointer rounded-full bg-green-500 w-fit flex items-center ${(!isChecked || isContinue) && "opacity-50 cursor-not-allowed"
-                }`}
+              className={`py-2 px-5 text-white cursor-pointer rounded-full bg-green-500 w-fit flex items-center ${
+                (!isChecked || isContinue) && "opacity-50 cursor-not-allowed"
+              }`}
               disabled={!isChecked || isContinue}
             >
               {isContinue && (

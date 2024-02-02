@@ -6,6 +6,7 @@ export const API = axios.create({
 });
 
 export const getAllJobs = async () => {
+  // eslint-disable-next-line no-useless-catch
   try {
     const authtoken = localStorage.getItem("authtoken");
     const response = await API.get("/job/get-all", {
@@ -21,36 +22,56 @@ export const getAllJobs = async () => {
   }
 };
 
-export const searchJobs = async (searchQuery) => {
-  const authToken = localStorage.getItem("authtoken");
+export const getJobs = async ( category, searchTerm,experience, contractType,  hourlyRateMin,
+  hourlyRateMax, fixedRateMin,fixedRateMax) => {
   try {
-    const response = await API.post('/job/search', searchQuery, {
+    const authtoken = localStorage.getItem("authtoken");
+    const experienceValues = experience
+      ? experience.map((exp) => exp).join(",")
+      : "";
+    const contractValue = contractType
+      ? contractType.map((contact) => contact).join(",")
+      : "";
+
+    console.log(hourlyRateMin, hourlyRateMax , "hourlyRateMin================")
+
+    console.log(fixedRateMin, fixedRateMax, "fixedRateMax ============")
+
+
+    const response = await API.get("/job/search", {
+      headers: {
+        "Content-Type": "application/json",
+        token: authtoken,
+      },
+      params: {
+        searchTerm: searchTerm || "",
+        experience: experienceValues,
+        job_type: contractValue,
+        hourly_rate_min: hourlyRateMin || null,
+        hourly_rate_max: hourlyRateMax || null,
+        fixed_rate_min: fixedRateMin || null,
+        fixed_rate_max: fixedRateMax || null,
+        category: category ? category.map((cat) => cat.value).join(",") : "",
+      },
+    });
+
+    return response.data.body;
+  } catch (error) {
+    console.error("Error fetching job data:", error);
+    throw error;
+  }
+};
+
+export const getInvitedFreelancer = async () => {
+  try {
+    const authToken = localStorage.getItem("authtoken");
+    const response = await API.get("/freelancers/invited", {
       headers: {
         "Content-Type": "application/json",
         token: authToken,
       },
     });
-    return response.data.data;
-  } catch (error) {
-    console.error("API Error:", error.message);
-    throw error;
-  }
-};
 
-
-export const getInvitedFreelancer = async () => {
-  try {
-    const authToken = localStorage.getItem("authtoken");
-    const response = await API.get(
-      "/freelancers/invited",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          token: authToken,
-        },
-      }
-    );
-    console.log("API Success:", response.data.body);
     return response.data.body;
   } catch (error) {
     console.error("API Error:", error.message);
@@ -58,14 +79,12 @@ export const getInvitedFreelancer = async () => {
   }
 };
 
-
-
 export const applyJob = async (data) => {
   try {
     const authtoken = localStorage.getItem("authtoken");
     const response = await API.post(`/job-proposal`, data, {
       headers: {
-        'content-type': 'multipart/form-data',
+        "content-type": "multipart/form-data",
         token: `${authtoken}`,
       },
     });
@@ -100,14 +119,19 @@ export const getAllJobsProposal = async () => {
       },
     });
 
-    console.log(response?.data?.body);
     return response?.data?.body;
   } catch (error) {
     return error;
   }
 };
 
-const makeApiRequest = async (method, endpoint, data = null, customHeaders = {}, params = {}) => {
+const makeApiRequest = async (
+  method,
+  endpoint,
+  data = null,
+  customHeaders = {},
+  params = {}
+) => {
   const authtoken = localStorage.getItem("authtoken");
 
   const headers = {
@@ -121,13 +145,12 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
     url: endpoint,
     headers,
     data,
-    params, 
+    params,
   };
 
   try {
     const response = await API(config);
     return response?.data.body;
-
   } catch (error) {
     const { handleApiError } = useApiErrorHandling();
     handleApiError(error);
@@ -135,9 +158,7 @@ const makeApiRequest = async (method, endpoint, data = null, customHeaders = {},
   }
 };
 
-export const userAllJobs = async () =>
-  makeApiRequest('get', '/users/jobs');
+export const userAllJobs = async () => makeApiRequest("get", "/users/jobs");
 
 export const getSingleJobDetails = async (id) =>
   makeApiRequest("get", `/job/get-job?job_id=${id}`);
-

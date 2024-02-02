@@ -32,10 +32,10 @@ const makeApiRequest = async (
   }
 };
 
-export const uploadImages = async (data) =>
+export const uploadImages = async (data, query) =>
   makeApiRequest(
     "POST",
-    "/upload/multiple/images",
+    `/upload/multiple/images${query}`,
     data,
     {},
     "multipart/form-data"
@@ -45,7 +45,7 @@ export const uploadMedia = async (data) =>
   makeApiRequest("POST", "/upload/video", data, {}, "multipart/form-data");
 
 export const getFreelancerGigs = async () =>
-  makeApiRequest("get", `/freelancer/gig`);
+  makeApiRequest("get", "/freelancer/all/gig");
 
 export const updateFreelancerGig = async (data) =>
   makeApiRequest(

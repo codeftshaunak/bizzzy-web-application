@@ -7,10 +7,15 @@ import {
 } from "react-icons/fa";
 import { addDays, format } from "date-fns";
 import { IoMdClose } from "react-icons/io";
-import { Carousel } from "react-responsive-carousel";
 import HomeLayout from "../../../Layouts/HomeLayout";
 import { useNavigate, useParams } from "react-router-dom";
 import { getGigDetails } from "../../../helpers/gigApis";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
+// Import Swiper styles
+import "swiper/css";
+// import required modules
+import { Navigation } from "swiper/modules";
 
 const GigDetails = () => {
   const [gigData, setGigData] = useState({});
@@ -19,6 +24,8 @@ const GigDetails = () => {
   const videoRef = useRef(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
   const {
     title,
@@ -44,7 +51,6 @@ const GigDetails = () => {
     try {
       const response = await getGigDetails(id);
       setGigData(response.body[0]);
-      console.log({ response });
     } catch (error) {
       console.log(error);
     }
@@ -125,37 +131,58 @@ const GigDetails = () => {
                   <div>
                     <h4 className="text-3xl font-semibold">{title}</h4>
                     <div className="flex gap-5 justify-between mt-3 rounded p-3">
-                      <div className="flex items-center gap-10">
-                        <div className="w-full">
-                          <Carousel showThumbs={false}>
+                      <div className="flex items-center gap-10 w-full">
+                        <div className="w-full relative">
+                          <Swiper
+                            modules={[Navigation]}
+                            navigation={{
+                              prevEl: prevRef.current,
+                              nextEl: nextRef.current,
+                            }}
+                          >
                             {images?.map((url) => (
-                              <div
-                                key={url}
-                                className="h-[600px] w-full bg-cover rounded-md cursor-pointer hover:grayscale transition"
-                                style={{ backgroundImage: `url(${url})` }}
-                                onClick={() => setIsFullImg(url)}
-                              ></div>
+                              <SwiperSlide key={url}>
+                                <div
+                                  className="h-[600px] w-full bg-cover rounded-md cursor-pointer hover:grayscale transition"
+                                  style={{ backgroundImage: `url(${url})` }}
+                                  onClick={() => setIsFullImg(url)}
+                                ></div>
+                              </SwiperSlide>
                             ))}
-                            <div className="relative flex items-center justify-center w-full">
-                              <video
-                                ref={videoRef}
-                                src={video}
-                                alt="Video Review"
-                                className="h-[600px] w-full rounded-md"
-                                controls={false}
-                              />
-                              <div
-                                className="absolute rounded-md cursor-pointer"
-                                onClick={handlePlayPauseClick}
-                              >
-                                {isPlaying ? (
-                                  <FaPauseCircle className="text-6xl text-white/60" />
-                                ) : (
-                                  <FaPlayCircle className="text-6xl text-white/60" />
-                                )}
+                            <SwiperSlide>
+                              <div className="relative flex items-center justify-center w-full">
+                                <video
+                                  ref={videoRef}
+                                  src={video}
+                                  alt="Video Review"
+                                  className="h-[600px] w-full rounded-md"
+                                  controls={false}
+                                />
+                                <div
+                                  className="absolute rounded-md cursor-pointer"
+                                  onClick={handlePlayPauseClick}
+                                >
+                                  {isPlaying ? (
+                                    <FaPauseCircle className="text-6xl text-white/60" />
+                                  ) : (
+                                    <FaPlayCircle className="text-6xl text-white/60" />
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          </Carousel>
+                            </SwiperSlide>
+                          </Swiper>
+                          <button
+                            ref={prevRef}
+                            className="absolute top-1/2 -left-4 z-20 bg-green-100 rounded-full shadow -mt-4"
+                          >
+                            <MdNavigateBefore className="text-4xl" />
+                          </button>
+                          <button
+                            ref={nextRef}
+                            className="absolute top-1/2 -right-4 z-20 bg-green-100 rounded-full shadow -mt-4"
+                          >
+                            <MdNavigateNext className="text-4xl" />
+                          </button>
                         </div>
                       </div>
                     </div>

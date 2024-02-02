@@ -22,7 +22,7 @@ import {
   BsSend,
 } from "react-icons/bs";
 import { useState } from "react";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 import { AiFillSetting } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
@@ -48,7 +48,7 @@ import { clearProfileData } from "../../redux/authSlice/profileSlice";
 //         };
 //     }, []);
 
-//     // Define a CSS class for the fixed header
+//     // Define a CSS className for the fixed header
 // const headerStyles = {
 //     // position: isHeaderFixed ? "fixed" : "relative",
 //     top: 0,
@@ -399,7 +399,7 @@ export const Header = () => {
 export const AuthHeader = ({ role }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
-  const [cookie, setCookie] = useCookies(['activeagency']);
+  const [cookie, setCookie] = useCookies(["activeagency"]);
 
   const profile = useSelector((state) => state.profile);
   const { profile_image, firstName, lastName } = profile.profile || [];
@@ -410,7 +410,7 @@ export const AuthHeader = ({ role }) => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    setCookie('activeagency', false);
+    setCookie("activeagency", false);
     dispatch(clearAuthData()); // Dispatch the clearAuthData action to reset the state
     dispatch(clearProfileData()); // Dispatch the clearAuthData action to reset the state
   };
@@ -575,7 +575,7 @@ export const AuthHeader = ({ role }) => {
                   {profile_image != "null" && profile_image != null ? (
                     <img src={profile_image} style={{ borderRadius: "20px" }} />
                   ) : (
-                    <Avatar name={firstName + ' ' + lastName} boxSize="40px" />
+                    <Avatar name={firstName + " " + lastName} boxSize="40px" />
                   )}
                 </div>
 
@@ -746,7 +746,7 @@ const NavItem = ({ title, noIcon, url, onClick }) => {
 //         };
 //     }, []);
 
-//     // Define a CSS class for the fixed header
+//     // Define a CSS className for the fixed header
 //     const headerStyles = {
 //         position: isHeaderFixed ? "fixed" : "relative",
 //         top: 0,
