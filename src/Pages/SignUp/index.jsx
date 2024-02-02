@@ -25,9 +25,7 @@ import Divider from "../../Components/Divider/Divider";
 import OnbardingCardLayout from "../../Layouts/CardLayout/OnbardingCardLayout";
 import { signUp } from "../../helpers/apiRequest";
 import { useNavigate } from "react-router-dom";
-import {
-  resendEmailVerification,
-} from "../../helpers/clientApis";
+import { resendEmailVerification } from "../../helpers/clientApis";
 import { getCountries } from "../../helpers/freelancerApis";
 
 export const SignUp = () => {
@@ -43,8 +41,8 @@ export const SignUp = () => {
     selectedOption === "freelancer"
       ? "Apply as a freelancer"
       : selectedOption === "client"
-        ? "Join as a client"
-        : "Create Account";
+      ? "Join as a client"
+      : "Create Account";
 
   return (
     <>
@@ -857,8 +855,8 @@ export const FreelancerSignUp = () => {
                     <IconButton
                       aria-label={show ? "Hide Password" : "Show Password"}
                       icon={show ? <BsEyeSlash /> : <BsEye />}
-                      onClick={() => handleClick()
-                      } />
+                      onClick={() => handleClick()}
+                    />
                   </InputRightElement>
                 </InputGroup>
                 <InputGroup>
@@ -867,8 +865,6 @@ export const FreelancerSignUp = () => {
                     name="country"
                     onChange={handleChange}
                   >
-
-
                     {countries?.map((country) => (
                       <option key={country?._id} value={country?.name}>
                         {country?.name}
@@ -916,7 +912,12 @@ export const FreelancerSignUp = () => {
                 />
                 <Text fontWeight={"500"}>
                   Already Have an Account?{" "}
-                  <span className="text-[var(--primarytextcolor)] cursor-pointer" onClick={() => navigate("/login")}>Login</span>
+                  <span
+                    className="text-[var(--primarytextcolor)] cursor-pointer"
+                    onClick={() => navigate("/login")}
+                  >
+                    Login
+                  </span>
                 </Text>
               </VStack>
             </VStack>
@@ -930,6 +931,16 @@ export const FreelancerSignUp = () => {
 export const ClientSignUp = () => {
   const navigate = useNavigate();
   const [verifyShow, setVerifyShow] = useState(false);
+  const [countries, setCountries] = useState([]);
+
+  const getVerifiedCountries = async () => {
+    const countries = await getCountries();
+    setCountries(countries);
+  };
+  useEffect(() => {
+    getVerifiedCountries();
+  }, []);
+
   const toast = useToast();
   const iconsStyle = {
     fontSize: "1.5rem",
@@ -1144,13 +1155,17 @@ export const ClientSignUp = () => {
                   </InputRightElement>
                 </InputGroup>
                 <InputGroup>
-                  <Input
+                  <Select
+                    placeholder="Select Country"
                     name="country"
-                    value={formData.country}
                     onChange={handleChange}
-                    type="text"
-                    placeholder="United State"
-                  />
+                  >
+                    {countries?.map((country) => (
+                      <option key={country?._id} value={country?.name}>
+                        {country?.name}
+                      </option>
+                    ))}
+                  </Select>
                   <InputRightElement>
                     <BiChevronDown color="green.500" fontSize={"1.4rem"} />
                   </InputRightElement>
