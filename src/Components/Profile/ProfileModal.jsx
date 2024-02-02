@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Modal from "react-modal";
@@ -11,9 +11,12 @@ import {
   uploadImage,
   getAllDetailsOfUser,
 } from "../../helpers/userApis";
-import { Spinner } from "@chakra-ui/react";
 import { getSkills } from "../../helpers/freelancerApis";
 import { IoMdClose } from "react-icons/io";
+import LoadingButton from "../LoadingComponent/LoadingButton";
+import CTAButton from "../CTAButton";
+import { profileData } from "../../redux/authSlice/profileSlice";
+import UniversalModal from "../Modals/UniversalModal";
 
 export const customStyles = {
   content: {
@@ -36,17 +39,16 @@ export const ProfileModal = ({
   modalPage,
   selectedEducation,
   inputChange,
+  setModalIsOpen,
 }) => {
-  // const [userProfileInfo, setUserProfileInfo] = useState(null);
-
   const userProfileInfo = useSelector((state) => state.profile.profile);
-
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const animatedComponents = makeAnimated();
   const [options, setOptions] = useState(null);
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isLoader, setIsLoader] = useState(false);
+  const dispatch = useDispatch();
 
   const selectStyle = {
     multiValue: (styles) => ({
@@ -97,17 +99,22 @@ export const ProfileModal = ({
     });
   };
   const uploadProfileImage = async () => {
-    setIsLoader(true);
+    setIsLoading(true);
     try {
       const formData = new FormData();
       // formData.append("profile_image", editProfileInput.profile_image);
       formData.append("file", editProfileInput.profile_image);
 
       const response = await uploadImage(formData);
-      setIsLoader(false);
+      dispatch(
+        profileData({
+          profile: response,
+        })
+      );
+      setIsLoading(false);
       closeModal();
     } catch (error) {
-      setIsLoader(false);
+      setIsLoading(false);
       console.error("Error uploading image:", error);
     }
   };
@@ -133,31 +140,17 @@ export const ProfileModal = ({
       ...prevInput,
       [name]: value,
     }));
-    // console.log(`Setting ${name} to ${value}`);
-    // setUpdateEducationInput((prevInput) => ({
-    //   ...prevInput,
-    //   [name]: value,
-    // }));
   };
-  // useMemo(() => {
-  //   console.log(selectedEducation, updateEducationInput, "setting useeffect");
-  //   setUpdateEducationInput((pre)=>({
-  //     ...pre,
-  //     _id: selectedEducation?._id || "",
-  //     degree_name: selectedEducation?.degree_name || "",
-  //     institution: selectedEducation?.institution || "",
-  //     start_date:
-  //       moment(selectedEducation?.start_date).format("YYYY/MM/DD") || "",
-  //     end_date: moment(selectedEducation?.end_date).format("YYYY/MM/DD") || "",
-  //   }));
-  // }, [selectedEducation]);
+
   const [portfolioInput, setPortfolioInput] = useState({
     project_name: "",
     project_description: "",
     technologies: "",
   });
-  const handleSelectChange = (selectedValues) => {
-    setSelectedOptions(selectedValues || []);
+
+  const getUpdatedUser = async () => {
+    const resp = await getAllDetailsOfUser();
+    dispatch(profileData({ profile: resp }));
   };
 
   // Handle Updating Skills Methods
@@ -203,21 +196,8 @@ export const ProfileModal = ({
     getCategorySkills(userProfileInfo?.categories);
   }, [modalIsOpen]);
 
-  // console.log({ selectedOptions });
-
-  // const uploadImages = async (images) => {
-  //   try {
-  //     const uploadPromises = images.map((image) => uploadImage(image));
-  //     const uploadedResults = await Promise.all(uploadPromises);
-  //     console.log("Uploaded images:", uploadedResults);
-  //     return uploadedResults;
-  //   } catch (error) {
-  //     console.error("Error uploading images:", error);
-  //     throw error;
-  //   }
-  // };
-
   const handleSaveAndContinue = async (data) => {
+    setIsLoading(true);
     try {
       if (data === "category") {
         // Handle saving categories
@@ -227,7 +207,11 @@ export const ProfileModal = ({
         const response = await updateFreelancerProfile({
           categories: selectedCategories,
         });
-
+        dispatch(
+          profileData({
+            profile: response,
+          })
+        );
         if (response.code === 405) {
           toast({
             title: response.msg,
@@ -255,6 +239,11 @@ export const ProfileModal = ({
           hourly_rate: inputValues.hourly_rate,
           description: inputValues.description,
         });
+        dispatch(
+          profileData({
+            profile: response,
+          })
+        );
         if (response.code === 405) {
           toast({
             title: response.msg,
@@ -283,7 +272,11 @@ export const ProfileModal = ({
         const response = await updateFreelancerProfile({
           skills: selectedCategories,
         });
-        // console.log({ skills: response });
+        dispatch(
+          profileData({
+            profile: response,
+          })
+        );
         if (response.code == 405) {
           toast({
             title: response.msg,
@@ -322,6 +315,11 @@ export const ProfileModal = ({
         // formData.append("technologies", portfolioInput.technologies);
 
         const response = await updateFreelancerProfile(formData);
+        dispatch(
+          profileData({
+            profile: response,
+          })
+        );
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -363,6 +361,11 @@ export const ProfileModal = ({
             position: experienceInput.position,
           },
         });
+        dispatch(
+          profileData({
+            profile: response,
+          })
+        );
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -420,6 +423,7 @@ export const ProfileModal = ({
             position: selectedEducation.position,
           },
         });
+        getUpdatedUser();
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -462,6 +466,7 @@ export const ProfileModal = ({
             profile_image: editProfileInput.profile_image,
           },
         });
+        getUpdatedUser();
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -497,6 +502,11 @@ export const ProfileModal = ({
             end_date: educationInput.end_date,
           },
         });
+        dispatch(
+          profileData({
+            profile: response,
+          })
+        );
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -546,6 +556,7 @@ export const ProfileModal = ({
             end_date: selectedEducation?.end_date,
           },
         });
+        getUpdatedUser();
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -589,6 +600,7 @@ export const ProfileModal = ({
           hourly_rate: selectedEducation?.hourly_rate,
           description: selectedEducation?.description,
         });
+        getUpdatedUser();
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -604,7 +616,6 @@ export const ProfileModal = ({
           });
           closeModal();
         } else if (response.code === 200) {
-          userProfile();
           toast({
             title: "Basic Info Updated Successfully",
             status: "success",
@@ -620,24 +631,23 @@ export const ProfileModal = ({
           closeModal();
         }
       }
+
+      // Close Modal
+      closeModal();
+      setModalIsOpen(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      closeModal();
+      setModalIsOpen(false);
+      setIsLoading(false);
     }
   };
 
   // Handle Media Image Uploaded
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    //     const formData = new FormData();
-    // formData.append("image", file);
-    // console.log("formData--->",formData)
-    // const files = Array.from(e.target.files);
-    // if (selectedImages.length + files.length <= 3) {
-    // const selectedFiles = files.filter((file) => file.type.includes("image"));
     setSelectedImages([...selectedImages, file]);
-    // } else {
-    //   console.log("You can select a maximum of 3 images.");
-    // }
   };
   const handleImageDelete = (indexToRemove) => {
     const updatedImages = selectedImages.filter(
@@ -645,46 +655,16 @@ export const ProfileModal = ({
     );
     setSelectedImages(updatedImages);
   };
-  // console.log({ selectedImages });
   return (
-    <Modal
-      isOpen={modalIsOpen}
-      //   onAfterOpen={afterOpenModal}
-      onRequestClose={closeModal}
-      style={customStyles}
-      contentLabel="Example Modal"
-    >
-      <div className="w-[500px] flex flex-col gap-[20px]">
-        <div className="flex items-center justify-between p-[24px] w-full border-b-[1px] border-b-[#F3F4F6] ">
-          <p className="text-[16px] capitalize text-[#374151] ">{modalPage}</p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            cursor={"pointer"}
-            onClick={closeModal}
-          >
-            <path
-              d="M18 6L6 18"
-              stroke="#6B7280"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M6 6L18 18"
-              stroke="#6B7280"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+    <UniversalModal isModal={modalIsOpen} setIsModal={setModalIsOpen}>
+      <div className="w-full flex flex-col gap-[20px]">
+        <p className="text-[16px] capitalize text-[#374151] font-semibold">
+          {modalPage}
+        </p>
+
         {modalPage === "skills" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]">
+            <div className="flex flex-col">
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}
@@ -695,19 +675,28 @@ export const ProfileModal = ({
                 styles={selectStyle}
               />
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md"
-                onClick={() => handleSaveAndContinue("skills")}
-              >
-                Submit
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Submit"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => handleSaveAndContinue("skills")}
+                />
+              )}
             </div>
           </div>
         )}
         {modalPage === "portfolio" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]  pb ">
+            <div className="flex flex-col  pb ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Project Name
@@ -826,19 +815,28 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md "
-                onClick={() => handleSaveAndContinue("portfolio")}
-              >
-                Submit
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Submit"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => handleSaveAndContinue("portfolio")}
+                />
+              )}
             </div>
           </div>
         )}
         {modalPage === "education" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]  pb ">
+            <div className="flex flex-col  pb ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Degree Name
@@ -918,19 +916,28 @@ export const ProfileModal = ({
               </HStack>
               <br />
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md "
-                onClick={() => handleSaveAndContinue("education")}
-              >
-                Submit
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Submit"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => handleSaveAndContinue("education")}
+                />
+              )}
             </div>
           </div>
         )}
         {modalPage === "educationEdit" && selectedEducation && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px]  pb ">
+            <div className="flex flex-col  pb ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Degree Name
@@ -1007,19 +1014,28 @@ export const ProfileModal = ({
               </HStack>
               <br />
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[4px] px-[20px] rounded-md "
-                onClick={() => handleSaveAndContinue("educationUpdate")}
-              >
-                Update
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Update"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => handleSaveAndContinue("educationUpdate")}
+                />
+              )}
             </div>
           </div>
         )}
         {modalPage === "exprience" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Your Company Name
@@ -1138,19 +1154,28 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md "
-                onClick={() => handleSaveAndContinue("experience")}
-              >
-                Submit
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Submit"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => handleSaveAndContinue("experience")}
+                />
+              )}
             </div>
           </div>
         )}
         {modalPage === "experienceUpdated" && selectedEducation && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Your Company Name
@@ -1249,19 +1274,28 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md "
-                onClick={() => handleSaveAndContinue("experienceUpdated")}
-              >
-                Submit
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Update"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => handleSaveAndContinue("experienceUpdated")}
+                />
+              )}
             </div>
           </div>
         )}
         {modalPage === "editProfile" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                   <input
@@ -1274,19 +1308,28 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md min-w-[100px]"
-                onClick={() => uploadProfileImage()}
-              >
-                {isLoader ? <Spinner size="sm" color="white.500" /> : "Submit"}
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Submit"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => uploadProfileImage()}
+                />
+              )}
             </div>
           </div>
         )}
         {modalPage === "basicInformation" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col px-[24px] pb">
+            <div className="flex flex-col pb">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">Title</p>
                 <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
@@ -1331,17 +1374,26 @@ export const ProfileModal = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 p-[24px] w-full border-t-[1px] border-t-[#F3F4F6] ">
-              <button
-                className="text-[14px] bg-[#16A34A] text-[#fff] font-[500]  py-[8px] px-[20px] rounded-md "
-                onClick={() => handleSaveAndContinue("basicInformation")}
-              >
-                Submit
-              </button>
+            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+              {isLoading ? (
+                <LoadingButton />
+              ) : (
+                <CTAButton
+                  text="Submit"
+                  bg="var(--primarycolor)"
+                  color="#fff"
+                  fontWeight="500"
+                  height="2.5rem"
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  type="submit"
+                  onClick={() => handleSaveAndContinue("basicInformation")}
+                />
+              )}
             </div>
           </div>
         )}
       </div>
-    </Modal>
+    </UniversalModal>
   );
 };

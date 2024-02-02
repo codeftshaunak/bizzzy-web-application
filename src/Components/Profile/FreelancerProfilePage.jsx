@@ -151,21 +151,22 @@ export const FreelancerProfilePage = () => {
                   position: "absolute",
                   top: "0px",
                   left: "0px",
-                  zIndex: "50",
                   cursor: "pointer",
                 }}
               >
-                <div className="flex items-center justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
+                <div
+                  className="flex items-center justify-center w-8 h-8 bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]"
+                  onClick={() => {
+                    setModalPage("editProfile");
+                    openModal();
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
                     height="16"
                     viewBox="0 0 16 16"
                     fill="none"
-                    onClick={() => {
-                      setModalPage("editProfile");
-                      openModal();
-                    }}
                   >
                     <path
                       d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
@@ -688,6 +689,7 @@ export const FreelancerProfilePage = () => {
         modalPage={modalPage}
         selectedEducation={selectedEducation}
         inputChange={setSelectedEducation}
+        setModalIsOpen={setModalIsOpen}
       />
       {deleteModalOpen ? (
         <AlertDeleteDialog

@@ -1,7 +1,6 @@
 import { Box, Text, Image, VStack, HStack } from "@chakra-ui/react";
 import ProjectCard from "./ProjectCard";
 import { useEffect, useRef, useState } from "react";
-import AgencyModal from "./AgencyModal";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select/creatable";
 import { FaCloudUploadAlt } from "react-icons/fa";
@@ -9,7 +8,6 @@ import { IoMdClose } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { getSkills } from "../../helpers/freelancerApis";
 import { FiPlus } from "react-icons/fi";
-import { RiEdit2Fill } from "react-icons/ri";
 import { createAgencyProject } from "../../helpers/agencyApis";
 import { uploadImages } from "../../helpers/gigApis";
 // Import Swiper React components
@@ -22,6 +20,7 @@ import "swiper/css/pagination";
 import { Pagination, Navigation } from "swiper/modules";
 import LoadingButton from "../LoadingComponent/LoadingButton";
 import CTAButton from "../CTAButton";
+import UniversalModal from "../Modals/UniversalModal";
 
 const AgencyProjects = ({ agency, setAgency }) => {
   const [isLading, setIsLoading] = useState(false);
@@ -205,7 +204,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
 
       {/* Modal */}
       {isModal && (
-        <AgencyModal
+        <UniversalModal
           isModal={isModal}
           setIsModal={setIsModal}
           title={"Create Portfolio"}
@@ -254,6 +253,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
                       render={({ field: { onChange, ref } }) => (
                         <Select
                           inputRef={ref}
+                          required
                           closeMenuOnSelect={false}
                           onChange={(val) => onChange(val.map((c) => c.value))}
                           options={skills}
@@ -333,7 +333,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
               )}
             </div>
           </form>
-        </AgencyModal>
+        </UniversalModal>
       )}
     </>
   );
