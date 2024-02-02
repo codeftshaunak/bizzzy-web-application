@@ -1,7 +1,7 @@
-import  { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { getAllJobs, getJobs } from "../../helpers/jobApis";
 import JobCard from "./JobCard";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Checkbox,
@@ -189,7 +189,7 @@ export const SearchJobPage = () => {
   const [category, setCategory] = useState(null);
   const [experience, setExperience] = useState([]);
   const [contractType, setContractType] = useState([]);
-  const { hasAgency, activeAgency } = useContext(CurrentUserContext);
+  const { hasAgency, activeAgency, profile } = useContext(CurrentUserContext);
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState();
   const [showHighlightedSearchTerm, setShowHighlightedSearchTerm] =
@@ -201,44 +201,44 @@ export const SearchJobPage = () => {
 
   const [hourlyRateShow, setHourlyRateShow] = useState(false);
   const [fixedRateShow, setFixedRateShow] = useState(false);
-  const [sQueryValue, setSQueryValue] = useState(null)
+  const [sQueryValue, setSQueryValue] = useState(null);
   const [fixedRateMin, setFixedRateMin] = useState(null);
   const [fixRateMax, setFixRateMax] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handleSearchWithSQuery = async (sQuery) => {
-      try {
-        setLoading(true);
-  
-        const jobs = await getJobs(
-          null,
-          sQuery,
-          experience,
-          contractType,
-          hourlyRateMin,
-          hourlyRateMax,
-          fixedRateMin,
-          fixRateMax
-        );
-  
-        setJobsData(jobs);
-        setShowHighlightedSearchTerm(true);
-        setSearchTerm(sQuery);
-        navigate(`/search-job?searchTerm=${encodeURIComponent(sQuery)}`);
-      } catch (error) {
-        console.error("Error fetching job data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-  
+  console.log(profile, "profile===")
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleSearchWithSQuery = async (sQuery) => {
+    try {
+      setLoading(true);
+
+      const jobs = await getJobs(
+        null,
+        sQuery,
+        experience,
+        contractType,
+        hourlyRateMin,
+        hourlyRateMax,
+        fixedRateMin,
+        fixRateMax
+      );
+
+      setJobsData(jobs);
+      setShowHighlightedSearchTerm(true);
+      setSearchTerm(sQuery);
+      navigate(`/search-job?searchTerm=${encodeURIComponent(sQuery)}`);
+    } catch (error) {
+      console.error("Error fetching job data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const squery = searchParams.get('squery');
+    const squery = searchParams.get("squery");
 
     setSQueryValue(squery);
     console.log(squery);
@@ -248,7 +248,6 @@ export const SearchJobPage = () => {
       handleSearchWithSQuery(squery);
     }
   }, [handleSearchWithSQuery, location.search]);
-
 
   // Handle Category
   const getCategory = async () => {
@@ -306,12 +305,12 @@ export const SearchJobPage = () => {
     fixedRateMin,
     hourlyRateMax,
     hourlyRateMin,
+    sQueryValue,
   ]);
 
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
-
 
   const handleSearch = async () => {
     try {
@@ -505,19 +504,24 @@ export const SearchJobPage = () => {
     <div className="w-full mx-auto">
       <div className="py-6 px-8 flex w-full">
         <div className="w-[40%] pr-6">
-          {hasAgency && activeAgency ? (
-            <>
-              <AgencyUserCard />
-              <br />
-              <UserProfileCard />
-            </>
-          ) : (
-            <>
-              <UserProfileCard />
-              <br />
-              <AgencyUserCard />
-            </>
+          {!profile.agency.isError && (
+            <div>
+              {hasAgency && activeAgency ? (
+                <>
+                  <AgencyUserCard />
+                  <br />
+                  <UserProfileCard />
+                </>
+              ) : (
+                <>
+                  <UserProfileCard />
+                  <br />
+                  <AgencyUserCard />
+                </>
+              )}
+            </div>
           )}
+
           <Filter
             handleCategoryChange={handleCategoryChange}
             handleContractTypeChange={handleContractTypeChange}
