@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   HStack,
@@ -20,6 +21,7 @@ import {
   getSubCategory,
 } from "../../helpers/freelancerApis";
 import Select from "react-select";
+import { useLocation } from "react-router-dom";
 
 
 export const Talents = () => {
@@ -182,24 +184,41 @@ export const SearchTalents = () => {
   const [subCategory, setSubCategory] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
-  // hourly rate
+  const location = useLocation()
 
-  // Expriences
-  const handleExperienceChange = (experienceLevel) => {
-    setSelectedTalents((prevSelected) => {
-      const isAlreadySelected = prevSelected.includes(experienceLevel);
+  const handleSearchWithText = async (searchText) => {
+    try {
+      setLoading(true);
 
-      if (isAlreadySelected) {
-        return prevSelected.filter((selected) => selected !== experienceLevel);
-      } else {
-        return [...prevSelected, experienceLevel];
-      }
-    });
+      const freelancers = await getFreelancers(
+        skills,
+        searchText,
+        hourlyRateMin,
+        hourlyRateMax,
+        selectedSubCategory
+      );
+
+      setFreelancerData(freelancers);
+    } catch (error) {
+      console.error("Error fetching freelancer data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSelectChange = (selectedOptions) => {
-    setSkills(selectedOptions);
-  };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const squery = searchParams.get('squery');
+
+    setSearchText(squery);
+
+    if (squery !== null) {
+      handleSearchWithText(squery);
+    }
+  }, [ location.search]);
+
+
 
   // search function
   const handleSearch = (e) => {

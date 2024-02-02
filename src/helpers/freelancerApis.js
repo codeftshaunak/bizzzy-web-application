@@ -83,7 +83,7 @@ export const getFreelancers = async (
   selectedSubCategories // Use an array for sub-categories
 ) => {
   try {
-    const authtoken = localStorage.getItem("authtoken");
+    // const authtoken = localStorage.getItem("authtoken");
     const skillsValues = skills.map((skill) => skill.value).join(",");
     const subcategoryValue =
       selectedSubCategories && selectedSubCategories.length > 0
@@ -93,7 +93,7 @@ export const getFreelancers = async (
     const response = await API.get("/search-freelancers", {
       headers: {
         "Content-Type": "application/json",
-        token: authtoken,
+        // token: authtoken,
       },
       params: {
         searchText: searchText,

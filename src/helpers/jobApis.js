@@ -25,13 +25,10 @@ export const getAllJobs = async () => {
 export const getJobs = async ( category, searchTerm,experience, contractType,  hourlyRateMin,
   hourlyRateMax, fixedRateMin,fixedRateMax) => {
   try {
-    const authtoken = localStorage.getItem("authtoken");
-    const experienceValues = experience
-      ? experience.map((exp) => exp).join(",")
-      : "";
-    const contractValue = contractType
-      ? contractType.map((contact) => contact).join(",")
-      : "";
+    // const authtoken = localStorage.getItem("authtoken");
+    const experienceValues = experience ? experience.map((exp) => exp).join(",") : "";
+    const contractValue = contractType ? contractType.map((contact) => contact).join(",") : "";
+
 
     console.log(hourlyRateMin, hourlyRateMax , "hourlyRateMin================")
 
@@ -41,7 +38,6 @@ export const getJobs = async ( category, searchTerm,experience, contractType,  h
     const response = await API.get("/job/search", {
       headers: {
         "Content-Type": "application/json",
-        token: authtoken,
       },
       params: {
         searchTerm: searchTerm || "",

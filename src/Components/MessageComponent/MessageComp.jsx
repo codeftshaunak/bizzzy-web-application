@@ -55,6 +55,7 @@ const MessageComp = () => {
   }, []);
 
   const getMessagesList = async (receiver_id) => {
+    console.log({ receiver_id });
     try {
       if (receiver_id) {
         setSelectedUser(receiver_id);
@@ -104,21 +105,15 @@ const MessageComp = () => {
             top={3}
           />
         </Box>
-        {/* {console.log({ messageUsers })} */}
         {messageUsers?.length > 0 && (
           <Box overflowY={"auto"}>
             {messageUsers.map((user, index) => (
               <Box
                 key={index}
                 className="h-[90px] w-full border border-primary rounded-2xl bg-green-100 mt-[2rem] cursor-pointer"
-                onClick={() => {
-                  getMessagesList(
-                    user?.user_details?.userId
-                      ? user?.user_details?.userId
-                      : user?.user_details?.user_id
-                  );
-                }}
+                onClick={() => getMessagesList(user?.user_details?.user_id)}
               >
+                {console.log(user.user_details.user_id)}
                 <Flex align="center" justify="between" py={2} px={4}>
                   <Box width="85px">
                     {user?.user_details?.profile_image !== null ? (

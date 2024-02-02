@@ -1,8 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import  { useCallback, useContext, useEffect, useState } from "react";
 import { getAllJobs, getJobs } from "../../helpers/jobApis";
 import JobCard from "./JobCard";
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import { useLocation, useNavigate} from "react-router-dom";
 import {
   Box,
   Checkbox,
@@ -11,14 +10,12 @@ import {
   Input,
   Text,
   VStack,
-  Avatar,
   RadioGroup,
   Stack,
   Radio,
 } from "@chakra-ui/react";
 import Select from "react-select";
 import { BiSearchAlt, BiXCircle } from "react-icons/bi";
-import { useSelector } from "react-redux";
 import UserProfileCard from "./UserCard";
 import AgencyUserCard from "./AgencyUserCard";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
@@ -204,14 +201,54 @@ export const SearchJobPage = () => {
 
   const [hourlyRateShow, setHourlyRateShow] = useState(false);
   const [fixedRateShow, setFixedRateShow] = useState(false);
-
+  const [sQueryValue, setSQueryValue] = useState(null)
   const [fixedRateMin, setFixedRateMin] = useState(null);
   const [fixRateMax, setFixRateMax] = useState(null);
-
-  // console.log(hourlyRateMin, "hourlyRateMin=====")
-  // console.log(hourlyRateMax, "hourlyRateMax==")
-
   const navigate = useNavigate();
+  const location = useLocation();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handleSearchWithSQuery = async (sQuery) => {
+      try {
+        setLoading(true);
+  
+        const jobs = await getJobs(
+          null,
+          sQuery,
+          experience,
+          contractType,
+          hourlyRateMin,
+          hourlyRateMax,
+          fixedRateMin,
+          fixRateMax
+        );
+  
+        setJobsData(jobs);
+        setShowHighlightedSearchTerm(true);
+        setSearchTerm(sQuery);
+        navigate(`/search-job?searchTerm=${encodeURIComponent(sQuery)}`);
+      } catch (error) {
+        console.error("Error fetching job data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+  
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const squery = searchParams.get('squery');
+
+    setSQueryValue(squery);
+    console.log(squery);
+
+    // If sQueryValue is not null, call handleSearch with sQueryValue
+    if (squery !== null) {
+      handleSearchWithSQuery(squery);
+    }
+  }, [handleSearchWithSQuery, location.search]);
+
 
   // Handle Category
   const getCategory = async () => {
@@ -234,7 +271,7 @@ export const SearchJobPage = () => {
       if (category) {
         const jobs = await getJobs(
           category,
-          null,
+          sQueryValue,
           experience,
           contractType,
           hourlyRateMin,
@@ -246,7 +283,7 @@ export const SearchJobPage = () => {
       } else {
         const jobs = await getJobs(
           null,
-          null,
+          sQueryValue,
           experience,
           contractType,
           hourlyRateMin,
@@ -274,6 +311,7 @@ export const SearchJobPage = () => {
   useEffect(() => {
     fetchJobs();
   }, [fetchJobs]);
+
 
   const handleSearch = async () => {
     try {
