@@ -45,11 +45,22 @@ const TalentCard = ({ freelancerData, loading }) => {
     e.preventDefault();
     try {
       const res = await sendAgencyInvitation(formData);
-      toast({
-        title: res.message,
-        status: 'success',
-        duration: '3000'
-      })
+      console.log(res);
+      if (res.isError) {
+        toast({
+          title: res.message,
+          status: 'warning',
+          duration: '3000',
+          position: 'top-right'
+        })
+      } else {
+        toast({
+          title: `Invitation Send To ${selectedFreelancer.firstName}+' '+${selectedFreelancer.lastName}`,
+          status: 'success',
+          duration: '3000',
+          position: 'top-right'
+        })
+      }
       setFormData({
         member_position: '',
         message: ''
