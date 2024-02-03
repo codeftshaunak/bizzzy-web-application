@@ -52,6 +52,9 @@ export const invitationDetails = async (invite_id) =>
     `/freelancer/invitation-details?invitation_id=${invite_id}`
   );
 
+export const acceptAgencyInvitation = (data) =>
+  makeApiRequest("put", '/freelancer/invite/update', data)
+
 export const getMessageList = async () =>
   makeApiRequest("get", "/user-chat-list");
 
@@ -67,11 +70,11 @@ export const createGig = async (data) =>
 export const getSubCategory = async (_id) =>
   makeApiRequest("get", `/categories/subcategories?category_id=${_id}`);
 
-export const getSkills = async (category_id, sub_category_id) =>
-  makeApiRequest(
-    "get",
-    `/categories/skills?category_id=${category_id}&sub_category_id=${sub_category_id}`
-  );
+export const getSkills = async (category_id, sub_category_id) => {
+  let url = `/categories/skills?category_id=${category_id}`;
+  if (sub_category_id) url += `&sub_category_id=${sub_category_id}`;
+  return makeApiRequest("get", url);
+};
 
 // Update the function signature
 export const getFreelancers = async (
@@ -82,19 +85,17 @@ export const getFreelancers = async (
   selectedSubCategories // Use an array for sub-categories
 ) => {
   try {
-    const authtoken = localStorage.getItem("authtoken");
+    // const authtoken = localStorage.getItem("authtoken");
     const skillsValues = skills.map((skill) => skill.value).join(",");
     const subcategoryValue =
       selectedSubCategories && selectedSubCategories.length > 0
         ? selectedSubCategories.map((category) => category.value).join(",")
         : null;
 
-    console.log(subcategoryValue);
-
     const response = await API.get("/search-freelancers", {
       headers: {
         "Content-Type": "application/json",
-        token: authtoken,
+        // token: authtoken,
       },
       params: {
         searchText: searchText,
@@ -111,23 +112,6 @@ export const getFreelancers = async (
   }
 };
 
-export const getCategories = async () => {
-  try {
-    const authtoken = localStorage.getItem("authtoken");
+export const getCategories = async () => makeApiRequest("get", "/categories");
 
-    const response = await API.get("/categories", {
-      headers: {
-        "Content-Type": "application/json",
-        token: authtoken,
-      },
-    });
-    return response.data.body;
-  } catch (error) {
-    console.error("Error fetching freelancer data:", error);
-    throw error;
-  }
-};
-
-// Updated Agency Profile of Freelancer
-export const updateAgencyProfile = async (data) =>
-  makeApiRequest("put", "/agency/update", data);
+export const getCountries = async () => makeApiRequest("get", "/get-countries");

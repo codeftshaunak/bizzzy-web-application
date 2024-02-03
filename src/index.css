@@ -28,3 +28,7 @@
 #chat-container {
   scrollbar-width: none;
 }
+
+.swiper-button-disabled {
+  opacity: 0.5;
+}

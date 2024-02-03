@@ -32,6 +32,7 @@ export const ReviewProposal = () => {
 
   const proposalsDetails = async () => {
     const resp = await getProposals(id);
+    console.log(resp);
     setProposals(resp);
   };
 

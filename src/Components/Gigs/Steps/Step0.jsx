@@ -65,7 +65,6 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const onSubmit = (values) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
-    console.log({ values });
   };
 
   // load state
@@ -100,7 +99,6 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
   const allSubCategory = async () => {
     if (categoryId) {
       try {
-        console.log(categoryId);
         const response = await getSubCategory(categoryId);
         setSubCategoryOptions(
           response?.map((item) => ({
@@ -110,7 +108,6 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
             _id: item._id,
           }))
         );
-        console.log({ response, subCategoryOptions });
       } catch (error) {
         console.log(error);
       }
@@ -127,7 +124,6 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
           label: item.skill_name,
         }))
       );
-      console.log({ response });
     } catch (error) {
       console.log(error);
     }
@@ -146,8 +142,6 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
       allSkills();
     }
   }, [categoryId, subCategoryId]);
-
-  console.log({ categoryOptions });
 
   return (
     <FormProvider {...methods}>

@@ -1,16 +1,38 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BiX } from "react-icons/bi";
 import { TagsInput } from "react-tag-input-component";
 import { useFormState } from "../../Contexts/FormContext";
 import { firstStepSchema } from "../../Schema/job-create-schema";
-import { useQuill } from 'react-quilljs';
-import 'quill/dist/quill.snow.css';
+import { useQuill } from "react-quilljs";
+import "quill/dist/quill.snow.css";
+import { getCategories, getSkills } from "../../helpers/freelancerApis.js";
+import Select from "react-select/creatable";
+import { FaCloudUploadAlt } from "react-icons/fa";
+
+const modules = {
+  toolbar: [
+    ["bold", "italic", "underline", "strike"],
+    [{ align: [] }],
+
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["link"],
+    [{ color: [] }, { background: [] }],
+
+    ["clean"],
+  ],
+};
 
 function FirstStep({ setStep }) {
   const { insertToFormState, formState } = useFormState();
-  const { quill, quillRef } = useQuill();
+  const { quill, quillRef } = useQuill({ modules });
+  const [categories, setCategories] = useState({});
+  const [skillsOption, setSkillsOption] = useState([]);
 
   const {
     register,
@@ -27,12 +49,10 @@ function FirstStep({ setStep }) {
     },
   });
 
-
-
   React.useEffect(() => {
     if (quill) {
-      quill.on('text-change', (delta, oldDelta, source) => {
-        setValue("description", quill.root.innerHTML)
+      quill.on("text-change", (delta, oldDelta, source) => {
+        setValue("description", quill.root.innerHTML);
       });
     }
   }, [quill]);
@@ -43,8 +63,39 @@ function FirstStep({ setStep }) {
   // on form submit assign values to the context and go to next step
   const onSubmit = (v) => {
     insertToFormState(v);
-    setStep(2);
   };
+
+  const getCategorySkills = async () => {
+    try {
+      if (!categories?.list) {
+        console.log("category");
+        const response = await getCategories();
+        setCategories({
+          ...categories,
+          list: response?.map((item) => ({
+            value: item.category_name,
+            label: item.category_name,
+            _id: item._id,
+          })),
+        });
+      }
+      if (categories?.selectedId) {
+        const response = await getSkills(categories.selectedId, "");
+        setSkillsOption(
+          response?.map((item) => ({
+            value: item.skill_name,
+            label: item.skill_name,
+          }))
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCategorySkills();
+  }, [categories]);
 
   // if there any values in form state context then push this to the form
   useEffect(() => {
@@ -56,7 +107,7 @@ function FirstStep({ setStep }) {
     if (formState?.job_type) values.job_type = `${formState.job_type}`;
     if (formState?.amount) values.amount = formState.amount;
     if (formState?.file) values.file = formState.file;
-    console.log(values);
+
     reset(values);
   }, [formState]);
 
@@ -117,7 +168,7 @@ function FirstStep({ setStep }) {
           Job Category
         </div>
 
-        <TagsInput
+        {/* <TagsInput
           value={tags || []}
           onChange={(tags) => setValue("tags", tags)}
           name="tags"
@@ -126,6 +177,20 @@ function FirstStep({ setStep }) {
             input: "bg-transparent py-1",
             tag: "",
           }}
+        /> */}
+        <Controller
+          control={control}
+          name="tags"
+          render={({ field: { ref, onChange } }) => (
+            <Select
+              inputRef={ref}
+              onChange={(val) => {
+                onChange(val ? [val._id] : []);
+                setCategories({ ...categories, selectedId: val._id });
+              }}
+              options={categories?.list}
+            />
+          )}
         />
 
         {errors?.tags ? (
@@ -139,7 +204,7 @@ function FirstStep({ setStep }) {
           Add Skills
         </div>
 
-        <TagsInput
+        {/* <TagsInput
           value={skills || []}
           onChange={(skills) => setValue("skills", skills)}
           name="skills"
@@ -148,8 +213,20 @@ function FirstStep({ setStep }) {
             input: "bg-transparent py-1",
             tag: "",
           }}
+        /> */}
+        <Controller
+          control={control}
+          name="skills"
+          render={({ field: { ref, onChange } }) => (
+            <Select
+              closeMenuOnSelect={false}
+              inputRef={ref}
+              options={skillsOption}
+              onChange={(val) => onChange(val.map((c) => c.value))}
+              isMulti
+            />
+          )}
         />
-
         {errors?.skills ? (
           <p className="text-sm text-red-500">{errors.skills.message}</p>
         ) : null}
@@ -257,26 +334,21 @@ function FirstStep({ setStep }) {
             return (
               <div className="flex items-center justify-between w-full">
                 <label className="flex items-center" id="file">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
+                  <div
+                    className={`w-24 h-10 border border-green-400 rounded cursor-pointer bg-green-100 hover:bg-green-200 flex flex-col items-center justify-center text-center`}
                   >
-                    <g id="24/Attachment">
-                      <path
-                        id="Path"
-                        d="M14.9997 7.00045L8.4997 13.5005C7.67128 14.3289 7.67128 15.672 8.4997 16.5005C9.32813 17.3289 10.6713 17.3289 11.4997 16.5005L17.9997 10.0005C19.6566 8.3436 19.6566 5.65731 17.9997 4.00045C16.3428 2.3436 13.6566 2.3436 11.9997 4.00045L5.4997 10.5005C3.01442 12.9857 3.01442 17.0152 5.4997 19.5005C7.98498 21.9857 12.0144 21.9857 14.4997 19.5005L20.9997 13.0005"
-                        stroke="#16A34A"
-                        strokeWidth="1.75"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                    <span>
+                      <FaCloudUploadAlt className="text-2xl text-center" />
+                    </span>
+                  </div>
+                  <div className="text-center ml-3 text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal flex items-center gap-1">
+                    {value?.name || "Add Attachment"}{" "}
+                    {value ? (
+                      <BiX
+                        onClick={() => onChange(undefined)}
+                        className="h-5 w-5 bg-red-50/10 rounded-full cursor-pointer backdrop-blur backdrop-filter bg-red-50 hover:bg-red-100 text-red-500"
                       />
-                    </g>
-                  </svg>
-                  <div className="text-center ml-3 text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal">
-                    {value?.name || "Attachments"}
+                    ) : null}
                   </div>
                   <input
                     {...field}
@@ -284,18 +356,12 @@ function FirstStep({ setStep }) {
                     id="file"
                     className="hidden"
                     onChange={(e) => {
-                      onChange(e.target.files[0])
+                      onChange(e.target.files[0]);
                     }}
                   />
                 </label>
 
                 {/* Delete Added File */}
-                {!!value ? (
-                  <BiX
-                    onClick={() => onChange(undefined)}
-                    className="text-lg text-red-500"
-                  />
-                ) : null}
               </div>
             );
           }}

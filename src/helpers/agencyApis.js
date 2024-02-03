@@ -37,4 +37,19 @@ const makeApiRequest = async (
 export const createAgency = async (data) =>
   makeApiRequest("post", "/agency/create", data);
 
-export const getAgency = async () => makeApiRequest("get", "/agency");
+export const createAgencyProject = async (data) =>
+  makeApiRequest("post", "/agency/project", data);
+export const updateAgencyProfile = async (data) =>
+  makeApiRequest("put", "/agency/update", data);
+
+export const getAgency = async () =>
+  makeApiRequest("get", "/agency");
+
+export const sendAgencyInvitation = async (data) =>
+  makeApiRequest('post', '/agency/invite', data);
+
+export const getAgencyById = async (id) =>
+  makeApiRequest('get', `/agencyById?agency_id=${id}`);
+
+export const getAgencyMemburs = async (id) =>
+  makeApiRequest('get', `/invitation/status?agency_id=${id}`)

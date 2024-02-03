@@ -31,11 +31,9 @@ export const FindJob = () => {
 export const SearchPage = () => {
     const role = useSelector((state) => state.auth.role);
     return <HomeLayout>
-        {role == 1 && (
             <VStack padding={"0 2rem"} width={"full"}>
                 <SearchJobPage />
             </VStack>
-        )}
     </HomeLayout>
 }
 

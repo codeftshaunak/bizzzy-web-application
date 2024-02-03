@@ -45,7 +45,7 @@ const Process = () => {
   const [selectedSubCategory, setSeletedSubCategory] = useState([]);
   const [subCategoryOption, setSubCategoryOption] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const { getUserDetails } = useContext(CurrentUserContext)
+  const { getUserDetails } = useContext(CurrentUserContext);
   const getUserInformation = async () => {
     try {
       const res = await getAllDetailsOfUser();
@@ -55,15 +55,35 @@ const Process = () => {
       console.log(error);
     }
   };
+  // const { description, skills, professional_role } = userDetails;
+  // const isComplete = description && skills.length > 0 && professional_role;
+  // if (isComplete) navigate("/find-job");
 
   useEffect(() => {
     getUserInformation();
-    autoProcess();
+    // autoProcess();
   }, [page]);
 
-  // const openModal = () => {
-  //     setIsModalOpen(true);
-  // };
+  const handlePageBack = () => {
+    if (!userDetails?.user_id) {
+      setPage(0);
+    } else if (
+      userDetails?.categories?.length < 1 ||
+      !userDetails?.professional_role ||
+      userDetails?.skills?.length < 0
+    ) {
+      if (
+        userDetails?.categories?.length > 0 &&
+        userDetails?.professional_role
+      ) {
+        setPage(4);
+      } else if (!userDetails?.professional_role) {
+        setPage(3);
+      } else if (userDetails?.categories?.length < 1) {
+        setPage(2);
+      }
+    }
+  };
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [inputValues, setInputValues] = useState({
@@ -85,69 +105,76 @@ const Process = () => {
     setSeletedSubCategory(selectedValues || []);
   };
 
-  const autoProcess = () => {
-    if (
-      userDetails?.categories?.length > 0 &&
-      userDetails?.sub_categories?.length > 0 &&
-      userDetails?.skills?.length > 0 &&
-      userDetails?.professional_role?.length > 0
-    ) {
-      navigate("/profile");
-    }
-    if (
-      userDetails?.briefDescription?.length > 0 &&
-      userDetails?.businessName?.length > 0
-    ) {
-      navigate("/client");
-    }
-    if (userDetails?.categories?.length == 0) {
-      setPage(2);
-    }
-    if (userDetails?.professional_role?.length == 0) {
-      setPage(3);
-    }
-    if (userDetails?.skills?.length == 0) {
-      setPage(4);
-    }
-  };
+  // const autoProcess = () => {
+  //   console.log("click");
+  //   // Check for completeness of categories, professional role, and skills
+  //   if (
+  //     userDetails?.categories?.length > 0 &&
+  //     userDetails?.sub_categories?.length > 0 &&
+  //     userDetails?.skills?.length > 0 &&
+  //     userDetails?.professional_role?.length > 0
+  //   ) {
+  //     navigate("/profile");
+  //   }
+  //   if (
+  //     userDetails?.briefDescription?.length > 0 &&
+  //     userDetails?.businessName?.length > 0
+  //   ) {
+  //     navigate("/client");
+  //   }
+  //   if (userDetails?.categories?.length == 0) {
+  //     setPage(2);
+  //   }
+  //   if (userDetails?.professional_role?.length == 0) {
+  //     setPage(3);
+  //   }
+  //   if (userDetails?.skills?.length == 0) {
+  //     setPage(4);
+  //   }
+  // };
+
   // changes some
   const handleSaveAndContinue = async (data) => {
-    autoProcess();
     try {
       if (role == 1) {
         if (data === "category") {
-          if (selectedOptions.length <= 0) {
-            toast({
-              title: "Atleast Select A Category",
-              status: "warning",
-              duration: 3000,
-              isClosable: true,
-            });
+          if (selectedOptions.length <= 0 || selectedSubCategory.length <= 0) {
+            if (selectedOptions.length <= 0) {
+              toast({
+                title: "At last Select A Category",
+                status: "warning",
+                duration: 3000,
+                isClosable: true,
+              });
+            } else {
+              toast({
+                title: "At last Select A Sub Category",
+                status: "warning",
+                duration: 3000,
+                isClosable: true,
+              });
+            }
           } else {
             const selectedCategories =
               selectedOptions && !Array.isArray(selectedOptions)
                 ? [selectedOptions].map((option) => ({
-                  value: option.value,
-                  _id: option._id,
-                }))
+                    value: option.value,
+                    _id: option._id,
+                  }))
                 : [];
 
             const subCategoriesValue =
               selectedSubCategory && Array.isArray(selectedSubCategory)
                 ? selectedSubCategory.map((option) => ({
-                  value: option.value,
-                  _id: option._id,
-                }))
+                    value: option.value,
+                    _id: option._id,
+                  }))
                 : [];
-
 
             const response = await updateFreelancerProfile({
               categories: selectedCategories,
               sub_categories: subCategoriesValue,
             });
-
-            console.log(response, "response|====");
-
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -159,7 +186,7 @@ const Process = () => {
               setSelectedOptions([]);
               setSeletedSubCategory([]);
               setPage(3);
-            } else if (response.code === 200) {
+            } else if (response) {
               toast({
                 title: "Category Added Successfully",
                 status: "success",
@@ -212,7 +239,7 @@ const Process = () => {
                 position: "top-right",
               });
               setPage(4);
-            } else if (response.code === 200) {
+            } else if (response) {
               toast({
                 title: "Basic Information Added Successfully",
                 status: "success",
@@ -227,7 +254,7 @@ const Process = () => {
         } else if (data == "skills") {
           if (selectedOptions.length <= 0) {
             toast({
-              title: "Select Minimum Five Skills",
+              title: "Select Minimum One Skill",
               status: "warning",
               duration: 3000,
               isClosable: true,
@@ -240,6 +267,7 @@ const Process = () => {
             const response = await updateFreelancerProfile({
               skills: selectedCategories,
             });
+
             if (response.code == 405) {
               toast({
                 title: response.msg,
@@ -249,18 +277,20 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
-              // navigate("/profile");
-            } else if (response.code === 200) {
+            } else if (response) {
+              getUserDetails();
               toast({
-                title: "Skils Added Successfully",
+                title: "Skills Added Successfully",
                 status: "success",
                 duration: 3000,
                 isClosable: true,
                 position: "top-right",
               });
+              const delay = (ms) =>
+                new Promise((resolve) => setTimeout(resolve, ms));
+              await delay(1500);
               setSelectedOptions([]);
-              getUserDetails();
-              navigate("/profile");
+              navigate("/find-job");
             }
           }
         }
@@ -295,7 +325,11 @@ const Process = () => {
                 isClosable: true,
                 position: "top-right",
               });
-            } else if (response.code === 200) {
+            } else if (response) {
+              getUserDetails();
+              const delay = (ms) =>
+                new Promise((resolve) => setTimeout(resolve, ms));
+              await delay(1500);
               toast({
                 title: "Your Details Added Successfully",
                 status: "success",
@@ -393,7 +427,6 @@ const Process = () => {
       console.error("Error fetching skills:", error);
     }
   };
-
   useEffect(() => {
     if (userDetails.categories?.length > 0 && page === 4) {
       getCategorySkills(userDetails?.categories);
@@ -414,7 +447,7 @@ const Process = () => {
             <BsBackspaceFill
               color="var(--primarycolor)"
               size={"1.2rem"}
-              onClick={() => setPage(page === 0 ? 0 : page - 1)}
+              onClick={() => handlePageBack()}
             />
           </Box>
         )}
@@ -492,7 +525,7 @@ const Process = () => {
                     How would you like to tell us about yourself?
                   </Text>
                 </Box>
-                
+
                 <Box>
                   <Text fontSize="15px" fontWeight="400">
                     We need to get a sense of your education, experience and
@@ -694,90 +727,90 @@ const Process = () => {
             )}
           </>
         )) || (
-            <>
-              {role == 2 && page == 2 && (
-                <VStack
-                  justifyContent="start"
-                  alignItems="start"
-                  width="630px"
-                  gap="30px"
-                  color="var(--primarytext)"
+          <>
+            {role == 2 && page == 2 && (
+              <VStack
+                justifyContent="start"
+                alignItems="start"
+                width="630px"
+                gap="30px"
+                color="var(--primarytext)"
+              >
+                <Box
+                  backgroundColor="var(--primarysoftbg)"
+                  color="var(--primarytextcolor)"
+                  padding="0rem 0.8rem"
+                  borderRadius="5px"
                 >
-                  <Box
-                    backgroundColor="var(--primarysoftbg)"
-                    color="var(--primarytextcolor)"
-                    padding="0rem 0.8rem"
-                    borderRadius="5px"
-                  >
-                    Create your Profile
-                  </Box>
-                  <Box>
-                    <Text fontSize="40px" fontWeight="500">
-                      How would you like to tell us about yourself?
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="15px" fontWeight="400">
-                      We need to get a sense of your education, experience and
-                      categories. It’s quickest to import your information, you
-                      can edit it before your profile goes live.
-                    </Text>
-                  </Box>
-                  <VStack width={"full"} alignItems={"start"}>
-                    <Text mb="0px">{"Write Your Business Name"}</Text>
-                    <Input
-                      variant="outline"
-                      required
-                      placeholder="Write Your Business Name"
-                      width={"100%"}
-                      value={businessDetails?.business_name}
-                      onChange={(e) =>
-                        setBusinessDetails({
-                          ...businessDetails,
-                          business_name: e.target.value,
-                        })
-                      }
-                    />
-                  </VStack>
-
-                  <VStack width={"full"} alignItems={"start"}>
-                    <Text mb="0px">{"Write Your Business Details"}</Text>
-                    <Textarea
-                      required
-                      variant="outline"
-                      placeholder="Write Your Business Details"
-                      width={"100%"}
-                      style={{ resize: "none" }}
-                      rows={5}
-                      value={businessDetails?.brief_description}
-                      onChange={(e) =>
-                        setBusinessDetails({
-                          ...businessDetails,
-                          brief_description: e.target.value,
-                        })
-                      }
-                    />
-                  </VStack>
-                  <Button
-                    fontWeight="500"
-                    color="#fff"
-                    fontSize="1rem"
-                    bg="var(--primarycolor)"
-                    height="2.5rem"
-                    transition={"0.3s ease-in-out"}
-                    _hover={{
-                      border: "1px solid var(--primarycolor)",
-                      backgroundColor: "var(--primarysoftbg)",
-                      color: "var(--primarytext)",
-                    }}
-                    onClick={() => handleSaveAndContinue("business_details")}
-                  >
-                    Save & Continue
-                  </Button>
+                  Create your Profile
+                </Box>
+                <Box>
+                  <Text fontSize="40px" fontWeight="500">
+                    How would you like to tell us about yourself?
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="15px" fontWeight="400">
+                    We need to get a sense of your education, experience and
+                    categories. It’s quickest to import your information, you
+                    can edit it before your profile goes live.
+                  </Text>
+                </Box>
+                <VStack width={"full"} alignItems={"start"}>
+                  <Text mb="0px">{"Write Your Business Name"}</Text>
+                  <Input
+                    variant="outline"
+                    required
+                    placeholder="Write Your Business Name"
+                    width={"100%"}
+                    value={businessDetails?.business_name}
+                    onChange={(e) =>
+                      setBusinessDetails({
+                        ...businessDetails,
+                        business_name: e.target.value,
+                      })
+                    }
+                  />
                 </VStack>
-              )}
-            </>
-          )}
+
+                <VStack width={"full"} alignItems={"start"}>
+                  <Text mb="0px">{"Write Your Business Details"}</Text>
+                  <Textarea
+                    required
+                    variant="outline"
+                    placeholder="Write Your Business Details"
+                    width={"100%"}
+                    style={{ resize: "none" }}
+                    rows={5}
+                    value={businessDetails?.brief_description}
+                    onChange={(e) =>
+                      setBusinessDetails({
+                        ...businessDetails,
+                        brief_description: e.target.value,
+                      })
+                    }
+                  />
+                </VStack>
+                <Button
+                  fontWeight="500"
+                  color="#fff"
+                  fontSize="1rem"
+                  bg="var(--primarycolor)"
+                  height="2.5rem"
+                  transition={"0.3s ease-in-out"}
+                  _hover={{
+                    border: "1px solid var(--primarycolor)",
+                    backgroundColor: "var(--primarysoftbg)",
+                    color: "var(--primarytext)",
+                  }}
+                  onClick={() => handleSaveAndContinue("business_details")}
+                >
+                  Save & Continue
+                </Button>
+              </VStack>
+            )}
+          </>
+        )}
       </>
     </OnboardingProcess>
   );

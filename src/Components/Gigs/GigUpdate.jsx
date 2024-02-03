@@ -54,7 +54,6 @@ export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
 
   useEffect(() => {
     gigDetails();
-    console.log("click");
   }, []);
 
   const handleUpload = useCallback(async () => {
@@ -68,7 +67,6 @@ export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
       item.hasOwnProperty("file")
     );
 
-    console.log({ existUploaded, readyToUpload, uploadResponse });
     if (readyToUpload.length > 0) {
       // prepare form data for file uploading
       const imagesFormData = new FormData();
@@ -81,7 +79,6 @@ export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
 
       try {
         const response = await uploadImages(imagesFormData);
-        console.log("Image upload response:", response);
 
         // Assuming the response has a "body" property containing uploaded images
         uploadResponse.images = [
@@ -100,7 +97,6 @@ export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
 
       try {
         const response = await uploadMedia(videoFormData);
-        console.log("Video upload response:", response);
         uploadResponse.video = response?.body;
       } catch (error) {
         console.error("Error uploading video:", error);
@@ -111,7 +107,6 @@ export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
   }, [formData.images, formData.video]);
 
   const handleUpdateGig = async (data) => {
-    console.log({ data });
     // Transform data to the desired format
     const transformedData = {
       _id: gigData._id,
@@ -138,7 +133,6 @@ export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
       terms: data?.terms,
       privacy_notice: data?.privacy_notice,
     };
-    console.log(transformedData);
     try {
       const mediaResponse = await handleUpload();
 
@@ -158,7 +152,6 @@ export const GigUpdate = ({ activeStep, goForward, goBackward, setIsEdit }) => {
         navigate(-1);
         setIsEdit(false);
       }
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

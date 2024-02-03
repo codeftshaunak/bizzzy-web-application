@@ -1,8 +1,13 @@
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { Avatar, Button, HStack, Stack, Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { useContext, useState } from "react";
+import { CurrentUserContext } from "../../Contexts/CurrentUser";
+import FreelancerDetailsModal from "../Modals/FreelancerDetailsModal";
 
 const TalentCard = ({ freelancerData, loading }) => {
+  const [isOpenModal, setIsOpenModal] = useState(true);
+  const { activeAgency, hasAgency } = useContext(CurrentUserContext);
   if (loading) {
     return (
       <Box padding='6' boxShadow='lg' bg='white'>
@@ -72,16 +77,24 @@ const TalentCard = ({ freelancerData, loading }) => {
                   {/* Navigation */}
                   <div>
                     <Stack direction="row" spacing={4} align="center">
-                      <Link to={`/freelancer/${freelancer?.user_id}`}>
-                        <Button
-                          size="md"
+                      {
+                        hasAgency && activeAgency ? <Button size="md"
                           colorScheme="#16A34A"
                           variant="outline"
-                          color={"#16A34A"}
-                        >
-                          View Profile
-                        </Button>
-                      </Link>
+                          color={"#16A34A"}>
+                          Invite as a agency member
+                        </Button> : <Link to={`/freelancer/${freelancer?.user_id}`}>
+                          <Button
+                            size="md"
+                            colorScheme="#16A34A"
+                            variant="outline"
+                            color={"#16A34A"}
+                          >
+                            View Profile
+                          </Button>
+                        </Link>
+                      }
+
                     </Stack>
                   </div>
                 </div>
@@ -113,6 +126,10 @@ const TalentCard = ({ freelancerData, loading }) => {
           );
         })}
       </div>
+
+      {/* {
+        isOpenModal && <FreelancerDetailsModal />
+      } */}
     </div>
   );
 };
