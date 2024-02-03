@@ -55,7 +55,7 @@ const TalentCard = ({ freelancerData, loading }) => {
         })
       } else {
         toast({
-          title: `Invitation Send To ${selectedFreelancer.firstName}+' '+${selectedFreelancer.lastName}`,
+          title: `Invitation Send To ${selectedFreelancer.firstName} ${selectedFreelancer.lastName}`,
           status: 'success',
           duration: '3000',
           position: 'top-right'
