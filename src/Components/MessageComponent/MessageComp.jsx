@@ -55,7 +55,6 @@ const MessageComp = () => {
   }, []);
 
   const getMessagesList = async (receiver_id) => {
-    console.log({ receiver_id });
     try {
       if (receiver_id) {
         setSelectedUser(receiver_id);
@@ -75,7 +74,7 @@ const MessageComp = () => {
       height="full"
       justifyContent={"space-between"}
       alignItems={"start"}
-      // className="bg-green-500"
+    // className="bg-green-500"
     >
       <Box w="350px">
         <Box position="relative" h="44px" mb={2} mt={6}>
@@ -331,7 +330,7 @@ const MessageBody = ({ data, selectedUser }) => {
             },
             scrollbarWidth: "none",
           }}
-          // className="bg-red-500"
+        // className="bg-red-500"
         >
           {messageData?.length > 0 &&
             messageData.map((user, index) => (
@@ -341,10 +340,10 @@ const MessageBody = ({ data, selectedUser }) => {
                 userId={userId}
                 senderDetails={senderDetails}
                 receiverDetails={receiverDetails}
-                // setIsRepeatedUser={setIsRepeatedUser}
-                // isRepeatedUser={isRepeatedUser}
-                // currentUser={currentUser}
-                // setCurrentUser={setCurrentUser}
+              // setIsRepeatedUser={setIsRepeatedUser}
+              // isRepeatedUser={isRepeatedUser}
+              // currentUser={currentUser}
+              // setCurrentUser={setCurrentUser}
               />
             ))}
         </Box>

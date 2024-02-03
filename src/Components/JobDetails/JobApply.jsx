@@ -88,7 +88,6 @@ const JobApply = ({ setPage, details }) => {
       }
 
       const response = await applyJob(jobData);
-      console.log({ response });
       handleSubmissionResponse(response);
     } catch (error) {
       console.error(error);

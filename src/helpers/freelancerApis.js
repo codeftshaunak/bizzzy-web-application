@@ -52,6 +52,9 @@ export const invitationDetails = async (invite_id) =>
     `/freelancer/invitation-details?invitation_id=${invite_id}`
   );
 
+export const acceptAgencyInvitation = (data) =>
+  makeApiRequest("put", '/freelancer/invite/update', data)
+
 export const getMessageList = async () =>
   makeApiRequest("get", "/user-chat-list");
 
@@ -70,7 +73,6 @@ export const getSubCategory = async (_id) =>
 export const getSkills = async (category_id, sub_category_id) => {
   let url = `/categories/skills?category_id=${category_id}`;
   if (sub_category_id) url += `&sub_category_id=${sub_category_id}`;
-
   return makeApiRequest("get", url);
 };
 

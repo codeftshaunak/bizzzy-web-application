@@ -61,14 +61,12 @@ const Step1 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
     clearErrors,
     formState: { errors },
   } = methods;
-  console.log({ errors });
-  // form submit operations
+
   const onSubmit = (values) => {
     submitCallback(values); // this will update the parent state
     afterSubmit(); // this will perform task after updating the state
   };
 
-  // load state
   useEffect(() => {
     const changes = defaultValues;
     Object.keys(defaultValues).map((key) => {

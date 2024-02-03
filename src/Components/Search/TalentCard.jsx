@@ -99,27 +99,10 @@ const TalentCard = ({ freelancerData, loading }) => {
                   </div>
                 </div>
 
-                <div>
-                  <p className="text-sm font-medium text-[#6B7280]">
-                    ${freelancer?.hourly_rate}/hr
-                  </p>
-                </div>
-                <div>
-                  <Link
-                    to={"/"}
-                    className="mt-1 text-sm font-normal text-[#38BDF8] hover:underline"
-                  >
-                    Earned $ 1k on adobe illustrator
-                  </Link>
-                  <Link
-                    to={"/"}
-                    className="flex items-center gap-2 mt-1 text-sm font-normal text-[#38BDF8] hover:underline "
-                  >
-                    Has 9 relevant skills to your job
-                    <span>
-                      <AiFillQuestionCircle className="text-[#6B7280]" />
-                    </span>
-                  </Link>
+              <div className="w-full space-y-2 ">
+                <div className="flex justify-between w-[260px]">
+                  <MainButtonRounded onClick={() => handleInvitation()}>Send Invitation</MainButtonRounded>
+                  <MainButtonTranparentRounded onClick={() => handleCancel()}>Cancel</MainButtonTranparentRounded>
                 </div>
               </div>
             </div>
