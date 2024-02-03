@@ -19,9 +19,8 @@ const createSocket = (userId) => {
 };
 
 const user = localStorage.getItem('bizzzy_user');
-const id = user ? JSON.parse(user).id : null;
+const id = user ? JSON.parse(user).user_id : null;
 const userId = id;
-
 const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
 

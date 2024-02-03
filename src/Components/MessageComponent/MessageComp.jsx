@@ -191,18 +191,12 @@ const MessageComp = () => {
   );
 };
 
-//--------------------- Message Body
 const MessageBody = ({ data, selectedUser }) => {
   const [messageData, setMessageData] = useState([]);
   const [receiverDetails, setreceiverDetails] = useState();
   const [senderDetails, setSenderDetails] = useState();
   const [message, setMessage] = useState("");
-  // const [currentUser, setCurrentUser] = useState("");
-  // const [isRepeatedUser, setIsRepeatedUser] = useState(false);
-  const { socket } = useContext(SocketContext); // Use socket from context
-  // {
-  //   console.log({ currentUser, isRepeatedUser });
-  // }
+  const { socket } = useContext(SocketContext);
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
