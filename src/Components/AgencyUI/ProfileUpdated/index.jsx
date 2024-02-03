@@ -8,7 +8,7 @@ import {
 } from "../../../helpers/freelancerApis";
 import { updateAgencyProfile } from "../../../helpers/agencyApis";
 import { useQuill } from "react-quilljs";
-import { Country, State, City } from "country-state-city";
+import { State, City } from "country-state-city";
 import { useSelector } from "react-redux";
 import LoadingButton from "../../LoadingComponent/LoadingButton";
 import CTAButton from "../../CTAButton";
@@ -47,8 +47,8 @@ export function AgencyUpdatedModal({
   const [selectedImages, setSelectedImages] = useState([]);
   const [overview, setOverview] = useState(title === "Overview" ? data : "");
   const [stateCode, setStateCode] = useState({});
-  const profileCountry = useSelector(
-    (state) => state?.profile?.profile?.location
+  const { name: countryName, code: countryCode } = useSelector(
+    (state) => state?.profile?.agency?.agency_location
   );
 
   // handle quill
@@ -139,19 +139,15 @@ export function AgencyUpdatedModal({
   // };
 
   // manage agency location
-  let countryCode;
   let stateData;
   let cityData;
   if (title === "Office Location") {
-    countryCode = Country.getAllCountries().find(
-      (country) => country.name === profileCountry
-    );
-    stateData = State.getStatesOfCountry(countryCode?.isoCode).map((state) => ({
+    stateData = State.getStatesOfCountry(countryCode).map((state) => ({
       value: state.name,
       label: state.name,
       isoCode: state.isoCode,
     }));
-    cityData = City.getCitiesOfState(countryCode?.isoCode, stateCode || "").map(
+    cityData = City.getCitiesOfState(countryCode, stateCode || "").map(
       (city) => ({
         value: city.name,
         label: city.name,
@@ -414,9 +410,9 @@ export function AgencyUpdatedModal({
               <select
                 className="w-full px-2 py-1 border rounded"
                 {...register("agency_location.country")}
-                defaultValue={profileCountry}
+                defaultValue={countryName}
               >
-                <option value={profileCountry}>{profileCountry}</option>
+                <option value={countryName}>{countryName}</option>
               </select>
               <div className="w-full flex gap-5 mt-3">
                 <div className="w-1/2">

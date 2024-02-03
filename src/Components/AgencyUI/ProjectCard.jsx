@@ -68,8 +68,8 @@ const ProjectCard = ({ info }) => {
           </Box>
         )}
       </div>
-      <h4 className="text-xl font-semibold capitalize text-gray-800 mt-1">
-        {project_name}
+      <h4 className="text-xl font-semibold capitalize text-gray-800 mt-1 h-12">
+        {project_name.slice(0, 50)}
       </h4>
     </div>
   );

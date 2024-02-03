@@ -33,7 +33,7 @@ export const Header = () => {
   const [openSearch, setOpenSearch] = useState(false);
 
   const [selectedRole, setSelectedRole] = useState("job");
-  const [searchTerm, setSearchTerm] = useState(null)
+  const [searchTerm, setSearchTerm] = useState(null);
 
   // ======= search for jobs and talent
 
@@ -43,15 +43,14 @@ export const Header = () => {
 
   const handelSearch = () => {
     const searchTermEncoded = encodeURIComponent(searchTerm);
-    
+
     if (selectedRole === "job") {
-      console.log("im form jobs")
+      console.log("im form jobs");
       navigate(`/search-job?squery=${searchTermEncoded}`);
     } else if (selectedRole === "talent") {
       navigate(`/search-freelancers?squery=${searchTermEncoded}`);
     }
   };
-
 
   return (
     <nav className="bg-white w-full shadow-slate-700 border-b-[1px]">
@@ -66,12 +65,6 @@ export const Header = () => {
                 aria-expanded="false"
                 onClick={() => setOpenMobileMenu(!openMobileMenu)}
               >
-                {/* <!-- Icon when menu is closed. -->
-          <!--
-            Heroicon name: menu
-
-            Menu open: "hidden", Menu closed: "block"
-          --> */}
                 <svg
                   width="30px"
                   height="30px"
@@ -92,12 +85,6 @@ export const Header = () => {
                 aria-expanded="false"
                 onClick={() => setOpenMobileMenu(!openMobileMenu)}
               >
-                {/* <!-- Icon when menu is closed. -->
-          <!--
-            Heroicon name: menu
-
-            Menu open: "hidden", Menu closed: "block"
-          --> */}
                 <svg
                   className="block h-6 w-6"
                   xmlns="http://www.w3.org/2000/svg"
@@ -160,35 +147,36 @@ export const Header = () => {
           </div>
           <div className="right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:outline-none focus:shadow-outline-indigo transition ease-in-out duration-150">
-
               {/* ========== search ======= */}
               <div className="flex w-[350px] items-center  rounded-lg border-[#D1D5DB] border-[1px] py-1 px-2 justify-between">
-                  <div className="flex items-center gap-4">
-                    <BsSearch />
-                    <input
-                      placeholder="Search here..."
-                      type="text"
-                      className=" border-none outline-none text-[14px] bg-transparent"
-                      onChange={(e)=>setSearchTerm(e.target.value)}
-                      value={searchTerm || ''} 
-                    />
-                  </div>
-                  <div>
-                    <select
-                      className="bg-transparent"
-                      value={selectedRole}
-                      onChange={handelSelectedValue}
-                    >
-                      <option value={"job"} selected>Jobs</option>
-                      <option value={"talent"}>Talent</option>
-                    </select>
-                  </div>
-                  <button onClick={() => handelSearch()}>
-                    <BsCommand />
-                  </button>
+                <div className="flex items-center gap-4">
+                  <BsSearch />
+                  <input
+                    placeholder="Search here..."
+                    type="text"
+                    className=" border-none outline-none text-[14px] bg-transparent"
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handelSearch();
+                      }
+                    }}
+                    value={searchTerm || ""}
+                  />
                 </div>
-
-
+                <div>
+                  <select
+                    className="bg-transparent"
+                    value={selectedRole}
+                    onChange={handelSelectedValue}
+                  >
+                    <option value={"job"} selected>
+                      Jobs
+                    </option>
+                    <option value={"talent"}>Talent</option>
+                  </select>
+                </div>
+              </div>
 
               <Box
                 className="hidden sm:hidden md:flex whitespace-no-wrap items-center justify-center my-2 py-2 border border-transparent text-base leading-6 font-medium rounded-md  focus:shadow-outline-indigo  transition ease-in-out duration-150"
@@ -340,7 +328,7 @@ export const AuthHeader = ({ role }) => {
   ];
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
   const [selectedRole, setSelectedRole] = useState("job");
-  const [searchTerm, setSearchTerm] = useState(null)
+  const [searchTerm, setSearchTerm] = useState(null);
 
   // ======= search for jobs and talent
 
@@ -350,9 +338,9 @@ export const AuthHeader = ({ role }) => {
 
   const handelSearch = () => {
     const searchTermEncoded = encodeURIComponent(searchTerm);
-    
+
     if (selectedRole === "job") {
-      console.log("im form jobs")
+      console.log("im form jobs");
       navigate(`/search-job?squery=${searchTermEncoded}`);
     } else if (selectedRole === "talent") {
       navigate(`/search-freelancers?squery=${searchTermEncoded}`);
@@ -469,8 +457,13 @@ export const AuthHeader = ({ role }) => {
                       placeholder="Search here..."
                       type="text"
                       className=" border-none outline-none text-[14px] bg-transparent"
-                      onChange={(e)=>setSearchTerm(e.target.value)}
-                      value={searchTerm || ''} 
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handelSearch();
+                        }
+                      }}
+                      value={searchTerm || ""}
                     />
                   </div>
                   <div>
@@ -479,13 +472,12 @@ export const AuthHeader = ({ role }) => {
                       value={selectedRole}
                       onChange={handelSelectedValue}
                     >
-                      <option value={"job"} selected>Jobs</option>
+                      <option value={"job"} selected>
+                        Jobs
+                      </option>
                       <option value={"talent"}>Talent</option>
                     </select>
                   </div>
-                  <button onClick={() => handelSearch()}>
-                    <BsCommand />
-                  </button>
                 </div>
               </div>
               <div className="flex gap-3 relative">
