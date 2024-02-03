@@ -216,7 +216,7 @@ export const SearchTalents = () => {
     if (squery !== null) {
       handleSearchWithText(squery);
     }
-  }, [ location.search]);
+  }, [location.search]);
 
 
 
