@@ -485,11 +485,7 @@ export const SearchTalents = () => {
             </HStack>
           </form>
           <div className=" mt-10 w-[100%]">
-            {
-              freelancerData?.map((freelancer) => (
-                <TalentCard freelancerData={freelancer} loading={loading} key={freelancer?._id} />
-              ))
-            }
+            <TalentCard freelancerData={freelancerData} loading={loading} />
           </div>
         </div>
       </div>
