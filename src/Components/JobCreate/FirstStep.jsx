@@ -63,8 +63,6 @@ function FirstStep({ setStep }) {
   // on form submit assign values to the context and go to next step
   const onSubmit = (v) => {
     insertToFormState(v);
-    // setStep(2);
-    console.log({ v });
   };
 
   const getCategorySkills = async () => {

@@ -96,7 +96,8 @@ const Interview = () => {
 
   const acceptInvite = (messages) =>
     performAction({ messages, statusValue: "1" });
-  const rejectInvite = () => performAction("2");
+
+  const rejectInvite = () => performAction({ statusValue: "2" });
 
   return (
     <Box width="90%" padding="1rem 0">

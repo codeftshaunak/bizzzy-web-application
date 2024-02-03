@@ -51,3 +51,5 @@ export const sendAgencyInvitation = async (data) =>
 export const getAgencyById = async (id) =>
   makeApiRequest('get', `/agencyById?agency_id=${id}`);
 
+export const getAgencyMemburs = async (id) =>
+  makeApiRequest('get', `/invitation/status?agency_id=${id}`)

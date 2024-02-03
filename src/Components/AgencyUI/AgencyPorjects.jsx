@@ -87,8 +87,6 @@ const AgencyProjects = ({ agency, setAgency }) => {
     if (skills.length < 1) getAllSkills();
   }, [agency]);
 
-  // console.log({ skills });
-  // --------- Manage Projects
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setSelectedImages((prev) => [...prev, file]);

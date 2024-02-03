@@ -301,8 +301,8 @@ const TalentCard = ({ freelancerData, loading }) => {
 
               <div className="w-full space-y-2 ">
                 <div className="flex justify-between w-[260px]">
-                  <MainButtonRounded onClick={() => handleInvitation}>Send Invitation</MainButtonRounded>
-                  <MainButtonTranparentRounded onClick={() => handleCancel}>Cancel</MainButtonTranparentRounded>
+                  <MainButtonRounded onClick={() => handleInvitation()}>Send Invitation</MainButtonRounded>
+                  <MainButtonTranparentRounded onClick={() => handleCancel()}>Cancel</MainButtonTranparentRounded>
                 </div>
               </div>
 
