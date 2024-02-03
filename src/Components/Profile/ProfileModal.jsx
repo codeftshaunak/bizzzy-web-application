@@ -696,7 +696,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "portfolio" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col  pb ">
+            <div className="flex flex-col  ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Project Name
@@ -836,7 +836,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "education" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col  pb ">
+            <div className="flex flex-col  ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Degree Name
@@ -937,7 +937,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "educationEdit" && selectedEducation && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col  pb ">
+            <div className="flex flex-col  ">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Degree Name
@@ -1035,7 +1035,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "exprience" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col pb">
+            <div className="flex flex-col">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Your Company Name
@@ -1175,7 +1175,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "experienceUpdated" && selectedEducation && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col pb">
+            <div className="flex flex-col">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">
                   Your Company Name
@@ -1295,7 +1295,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "editProfile" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col pb">
+            <div className="flex flex-col">
               <div className="flex flex-col gap-[2px]">
                 <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                   <input
@@ -1329,7 +1329,7 @@ export const ProfileModal = ({
         )}
         {modalPage === "basicInformation" && (
           <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col pb">
+            <div className="flex flex-col">
               <div className="flex flex-col gap-[2px]">
                 <p className="text-[14px] font-[500] text-[#374151]">Title</p>
                 <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
@@ -1366,7 +1366,7 @@ export const ProfileModal = ({
                   <textarea
                     type="text"
                     name="description"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                    className="w-full h-24 py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                     value={selectedEducation?.description}
                     onChange={handleInputChange}
                     placeholder="description"

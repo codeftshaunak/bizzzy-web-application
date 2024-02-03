@@ -55,15 +55,35 @@ const Process = () => {
       console.log(error);
     }
   };
+  // const { description, skills, professional_role } = userDetails;
+  // const isComplete = description && skills.length > 0 && professional_role;
+  // if (isComplete) navigate("/find-job");
 
   useEffect(() => {
     getUserInformation();
-    autoProcess();
+    // autoProcess();
   }, [page]);
 
-  // const openModal = () => {
-  //     setIsModalOpen(true);
-  // };
+  const handlePageBack = () => {
+    if (!userDetails?.user_id) {
+      setPage(0);
+    } else if (
+      userDetails?.categories?.length < 1 ||
+      !userDetails?.professional_role ||
+      userDetails?.skills?.length < 0
+    ) {
+      if (
+        userDetails?.categories?.length > 0 &&
+        userDetails?.professional_role
+      ) {
+        setPage(4);
+      } else if (!userDetails?.professional_role) {
+        setPage(3);
+      } else if (userDetails?.categories?.length < 1) {
+        setPage(2);
+      }
+    }
+  };
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [inputValues, setInputValues] = useState({
@@ -85,44 +105,55 @@ const Process = () => {
     setSeletedSubCategory(selectedValues || []);
   };
 
-  const autoProcess = () => {
-    if (
-      userDetails?.categories?.length > 0 &&
-      userDetails?.sub_categories?.length > 0 &&
-      userDetails?.skills?.length > 0 &&
-      userDetails?.professional_role?.length > 0
-    ) {
-      navigate("/profile");
-    }
-    if (
-      userDetails?.briefDescription?.length > 0 &&
-      userDetails?.businessName?.length > 0
-    ) {
-      navigate("/client");
-    }
-    if (userDetails?.categories?.length == 0) {
-      setPage(2);
-    }
-    if (userDetails?.professional_role?.length == 0) {
-      setPage(3);
-    }
-    if (userDetails?.skills?.length == 0) {
-      setPage(4);
-    }
-  };
+  // const autoProcess = () => {
+  //   console.log("click");
+  //   // Check for completeness of categories, professional role, and skills
+  //   if (
+  //     userDetails?.categories?.length > 0 &&
+  //     userDetails?.sub_categories?.length > 0 &&
+  //     userDetails?.skills?.length > 0 &&
+  //     userDetails?.professional_role?.length > 0
+  //   ) {
+  //     navigate("/profile");
+  //   }
+  //   if (
+  //     userDetails?.briefDescription?.length > 0 &&
+  //     userDetails?.businessName?.length > 0
+  //   ) {
+  //     navigate("/client");
+  //   }
+  //   if (userDetails?.categories?.length == 0) {
+  //     setPage(2);
+  //   }
+  //   if (userDetails?.professional_role?.length == 0) {
+  //     setPage(3);
+  //   }
+  //   if (userDetails?.skills?.length == 0) {
+  //     setPage(4);
+  //   }
+  // };
+
   // changes some
   const handleSaveAndContinue = async (data) => {
-    autoProcess();
     try {
       if (role == 1) {
         if (data === "category") {
-          if (selectedOptions.length <= 0) {
-            toast({
-              title: "Atleast Select A Category",
-              status: "warning",
-              duration: 3000,
-              isClosable: true,
-            });
+          if (selectedOptions.length <= 0 || selectedSubCategory.length <= 0) {
+            if (selectedOptions.length <= 0) {
+              toast({
+                title: "At last Select A Category",
+                status: "warning",
+                duration: 3000,
+                isClosable: true,
+              });
+            } else {
+              toast({
+                title: "At last Select A Sub Category",
+                status: "warning",
+                duration: 3000,
+                isClosable: true,
+              });
+            }
           } else {
             const selectedCategories =
               selectedOptions && !Array.isArray(selectedOptions)
@@ -144,7 +175,6 @@ const Process = () => {
               categories: selectedCategories,
               sub_categories: subCategoriesValue,
             });
-
             if (response.code === 405) {
               toast({
                 title: response.msg,
@@ -156,7 +186,7 @@ const Process = () => {
               setSelectedOptions([]);
               setSeletedSubCategory([]);
               setPage(3);
-            } else if (response.code === 200) {
+            } else if (response) {
               toast({
                 title: "Category Added Successfully",
                 status: "success",
@@ -209,7 +239,7 @@ const Process = () => {
                 position: "top-right",
               });
               setPage(4);
-            } else if (response.code === 200) {
+            } else if (response) {
               toast({
                 title: "Basic Information Added Successfully",
                 status: "success",
@@ -224,7 +254,7 @@ const Process = () => {
         } else if (data == "skills") {
           if (selectedOptions.length <= 0) {
             toast({
-              title: "Select Minimum Five Skills",
+              title: "Select Minimum One Skill",
               status: "warning",
               duration: 3000,
               isClosable: true,
@@ -237,6 +267,7 @@ const Process = () => {
             const response = await updateFreelancerProfile({
               skills: selectedCategories,
             });
+
             if (response.code == 405) {
               toast({
                 title: response.msg,
@@ -246,18 +277,20 @@ const Process = () => {
                 position: "top-right",
               });
               setSelectedOptions([]);
-              // navigate("/profile");
-            } else if (response.code === 200) {
+            } else if (response) {
+              getUserDetails();
               toast({
-                title: "Skils Added Successfully",
+                title: "Skills Added Successfully",
                 status: "success",
                 duration: 3000,
                 isClosable: true,
                 position: "top-right",
               });
+              const delay = (ms) =>
+                new Promise((resolve) => setTimeout(resolve, ms));
+              await delay(1500);
               setSelectedOptions([]);
-              getUserDetails();
-              navigate("/profile");
+              navigate("/find-job");
             }
           }
         }
@@ -292,7 +325,11 @@ const Process = () => {
                 isClosable: true,
                 position: "top-right",
               });
-            } else if (response.code === 200) {
+            } else if (response) {
+              getUserDetails();
+              const delay = (ms) =>
+                new Promise((resolve) => setTimeout(resolve, ms));
+              await delay(1500);
               toast({
                 title: "Your Details Added Successfully",
                 status: "success",
@@ -390,7 +427,6 @@ const Process = () => {
       console.error("Error fetching skills:", error);
     }
   };
-
   useEffect(() => {
     if (userDetails.categories?.length > 0 && page === 4) {
       getCategorySkills(userDetails?.categories);
@@ -411,7 +447,7 @@ const Process = () => {
             <BsBackspaceFill
               color="var(--primarycolor)"
               size={"1.2rem"}
-              onClick={() => setPage(page === 0 ? 0 : page - 1)}
+              onClick={() => handlePageBack()}
             />
           </Box>
         )}
@@ -489,7 +525,7 @@ const Process = () => {
                     How would you like to tell us about yourself?
                   </Text>
                 </Box>
-                
+
                 <Box>
                   <Text fontSize="15px" fontWeight="400">
                     We need to get a sense of your education, experience and

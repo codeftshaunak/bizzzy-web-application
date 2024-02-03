@@ -67,10 +67,16 @@ const CreateForm = () => {
     getSubCategoryList(selectedCategory);
   }, [selectedCategory]);
 
+  console.log({ countries });
   const onSubmit = async (data) => {
-    setLoading(true);
+    console.log({ data });
+    setLoading(false);
+
     try {
-      const response = await createAgency(data);
+      const response = await createAgency({
+        ...data,
+        agency_location: JSON.parse(data.agency_location),
+      });
       if (response.isError) {
         toast({
           title: response.message,
@@ -89,13 +95,13 @@ const CreateForm = () => {
         });
         getUserDetails();
 
-        navigate("/profile");
+        // navigate("/profile");
       }
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   return (
@@ -147,7 +153,7 @@ const CreateForm = () => {
               required
             >
               {countries?.map((country, index) => (
-                <option key={index} value={country}>
+                <option key={index} value={JSON.stringify(country)}>
                   {country.name}
                 </option>
               ))}

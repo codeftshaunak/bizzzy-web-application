@@ -24,7 +24,6 @@ import Gig from "../Components/Gigs/index";
 import Agency from "../Pages/Agency";
 import { SearchTalents } from "../Components/Search/SearchTalent";
 import AgencyBuild from "../Pages/Agency/AgencyBuild";
-import AgencyProfilePage from "../Pages/Agency/Profile";
 import GigDetails from "../Components/Gigs/GigDetails/GigDetails";
 import GigEdit from "../Components/Gigs/GigEdit/GigEdit";
 import GigCreate from "../Components/Gigs/GigCreate/GigCreate";
@@ -32,7 +31,6 @@ import NotFound from "../Pages/404/NotFound";
 import AgencyInvitation from "../Pages/Invitation/AgencyInvitation";
 
 const Router = () => {
-
   return (
     <BrowserRouter>
       <Routes>
@@ -42,12 +40,11 @@ const Router = () => {
         <Route path="/verify-email" element={<VerifySuccess />} />
         <Route path="/search-freelancers" element={<SearchFreelancers />} />
         <Route path="/search-job" element={<SearchPage />} />
+        <Route path="/onboarding" element={<Onboarding />} />
 
         <Route element={<PrivateRoutes />}>
-          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/create-job" element={<JobPost />} />
           <Route path="/search-talent" element={<SearchTalents />} />
-    
           <Route path="/freelancer/:id" element={<Profile />} />
           <Route path="/agency-build" element={<AgencyBuild />} />
           <Route path="/agency-dashboard" element={<Agency />} />

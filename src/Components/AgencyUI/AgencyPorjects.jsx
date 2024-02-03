@@ -203,138 +203,136 @@ const AgencyProjects = ({ agency, setAgency }) => {
       </Box>
 
       {/* Modal */}
-      {isModal && (
-        <UniversalModal
-          isModal={isModal}
-          setIsModal={setIsModal}
-          title={"Create Portfolio"}
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-[16px]">
-              <div className="flex flex-col">
-                <div className="flex flex-col gap-[2px]">
-                  <p className="text-[14px] font-[500] text-[#374151]">
-                    Project Name
-                  </p>
-                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                    <input
-                      type="text"
-                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="Project Name"
-                      required
-                      {...register("project_name")}
-                    />
-                  </div>
-                  <br />
+      <UniversalModal
+        isModal={isModal}
+        setIsModal={setIsModal}
+        title={"Create Portfolio"}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-col gap-[16px]">
+            <div className="flex flex-col">
+              <div className="flex flex-col gap-[2px]">
+                <p className="text-[14px] font-[500] text-[#374151]">
+                  Project Name
+                </p>
+                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                  <input
+                    type="text"
+                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                    placeholder="Project Name"
+                    required
+                    {...register("project_name")}
+                  />
                 </div>
-                <div className="flex flex-col gap-[2px]">
-                  <p className="text-[14px] font-[500] text-[#374151]">
-                    Project Description
-                  </p>
-                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                    <textarea
-                      type="text"
-                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="Description"
-                      required
-                      {...register("project_description")}
-                    />
-                  </div>
-                  <br />
+                <br />
+              </div>
+              <div className="flex flex-col gap-[2px]">
+                <p className="text-[14px] font-[500] text-[#374151]">
+                  Project Description
+                </p>
+                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                  <textarea
+                    type="text"
+                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                    placeholder="Description"
+                    required
+                    {...register("project_description")}
+                  />
                 </div>
-                <div className="flex flex-col gap-[2px]">
-                  <p className="text-[14px] font-[500] text-[#374151]">
-                    Technologies
-                  </p>
-                  <div className="w-[100%] outline-none border-[1px] rounded-md">
-                    <Controller
-                      control={control}
-                      name="technologies"
-                      render={({ field: { onChange, ref } }) => (
-                        <Select
-                          inputRef={ref}
-                          required
-                          closeMenuOnSelect={false}
-                          onChange={(val) => onChange(val.map((c) => c.value))}
-                          options={skills}
-                          isMulti
+                <br />
+              </div>
+              <div className="flex flex-col gap-[2px]">
+                <p className="text-[14px] font-[500] text-[#374151]">
+                  Technologies
+                </p>
+                <div className="w-[100%] outline-none border-[1px] rounded-md">
+                  <Controller
+                    control={control}
+                    name="technologies"
+                    render={({ field: { onChange, ref } }) => (
+                      <Select
+                        inputRef={ref}
+                        required
+                        closeMenuOnSelect={false}
+                        onChange={(val) => onChange(val.map((c) => c.value))}
+                        options={skills}
+                        isMulti
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-[2px] mt-6">
+                <p className="text-[14px] font-[500] text-[#374151]">Media</p>
+                <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
+                  <div className="flex">
+                    {selectedImages?.map((image, index) => (
+                      <div
+                        key={index}
+                        className="rounded border border-green-300 mr-2 relative"
+                      >
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt={`Selected ${index + 1}`}
+                          className="w-20 h-20 object-cover rounded"
                         />
-                      )}
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-[2px] mt-6">
-                  <p className="text-[14px] font-[500] text-[#374151]">Media</p>
-                  <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
-                    <div className="flex">
-                      {selectedImages?.map((image, index) => (
-                        <div
-                          key={index}
-                          className="rounded border border-green-300 mr-2 relative"
+                        <span
+                          className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
+                          onClick={() => handleImageDelete(index)}
                         >
-                          <img
-                            src={URL.createObjectURL(image)}
-                            alt={`Selected ${index + 1}`}
-                            className="w-20 h-20 object-cover rounded"
-                          />
-                          <span
-                            className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
-                            onClick={() => handleImageDelete(index)}
-                          >
-                            <IoMdClose />
+                          <IoMdClose />
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedImages.length < 3 && (
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        name="file"
+                        multiple
+                        style={{ display: "none" }}
+                        id="fileInput"
+                        disabled={selectedImages.length >= 3}
+                      />
+                      <label htmlFor="fileInput">
+                        <div
+                          className={`w-24 h-20 border border-green-400 rounded cursor-pointer bg-green-100 hover:bg-green-200 flex flex-col items-center justify-center text-center`}
+                        >
+                          <span>
+                            <FaCloudUploadAlt className="text-2xl text-center" />
+                          </span>
+                          <span className="font-semibold">
+                            {selectedImages.length > 0 ? "Add More" : "Add"}
                           </span>
                         </div>
-                      ))}
+                      </label>
                     </div>
-                    {selectedImages.length < 3 && (
-                      <div>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          name="file"
-                          multiple
-                          style={{ display: "none" }}
-                          id="fileInput"
-                          disabled={selectedImages.length >= 3}
-                        />
-                        <label htmlFor="fileInput">
-                          <div
-                            className={`w-24 h-20 border border-green-400 rounded cursor-pointer bg-green-100 hover:bg-green-200 flex flex-col items-center justify-center text-center`}
-                          >
-                            <span>
-                              <FaCloudUploadAlt className="text-2xl text-center" />
-                            </span>
-                            <span className="font-semibold">
-                              {selectedImages.length > 0 ? "Add More" : "Add"}
-                            </span>
-                          </div>
-                        </label>
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
-            <div className="text-right mt-10">
-              {isLading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Submit"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                />
-              )}
-            </div>
-          </form>
-        </UniversalModal>
-      )}
+          </div>
+          <div className="text-right mt-10">
+            {isLading ? (
+              <LoadingButton />
+            ) : (
+              <CTAButton
+                text="Submit"
+                bg="var(--primarycolor)"
+                color="#fff"
+                fontWeight="500"
+                height="2.5rem"
+                borderRadius="5px"
+                fontSize="1rem"
+                type="submit"
+              />
+            )}
+          </div>
+        </form>
+      </UniversalModal>
     </>
   );
 };
