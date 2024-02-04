@@ -42,6 +42,7 @@ const Router = () => {
         <Route path="/search-job" element={<SearchPage />} />
         <Route path="/onboarding" element={<Onboarding />} />
 
+        {/* Privet route start from here */}
         <Route element={<PrivateRoutes />}>
           <Route path="/create-job" element={<JobPost />} />
           <Route path="/search-talent" element={<SearchTalents />} />
