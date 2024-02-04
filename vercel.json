@@ -1,21 +1,15 @@
 {
-    "routes": [
-      { "src": "/", "dest": "/" },
-      { "src": "/login", "dest": "/" },
-      { "src": "/signup", "dest": "/" },
-      { "src": "/onboarding", "dest": "/" },
-      { "src": "/create-job", "dest": "/" },
-      { "src": "/apply-job", "dest": "/" },
-      { "src": "/find-job", "dest": "/" },
-      { "src": "/messages", "dest": "/" },
-
-      { "src": "/profile", "dest": "/" },
-      { "src": "/userprofile-setting", "dest": "/" },
-
-      {"src":"/verify-email", "dest":"/"},
+  "version": 2,
+  "builds": [
       {
-        "src": "/verify-email",
-        "dest": "/verify-email?id=:id&token=:token"
+          "src": "index.js",
+          "use": "@now/node"
       }
-    ]
-  }
+  ],
+  "routes": [
+      {
+          "src": "/(.*)",
+          "dest": "index.js"
+      }
+  ]
+}
