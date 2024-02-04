@@ -1,15 +1,28 @@
 {
-  "version": 2,
-  "builds": [
-      {
-          "src": "index.js",
-          "use": "@now/node"
-      }
-  ],
   "routes": [
-      {
-          "src": "/(.*)",
-          "dest": "index.js"
-      }
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/login", "dest": "/index.html" },
+    { "src": "/signup", "dest": "/index.html" },
+    { "src": "/verify-email/:id/:token", "dest": "/verify-email" },
+    { "src": "/search-freelancers", "dest": "/index.html" },
+    { "src": "/search-job", "dest": "/index.html" },
+    { "src": "/onboarding", "dest": "/index.html" },
+
+    { "src": "/create-job", "dest": "/index.html" },
+    { "src": "/search-talent", "dest": "/index.html" },
+    { "src": "/freelancer/:id", "dest": "/index.html" },
+    { "src": "/agency-build", "dest": "/index.html" },
+    { "src": "/agency-dashboard", "dest": "/index.html" },
+    { "src": "/agency/invitation", "dest": "/index.html" },
+    { "src": "/profile", "dest": "/index.html" },
+    { "src": "/profile/:id", "dest": "/index.html" },
+    { "src": "/find-job", "dest": "/index.html" },
+    { "src": "/find-job/:id", "dest": "/index.html" },
+
+    { "src": "/active-job/submit/:id", "dest": "/index.html" },
+    { "src": "/endcontract/:id", "dest": "/index.html" },
+    { "src": "/message", "dest": "/index.html" },
+
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
