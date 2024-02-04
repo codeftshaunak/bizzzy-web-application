@@ -1,28 +1,25 @@
 {
   "routes": [
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/login", "dest": "/index.html" },
-    { "src": "/signup", "dest": "/index.html" },
+    { "src": "/", "dest": "/" },
+    { "src": "/login", "dest": "/" },
+    { "src": "/signup", "dest": "/" },
     { "src": "/verify-email/:id/:token", "dest": "/verify-email" },
-    { "src": "/search-freelancers", "dest": "/index.html" },
-    { "src": "/search-job", "dest": "/index.html" },
-    { "src": "/onboarding", "dest": "/index.html" },
-
-    { "src": "/create-job", "dest": "/index.html" },
-    { "src": "/search-talent", "dest": "/index.html" },
-    { "src": "/freelancer/:id", "dest": "/index.html" },
-    { "src": "/agency-build", "dest": "/index.html" },
-    { "src": "/agency-dashboard", "dest": "/index.html" },
-    { "src": "/agency/invitation", "dest": "/index.html" },
-    { "src": "/profile", "dest": "/index.html" },
-    { "src": "/profile/:id", "dest": "/index.html" },
-    { "src": "/find-job", "dest": "/index.html" },
-    { "src": "/find-job/:id", "dest": "/index.html" },
-
-    { "src": "/active-job/submit/:id", "dest": "/index.html" },
-    { "src": "/endcontract/:id", "dest": "/index.html" },
-    { "src": "/message", "dest": "/index.html" },
-
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/search-freelancers", "dest": "/" },
+    { "src": "/search-job", "dest": "/" },
+    { "src": "/onboarding", "dest": "/" },
+    { "src": "/create-job", "dest": "/" },
+    { "src": "/search-talent", "dest": "/" },
+    { "src": "/freelancer/:id", "dest": "/" },
+    { "src": "/agency-build", "dest": "/" },
+    { "src": "/agency-dashboard", "dest": "/" },
+    { "src": "/agency/invitation", "dest": "/" },
+    { "src": "/profile", "dest": "/" },
+    { "src": "/profile/:id", "dest": "/" },
+    { "src": "/find-job", "dest": "/" },
+    { "src": "/find-job/:id", "dest": "/" },
+    { "src": "/active-job/submit/:id", "dest": "/" },
+    { "src": "/endcontract/:id", "dest": "/" },
+    { "src": "/message", "dest": "/" },
+    { "src": "/(.*)", "dest": "/" }
   ]
 }
