@@ -21,7 +21,7 @@ import "swiper/css/pagination";
 // import required modules
 import { FreeMode, Pagination } from "swiper/modules";
 
-export const FreelancerProfilePage = () => {
+export const FreelancerProfilePage = ({ viewAs }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalPage, setModalPage] = useState("");
   const navigate = useNavigate();
@@ -101,39 +101,6 @@ export const FreelancerProfilePage = () => {
     openModal();
   };
 
-  // const updatedEducationInfo = async () => {
-  //   axios
-  //     .put(
-  //       "http://localhost:5002/api/v1/edit-profile",
-  //       {
-  //         education: {
-  //           educationId: "65a2d4a62f6ce5b5ef6ca6f6",
-  //           degree_name: "Honors",
-  //           institution: "National University ",
-  //           start_date: "2024-01-12",
-  //           end_date: "2024-01-20",
-  //         },
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           token:
-  //             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTJhMzY5MmY2Y2U1YjVlZjZjYTRlZSIsImVtYWlsIjoieWVoZWppNTU4OEB0ZWx2ZXR0by5jb20iLCJyb2xlIjoxLCJpYXQiOjE3MDUxNTc1MTgsImV4cCI6MTcwNTI0MzkxOH0.n5YpJDSLcArH9IRPXQxQJjJTQMFxwhXUFXgfGkwQQFY"
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   updatedEducationInfo()
-  // })
-
   const HandleDeleteEducation = (id, type) => {
     setId({ id, type });
     setDeleteModalPage("exprience");
@@ -146,61 +113,59 @@ export const FreelancerProfilePage = () => {
         <div className="w-[100%] flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "0px",
-                  left: "0px",
-                  cursor: "pointer",
-                }}
-              >
-                <div
-                  className="flex items-center justify-center w-8 h-8 bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]"
-                  onClick={() => {
-                    setModalPage("editProfile");
-                    openModal();
+              {
+                !viewAs && <div
+                  style={{
+                    position: "absolute",
+                    top: "0px",
+                    left: "0px",
+                    cursor: "pointer",
                   }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
+                  <div
+                    className="flex items-center justify-center w-8 h-8 bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]"
+                    onClick={() => {
+                      setModalPage("editProfile");
+                      openModal();
+                    }}
                   >
-                    <path
-                      d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9 4.33301L11.6667 6.99967"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
+                        stroke="#6B7280"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M9 4.33301L11.6667 6.99967"
+                        stroke="#6B7280"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-              {/* <div
-                className="flex items-center justify-center rounded-full w-[70px] h-[70px] !bg-cover !bg-top"
-                style={{
-                  background: `url(${profile_image})`,
-                }}
-              ></div> */}
+              }
+
+
               {!profile_image ||
-              profile_image == "null" ||
-              profile_image === null ? (
+                profile_image == "null" ||
+                profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
                   height={"60px"}
                 />
               ) : (
-                <img src={profile_image} className="w-[60px] rounded-full" />
+                <img src={profile_image} className="w-[60px] rounded-full shadow-md" />
               )}
             </div>
             <div className="flex flex-col justify-start">
@@ -216,12 +181,14 @@ export const FreelancerProfilePage = () => {
             </div>
           </div>
           <div className="flex items-center gap-[12px]">
-            <div className="flex items-center justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
+            <div className="flex items-center cursor-pointer justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
               <BsLink45Deg width={"20px"} height={"20px"} />
             </div>
-            <button className="py-[8px] px-[12px] rounded-[6px] text-[14px] font-500 text-[#fff] bg-[#22C55E]">
-              Profile Settings
-            </button>
+            {
+              !viewAs && <button className="py-[8px] px-[12px] rounded-[6px] text-[14px] font-500 text-[#fff] bg-[#22C55E]">
+                Profile Settings
+              </button>
+            }
           </div>
         </div>
         <div className="flex gap-[24px]">
@@ -250,17 +217,19 @@ export const FreelancerProfilePage = () => {
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Education
                 </p>
-                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
-                  <BsPlus
-                    width={"16px"}
-                    height={"16px"}
-                    cursor={"pointer"}
-                    onClick={() => {
-                      setModalPage("education");
-                      openModal();
-                    }}
-                  />
-                </div>
+                {
+                  !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
+                    <BsPlus
+                      width={"16px"}
+                      height={"16px"}
+                      cursor={"pointer"}
+                      onClick={() => {
+                        setModalPage("education");
+                        openModal();
+                      }}
+                    />
+                  </div>
+                }
               </div>
               {education?.length > 0 &&
                 education?.map((edu) => (
@@ -270,85 +239,89 @@ export const FreelancerProfilePage = () => {
                         {edu?.institution}
                       </p>
                       <div className="flex items-center gap-[12px]">
-                        <div
-                          className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                          onClick={() => {
-                            openEditModal(edu);
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
+                        {
+                          !viewAs && <div
+                            className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                            onClick={() => {
+                              openEditModal(edu);
+                            }}
                           >
-                            <path
-                              d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
-                              stroke="#6B7280"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M9 4.33301L11.6667 6.99967"
-                              stroke="#6B7280"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </div>
-                        <div
-                          className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                          onClick={() =>
-                            HandleDeleteEducation(edu._id, "education")
-                          }
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
+                                stroke="#6B7280"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M9 4.33301L11.6667 6.99967"
+                                stroke="#6B7280"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </div>
+                        }
+                        {
+                          !viewAs && <div
+                            className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                            onClick={() =>
+                              HandleDeleteEducation(edu._id, "education")
+                            }
                           >
-                            <path
-                              d="M9.33333 7.33301V11.333"
-                              stroke="#6B7280"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M6.66634 7.33301V11.333"
-                              stroke="#6B7280"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M2.66699 4.66634H13.3337"
-                              stroke="#6B7280"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M3.33301 4.66699L3.99967 12.667C3.99967 13.4034 4.59663 14.0003 5.33301 14.0003H10.6663C11.4027 14.0003 11.9997 13.4034 11.9997 12.667L12.6663 4.66699"
-                              stroke="#6B7280"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M6 4.66667V2.66667C6 2.29848 6.29848 2 6.66667 2H9.33333C9.70152 2 10 2.29848 10 2.66667V4.66667"
-                              stroke="#6B7280"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M9.33333 7.33301V11.333"
+                                stroke="#6B7280"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M6.66634 7.33301V11.333"
+                                stroke="#6B7280"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M2.66699 4.66634H13.3337"
+                                stroke="#6B7280"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3.33301 4.66699L3.99967 12.667C3.99967 13.4034 4.59663 14.0003 5.33301 14.0003H10.6663C11.4027 14.0003 11.9997 13.4034 11.9997 12.667L12.6663 4.66699"
+                                stroke="#6B7280"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M6 4.66667V2.66667C6 2.29848 6.29848 2 6.66667 2H9.33333C9.70152 2 10 2.29848 10 2.66667V4.66667"
+                                stroke="#6B7280"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </div>
+                        }
                       </div>
                     </div>
                     <p className="text-[14px] text-[#374151] font-[400]">
@@ -367,17 +340,19 @@ export const FreelancerProfilePage = () => {
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Experience
                 </p>
-                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
-                  <BsPlus
-                    width={"16px"}
-                    height={"16px"}
-                    cursor={"pointer"}
-                    onClick={() => {
-                      setModalPage("exprience");
-                      openModal();
-                    }}
-                  />
-                </div>
+                {
+                  !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
+                    <BsPlus
+                      width={"16px"}
+                      height={"16px"}
+                      cursor={"pointer"}
+                      onClick={() => {
+                        setModalPage("exprience");
+                        openModal();
+                      }}
+                    />
+                  </div>
+                }
               </div>
               {experience?.length > 0 &&
                 experience?.map((exprience) => {
@@ -393,80 +368,84 @@ export const FreelancerProfilePage = () => {
                             {exprience?.company_name}
                           </p>
                           <div className="flex items-center gap-[12px]">
-                            <div
-                              className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                              onClick={() => {
-                                openExperienceEditModal(exprience);
-                              }}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
+                            {
+                              !viewAs && <div
+                                className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                                onClick={() => {
+                                  openExperienceEditModal(exprience);
+                                }}
                               >
-                                <path
-                                  d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
-                                  stroke="#6B7280"
-                                  strokeWidth="1.25"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M9 4.33301L11.6667 6.99967"
-                                  stroke="#6B7280"
-                                  strokeWidth="1.25"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
-                            <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                              >
-                                <path
-                                  d="M9.33333 7.33301V11.333"
-                                  stroke="#6B7280"
-                                  strokeWidth="1.25"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M6.66634 7.33301V11.333"
-                                  stroke="#6B7280"
-                                  strokeWidth="1.25"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M2.66699 4.66634H13.3337"
-                                  stroke="#6B7280"
-                                  strokeWidth="1.25"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M3.33301 4.66699L3.99967 12.667C3.99967 13.4034 4.59663 14.0003 5.33301 14.0003H10.6663C11.4027 14.0003 11.9997 13.4034 11.9997 12.667L12.6663 4.66699"
-                                  stroke="#6B7280"
-                                  strokeWidth="1.25"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M6 4.66667V2.66667C6 2.29848 6.29848 2 6.66667 2H9.33333C9.70152 2 10 2.29848 10 2.66667V4.66667"
-                                  stroke="#6B7280"
-                                  strokeWidth="1.25"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
+                                    stroke="#6B7280"
+                                    strokeWidth="1.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M9 4.33301L11.6667 6.99967"
+                                    stroke="#6B7280"
+                                    strokeWidth="1.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              </div>
+                            }
+                            {
+                              !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M9.33333 7.33301V11.333"
+                                    stroke="#6B7280"
+                                    strokeWidth="1.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M6.66634 7.33301V11.333"
+                                    stroke="#6B7280"
+                                    strokeWidth="1.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M2.66699 4.66634H13.3337"
+                                    stroke="#6B7280"
+                                    strokeWidth="1.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M3.33301 4.66699L3.99967 12.667C3.99967 13.4034 4.59663 14.0003 5.33301 14.0003H10.6663C11.4027 14.0003 11.9997 13.4034 11.9997 12.667L12.6663 4.66699"
+                                    stroke="#6B7280"
+                                    strokeWidth="1.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M6 4.66667V2.66667C6 2.29848 6.29848 2 6.66667 2H9.33333C9.70152 2 10 2.29848 10 2.66667V4.66667"
+                                    stroke="#6B7280"
+                                    strokeWidth="1.25"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              </div>
+                            }
                           </div>
                         </div>
                         <p className="text-[14px] text-[#374151]  font-bold">
@@ -496,15 +475,61 @@ export const FreelancerProfilePage = () => {
                   <p className="text-[20px] text-[#374151] font-[600]">
                     ${hourly_rate}/hr
                   </p>
+                  {
+                    !viewAs && <div
+                      className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                      onClick={() => {
+                        openEditBasicModal(
+                          professional_role,
+                          hourly_rate,
+                          description
+                        );
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
+                          stroke="#6B7280"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M9 4.33301L11.6667 6.99967"
+                          stroke="#6B7280"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  }
+                </div>
+              </div>
+              <p className="text-[14px] text-[#374151] font-[400]">
+                {description}
+              </p>
+            </div>
+            {/* ===================== skills ============= */}
+            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
+              {
+                !viewAs && <div
+                  className="flex items-center justify-between"
+                  onClick={() => {
+                    setModalPage("skills");
+                    openModal();
+                  }}
+                >
+                  <p className="text-[16px] text-[#374151] font-[600]">Skills</p>
                   <div
                     className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                    onClick={() => {
-                      openEditBasicModal(
-                        professional_role,
-                        hourly_rate,
-                        description
-                      );
-                    }}
+                    onClick={() => openEditSkills()}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -530,49 +555,7 @@ export const FreelancerProfilePage = () => {
                     </svg>
                   </div>
                 </div>
-              </div>
-              <p className="text-[14px] text-[#374151] font-[400]">
-                {description}
-              </p>
-            </div>
-            {/* ===================== skills ============= */}
-            <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
-              <div
-                className="flex items-center justify-between"
-                onClick={() => {
-                  setModalPage("skills");
-                  openModal();
-                }}
-              >
-                <p className="text-[16px] text-[#374151] font-[600]">Skills</p>
-                <div
-                  className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                  onClick={() => openEditSkills()}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M2.66699 13.3332H5.33366L12.3337 6.33321C13.07 5.59683 13.07 4.40292 12.3337 3.66654C11.5973 2.93016 10.4034 2.93016 9.66699 3.66654L2.66699 10.6665V13.3332"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9 4.33301L11.6667 6.99967"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
+              }
               <div className="grid grid-cols-3 gap-4">
                 {skills?.length > 0 &&
                   skills?.map((skill, idx) => {
@@ -592,30 +575,32 @@ export const FreelancerProfilePage = () => {
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Portfolio
                 </p>
-                <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M8.00033 3.33301V12.6663"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M3.33301 8.00033H12.6663"
-                      stroke="#6B7280"
-                      strokeWidth="1.25"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
+                {
+                  !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M8.00033 3.33301V12.6663"
+                        stroke="#6B7280"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M3.33301 8.00033H12.6663"
+                        stroke="#6B7280"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                }
               </div>
               <div className="-z-0">
                 <Swiper
@@ -641,20 +626,22 @@ export const FreelancerProfilePage = () => {
             <div className="flex flex-col gap-[24px]  border-[1px] pt-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div>
                 <p className="text-[16px] text-[#374151] font-[600] pb-3">
-                  Your Gigs
+                  {viewAs ? 'Freelancer Gigs' : 'Your Gigs'}
                 </p>
                 <hr />
                 <p className="mt-3">
-                  Projects are a new way to earn on Upwork that helps you do
+                  Projects are a new way to earn on Bizzzy that helps you do
                   more of the work you love to do. Create project offerings that
                   highlight your strengths and attract more clients.
                 </p>
-                <button
-                  className="text-start px-5 py-1 rounded-full border-2 border-[var(--primarytextcolor)] hover:text-white hover:bg-[var(--primarytextcolor)] transition h-fit w-fit font-semibold mt-3"
-                  onClick={() => navigate("/freelancer/gig")}
-                >
-                  Manage Gigs
-                </button>
+                {
+                  !viewAs && <button
+                    className="text-start px-5 py-1 rounded-full border-2 border-[var(--primarytextcolor)] hover:text-white hover:bg-[var(--primarytextcolor)] transition h-fit w-fit font-semibold mt-3"
+                    onClick={() => navigate("/freelancer/gig")}
+                  >
+                    Manage Gigs
+                  </button>
+                }
                 <div className="mt-10 w-full">
                   <ProfileGigCards />
                 </div>
