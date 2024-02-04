@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const AgencyManagerCard = () => {
     const profile = useSelector((state) => state.profile);
-    const { lastName, firstName, profile_image, professional_role, id } = profile.profile || [];
+    const { lastName, firstName, profile_image, professional_role } = profile.profile || [];
     return (
         <VStack marginTop={"10px"} paddingY={"25px"} className="shadow-xl border p-4 rounded-md" lineHeight={"20px"} position={"relative"}>
             {
@@ -33,7 +33,7 @@ export const AgencyFreelancerCard = ({ details }) => {
     return (
         <VStack marginTop={"10px"} paddingY={"25px"} className="shadow-xl border p-4 rounded-md" lineHeight={"20px"} position={"relative"} width={"300px"}>
             {
-                profile_image ? <Image src={profile_image} width={"90px"} borderRadius={"50%"} /> : <Avatar name={firstName + ' ' + lastName} />
+                profile_image ? <Image src={profile_image} width={"70px"} borderRadius={"50%"} /> : <Avatar size={"lg"} name={firstName + ' ' + lastName} />
 
             }
             <Text fontSize={"1.4rem"} fontWeight={"semibold"}>{firstName + ' ' + lastName}</Text>
