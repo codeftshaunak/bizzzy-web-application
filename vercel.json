@@ -1,25 +1,21 @@
 {
-  "routes": [
-    { "src": "/", "dest": "/" },
-    { "src": "/login", "dest": "/" },
-    { "src": "/signup", "dest": "/" },
-    { "src": "/verify-email/:id/:token", "dest": "/verify-email" },
-    { "src": "/search-freelancers", "dest": "/" },
-    { "src": "/search-job", "dest": "/" },
-    { "src": "/onboarding", "dest": "/" },
-    { "src": "/create-job", "dest": "/" },
-    { "src": "/search-talent", "dest": "/" },
-    { "src": "/freelancer/:id", "dest": "/" },
-    { "src": "/agency-build", "dest": "/" },
-    { "src": "/agency-dashboard", "dest": "/" },
-    { "src": "/agency/invitation", "dest": "/" },
-    { "src": "/profile", "dest": "/" },
-    { "src": "/profile/:id", "dest": "/" },
-    { "src": "/find-job", "dest": "/" },
-    { "src": "/find-job/:id", "dest": "/" },
-    { "src": "/active-job/submit/:id", "dest": "/" },
-    { "src": "/endcontract/:id", "dest": "/" },
-    { "src": "/message", "dest": "/" },
-    { "src": "/(.*)", "dest": "/" }
-  ]
-}
+    "routes": [
+      { "src": "/", "dest": "/" },
+      { "src": "/login", "dest": "/" },
+      { "src": "/signup", "dest": "/" },
+      { "src": "/onboarding", "dest": "/" },
+      { "src": "/create-job", "dest": "/" },
+      { "src": "/apply-job", "dest": "/" },
+      { "src": "/find-job", "dest": "/" },
+      { "src": "/messages", "dest": "/" },
+
+      { "src": "/profile", "dest": "/" },
+      { "src": "/userprofile-setting", "dest": "/" },
+
+      {"src":"/verify-email", "dest":"/"},
+      {
+        "src": "/verify-email",
+        "dest": "/verify-email?id=:id&token=:token"
+      }
+    ]
+  }
