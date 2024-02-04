@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import { io } from 'socket.io-client';
 import { socketURL } from '../helpers/proxy';
-import { getAllDetailsOfUser } from '../helpers/userApis';
 
 const SocketContext = createContext();
 
@@ -19,9 +18,9 @@ const createSocket = (userId) => {
     return newSocket;
 };
 
-const resp = await getAllDetailsOfUser();
-const userId = resp?.user_id;
-
+const user = localStorage.getItem('bizzzy_user');
+const id = user ? JSON.parse(user).user_id : null;
+const userId = id;
 const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
 
