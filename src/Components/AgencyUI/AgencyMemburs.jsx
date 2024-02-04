@@ -80,17 +80,17 @@ export const AgencyAllInvitations = () => {
                 <TabPanels>
                     <TabPanel display={"flex"} justifyContent={"space-between"} flexWrap={"wrap"}>
                         {
-                            acceptInvitation && acceptInvitation?.length > 0 && acceptInvitation?.map((invitation, index) => <AgencyFreelancerCard details={invitation} key={index} />)
+                            acceptInvitation && acceptInvitation?.length > 0 ? acceptInvitation?.map((invitation, index) => <AgencyFreelancerCard details={invitation} key={index} />) : <h2 className='text-center text-lg'>No Active Members.</h2>
                         }
                     </TabPanel>
                     <TabPanel display={"flex"} justifyContent={"space-between"} flexWrap={"wrap"}>
                         {
-                            pandingInvitation && pandingInvitation?.length > 0 && pandingInvitation?.map((invitation, index) => <AgencyFreelancerCard details={invitation} key={index} />)
+                            pandingInvitation && pandingInvitation?.length > 0 ? pandingInvitation?.map((invitation, index) => <AgencyFreelancerCard details={invitation} key={index} />) : <h2 className='text-center text-lg'>Pending Member Not Found</h2>
                         }
                     </TabPanel>
                     <TabPanel display={"flex"} justifyContent={"space-between"} flexWrap={"wrap"}>
                         {
-                            rejectInvitation && rejectInvitation?.length > 0 && rejectInvitation?.map((invitation, index) => <AgencyFreelancerCard details={invitation} key={index} />)
+                            rejectInvitation && rejectInvitation?.length > 0 ? rejectInvitation?.map((invitation, index) => <AgencyFreelancerCard details={invitation} key={index} />) : <h2 className='text-center text-lg'>No Rejected Members.</h2>
                         }
                     </TabPanel>
                 </TabPanels>

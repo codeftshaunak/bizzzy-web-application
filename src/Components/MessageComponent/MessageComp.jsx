@@ -19,9 +19,10 @@ import {
   getMessageList,
 } from "../../helpers/freelancerApis";
 import { BsSendFill } from "react-icons/bs";
-import { SocketContext, userId } from "../../Contexts/SocketContext";
+import { SocketContext } from "../../Contexts/SocketContext";
 import { userById } from "../../helpers/userApis";
 import SingleText from "./SingleText";
+import { useSelector } from 'react-redux';
 
 const MessageComp = () => {
   const [messageUsers, setMessageUsers] = useState([]);
@@ -197,6 +198,8 @@ const MessageBody = ({ data, selectedUser }) => {
   const [senderDetails, setSenderDetails] = useState();
   const [message, setMessage] = useState("");
   const { socket } = useContext(SocketContext);
+  const profile = useSelector((state) => state.profile.profile);
+  const userId = profile.user_id
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
