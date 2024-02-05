@@ -6,8 +6,6 @@ import { getAgency } from "../../helpers/agencyApis";
 
 const AgencyProfile = () => {
   const [agency, setAgency] = useState({});
-
-  console.log({ agency });
   const getAgencyDetails = async () => {
     const response = await getAgency();
     setAgency(response);

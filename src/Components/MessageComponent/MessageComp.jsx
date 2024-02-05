@@ -1,3 +1,7 @@
+// 
+// 
+// 
+// 
 import React, { useContext, useEffect, useState } from "react";
 import {
   Avatar,
@@ -19,9 +23,11 @@ import {
   getMessageList,
 } from "../../helpers/freelancerApis";
 import { BsSendFill } from "react-icons/bs";
-import { SocketContext, userId } from "../../Contexts/SocketContext";
+import { SocketContext } from "../../Contexts/SocketContext";
 import { userById } from "../../helpers/userApis";
 import SingleText from "./SingleText";
+import { useSelector } from 'react-redux';
+
 
 const MessageComp = () => {
   const [messageUsers, setMessageUsers] = useState([]);
@@ -29,6 +35,7 @@ const MessageComp = () => {
   const [selectedUser, setSelectedUser] = useState("");
   const navigate = useNavigate();
   const toast = useToast();
+  // const toast = useToast();
 
   const getMessageUser = async () => {
     try {
@@ -55,7 +62,6 @@ const MessageComp = () => {
   }, []);
 
   const getMessagesList = async (receiver_id) => {
-    console.log({ receiver_id });
     try {
       if (receiver_id) {
         setSelectedUser(receiver_id);
@@ -75,7 +81,7 @@ const MessageComp = () => {
       height="full"
       justifyContent={"space-between"}
       alignItems={"start"}
-      // className="bg-green-500"
+    // className="bg-green-500"
     >
       <Box w="350px">
         <Box position="relative" h="44px" mb={2} mt={6}>
@@ -192,18 +198,14 @@ const MessageComp = () => {
   );
 };
 
-//--------------------- Message Body
 const MessageBody = ({ data, selectedUser }) => {
   const [messageData, setMessageData] = useState([]);
   const [receiverDetails, setreceiverDetails] = useState();
   const [senderDetails, setSenderDetails] = useState();
   const [message, setMessage] = useState("");
-  // const [currentUser, setCurrentUser] = useState("");
-  // const [isRepeatedUser, setIsRepeatedUser] = useState(false);
-  const { socket } = useContext(SocketContext); // Use socket from context
-  // {
-  //   console.log({ currentUser, isRepeatedUser });
-  // }
+  const { socket } = useContext(SocketContext);
+  const profile = useSelector((state) => state.profile.profile);
+  const userId = profile.user_id
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
@@ -331,7 +333,7 @@ const MessageBody = ({ data, selectedUser }) => {
             },
             scrollbarWidth: "none",
           }}
-          // className="bg-red-500"
+        // className="bg-red-500"
         >
           {messageData?.length > 0 &&
             messageData.map((user, index) => (
@@ -341,10 +343,10 @@ const MessageBody = ({ data, selectedUser }) => {
                 userId={userId}
                 senderDetails={senderDetails}
                 receiverDetails={receiverDetails}
-                // setIsRepeatedUser={setIsRepeatedUser}
-                // isRepeatedUser={isRepeatedUser}
-                // currentUser={currentUser}
-                // setCurrentUser={setCurrentUser}
+              // setIsRepeatedUser={setIsRepeatedUser}
+              // isRepeatedUser={isRepeatedUser}
+              // currentUser={currentUser}
+              // setCurrentUser={setCurrentUser}
               />
             ))}
         </Box>

@@ -1,4 +1,5 @@
 import { UserProfile } from "../../Components/Profile";
+import { FreelancerProfilePage } from "../../Components/Profile/FreelancerProfilePage";
 import UserProfileSetting from "../../Components/Profile/UserProfileSetting";
 import HomeLayout from "../../Layouts/HomeLayout";
 
@@ -9,6 +10,16 @@ export const Profile = () => {
       <UserProfile />
     </HomeLayout>
   );
+}
+
+export const ProfileViewAs = () => {
+  return (
+    <HomeLayout>
+      <div className="w-[100%] m-auto">
+        <FreelancerProfilePage viewAs={true} />
+      </div>
+    </HomeLayout>
+  )
 }
 
 // Profile Setting Page

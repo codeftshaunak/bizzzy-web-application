@@ -1,7 +1,7 @@
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { Avatar, Textarea, Input, Button, VStack, HStack, Stack, Box, SkeletonCircle, SkeletonText, useToast } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { Avatar, Button, HStack, Stack, Box, SkeletonCircle, SkeletonText, Input, Textarea, useToast } from "@chakra-ui/react";
+import { useContext, useState, useEffect } from "react";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
 import FreelancerDetailsModal from "../Modals/FreelancerDetailsModal";
 import { MainButtonRounded, MainButtonTranparentRounded } from "../Button/MainButton";
@@ -20,6 +20,14 @@ const TalentCard = ({ freelancerData, loading }) => {
     message: ''
   });
 
+  useEffect(() => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      freelancer_id: selectedFreelancer?.user_id,
+      agency_profile: hasAgency
+    }));
+  }, [selectedFreelancer, hasAgency]);
+
   const handleSelectChange = (freelancer) => {
     setSelectedFreelancer(freelancer);
     setIsOpenModal(true)
@@ -37,21 +45,26 @@ const TalentCard = ({ freelancerData, loading }) => {
     e.preventDefault();
     try {
       const res = await sendAgencyInvitation(formData);
+      console.log(res);
       if (res.isError) {
         toast({
           title: res.message,
           status: 'warning',
-          duration: '3000'
+          duration: '3000',
+          position: 'top-right'
         })
       } else {
         toast({
-          title: `Invitation successfully sended to ${freelancerData.firstName}`,
+          title: `Invitation Send To ${selectedFreelancer.firstName} ${selectedFreelancer.lastName}`,
           status: 'success',
           duration: '3000',
           position: 'top-right'
         })
       }
-      setFormData({ "agency_profile": "", "freelancer_id": '', "member_position": '', "message": '' })
+      setFormData({
+        member_position: '',
+        message: ''
+      })
       setIsOpenModal(false);
     } catch (error) {
       console.log(error);
@@ -77,127 +90,126 @@ const TalentCard = ({ freelancerData, loading }) => {
 
   const handleCancel = () => {
     setIsOpenModal(false);
-    setFormData({ "agency_profile": "", "freelancer_id": '', "member_position": '', "message": '' })
   }
 
-  useEffect(() => {
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      freelancer_id: selectedFreelancer?.user_id,
-      agency_profile: hasAgency
-    }));
-  }, [selectedFreelancer, hasAgency, isOpenModal]);
+
 
   return (
     <div>
       <div>
-        <div key={freelancerData?._id} className="flex gap-8 pb-5 items-center">
-          <div className="w-[150px] h-[150px]">
-            {freelancerData.profile_image === null ? (
-              <Avatar
-                name={freelancerData?.firstName?.slice(0)}
-                width={"130px"}
-                height={"130px"}
-                borderRadius={"50%"}
-                fontSize={"3rem"}
-                objectFit={"cover"}
-              />
-            ) : (
-              <img
-                src={freelancerData?.profile_image}
-                className="w-[130px] h-[130px] rounded-full object-cover shadow-md"
-                alt=""
-              />
-            )}
-          </div>
-          <div className="w-full space-y-2 ">
-            <div className="flex justify-between ">
-              <div className="flex gap-3">
-                <div>
-                  <HStack>
-                    <h2 className="text-base font-semibold text-fg-brand">
-                      {freelancerData?.firstName} {freelancerData?.lastName}
-                    </h2>
-                    <Button
-                      colorScheme="#16A34A"
-                      variant="outline"
-                      size={"xs"}
-                      color={"#16A34A"}
-                      marginLeft={"0.8rem"}
-                      height={"18px"}
-                    >
-                      Available now
-                    </Button>
-                  </HStack>
+        {freelancerData?.map((freelancer) => {
+          return (
+            <div key={freelancer?._id} className="flex gap-8 pb-5 items-center">
+              <div className="w-[150px] h-[150px]">
+                {freelancer.profile_image === null ? (
+                  <Avatar
+                    name={freelancer?.firstName?.slice(0)}
+                    width={"130px"}
+                    height={"130px"}
+                    borderRadius={"50%"}
+                    fontSize={"3rem"}
+                    objectFit={"cover"}
+                  />
+                ) : (
+                  <img
+                    src={freelancer?.profile_image}
+                    className="w-[130px] h-[130px] rounded-full object-cover shadow-md"
+                    alt=""
+                  />
+                )}
+              </div>
+              <div className="w-full space-y-2 ">
+                <div className="flex justify-between ">
+                  <div className="flex gap-3">
+                    <div>
+                      <HStack>
+                        <h2 className="text-base font-semibold text-fg-brand">
+                          {freelancer?.firstName} {freelancer?.lastName}
+                        </h2>
+                        <Button
+                          colorScheme="#16A34A"
+                          variant="outline"
+                          size={"xs"}
+                          color={"#16A34A"}
+                          marginLeft={"0.8rem"}
+                          height={"18px"}
+                        >
+                          Available now
+                        </Button>
+                      </HStack>
 
+                      <p className="text-sm font-medium text-[#6B7280]">
+                        {freelancer?.professional_role}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Navigation */}
+                  <div>
+                    <Stack direction="row" spacing={4} align="center">
+                      {
+                        hasAgency && activeAgency ? <Button
+                          size="md"
+                          colorScheme="#16A34A"
+                          variant="outline"
+                          color={"#16A34A"}
+                          onClick={() => handleSelectChange(freelancer)}
+                        >
+                          Invite as a agency member
+                        </Button> : <Link to={`/freelancer/${freelancer?.user_id}`}>
+                          <Button
+                            size="md"
+                            colorScheme="#16A34A"
+                            variant="outline"
+                            color={"#16A34A"}
+                          >
+                            View Profile
+                          </Button>
+                        </Link>
+                      }
+
+                    </Stack>
+                  </div>
+                </div>
+
+                <div>
                   <p className="text-sm font-medium text-[#6B7280]">
-                    {freelancerData?.professional_role}
+                    ${freelancer?.hourly_rate}/hr
                   </p>
                 </div>
-              </div>
-              {/* Navigation */}
-              <div>
-                <Stack direction="row" spacing={4} align="center">
-                  {
-                    hasAgency && activeAgency ? <Button
-                      size="md"
-                      colorScheme="#16A34A"
-                      variant="outline"
-                      color={"#16A34A"}
-                      onClick={() => handleSelectChange(freelancerData)}
-                    >
-                      Invite as a agency member
-                    </Button> : <Link to={`/freelancer/${freelancerData?.user_id}`}>
-                      <Button
-                        size="md"
-                        colorScheme="#16A34A"
-                        variant="outline"
-                        color={"#16A34A"}
-                      >
-                        View Profile
-                      </Button>
-                    </Link>
-                  }
-
-                </Stack>
+                <div>
+                  <Link
+                    to={"/"}
+                    className="mt-1 text-sm font-normal text-[#38BDF8] hover:underline"
+                  >
+                    Earned $ 1k on adobe illustrator
+                  </Link>
+                  <Link
+                    to={"/"}
+                    className="flex items-center gap-2 mt-1 text-sm font-normal text-[#38BDF8] hover:underline "
+                  >
+                    Has 9 relevant skills to your job
+                    <span>
+                      <AiFillQuestionCircle className="text-[#6B7280]" />
+                    </span>
+                  </Link>
+                </div>
               </div>
             </div>
-            <div>
-              <p className="text-sm font-medium text-[#6B7280]">
-                ${freelancerData?.hourly_rate}/hr
-              </p>
-            </div>
-            <div>
-              <Link
-                to={"/"}
-                className="mt-1 text-sm font-normal text-[#38BDF8] hover:underline"
-              >
-                Earned $ 1k on adobe illustrator
-              </Link>
-              <Link
-                to={"/"}
-                className="flex items-center gap-2 mt-1 text-sm font-normal text-[#38BDF8] hover:underline "
-              >
-                Has 9 relevant skills to your job
-                <span>
-                  <AiFillQuestionCircle className="text-[#6B7280]" />
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
+
       {selectedFreelancer && isOpenModal && (
         <FreelancerDetailsModal
           isModal={isOpenModal}
           setIsModal={setIsOpenModal}
           title="Freelancer Details"
         >
-          <div key={freelancerData?._id} className="flex gap-8 pb-5 items-center">
+          <div key={selectedFreelancer?._id} className="flex gap-8 pb-5 items-center">
             <div className="w-[150px] h-[150px]">
-              {freelancerData.profile_image === null ? (
+              {selectedFreelancer.profile_image === null ? (
                 <Avatar
-                  name={freelancerData?.firstName?.slice(0)}
+                  name={selectedFreelancer?.firstName?.slice(0)}
                   width={"130px"}
                   height={"130px"}
                   borderRadius={"50%"}
@@ -206,7 +218,7 @@ const TalentCard = ({ freelancerData, loading }) => {
                 />
               ) : (
                 <img
-                  src={freelancerData?.profile_image}
+                  src={selectedFreelancer?.profile_image}
                   className="w-[130px] h-[130px] rounded-full object-cover shadow-md"
                   alt=""
                 />
@@ -218,7 +230,7 @@ const TalentCard = ({ freelancerData, loading }) => {
                   <div>
                     <HStack>
                       <h2 className="text-base font-semibold text-fg-brand">
-                        {freelancerData?.firstName} {freelancerData?.lastName}
+                        {selectedFreelancer?.firstName} {selectedFreelancer?.lastName}
                       </h2>
                       <Button
                         colorScheme="#16A34A"
@@ -233,14 +245,14 @@ const TalentCard = ({ freelancerData, loading }) => {
                     </HStack>
 
                     <p className="text-sm font-medium text-[#6B7280]">
-                      {freelancerData?.professional_role}
+                      {selectedFreelancer?.professional_role}
                     </p>
                   </div>
                 </div>
               </div>
               <div>
                 <p className="text-sm font-medium text-[#6B7280]">
-                  ${freelancerData?.hourly_rate}/hr
+                  ${selectedFreelancer?.hourly_rate}/hr
                 </p>
               </div>
 
@@ -249,22 +261,22 @@ const TalentCard = ({ freelancerData, loading }) => {
                   <div className="flex gap-3">
                     <div>
                       <p className="font-bold">Professional At.</p>
-                      <h3>{freelancerData?.categories[0]?.value}</h3>
+                      <h3>{selectedFreelancer?.categories[0]?.value}</h3>
                       {
-                        freelancerData?.sub_categories?.map((subcat) => (
+                        selectedFreelancer?.sub_categories?.map((subcat) => (
                           <h4 className="text-sm pl-1 ml-1 border-l border-gray-300">{subcat?.value}</h4>
                         ))
                       }
                       <div className="flex pl-1 ml-1 border-l border-gray-300">
                         {
-                          freelancerData?.skills
-                            ? freelancerData.skills.length > 6
-                              ? freelancerData.skills.slice(0, 6).map((skill, index) => (
+                          selectedFreelancer?.skills
+                            ? selectedFreelancer.skills.length > 6
+                              ? selectedFreelancer.skills.slice(0, 6).map((skill, index) => (
                                 <h4 key={index} className="text-sm border mr-[5px] bg-[#5d8586] px-3 py-1 text-white rounded-2xl cursor-pointer">
                                   {skill}
                                 </h4>
                               ))
-                              : freelancerData.skills.map((skill, index) => (
+                              : selectedFreelancer.skills.map((skill, index) => (
                                 <h4 key={index} className="text-sm border mr-[5px] bg-[#5d8586] px-3 py-1 text-white rounded-2xl cursor-pointer">
                                   {skill}
                                 </h4>
@@ -301,8 +313,8 @@ const TalentCard = ({ freelancerData, loading }) => {
 
               <div className="w-full space-y-2 ">
                 <div className="flex justify-between w-[260px]">
-                  <MainButtonRounded onClick={() => handleInvitation}>Send Invitation</MainButtonRounded>
-                  <MainButtonTranparentRounded onClick={() => handleCancel}>Cancel</MainButtonTranparentRounded>
+                  <MainButtonRounded onClick={(e) => handleInvitation(e)}>Send Invitation</MainButtonRounded>
+                  <MainButtonTranparentRounded onClick={() => handleCancel()}>Cancel</MainButtonTranparentRounded>
                 </div>
               </div>
 
@@ -315,3 +327,7 @@ const TalentCard = ({ freelancerData, loading }) => {
 };
 
 export default TalentCard;
+
+
+
+

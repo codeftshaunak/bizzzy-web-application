@@ -43,4 +43,4 @@ export const getAllDetailsOfUser = async () =>
 export const userById = async (id) =>
   makeApiRequest("get", `/user?user_id=${id}`);
 
-//
+

@@ -4,7 +4,7 @@ import Login from "../Pages/Login";
 import Home from "../Pages/Home";
 import JobPost from "../Pages/JobPost";
 import ApplyJob from "../Pages/ApplyJob";
-import { Profile, ProfileSetting } from "../Pages/Profile";
+import { Profile, ProfileSetting, ProfileViewAs } from "../Pages/Profile";
 import { FindJob, SearchPage } from "../Pages/FindJob";
 import Message from "../Pages/Message";
 import TimeTracker from "../Pages/TimeTracker";
@@ -42,10 +42,11 @@ const Router = () => {
         <Route path="/search-job" element={<SearchPage />} />
         <Route path="/onboarding" element={<Onboarding />} />
 
+        {/* Privet route start from here */}
         <Route element={<PrivateRoutes />}>
           <Route path="/create-job" element={<JobPost />} />
           <Route path="/search-talent" element={<SearchTalents />} />
-          <Route path="/freelancer/:id" element={<Profile />} />
+          <Route path="/freelancer/:id" element={<ProfileViewAs />} />
           <Route path="/agency-build" element={<AgencyBuild />} />
           <Route path="/agency-dashboard" element={<Agency />} />
           <Route path="/agency/invitation" element={<AgencyInvitation />} />
@@ -85,6 +86,7 @@ const Router = () => {
           <Route path="/active-job/submit/:id" element={<EndContract />} />
           <Route path="/endcotract/:id" element={<EndContract />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
