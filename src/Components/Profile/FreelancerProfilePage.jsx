@@ -113,8 +113,8 @@ export const FreelancerProfilePage = ({ viewAs }) => {
         <div className="w-[100%] flex items-center justify-between border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
           <div className="flex gap-[14px] items-center">
             <div style={{ position: "relative", padding: "10px" }}>
-              {
-                !viewAs && <div
+              {!viewAs && (
+                <div
                   style={{
                     position: "absolute",
                     top: "0px",
@@ -153,19 +153,21 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                     </svg>
                   </div>
                 </div>
-              }
-
+              )}
 
               {!profile_image ||
-                profile_image == "null" ||
-                profile_image === null ? (
+              profile_image == "null" ||
+              profile_image === null ? (
                 <Avatar
                   name={firstName + " " + lastName}
                   width={"60px"}
                   height={"60px"}
                 />
               ) : (
-                <img src={profile_image} className="w-[60px] rounded-full shadow-md" />
+                <img
+                  src={profile_image}
+                  className="w-[60px] rounded-full shadow-md"
+                />
               )}
             </div>
             <div className="flex flex-col justify-start">
@@ -184,11 +186,11 @@ export const FreelancerProfilePage = ({ viewAs }) => {
             <div className="flex items-center cursor-pointer justify-center w-[36px] h-[36px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
               <BsLink45Deg width={"20px"} height={"20px"} />
             </div>
-            {
-              !viewAs && <button className="py-[8px] px-[12px] rounded-[6px] text-[14px] font-500 text-[#fff] bg-[#22C55E]">
+            {!viewAs && (
+              <button className="py-[8px] px-[12px] rounded-[6px] text-[14px] font-500 text-[#fff] bg-[#22C55E]">
                 Profile Settings
               </button>
-            }
+            )}
           </div>
         </div>
         <div className="flex gap-[24px]">
@@ -217,8 +219,8 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Education
                 </p>
-                {
-                  !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
+                {!viewAs && (
+                  <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
                     <BsPlus
                       width={"16px"}
                       height={"16px"}
@@ -229,7 +231,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                       }}
                     />
                   </div>
-                }
+                )}
               </div>
               {education?.length > 0 &&
                 education?.map((edu) => (
@@ -239,8 +241,8 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                         {edu?.institution}
                       </p>
                       <div className="flex items-center gap-[12px]">
-                        {
-                          !viewAs && <div
+                        {!viewAs && (
+                          <div
                             className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                             onClick={() => {
                               openEditModal(edu);
@@ -269,9 +271,9 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                               />
                             </svg>
                           </div>
-                        }
-                        {
-                          !viewAs && <div
+                        )}
+                        {!viewAs && (
+                          <div
                             className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                             onClick={() =>
                               HandleDeleteEducation(edu._id, "education")
@@ -321,7 +323,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                               />
                             </svg>
                           </div>
-                        }
+                        )}
                       </div>
                     </div>
                     <p className="text-[14px] text-[#374151] font-[400]">
@@ -340,8 +342,8 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Experience
                 </p>
-                {
-                  !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
+                {!viewAs && (
+                  <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB]">
                     <BsPlus
                       width={"16px"}
                       height={"16px"}
@@ -352,7 +354,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                       }}
                     />
                   </div>
-                }
+                )}
               </div>
               {experience?.length > 0 &&
                 experience?.map((exprience) => {
@@ -368,8 +370,8 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                             {exprience?.company_name}
                           </p>
                           <div className="flex items-center gap-[12px]">
-                            {
-                              !viewAs && <div
+                            {!viewAs && (
+                              <div
                                 className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                                 onClick={() => {
                                   openExperienceEditModal(exprience);
@@ -398,9 +400,9 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                                   />
                                 </svg>
                               </div>
-                            }
-                            {
-                              !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
+                            )}
+                            {!viewAs && (
+                              <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="16"
@@ -445,7 +447,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                                   />
                                 </svg>
                               </div>
-                            }
+                            )}
                           </div>
                         </div>
                         <p className="text-[14px] text-[#374151]  font-bold">
@@ -475,8 +477,8 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                   <p className="text-[20px] text-[#374151] font-[600]">
                     ${hourly_rate}/hr
                   </p>
-                  {
-                    !viewAs && <div
+                  {!viewAs && (
+                    <div
                       className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                       onClick={() => {
                         openEditBasicModal(
@@ -509,7 +511,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                         />
                       </svg>
                     </div>
-                  }
+                  )}
                 </div>
               </div>
               <p className="text-[14px] text-[#374151] font-[400]">
@@ -518,15 +520,17 @@ export const FreelancerProfilePage = ({ viewAs }) => {
             </div>
             {/* ===================== skills ============= */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
-              {
-                !viewAs && <div
+              {!viewAs && (
+                <div
                   className="flex items-center justify-between"
                   onClick={() => {
                     setModalPage("skills");
                     openModal();
                   }}
                 >
-                  <p className="text-[16px] text-[#374151] font-[600]">Skills</p>
+                  <p className="text-[16px] text-[#374151] font-[600]">
+                    Skills
+                  </p>
                   <div
                     className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                     onClick={() => openEditSkills()}
@@ -555,7 +559,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                     </svg>
                   </div>
                 </div>
-              }
+              )}
               <div className="grid grid-cols-3 gap-4">
                 {skills?.length > 0 &&
                   skills?.map((skill, idx) => {
@@ -575,8 +579,8 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Portfolio
                 </p>
-                {
-                  !viewAs && <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
+                {!viewAs && (
+                  <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -600,7 +604,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                       />
                     </svg>
                   </div>
-                }
+                )}
               </div>
               <div className="-z-0">
                 <Swiper
@@ -626,7 +630,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
             <div className="flex flex-col gap-[24px]  border-[1px] pt-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               <div>
                 <p className="text-[16px] text-[#374151] font-[600] pb-3">
-                  {viewAs ? 'Freelancer Gigs' : 'Your Gigs'}
+                  {viewAs ? "Freelancer Gigs" : "Your Gigs"}
                 </p>
                 <hr />
                 <p className="mt-3">
@@ -634,14 +638,14 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                   more of the work you love to do. Create project offerings that
                   highlight your strengths and attract more clients.
                 </p>
-                {
-                  !viewAs && <button
+                {!viewAs && (
+                  <button
                     className="text-start px-5 py-1 rounded-full border-2 border-[var(--primarytextcolor)] hover:text-white hover:bg-[var(--primarytextcolor)] transition h-fit w-fit font-semibold mt-3"
                     onClick={() => navigate("/freelancer/gig")}
                   >
                     Manage Gigs
                   </button>
-                }
+                )}
                 <div className="mt-10 w-full">
                   <ProfileGigCards />
                 </div>

@@ -17,7 +17,7 @@ const Onboarding = () => {
   const role = state?.auth?.role;
   const isClient = briefDescription && businessName;
   const isFreelancer = description && skills.length > 0 && professional_role;
-  const isComplete = role === 2 ? isClient : isFreelancer;
+  const isComplete = role == 2 ? isClient : isFreelancer;
   if (isComplete) navigate("/");
   return <HomeLayout>{isAuth && !isComplete && <Process />}</HomeLayout>;
 };
