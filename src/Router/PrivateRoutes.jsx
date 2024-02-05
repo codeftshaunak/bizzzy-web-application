@@ -15,7 +15,7 @@ const PrivateRoutes = () => {
   const role = state?.auth?.role;
   const isClient = briefDescription && businessName;
   const isFreelancer = description && skills.length > 0 && professional_role;
-  const isComplete = role === 2 ? isClient : isFreelancer;
+  const isComplete = role == 2 ? isClient : isFreelancer;
 
   return isAuth ? (
     isComplete ? (

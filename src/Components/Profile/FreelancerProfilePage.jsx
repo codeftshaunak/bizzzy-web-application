@@ -152,6 +152,7 @@ export const FreelancerProfilePage = () => {
                   top: "0px",
                   left: "0px",
                   cursor: "pointer",
+                  zIndex: "1",
                 }}
               >
                 <div
