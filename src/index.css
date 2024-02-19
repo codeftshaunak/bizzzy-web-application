@@ -32,3 +32,12 @@
 .swiper-button-disabled {
   opacity: 0.5;
 }
+
+.heroBgSection{
+  background-image: url('./images/heroBg.png') !important;
+  background-repeat: no-repeat;
+}
+
+/* .heroSection{
+  background-image: linear-gradient(to right, #ffffff, #effbff, #ccfdff, #affff8, #b4fbcd);
+} */
