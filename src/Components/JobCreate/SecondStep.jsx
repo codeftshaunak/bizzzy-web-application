@@ -72,17 +72,21 @@ function SecondStep({ setStep }) {
 
         {options.map((option) => (
           <div
-            className={`flex p-5 items-center  w-[446px] h-[88px] rounded-xl border border-outline-primary active-checkbox`}
+            className={`flex p-5 items-center  w-[446px] h-[88px] rounded-xl border border-outline-primary active-checkbox cursor-pointer`}
             key={option.key}
+            onClick={() => {
+              const radioValue = option.key;
+              reset({ experience: radioValue });
+            }}
           >
             <input
               id={option.key}
               type="radio"
               value={option.key}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 cursor-pointer"
               {...register("experience")}
             />
-            <label htmlFor="default-radio-1" className="ml-4">
+            <label htmlFor="default-radio-1" className="ml-4 cursor-pointer">
               <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
                 {option.title}
               </div>

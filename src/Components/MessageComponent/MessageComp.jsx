@@ -1,12 +1,6 @@
-// 
-// 
-// 
-// 
 import React, { useContext, useEffect, useState } from "react";
 import {
   Avatar,
-  AvatarBadge,
-  AvatarGroup,
   HStack,
   VStack,
   Card,
@@ -26,13 +20,19 @@ import { BsSendFill } from "react-icons/bs";
 import { SocketContext } from "../../Contexts/SocketContext";
 import { userById } from "../../helpers/userApis";
 import SingleText from "./SingleText";
-import { useSelector } from 'react-redux';
-
+import { useSelector } from "react-redux";
+import {
+  MessageBodySkeleton,
+  MessageUsersSkeleton,
+} from "../Skeletons/MessageSkeleton";
+import { LuMessagesSquare } from "react-icons/lu";
 
 const MessageComp = () => {
   const [messageUsers, setMessageUsers] = useState([]);
   const [messageDetails, setMessageDetails] = useState();
   const [selectedUser, setSelectedUser] = useState("");
+  const [filteredUser, setFilteredUser] = useState([]);
+  const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const toast = useToast();
   // const toast = useToast();
@@ -73,6 +73,25 @@ const MessageComp = () => {
     }
   };
 
+  const handleSearchingUser = (query) => {
+    setQuery(query);
+    if (query.length != "") {
+      const getUsers = messageUsers.filter((user) => {
+        return (
+          user?.user_details?.firstName
+            .toLowerCase()
+            .includes(query.toLowerCase()) ||
+          user?.user_details?.lastName
+            .toLowerCase()
+            .includes(query.toLowerCase())
+        );
+      });
+      setFilteredUser(getUsers);
+    } else {
+      setFilteredUser([]);
+    }
+  };
+
   return (
     <HStack
       paddingX={6}
@@ -81,13 +100,13 @@ const MessageComp = () => {
       height="full"
       justifyContent={"space-between"}
       alignItems={"start"}
-    // className="bg-green-500"
+      // className="bg-green-500"
     >
       <Box w="350px">
         <Box position="relative" h="44px" mb={2} mt={6}>
           <Input
             type="text"
-            placeholder="Search Client by Name"
+            placeholder="Search Message by Name"
             pb={1}
             w="full"
             h="44px"
@@ -95,6 +114,8 @@ const MessageComp = () => {
             border="1px"
             borderColor="gray.600"
             rounded="xl"
+            value={query}
+            onChange={(e) => handleSearchingUser(e.target.value)}
           />
           <Image
             src="icons/search-icon.svg"
@@ -111,13 +132,96 @@ const MessageComp = () => {
             top={3}
           />
         </Box>
-        {messageUsers?.length > 0 && (
+        {query.length > 0 && (
+          <Box>
+            <Text className="text-lg font-semibold">Searched Users</Text>
+            <Box
+              overflowY={"auto"}
+              border={"1px solid"}
+              borderColor="gray.200"
+              padding={2}
+              rounded={"lg"}
+              display={"grid"}
+              maxHeight={"300px"}
+              gap={5}
+              sx={{
+                "&::-webkit-scrollbar": {
+                  width: "8px",
+                  borderRadius: "8px",
+                  backgroundColor: `rgba(0, 0, 0, 0.05)`,
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: `rgba(0, 0, 0, 0.05)`,
+                  borderRadius: "8px",
+                },
+              }}
+            >
+              {!filteredUser.length && query.length > 0 && (
+                <Text>Doesn&apos;t Matched</Text>
+              )}
+              {filteredUser.map((user, index) => (
+                <Box
+                  key={index}
+                  className="h-[90px] w-full border border-primary rounded-2xl bg-green-100 cursor-pointer"
+                  onClick={() => {
+                    getMessagesList(user?.user_details?.user_id),
+                      setFilteredUser([]),
+                      setQuery("");
+                  }}
+                >
+                  <Flex align="center" justify="between" py={2} px={4}>
+                    <Box width="85px">
+                      {user?.user_details?.profile_image !== null ? (
+                        <Image
+                          src={user?.user_details?.profile_image}
+                          className="h-[50px] w-[50px] rounded-full"
+                          alt="img"
+                          borderRadius={"50px"}
+                        />
+                      ) : (
+                        <Avatar
+                          size="md"
+                          round="20px"
+                          name={
+                            user?.user_details?.firstName +
+                            " " +
+                            user?.user_details?.lastName
+                          }
+                        />
+                      )}
+                    </Box>
+                    <Box width="full">
+                      <HStack justifyContent={"space-between"}>
+                        <Text fontWeight="semibold" fontSize={"15px"}>
+                          {user?.user_details?.firstName}{" "}
+                          {user?.user_details?.lastName}{" "}
+                          {user?.user_details?.businessName &&
+                            "," + " " + user?.user_details?.businessName}
+                        </Text>
+                        <Text color="gray.600">7/29/23</Text>
+                      </HStack>
+                      <Text fontWeight="semibold" fontSize={"15px"}>
+                        Expert Dashboard Designer
+                      </Text>
+                      <Text color="gray.600">
+                        You: {user?.lastMessage.slice(0, 10)}
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+        {messageUsers?.length > 0 ? (
           <Box overflowY={"auto"}>
             {messageUsers.map((user, index) => (
               <Box
                 key={index}
                 className="h-[90px] w-full border border-primary rounded-2xl bg-green-100 mt-[2rem] cursor-pointer"
-                onClick={() => getMessagesList(user?.user_details?.user_id)}
+                onClick={() => {
+                  getMessagesList(user?.user_details?.user_id), setQuery("");
+                }}
               >
                 {console.log(user.user_details.user_id)}
                 <Flex align="center" justify="between" py={2} px={4}>
@@ -162,13 +266,28 @@ const MessageComp = () => {
               </Box>
             ))}
           </Box>
+        ) : (
+          <MessageUsersSkeleton />
         )}
       </Box>
 
       <VStack width={"55%"}>
         {/* {console.log({ messageDetails, selectedUser })} */}
-        {messageDetails?.length > 0 && (
+        {messageDetails?.length > 0 ? (
           <MessageBody data={messageDetails} selectedUser={selectedUser} />
+        ) : messageUsers.length > 0 ? (
+          <HStack
+            alignItems={"center"}
+            justifyContent={"center"}
+            height={"60vh"}
+          >
+            <Box className="flex flex-col items-center justify-center">
+              <LuMessagesSquare className="text-9xl text-green-500" />
+              <Text fontSize={"xl"}>You haven't select message!</Text>
+            </Box>
+          </HStack>
+        ) : (
+          <MessageBodySkeleton />
         )}
       </VStack>
 
@@ -205,7 +324,7 @@ const MessageBody = ({ data, selectedUser }) => {
   const [message, setMessage] = useState("");
   const { socket } = useContext(SocketContext);
   const profile = useSelector((state) => state.profile.profile);
-  const userId = profile.user_id
+  const userId = profile.user_id;
   const recieverUser = async () => {
     if (selectedUser) {
       const response = await userById(selectedUser);
@@ -333,7 +452,7 @@ const MessageBody = ({ data, selectedUser }) => {
             },
             scrollbarWidth: "none",
           }}
-        // className="bg-red-500"
+          // className="bg-red-500"
         >
           {messageData?.length > 0 &&
             messageData.map((user, index) => (
@@ -343,10 +462,10 @@ const MessageBody = ({ data, selectedUser }) => {
                 userId={userId}
                 senderDetails={senderDetails}
                 receiverDetails={receiverDetails}
-              // setIsRepeatedUser={setIsRepeatedUser}
-              // isRepeatedUser={isRepeatedUser}
-              // currentUser={currentUser}
-              // setCurrentUser={setCurrentUser}
+                // setIsRepeatedUser={setIsRepeatedUser}
+                // isRepeatedUser={isRepeatedUser}
+                // currentUser={currentUser}
+                // setCurrentUser={setCurrentUser}
               />
             ))}
         </Box>

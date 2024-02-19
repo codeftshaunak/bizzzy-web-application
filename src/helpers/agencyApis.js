@@ -42,14 +42,22 @@ export const createAgencyProject = async (data) =>
 export const updateAgencyProfile = async (data) =>
   makeApiRequest("put", "/agency/update", data);
 
-export const getAgency = async () =>
-  makeApiRequest("get", "/agency");
+export const getAgency = async () => makeApiRequest("get", "/agency");
 
 export const sendAgencyInvitation = async (data) =>
-  makeApiRequest('post', '/agency/invite', data);
+  makeApiRequest("post", "/agency/invite", data);
 
 export const getAgencyById = async (id) =>
-  makeApiRequest('get', `/agencyById?agency_id=${id}`);
+  makeApiRequest("get", `/agencyById?agency_id=${id}`);
 
 export const getAgencyMemburs = async (id) =>
-  makeApiRequest('get', `/invitation/status?agency_id=${id}`)
+  makeApiRequest("get", `/invitation/status?agency_id=${id}`);
+
+export const uploadSingleImage = async (data) =>
+  makeApiRequest(
+    "post",
+    "/upload/single/image",
+    data,
+    {},
+    "multipart/form-data"
+  );

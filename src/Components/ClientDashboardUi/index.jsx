@@ -146,6 +146,7 @@ const ClientDashboardComponent = () => {
               </div>
             </div>
             <div className="px-4 w-full">
+              {console.log(jobs)}
               {jobs?.length > 0 &&
                 jobs
                   ?.slice()
@@ -178,8 +179,8 @@ const ClientDashboardComponent = () => {
                             {job?.title}
                           </h5>
                           <div className="text-sm text-[#6B7280]">
-                            <div className="mb-1 text-[#6B7280] ">
-                              Public - {job?.budget == 1 ? "Fixed" : "Hourly"}
+                            <div className="mb-1 text-[#6B7280] capitalize">
+                              Public - {job?.job_type}
                             </div>
                             <div>Posted {formattedDate} ago by you</div>
                           </div>

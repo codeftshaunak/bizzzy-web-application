@@ -63,12 +63,12 @@ function FirstStep({ setStep }) {
   // on form submit assign values to the context and go to next step
   const onSubmit = (v) => {
     insertToFormState(v);
+    setStep(2);
   };
 
   const getCategorySkills = async () => {
     try {
       if (!categories?.list) {
-        console.log("category");
         const response = await getCategories();
         setCategories({
           ...categories,
@@ -343,12 +343,6 @@ function FirstStep({ setStep }) {
                   </div>
                   <div className="text-center ml-3 text-green-600 text-base font-medium font-['SF Pro Text'] leading-normal flex items-center gap-1">
                     {value?.name || "Add Attachment"}{" "}
-                    {value ? (
-                      <BiX
-                        onClick={() => onChange(undefined)}
-                        className="h-5 w-5 bg-red-50/10 rounded-full cursor-pointer backdrop-blur backdrop-filter bg-red-50 hover:bg-red-100 text-red-500"
-                      />
-                    ) : null}
                   </div>
                   <input
                     {...field}
@@ -360,7 +354,12 @@ function FirstStep({ setStep }) {
                     }}
                   />
                 </label>
-
+                {value ? (
+                  <BiX
+                    onClick={() => onChange(undefined)}
+                    className="h-5 w-5 bg-red-50/10 rounded-full cursor-pointer backdrop-blur backdrop-filter bg-red-50 hover:bg-red-100 text-red-500"
+                  />
+                ) : null}
                 {/* Delete Added File */}
               </div>
             );

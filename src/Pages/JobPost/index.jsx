@@ -13,8 +13,11 @@ import { createJob } from "../../helpers/jobApis";
 const JobPost = () => {
   const toast = useToast();
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
+
     const formData = new FormData();
     for (const key in data) {
       if (data[key] instanceof Array) {
@@ -44,6 +47,7 @@ const JobPost = () => {
         position: "top-right",
       });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -59,7 +63,11 @@ const JobPost = () => {
             {step === 1 && <FirstStep setStep={setStep} />}
             {step === 2 && <SecondStep setStep={setStep} />}
             {step === 3 && (
-              <FinalStep setStep={setStep} onCallback={onSubmit} />
+              <FinalStep
+                setStep={setStep}
+                onCallback={onSubmit}
+                isLoading={isLoading}
+              />
             )}
             <Preview />
           </HStack>

@@ -64,14 +64,15 @@ const JobDetails = () => {
           required
         >
           <option
-            value={`${profile?.business_name && profile?.business_name !== "null"
-              ? profile.business_name
-              : profile?.name
-              }
+            value={`${
+              profile?.businessName && profile?.businessName !== "null"
+                ? profile.businessName
+                : profile?.name
+            }
             &apos;s Team`}
           >
-            {profile?.business_name && profile?.business_name !== "null"
-              ? profile.business_name
+            {profile?.businessName && profile?.businessName !== "null"
+              ? profile.businessName
               : profile?.name}
             &apos;s Team
           </option>

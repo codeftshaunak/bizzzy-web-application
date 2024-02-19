@@ -69,6 +69,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
 
   function closeModal() {
     setModalIsOpen(false);
+    setModalPage("");
   }
 
   const [selectedEducation, setSelectedEducation] = useState(null);
@@ -120,6 +121,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                     top: "0px",
                     left: "0px",
                     cursor: "pointer",
+                    zIndex: "1",
                   }}
                 >
                   <div

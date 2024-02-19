@@ -37,10 +37,11 @@ export const ReviewProposal = () => {
   };
 
   const handleSend = async (freelancer) => {
+    console.log(freelancer);
     const user = await getFreelancerInfo(freelancer?.userId);
     setUserId(freelancer?.userId);
     setOpen(true);
-    dispatch(setTargetedFreelancer({ ...user }));
+    dispatch(setTargetedFreelancer({ ...user, ...freelancer }));
   };
 
   useEffect(() => {
@@ -247,7 +248,7 @@ export const ReviewProposal = () => {
                     placeholder="Enter your message..."
                     rows="4"
                   />
-                  <p className="text-red-500 text-sm">{ }</p>
+                  <p className="text-red-500 text-sm">{}</p>
                 </div>
               }
               <div className="flex justify-end pt-4 border-t">

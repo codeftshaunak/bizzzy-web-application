@@ -33,6 +33,7 @@ const modules = {
 };
 
 const JobApply = ({ setPage, details }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const details_new = details[0];
 
   const { quill, quillRef } = useQuill({ modules });
@@ -70,6 +71,8 @@ const JobApply = ({ setPage, details }) => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    setIsLoading(true);
+
     try {
       const jobData = {
         jobId: id,
@@ -92,9 +95,12 @@ const JobApply = ({ setPage, details }) => {
     } catch (error) {
       console.error(error);
     }
+
+    setIsLoading(false);
   };
 
   const handleHourlyJobSubmit = async () => {
+    setIsLoading(true);
     try {
       const response = await applyJob({
         jobId: id,
@@ -108,13 +114,24 @@ const JobApply = ({ setPage, details }) => {
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false);
   };
 
   const handleSubmissionResponse = (response) => {
-    const isSuccess = response.code === 200;
-    const toastMessage = isSuccess
-      ? "Job Applied Successfully"
-      : response.message;
+    console.log(response);
+    // console.log(response);
+    // if (response?.code === 400) {
+    //   return toast({
+    //     title: response.msg,
+    //     position: "top",
+    //     status: "warning",
+    //     isClosable: true,
+    //     duration: 2000,
+    //   });
+    // }
+
+    const isSuccess = response?.code === 200;
+    const toastMessage = isSuccess ? "Job Applied Successfully" : response?.msg;
 
     toast({
       title: toastMessage,
@@ -275,11 +292,16 @@ const JobApply = ({ setPage, details }) => {
                       />
                     </label>
                   </Box>
+
                   <Button
-                    className="bg-primary text-secondary rounded h-[36px] px-4 mt-4"
+                    isLoading={isLoading}
+                    loadingText="Submitting"
+                    colorScheme="whatsapp"
+                    type="submit"
+                    marginTop={10}
                     onClick={() => handleSubmit()}
                   >
-                    Submit Proposal
+                    Submit
                   </Button>
                 </Box>
               </Box>
@@ -348,10 +370,14 @@ const JobApply = ({ setPage, details }) => {
                 </Box>
 
                 <Button
-                  className="bg-primary text-secondary rounded h-[36px] px-4 mt-4"
+                  isLoading={isLoading}
+                  loadingText="Submitting"
+                  colorScheme="whatsapp"
+                  type="submit"
+                  marginTop={10}
                   onClick={() => handleHourlyJobSubmit()}
                 >
-                  Submit Proposal
+                  Submit
                 </Button>
               </Box>
             </Box>

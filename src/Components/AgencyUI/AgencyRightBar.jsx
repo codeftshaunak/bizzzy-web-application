@@ -11,7 +11,7 @@ const AgencyRightBar = ({ agency, setAgency }) => {
   const [isModal, setIsModal] = useState(false);
   const [modalType, setIsModalType] = useState("");
   const [value, setValue] = useState(null);
-  const { agency_hourlyRate, agency_location, agency_companyInfo } =
+  const { agency_hourlyRate, agency_officeLocation, agency_companyInfo } =
     agency || {};
 
   const handleUpdate = (type, value) => {
@@ -19,6 +19,7 @@ const AgencyRightBar = ({ agency, setAgency }) => {
     setIsModalType(type);
     setValue(value);
   };
+
   return (
     <>
       <VStack
@@ -69,16 +70,17 @@ const AgencyRightBar = ({ agency, setAgency }) => {
         <Box position={"relative"} mb={"1rem"}>
           <AgencyTitle
             setAgency={setAgency}
-            isValue={!!agency_location?.country}
+            isValue={!!agency_officeLocation?.country}
           >
             Office Location
           </AgencyTitle>
           <Box>
-            {!!agency_location?.country && (
+            {!!agency_officeLocation?.country && (
               <HStack>
                 <MdLocationPin fontSize={"1.2rem"} />
                 <Text>
-                  {agency_location?.street}, {agency_location?.state}
+                  {agency_officeLocation?.street},{" "}
+                  {agency_officeLocation?.state}
                 </Text>
               </HStack>
             )}

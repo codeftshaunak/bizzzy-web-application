@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useFormState } from "../../Contexts/FormContext";
 import { thirdStepSchema } from "../../Schema/job-create-schema";
+import { Button } from "@chakra-ui/react";
 
 const options = [
   {
@@ -19,7 +20,7 @@ const options = [
   },
 ];
 
-function FinalStep({ onCallback = () => {} }) {
+function FinalStep({ onCallback = () => {}, isLoading }) {
   const { insertToFormState, formState } = useFormState();
   const {
     register,
@@ -70,33 +71,42 @@ function FinalStep({ onCallback = () => {} }) {
         {options.map((option) => (
           <div
             key={option.key}
-            className="flex p-[1.12rem] items-center border border-outline-primary w-[446px] rounded-xl active-checkbox"
+            className="flex p-[1.12rem] items-center border border-outline-primary w-[446px] rounded-xl active-checkbox cursor-pointer"
+            onClick={() => {
+              const radioValue = option.key;
+              reset({ duration: radioValue });
+            }}
           >
             <input
               id={option.key}
               type="radio"
               value={option.key}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 cursor-pointer"
               {...register("duration")}
             />
             <label htmlFor="default-radio-1" className="ml-4">
-              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7">
+              <div className="w-[375px] text-stone-900 text-lg font-semibold font-['SF Pro Text'] leading-7 cursor-pointer">
                 {option.title}
               </div>
             </label>
           </div>
         ))}
 
-        <button
-          className="w-[136px] h-9 flex-col justify-start items-start gap-2.5 inline-flex"
-          type="submit"
-        >
-          <div className="self-stretch h-9 px-3 py-2 bg-green-500 rounded-md shadow justify-center items-center gap-1 inline-flex">
+        <div className="w-[136px] h-9 flex-col justify-start items-start gap-2.5 inline-flex">
+          {/* <div className="self-stretch h-9 px-3 py-2 bg-green-500 rounded-md shadow justify-center items-center gap-1 inline-flex">
             <div className="text-center text-white text-sm font-medium font-['SF Pro Text'] leading-tight">
               Save & Continue
             </div>
-          </div>
-        </button>
+          </div> */}
+          <Button
+            isLoading={isLoading}
+            loadingText="Submitting"
+            colorScheme="whatsapp"
+            type="submit"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </>
   );
