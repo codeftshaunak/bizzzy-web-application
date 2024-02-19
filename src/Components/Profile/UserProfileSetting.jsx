@@ -31,7 +31,7 @@ const UserProfileSetting = () => {
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
-            <p className="text-[#374151] text-[14px] font-[500]">Desription</p>
+            <p className="text-[#374151] text-[14px] font-[500]">Description</p>
             <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
               <textarea
                 type="text"
@@ -145,7 +145,9 @@ const UserProfileSetting = () => {
               </div>
             </div>
             <div className="flex flex-col gap-[8px] w-full">
-              <p className="text-[#374151] text-[14px] font-[500]">Ending Date</p>
+              <p className="text-[#374151] text-[14px] font-[500]">
+                Ending Date
+              </p>
               <div className="w-[100%] flex items-center justify-between  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                 <input
                   type="text"
@@ -225,7 +227,7 @@ const UserProfileSetting = () => {
           </div>
 
           <div className="flex flex-col gap-[8px]">
-            <p className="text-[#374151] text-[14px] font-[500]">Desription</p>
+            <p className="text-[#374151] text-[14px] font-[500]">Description</p>
             <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
               <textarea
                 type="text"

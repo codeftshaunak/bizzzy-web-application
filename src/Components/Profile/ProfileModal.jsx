@@ -191,7 +191,7 @@ export const ProfileModal = ({
       );
     }
     getCategorySkills(userProfileInfo?.categories);
-  }, [modalIsOpen]);
+  }, []);
 
   const handleSaveAndContinue = async (e, data) => {
     e.preventDefault();
@@ -946,7 +946,7 @@ export const ProfileModal = ({
               </div>
             </div>
           )}
-          {modalPage === "exprience" && (
+          {modalPage === "experience" && (
             <div className="flex flex-col gap-[16px]">
               <div className="flex flex-col">
                 <div className="flex flex-col gap-[2px]">

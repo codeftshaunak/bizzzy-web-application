@@ -12,6 +12,7 @@ import { uploadImages, uploadMedia } from "../../helpers/gigApis";
 export const GigCreate = ({ activeStep, goForward, goBackward }) => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   // update form data with previous data
   const updateFormData = useCallback(
@@ -62,6 +63,7 @@ export const GigCreate = ({ activeStep, goForward, goBackward }) => {
   );
 
   const handleCreateGig = async (data) => {
+    setIsLoading(true);
     // Transform data to the desired format
     const transformedData = {
       title: data.title,
@@ -102,6 +104,8 @@ export const GigCreate = ({ activeStep, goForward, goBackward }) => {
     } catch (error) {
       console.log(error);
       navigate(-1);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -149,6 +153,7 @@ export const GigCreate = ({ activeStep, goForward, goBackward }) => {
           onBack={goBackward}
           submitCallback={updateFormData}
           formValues={formData}
+          isLoading={isLoading}
         />
       )}
     </div>
@@ -162,6 +167,7 @@ export const GigCreateLayout = ({
   onForward = () => {},
   backwardBtnText = "Back",
   forwardBtnText = "Save & Continue",
+  isLoading,
 }) => {
   return (
     <div className="w-[60%]">
@@ -170,37 +176,15 @@ export const GigCreateLayout = ({
       </Text>
       <br />
       <div className="w-full flex flex-col gap-5">{children}</div>
-      <HStack marginTop={"1rem"}>
-        <Button
-          className="mt-3 border"
-          backgroundColor={"white"}
-          height={"34px"}
-          fontWeight={"400"}
-          borderRadius={"25px"}
-          border={"2px solid  var(--primarytextcolor)"}
-          transition={"0.3s ease-in-out"}
-          _hover={{
-            color: "white",
-            backgroundColor: "var(--primarytextcolor)",
-          }}
-          onClick={onBackward}
-        >
+      <HStack marginTop={10}>
+        <Button colorScheme="whatsapp" marginRight={5} onClick={onBackward}>
           {backwardBtnText}
         </Button>
         <Button
+          isLoading={isLoading}
+          loadingText="Submitting"
+          colorScheme="whatsapp"
           type="submit"
-          className="mt-3 border"
-          backgroundColor={"var(--primarytextcolor)"}
-          color={"white"}
-          height={"34px"}
-          fontWeight={"400"}
-          borderRadius={"25px"}
-          border={"2px solid  var(--primarytextcolor)"}
-          transition={"0.3s ease-in-out"}
-          _hover={{
-            color: "black",
-            backgroundColor: "white",
-          }}
           onClick={onForward}
         >
           {forwardBtnText}

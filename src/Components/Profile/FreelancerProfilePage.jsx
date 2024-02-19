@@ -102,10 +102,10 @@ export const FreelancerProfilePage = ({ viewAs }) => {
     openModal();
   };
 
-  const HandleDeleteEducation = (id, type) => {
+  const handleDelete = (id, type) => {
     setId({ id, type });
-    setDeleteModalPage("exprience");
     setDeleteModalOpen(true);
+    setDeleteModalPage(type);
   };
 
   return (
@@ -277,9 +277,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                         {!viewAs && (
                           <div
                             className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
-                            onClick={() =>
-                              HandleDeleteEducation(edu._id, "education")
-                            }
+                            onClick={() => handleDelete(edu._id, "education")}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -351,7 +349,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                       height={"16px"}
                       cursor={"pointer"}
                       onClick={() => {
-                        setModalPage("exprience");
+                        setModalPage("experience");
                         openModal();
                       }}
                     />
@@ -359,24 +357,27 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                 )}
               </div>
               {experience?.length > 0 &&
-                experience?.map((exprience) => {
-                  const startDate = new Date(exprience.start_date);
-                  const endDate = new Date(exprience.end_date);
+                experience?.map((experience) => {
+                  const startDate = new Date(experience.start_date);
+                  const endDate = new Date(experience.end_date);
                   const startYear = startDate.getFullYear();
                   const endYear = endDate.getFullYear();
                   return (
                     <>
-                      <div className="flex flex-col gap-[8px]">
+                      <div
+                        className="flex flex-col gap-[8px]"
+                        key={experience._id}
+                      >
                         <div className="flex items-center justify-between">
                           <p className="text-[16px] text-[#374151] font-[600]">
-                            {exprience?.company_name}
+                            {experience?.company_name}
                           </p>
                           <div className="flex items-center gap-[12px]">
                             {!viewAs && (
                               <div
                                 className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
                                 onClick={() => {
-                                  openExperienceEditModal(exprience);
+                                  openExperienceEditModal(experience);
                                 }}
                               >
                                 <svg
@@ -404,7 +405,12 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                               </div>
                             )}
                             {!viewAs && (
-                              <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
+                              <div
+                                className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                                onClick={() =>
+                                  handleDelete(experience._id, "experience")
+                                }
+                              >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="16"
@@ -453,13 +459,13 @@ export const FreelancerProfilePage = ({ viewAs }) => {
                           </div>
                         </div>
                         <p className="text-[14px] text-[#374151]  font-bold">
-                          {exprience?.position}
+                          {experience?.position}
                         </p>
                         <p className="text-[14px] text-[#374151] font-[400]">
-                          {exprience?.job_location} | {startYear} to {endYear}
+                          {experience?.job_location} | {startYear} to {endYear}
                         </p>
                         <p className="text-[14px] text-[#374151] font-[400]">
-                          {exprience?.job_description}
+                          {experience?.job_description}
                         </p>
                       </div>
                     </>
@@ -523,13 +529,7 @@ export const FreelancerProfilePage = ({ viewAs }) => {
             {/* ===================== skills ============= */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
               {!viewAs && (
-                <div
-                  className="flex items-center justify-between"
-                  onClick={() => {
-                    setModalPage("skills");
-                    openModal();
-                  }}
-                >
+                <div className="flex items-center justify-between">
                   <p className="text-[16px] text-[#374151] font-[600]">
                     Skills
                   </p>
@@ -571,18 +571,18 @@ export const FreelancerProfilePage = ({ viewAs }) => {
             </div>
             {/* ======================= portfolio =============== */}
             <div className="flex flex-col gap-[24px]  border-[1px] py-[20px] px-[24px] border-[#D1D5DB] rounded-lg">
-              <div
-                className="flex items-center justify-between"
-                onClick={() => {
-                  setModalPage("portfolio");
-                  openModal();
-                }}
-              >
+              <div className="flex items-center justify-between">
                 <p className="text-[16px] text-[#374151] font-[600]">
                   Portfolio
                 </p>
                 {!viewAs && (
-                  <div className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer">
+                  <div
+                    className="flex items-center justify-center w-[28px] h-[28px] bg-[#F9FAFB] rounded-[6px] border-[1px] border-[#D1D5DB] cursor-pointer"
+                    onClick={() => {
+                      setModalPage("portfolio");
+                      openModal();
+                    }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"

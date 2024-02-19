@@ -49,7 +49,6 @@ const JobApply = ({ setPage, details }) => {
     customBidAmount: null,
     coverLetter: "",
   });
-
   const handleBudgetTypeChange = (value) => {
     setBidDetails((prev) => ({
       ...prev,
@@ -65,7 +64,7 @@ const JobApply = ({ setPage, details }) => {
         : bidDetails.customBidAmount;
     return bidAmount - bidAmount * 0.1;
   };
-
+  console.log(calculateServiceFee());
   const { id } = useParams();
   const toast = useToast();
   const navigate = useNavigate();
@@ -148,7 +147,7 @@ const JobApply = ({ setPage, details }) => {
 
   useEffect(() => {
     if (quill) {
-      quill.on("text-change", (_, __, source) => {
+      quill.on("text-change", () => {
         setCoverLetter(quill.root.innerHTML);
       });
     }
@@ -156,6 +155,7 @@ const JobApply = ({ setPage, details }) => {
 
   useEffect(() => {
     setDesireHourlyRate(hourly_rate);
+    console.log(hourly_rate);
   }, [hourly_rate]);
 
   const handleFileChange = (e) => {
@@ -163,6 +163,7 @@ const JobApply = ({ setPage, details }) => {
     setSelectedFile(file);
   };
 
+  console.log(desireHourlyRate);
   return (
     <Box w="90%" py={2} mx="auto">
       <Box className="flex gap-2 py-6">
