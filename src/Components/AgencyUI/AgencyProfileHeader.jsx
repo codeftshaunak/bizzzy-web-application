@@ -1,13 +1,5 @@
-import React, { useState } from "react";
-import {
-  HStack,
-  Image,
-  VStack,
-  Box,
-  Text,
-  Button,
-  Avatar,
-} from "@chakra-ui/react";
+import { useState } from "react";
+import { HStack, Image, VStack, Text, Button, Avatar } from "@chakra-ui/react";
 import { RiEdit2Fill, RiDeleteBin2Fill } from "react-icons/ri";
 import { AgencyBodyLayout } from "./AgencyBody";
 import { useCookies } from "react-cookie";
@@ -31,6 +23,7 @@ const AgencyProfileHeader = ({ agency, setAgency }) => {
     setIsModalType(type);
     setModalData(data);
   };
+
   return (
     <>
       <VStack width={"100%"} position={"relative"}>
@@ -79,6 +72,7 @@ const AgencyProfileHeader = ({ agency, setAgency }) => {
                 backgroundColor: "transparent",
                 color: "var(--primarycolor)",
               }}
+              onClick={() => handleUpdate("Cover Photo")}
             >
               <RiEdit2Fill fontSize={"25px"} />
             </VStack>
@@ -141,6 +135,7 @@ const AgencyProfileHeader = ({ agency, setAgency }) => {
                     backgroundColor: "transparent",
                     color: "var(--primarycolor)",
                   }}
+                  onClick={() => handleUpdate("Profile Photo")}
                 >
                   <RiEdit2Fill fontSize={"15px"} />
                 </VStack>

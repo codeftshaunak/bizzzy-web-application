@@ -14,6 +14,16 @@ import {
 import { applyJob } from "../../helpers/jobApis";
 import { useNavigate, useParams } from "react-router-dom";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
+import { useSelector } from "react-redux";
+import {
+  FaFile,
+  FaFileExcel,
+  FaFileImage,
+  FaFilePowerpoint,
+  FaFileVideo,
+  FaRegFilePdf,
+  FaRegFileWord,
+} from "react-icons/fa";
 
 const modules = {
   toolbar: [
@@ -33,13 +43,15 @@ const modules = {
 };
 
 const JobApply = ({ setPage, details }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const details_new = details[0];
-
+  const profile = useSelector((state) => state?.profile);
   const { quill, quillRef } = useQuill({ modules });
   const [isApplicant, setIsApplicant] = useState("freelancer");
   const [coverLetter, setCoverLetter] = useState("");
   const { hasAgency, currentUser } = useContext(CurrentUserContext);
-  const { hourly_rate } = currentUser?.profile || [];
+  const { hourly_rate } = profile.profile || [];
+
   const [desireHourlyRate, setDesireHourlyRate] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
   const [bidDetails, setBidDetails] = useState({
@@ -48,6 +60,14 @@ const JobApply = ({ setPage, details }) => {
     customBidAmount: null,
     coverLetter: "",
   });
+
+  useEffect(() => {
+    setDesireHourlyRate(
+      isApplicant === "freelancer"
+        ? profile?.profile?.hourly_rate
+        : profile?.agency?.agency_hourlyRate
+    );
+  }, [isApplicant]);
 
   const handleBudgetTypeChange = (value) => {
     setBidDetails((prev) => ({
@@ -62,7 +82,7 @@ const JobApply = ({ setPage, details }) => {
       bidDetails.type === "project"
         ? bidDetails.amount
         : bidDetails.customBidAmount;
-    return bidAmount - bidAmount * 0.1;
+    return bidAmount - bidAmount * 0.05;
   };
 
   const { id } = useParams();
@@ -70,6 +90,8 @@ const JobApply = ({ setPage, details }) => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    setIsLoading(true);
+
     try {
       const jobData = {
         jobId: id,
@@ -84,7 +106,7 @@ const JobApply = ({ setPage, details }) => {
 
       // if applicant has been agency member then add agency_id
       if (isApplicant !== "freelancer") {
-        jobData.agency_id = hasAgency;
+        jobData.agency_id = profile.agency._id;
       }
 
       const response = await applyJob(jobData);
@@ -92,9 +114,12 @@ const JobApply = ({ setPage, details }) => {
     } catch (error) {
       console.error(error);
     }
+
+    setIsLoading(false);
   };
 
   const handleHourlyJobSubmit = async () => {
+    setIsLoading(true);
     try {
       const response = await applyJob({
         jobId: id,
@@ -108,13 +133,24 @@ const JobApply = ({ setPage, details }) => {
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false);
   };
 
   const handleSubmissionResponse = (response) => {
-    const isSuccess = response.code === 200;
-    const toastMessage = isSuccess
-      ? "Job Applied Successfully"
-      : response.message;
+    console.log(response);
+    // console.log(response);
+    // if (response?.code === 400) {
+    //   return toast({
+    //     title: response.msg,
+    //     position: "top",
+    //     status: "warning",
+    //     isClosable: true,
+    //     duration: 2000,
+    //   });
+    // }
+
+    const isSuccess = response?.code === 200;
+    const toastMessage = isSuccess ? "Job Applied Successfully" : response?.msg;
 
     toast({
       title: toastMessage,
@@ -131,20 +167,49 @@ const JobApply = ({ setPage, details }) => {
 
   useEffect(() => {
     if (quill) {
-      quill.on("text-change", (_, __, source) => {
+      quill.on("text-change", () => {
         setCoverLetter(quill.root.innerHTML);
       });
     }
   }, [quill]);
 
-  useEffect(() => {
-    setDesireHourlyRate(hourly_rate);
-  }, [hourly_rate]);
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
+
+  // check file types and generate file icon
+  const getFileTypeIcon = (fileName) => {
+    const extension = fileName.split(".").pop().toLowerCase();
+
+    switch (extension) {
+      case "png":
+      case "jpg":
+      case "jpeg":
+      case "gif":
+      case "svg":
+        return <FaFileImage className="text-5xl text-green-300" />;
+      case "mp4":
+      case "avi":
+      case "mov":
+      case "mkv":
+        return <FaFileVideo className="text-5xl text-green-300" />;
+      case "pdf":
+        return <FaRegFilePdf className="text-5xl text-green-300" />;
+      case "doc":
+      case "docx":
+        return <FaRegFileWord className="text-5xl text-green-300" />;
+      case "xls":
+      case "xlsx":
+        return <FaFileExcel className="text-5xl text-green-300" />;
+      case "ppt":
+      case "pptx":
+        return <FaFilePowerpoint className="text-5xl text-green-300" />;
+      default:
+        return <FaFile className="text-5xl text-green-300" />;
+    }
+  };
+  const fileIcon = selectedFile ? getFileTypeIcon(selectedFile.name) : null;
 
   return (
     <Box w="90%" py={2} mx="auto">
@@ -275,11 +340,16 @@ const JobApply = ({ setPage, details }) => {
                       />
                     </label>
                   </Box>
+
                   <Button
-                    className="bg-primary text-secondary rounded h-[36px] px-4 mt-4"
+                    isLoading={isLoading}
+                    loadingText="Submitting"
+                    colorScheme="whatsapp"
+                    type="submit"
+                    marginTop={10}
                     onClick={() => handleSubmit()}
                   >
-                    Submit Proposal
+                    Submit
                   </Button>
                 </Box>
               </Box>
@@ -306,13 +376,23 @@ const JobApply = ({ setPage, details }) => {
                 />
 
                 <HStack justify="space-between" mt={4}>
-                  <Box fontWeight="semibold">10% Freelancer Service Fee</Box>
-                  <Box fontWeight="semibold">-$10.00</Box>
+                  <Box fontWeight="semibold">5% Freelancer Service Fee</Box>
+                  <Box fontWeight="semibold">
+                    $
+                    {desireHourlyRate
+                      ? (desireHourlyRate * 0.05).toFixed(2)
+                      : "0.00"}
+                  </Box>
                 </HStack>
 
                 <HStack justify="space-between" mt={4}>
                   <Box fontWeight="semibold">You'll Receive</Box>
-                  <Box fontWeight="semibold">$90.00</Box>
+                  <Box fontWeight="semibold">
+                    $
+                    {desireHourlyRate
+                      ? (desireHourlyRate * 0.95).toFixed(2)
+                      : "0.00"}
+                  </Box>
                 </HStack>
               </Box>
 
@@ -327,9 +407,15 @@ const JobApply = ({ setPage, details }) => {
                   (0/500)
                 </Box>
                 <Box fontWeight="semibold" mt={4}>
-                  Attachments
+                  Attachments:
                 </Box>
                 <Box className="max-w-xl">
+                  {selectedFile && (
+                    <div className="bg-white w-full p-3 rounded-lg shadow my-4 flex items-center justify-start gap-3">
+                      {fileIcon}
+                      <p>{selectedFile?.name}</p>
+                    </div>
+                  )}
                   <label className="flex justify-center w-full h-20 px-4 transition bg-green-200 border-2 border-green-600 border-dashed rounded-md appearance-none cursor-pointer">
                     <span className="flex items-center space-x-2">
                       <span>
@@ -348,10 +434,14 @@ const JobApply = ({ setPage, details }) => {
                 </Box>
 
                 <Button
-                  className="bg-primary text-secondary rounded h-[36px] px-4 mt-4"
+                  isLoading={isLoading}
+                  loadingText="Submitting"
+                  colorScheme="whatsapp"
+                  type="submit"
+                  marginTop={10}
                   onClick={() => handleHourlyJobSubmit()}
                 >
-                  Submit Proposal
+                  Submit
                 </Button>
               </Box>
             </Box>
@@ -385,7 +475,7 @@ const BidDetailsSection = ({
     />
 
     <HStack margin="5px 0" justify="space-between">
-      <Box fontWeight="semibold">10% Freelancer Service Fee</Box>
+      <Box fontWeight="semibold">5% Freelancer Service Fee</Box>
       <Box fontWeight="semibold">-${(bidAmount - serviceFee).toFixed(2)}</Box>
     </HStack>
 

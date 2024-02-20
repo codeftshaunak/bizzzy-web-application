@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllDetailsOfUser } from "../helpers/userApis";
 import { useCookies } from "react-cookie";
 import { agencyData, profileData } from "../redux/authSlice/profileSlice";
-import { getAgency } from '../helpers/agencyApis';
+import { getAgency } from "../helpers/agencyApis";
 const CurrentUserContext = createContext();
 
 const CurrentUserProvider = ({ children }) => {
@@ -22,7 +22,7 @@ const CurrentUserProvider = ({ children }) => {
       dispatch(profileData({ profile: resp }));
       const response = await getAgency();
       dispatch(agencyData({ agency: response }));
-      setUserAgencyLoading(false)
+      setUserAgencyLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -33,7 +33,16 @@ const CurrentUserProvider = ({ children }) => {
   }, []);
 
   return (
-    <CurrentUserContext.Provider value={{ profile, agency, hasAgency, activeAgency, getUserDetails, userAgencyLoading }}>
+    <CurrentUserContext.Provider
+      value={{
+        profile,
+        agency,
+        hasAgency,
+        activeAgency,
+        getUserDetails,
+        userAgencyLoading,
+      }}
+    >
       {children}
     </CurrentUserContext.Provider>
   );

@@ -10,11 +10,22 @@ const UniversalModal = ({ isModal, setIsModal, title, children }) => {
   };
 
   return (
-    <div>
+    <>
       {isModal && (
         <div
           onClick={handleClose}
-          className="fixed top-0 left-0 flex justify-center items-center z-50 w-full h-full bg-black/30"
+          style={{
+            position: "fixed",
+            top: "0",
+            left: "0",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: "100",
+            width: "100%",
+            height: "100%",
+            background: "rgba(0, 0, 0, 0.3)",
+          }}
         >
           <div
             onClick={handleModalClick}
@@ -33,7 +44,7 @@ const UniversalModal = ({ isModal, setIsModal, title, children }) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

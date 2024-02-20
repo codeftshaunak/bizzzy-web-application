@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Modal from "react-modal";
-import { HStack, useToast } from "@chakra-ui/react";
+import { HStack, useToast, Button } from "@chakra-ui/react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import {
   updateFreelancerProfile,
@@ -13,8 +12,6 @@ import {
 } from "../../helpers/userApis";
 import { getSkills } from "../../helpers/freelancerApis";
 import { IoMdClose } from "react-icons/io";
-import LoadingButton from "../LoadingComponent/LoadingButton";
-import CTAButton from "../CTAButton";
 import { profileData } from "../../redux/authSlice/profileSlice";
 import UniversalModal from "../Modals/UniversalModal";
 
@@ -194,9 +191,11 @@ export const ProfileModal = ({
       );
     }
     getCategorySkills(userProfileInfo?.categories);
-  }, [modalIsOpen]);
+  }, []);
 
-  const handleSaveAndContinue = async (data) => {
+  const handleSaveAndContinue = async (e, data) => {
+    e.preventDefault();
+
     setIsLoading(true);
     try {
       if (data === "category") {
@@ -320,6 +319,7 @@ export const ProfileModal = ({
             profile: response,
           })
         );
+        setSelectedImages([]);
         if (response.code == 405 || response.code == 500) {
           toast({
             title: response.msg,
@@ -461,38 +461,7 @@ export const ProfileModal = ({
           closeModal();
         }
       } else if (data == "editProfile") {
-        const response = await updateFreelancer({
-          editProfile: {
-            profile_image: editProfileInput.profile_image,
-          },
-        });
-        getUpdatedUser();
-        if (response.code == 405 || response.code == 500) {
-          toast({
-            title: response.msg,
-            status: "warning",
-            duration: 3000,
-            isClosable: true,
-            position: "top-right",
-          });
-          setEditProfileInput({
-            profile: "",
-          });
-          closeModal();
-        } else if (response.code === 200) {
-          // Handle category added successfully
-          toast({
-            title: "Profile Edited Successfully",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-            position: "top-right",
-          });
-          setEditProfileInput({
-            profile: "",
-          });
-          closeModal();
-        }
+        await uploadProfileImage();
       } else if (data == "education") {
         const response = await updateFreelancerProfile({
           education: {
@@ -662,86 +631,72 @@ export const ProfileModal = ({
           {modalPage}
         </p>
 
-        {modalPage === "skills" && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col">
-              <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
-                options={options}
-                value={selectedOptions}
-                onChange={handleChange}
-                styles={selectStyle}
-              />
-            </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Submit"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => handleSaveAndContinue("skills")}
+        <form onSubmit={(e) => handleSaveAndContinue(e, modalPage)}>
+          {modalPage === "skills" && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col">
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={options}
+                  value={selectedOptions}
+                  onChange={handleChange}
+                  styles={selectStyle}
+                  required
                 />
-              )}
+              </div>
             </div>
-          </div>
-        )}
-        {modalPage === "portfolio" && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col  ">
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Project Name
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Project Name"
-                    onChange={(e) =>
-                      setPortfolioInput({
-                        ...portfolioInput,
-                        project_name: e.target.value,
-                      })
-                    }
-                  />
+          )}
+          {modalPage === "portfolio" && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col  ">
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Project Name
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="text"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Project Name"
+                      onChange={(e) =>
+                        setPortfolioInput({
+                          ...portfolioInput,
+                          project_name: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <br />
                 </div>
-                <br />
-              </div>
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Project Description
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <textarea
-                    type="text"
-                    value={portfolioInput.project_description}
-                    onChange={(e) =>
-                      setPortfolioInput({
-                        ...portfolioInput,
-                        project_description: e.target.value,
-                      })
-                    }
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Description"
-                  />
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Project Description
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <textarea
+                      required
+                      type="text"
+                      onChange={(e) =>
+                        setPortfolioInput({
+                          ...portfolioInput,
+                          project_description: e.target.value,
+                        })
+                      }
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Description"
+                    />
+                  </div>
+                  <br />
                 </div>
-                <br />
-              </div>
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Technologies
-                </p>
-                <div className="w-[100%] outline-none border-[1px] rounded-md">
-                  {/* <input
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Technologies
+                  </p>
+                  <div className="w-[100%] outline-none border-[1px] rounded-md">
+                    {/* <input
                     type="text"
                     className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                     placeholder="Technologies"
@@ -753,646 +708,565 @@ export const ProfileModal = ({
                     }
                   /> */}
 
-                  <Select
-                    closeMenuOnSelect={false}
-                    components={animatedComponents}
-                    isMulti
-                    options={options}
-                    onChange={handleChange}
-                    // styles={selectStyle}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-[2px] mt-6">
-                <p className="text-[14px] font-[500] text-[#374151]">Media</p>
-                <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
-                  <div className="flex">
-                    {selectedImages?.map((image, index) => (
-                      <div
-                        key={index}
-                        className="rounded border border-green-300 mr-2 relative"
-                      >
-                        <img
-                          src={URL.createObjectURL(image)}
-                          alt={`Selected ${index + 1}`}
-                          className="w-20 h-20 object-cover rounded"
-                        />
-                        <span
-                          className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
-                          onClick={() => handleImageDelete(index)}
-                        >
-                          <IoMdClose />
-                        </span>
-                      </div>
-                    ))}
+                    <Select
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      isMulti
+                      options={options}
+                      onChange={handleChange}
+                      required
+                      styles={selectStyle}
+                    />
                   </div>
-                  {selectedImages.length < 3 && (
-                    <div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        name="file"
-                        multiple
-                        style={{ display: "none" }}
-                        id="fileInput"
-                        disabled={selectedImages.length >= 3}
-                      />
-                      <label htmlFor="fileInput">
+                </div>
+                <div className="flex flex-col gap-[2px] mt-6">
+                  <p className="text-[14px] font-[500] text-[#374151]">Media</p>
+                  <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex">
+                    <div className="flex">
+                      {selectedImages?.map((image, index) => (
                         <div
-                          className={`w-24 h-20 border border-green-400 rounded cursor-pointer bg-green-100 hover:bg-green-200 flex flex-col items-center justify-center text-center`}
+                          key={index}
+                          className="rounded border border-green-300 mr-2 relative"
                         >
-                          <span>
-                            <FaCloudUploadAlt className="text-2xl text-center" />
-                          </span>
-                          <span className="font-semibold">
-                            {selectedImages.length > 0 ? "Add More" : "Add"}
+                          <img
+                            src={URL.createObjectURL(image)}
+                            alt={`Selected ${index + 1}`}
+                            className="w-20 h-20 object-cover rounded"
+                          />
+                          <span
+                            className="h-5 w-5 bg-red-50/10 rounded-full absolute top-0 right-0 flex items-center justify-center cursor-pointer backdrop-blur backdrop-filter hover:bg-red-100 hover:text-red-500"
+                            onClick={() => handleImageDelete(index)}
+                          >
+                            <IoMdClose />
                           </span>
                         </div>
-                      </label>
+                      ))}
                     </div>
-                  )}
+                    {selectedImages.length < 3 && (
+                      <div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          name="file"
+                          multiple
+                          style={{ display: "none" }}
+                          id="fileInput"
+                          disabled={selectedImages.length >= 3}
+                        />
+                        <label htmlFor="fileInput">
+                          <div
+                            className={`w-24 h-20 border border-green-400 rounded cursor-pointer bg-green-100 hover:bg-green-200 flex flex-col items-center justify-center text-center`}
+                          >
+                            <span>
+                              <FaCloudUploadAlt className="text-2xl text-center" />
+                            </span>
+                            <span className="font-semibold">
+                              {selectedImages.length > 0 ? "Add More" : "Add"}
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Submit"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => handleSaveAndContinue("portfolio")}
-                />
-              )}
-            </div>
-          </div>
-        )}
-        {modalPage === "education" && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col  ">
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Degree Name
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Degree"
-                    onChange={(e) =>
-                      setEducationInput({
-                        ...educationInput,
-                        degree_name: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <br />
-              </div>
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Institution
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Institution"
-                    onChange={(e) =>
-                      setEducationInput({
-                        ...educationInput,
-                        institution: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <br />
-              <HStack justifyContent={"space-between"}>
-                <div className="flex flex-col gap-[2px] w-[49%]">
+          )}
+          {modalPage === "education" && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col  ">
+                <div className="flex flex-col gap-[2px]">
                   <p className="text-[14px] font-[500] text-[#374151]">
-                    Start Date
+                    Degree Name
                   </p>
                   <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                     <input
-                      type="date"
+                      type="text"
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="State date"
+                      placeholder="Degree"
+                      required
                       onChange={(e) =>
                         setEducationInput({
                           ...educationInput,
-                          start_date: e.target.value,
+                          degree_name: e.target.value,
                         })
                       }
                     />
                   </div>
+                  <br />
                 </div>
-                <br />
-                <div className="flex flex-col gap-[2px] w-[49%]">
+                <div className="flex flex-col gap-[2px]">
                   <p className="text-[14px] font-[500] text-[#374151]">
-                    End Date
+                    Institution
                   </p>
                   <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                     <input
-                      type="date"
-                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="End Date"
-                      onChange={(e) =>
-                        setEducationInput({
-                          ...educationInput,
-                          end_date: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-              </HStack>
-              <br />
-            </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Submit"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => handleSaveAndContinue("education")}
-                />
-              )}
-            </div>
-          </div>
-        )}
-        {modalPage === "educationEdit" && selectedEducation && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col  ">
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Degree Name
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Degree"
-                    name="degree_name"
-                    value={selectedEducation.degree_name}
-                    // defaultValue={updateEducationInput.degree_name}
-                    onChange={handleInputChange}
-                  />
-                  <input
-                    type="hidden"
-                    name="_id"
-                    value={selectedEducation._id}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <br />
-              </div>
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Institution
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Institution"
-                    name="institution"
-                    value={selectedEducation.institution}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <br />
-              <HStack justifyContent={"space-between"}>
-                <div className="flex flex-col gap-[2px] w-[49%]">
-                  <p className="text-[14px] font-[500] text-[#374151]">
-                    Start Date
-                  </p>
-                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                    <input
-                      type="date"
-                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="Start date"
-                      name="start_date"
-                      value={selectedEducation.start_date}
-                      defaultValue={selectedEducation.start_date}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                <br />
-                <div className="flex flex-col gap-[2px] w-[49%]">
-                  <p className="text-[14px] font-[500] text-[#374151]">
-                    End Date
-                  </p>
-                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                    <input
-                      type="date"
-                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="End Date"
-                      name="end_date"
-                      value={selectedEducation.end_date}
-                      defaultValue={selectedEducation.end_date}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-              </HStack>
-              <br />
-            </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Update"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => handleSaveAndContinue("educationUpdate")}
-                />
-              )}
-            </div>
-          </div>
-        )}
-        {modalPage === "exprience" && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col">
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Your Company Name
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Your Company Name"
-                    onChange={(e) =>
-                      setExperienceInput({
-                        ...experienceInput,
-                        company_name: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <br />
-              <HStack justifyContent={"space-between"}>
-                <div className="flex flex-col gap-[2px] w-[49%]">
-                  <p className="text-[14px] font-[500] text-[#374151]">
-                    Start Year
-                  </p>
-                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                    <input
-                      type="date"
+                      type="text"
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                       placeholder="Institution"
+                      required
+                      onChange={(e) =>
+                        setEducationInput({
+                          ...educationInput,
+                          institution: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <br />
+                <HStack justifyContent={"space-between"}>
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      Start Date
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="State date"
+                        required
+                        onChange={(e) =>
+                          setEducationInput({
+                            ...educationInput,
+                            start_date: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      End Date
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="End Date"
+                        required
+                        onChange={(e) =>
+                          setEducationInput({
+                            ...educationInput,
+                            end_date: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </HStack>
+                <br />
+              </div>
+            </div>
+          )}
+          {modalPage === "educationEdit" && selectedEducation && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col  ">
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Degree Name
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="text"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Degree"
+                      name="degree_name"
+                      value={selectedEducation.degree_name}
+                      // defaultValue={updateEducationInput.degree_name}
+                      onChange={handleInputChange}
+                    />
+                    <input
+                      type="hidden"
+                      name="_id"
+                      value={selectedEducation._id}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <br />
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Institution
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="text"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Institution"
+                      name="institution"
+                      value={selectedEducation.institution}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <br />
+                <HStack justifyContent={"space-between"}>
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      Start Date
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        required
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="Start date"
+                        name="start_date"
+                        value={selectedEducation.start_date}
+                        defaultValue={selectedEducation.start_date}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      End Date
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        required
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="End Date"
+                        name="end_date"
+                        value={selectedEducation.end_date}
+                        defaultValue={selectedEducation.end_date}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </HStack>
+                <br />
+              </div>
+            </div>
+          )}
+          {modalPage === "experience" && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col">
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Your Company Name
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="text"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Your Company Name"
                       onChange={(e) =>
                         setExperienceInput({
                           ...experienceInput,
-                          start_date: e.target.value,
+                          company_name: e.target.value,
                         })
                       }
                     />
                   </div>
                 </div>
                 <br />
-                <div className="flex flex-col gap-[2px] w-[49%]">
+                <HStack justifyContent={"space-between"}>
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      Start Year
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        required
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="Institution"
+                        onChange={(e) =>
+                          setExperienceInput({
+                            ...experienceInput,
+                            start_date: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      End Year
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        required
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="Position"
+                        onChange={(e) =>
+                          setExperienceInput({
+                            ...experienceInput,
+                            end_date: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </HStack>
+                <br />
+                <div className="flex flex-col gap-[2px]">
                   <p className="text-[14px] font-[500] text-[#374151]">
-                    End Year
+                    Position
                   </p>
                   <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                     <input
-                      type="date"
+                      required
+                      type="text"
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                       placeholder="Position"
                       onChange={(e) =>
                         setExperienceInput({
                           ...experienceInput,
-                          end_date: e.target.value,
+                          position: e.target.value,
                         })
                       }
                     />
                   </div>
                 </div>
-              </HStack>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Position
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Position"
-                    onChange={(e) =>
-                      setExperienceInput({
-                        ...experienceInput,
-                        position: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Location
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    value={experienceInput.job_location}
-                    onChange={(e) =>
-                      setExperienceInput({
-                        ...experienceInput,
-                        job_location: e.target.value,
-                      })
-                    }
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Location"
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Description
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <textarea
-                    type="text"
-                    value={experienceInput.job_description}
-                    onChange={(e) =>
-                      setExperienceInput({
-                        ...experienceInput,
-                        job_description: e.target.value,
-                      })
-                    }
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Description"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Submit"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => handleSaveAndContinue("experience")}
-                />
-              )}
-            </div>
-          </div>
-        )}
-        {modalPage === "experienceUpdated" && selectedEducation && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col">
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Your Company Name
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Your Company Name"
-                    name="company_name"
-                    value={selectedEducation?.company_name}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <br />
-              <HStack justifyContent={"space-between"}>
-                <div className="flex flex-col gap-[2px] w-[49%]">
+                <br />
+                <div className="flex flex-col gap-[2px]">
                   <p className="text-[14px] font-[500] text-[#374151]">
-                    Start Year
+                    Location
                   </p>
                   <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                     <input
-                      type="date"
+                      required
+                      type="text"
+                      value={experienceInput.job_location}
+                      onChange={(e) =>
+                        setExperienceInput({
+                          ...experienceInput,
+                          job_location: e.target.value,
+                        })
+                      }
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                      placeholder="Institution"
-                      name="start_date"
-                      value={selectedEducation?.start_date}
+                      placeholder="Location"
+                    />
+                  </div>
+                </div>
+                <br />
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Description
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <textarea
+                      required
+                      type="text"
+                      value={experienceInput.job_description}
+                      onChange={(e) =>
+                        setExperienceInput({
+                          ...experienceInput,
+                          job_description: e.target.value,
+                        })
+                      }
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Description"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {modalPage === "experienceUpdated" && selectedEducation && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col">
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Your Company Name
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="text"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Your Company Name"
+                      name="company_name"
+                      value={selectedEducation?.company_name}
                       onChange={handleInputChange}
                     />
                   </div>
                 </div>
                 <br />
-                <div className="flex flex-col gap-[2px] w-[49%]">
+                <HStack justifyContent={"space-between"}>
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      Start Year
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        required
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="Institution"
+                        name="start_date"
+                        value={selectedEducation?.start_date}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div className="flex flex-col gap-[2px] w-[49%]">
+                    <p className="text-[14px] font-[500] text-[#374151]">
+                      End Year
+                    </p>
+                    <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                      <input
+                        required
+                        type="date"
+                        className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                        placeholder="Position"
+                        name="end_date"
+                        value={selectedEducation?.end_date}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </HStack>
+                <br />
+                <div className="flex flex-col gap-[2px]">
                   <p className="text-[14px] font-[500] text-[#374151]">
-                    End Year
+                    Position
                   </p>
                   <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
                     <input
-                      type="date"
+                      required
+                      type="text"
                       className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
                       placeholder="Position"
-                      name="end_date"
-                      value={selectedEducation?.end_date}
+                      name="position"
+                      value={selectedEducation?.position}
                       onChange={handleInputChange}
                     />
                   </div>
                 </div>
-              </HStack>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Position
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Position"
-                    name="position"
-                    value={selectedEducation?.position}
-                    onChange={handleInputChange}
-                  />
+                <br />
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Location
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="text"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      name="job_location"
+                      value={selectedEducation?.job_location}
+                      onChange={handleInputChange}
+                      placeholder="Location"
+                    />
+                  </div>
                 </div>
-              </div>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Location
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    name="job_location"
-                    value={selectedEducation?.job_location}
-                    onChange={handleInputChange}
-                    placeholder="Location"
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Description
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <textarea
-                    type="text"
-                    name="job_description"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    value={selectedEducation?.job_description}
-                    onChange={handleInputChange}
-                    placeholder="Description"
-                  />
+                <br />
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Description
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <textarea
+                      required
+                      type="text"
+                      name="job_description"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      value={selectedEducation?.job_description}
+                      onChange={handleInputChange}
+                      placeholder="Description"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Update"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => handleSaveAndContinue("experienceUpdated")}
-                />
-              )}
+          )}
+          {modalPage === "editProfile" && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col">
+                <div className="flex flex-col gap-[2px]">
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="file"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="Your Company Name"
+                      name="profile_image"
+                      onChange={(e) => handleFileChange(e)}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+          )}
+          {modalPage === "basicInformation" && (
+            <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col">
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">Title</p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="text"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="professional_role"
+                      name="professional_role"
+                      value={selectedEducation?.professional_role}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <br />
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Hourly
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <input
+                      required
+                      type="number"
+                      className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      placeholder="hourly_rate"
+                      name="hourly_rate"
+                      value={selectedEducation?.hourly_rate}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <br />
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[14px] font-[500] text-[#374151]">
+                    Description
+                  </p>
+                  <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
+                    <textarea
+                      required
+                      type="text"
+                      name="description"
+                      className="w-full h-24 py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
+                      value={selectedEducation?.description}
+                      onChange={handleInputChange}
+                      placeholder="description"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
+            <Button
+              isLoading={isLoading}
+              loadingText="Submitting"
+              colorScheme="whatsapp"
+              type="submit"
+            >
+              Submit
+            </Button>
           </div>
-        )}
-        {modalPage === "editProfile" && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col">
-              <div className="flex flex-col gap-[2px]">
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="file"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="Your Company Name"
-                    name="profile_image"
-                    onChange={(e) => handleFileChange(e)}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Submit"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => uploadProfileImage()}
-                />
-              )}
-            </div>
-          </div>
-        )}
-        {modalPage === "basicInformation" && (
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col">
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">Title</p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="text"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="professional_role"
-                    name="professional_role"
-                    value={selectedEducation?.professional_role}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">Hourly</p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <input
-                    type="number"
-                    className="w-full py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    placeholder="hourly_rate"
-                    name="hourly_rate"
-                    value={selectedEducation?.hourly_rate}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="flex flex-col gap-[2px]">
-                <p className="text-[14px] font-[500] text-[#374151]">
-                  Description
-                </p>
-                <div className="w-[100%]  py-[2px] px-[12px] outline-none border-[1px] rounded-md">
-                  <textarea
-                    type="text"
-                    name="description"
-                    className="w-full h-24 py-1.5 outline-none text-[14px] text-[#000] font-[400] border-[#D1D5DB] "
-                    value={selectedEducation?.description}
-                    onChange={handleInputChange}
-                    placeholder="description"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center justify-end gap-2 pt-5 w-full border-t-[1px] border-t-[#F3F4F6] ">
-              {isLoading ? (
-                <LoadingButton />
-              ) : (
-                <CTAButton
-                  text="Submit"
-                  bg="var(--primarycolor)"
-                  color="#fff"
-                  fontWeight="500"
-                  height="2.5rem"
-                  borderRadius="5px"
-                  fontSize="1rem"
-                  type="submit"
-                  onClick={() => handleSaveAndContinue("basicInformation")}
-                />
-              )}
-            </div>
-          </div>
-        )}
+        </form>
       </div>
     </UniversalModal>
   );

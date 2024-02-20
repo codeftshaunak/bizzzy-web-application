@@ -53,7 +53,13 @@ const defaultValues = {
   privacy_notice: false,
 };
 
-const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
+const Step4 = ({
+  submitCallback,
+  onBack,
+  afterSubmit,
+  formValues,
+  isLoading,
+}) => {
   const methods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
@@ -95,6 +101,7 @@ const Step4 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
           title={"Project description"}
           forwardBtnText="Submit now"
           onBackward={onBack}
+          isLoading={isLoading}
         >
           <VStack alignItems={"start"}>
             <label htmlFor="" className="text-xl font-[600] pb-0">

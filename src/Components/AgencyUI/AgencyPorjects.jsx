@@ -1,4 +1,4 @@
-import { Box, Text, Image, VStack, HStack } from "@chakra-ui/react";
+import { Box, Text, Image, VStack, HStack, Button } from "@chakra-ui/react";
 import ProjectCard from "./ProjectCard";
 import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -18,8 +18,6 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 // import required modules
 import { Pagination, Navigation } from "swiper/modules";
-import LoadingButton from "../LoadingComponent/LoadingButton";
-import CTAButton from "../CTAButton";
 import UniversalModal from "../Modals/UniversalModal";
 
 const AgencyProjects = ({ agency, setAgency }) => {
@@ -45,7 +43,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
       const portfolio = response.agency_portfolio.slice(-1)[0];
       if (response?._id) {
         imagesFormData.append("ref", "agency_project_portfolio");
-        imagesFormData.append("agency_id", response._id);
+        imagesFormData.append("ref_id", response._id);
         if (portfolio?._id) {
           const response = await uploadImages(
             imagesFormData,
@@ -68,10 +66,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
 
   const getAllSkills = async () => {
     try {
-      const response = await getSkills(
-        agency_services?.category,
-        agency_services?.category
-      );
+      const response = await getSkills(agency_services?.category);
       setSkills(
         response?.map((item) => ({
           label: item.skill_name,
@@ -169,18 +164,22 @@ const AgencyProjects = ({ agency, setAgency }) => {
                 </SwiperSlide>
               ))}
             </Swiper>
-            <button
-              ref={prevRef}
-              className="absolute top-1/2 -left-2 z-20 bg-green-100 rounded-full shadow -mt-4"
-            >
-              <MdNavigateBefore className="text-3xl" />
-            </button>
-            <button
-              ref={nextRef}
-              className="absolute top-1/2 -right-2 z-20 bg-green-100 rounded-full shadow -mt-4"
-            >
-              <MdNavigateNext className="text-3xl" />
-            </button>
+            {agency.agency_portfolio.length > 3 && (
+              <>
+                <button
+                  ref={prevRef}
+                  className="absolute top-1/2 -left-2 z-20 bg-green-100 rounded-full shadow -mt-4"
+                >
+                  <MdNavigateBefore className="text-3xl" />
+                </button>
+                <button
+                  ref={nextRef}
+                  className="absolute top-1/2 -right-2 z-20 bg-green-100 rounded-full shadow -mt-4"
+                >
+                  <MdNavigateNext className="text-3xl" />
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <Box marginTop={"20px"}>
@@ -191,7 +190,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
               margin={"auto"}
             ></Image>
             <Text fontSize={"1.3rem"} textAlign={"center"} fontWeight={"600"}>
-              You haven't added your project!
+              You haven&apos;t added your project!
             </Text>
             <Text fontSize={"1rem"} textAlign={"center"}>
               Add your best build for attract visitors!!!
@@ -200,7 +199,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
         )}
       </Box>
 
-      {/* Modal */}
+      {/* Only New Project Creating UI */}
       <UniversalModal
         isModal={isModal}
         setIsModal={setIsModal}
@@ -262,7 +261,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
               </div>
               <div className="flex flex-col gap-[2px] mt-6">
                 <p className="text-[14px] font-[500] text-[#374151]">Media</p>
-                <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex gap-2">
+                <div className="w-[100%] p-[12px] outline-none border-[1px] rounded-md flex">
                   <div className="flex">
                     {selectedImages?.map((image, index) => (
                       <div
@@ -314,20 +313,14 @@ const AgencyProjects = ({ agency, setAgency }) => {
             </div>
           </div>
           <div className="text-right mt-10">
-            {isLading ? (
-              <LoadingButton />
-            ) : (
-              <CTAButton
-                text="Submit"
-                bg="var(--primarycolor)"
-                color="#fff"
-                fontWeight="500"
-                height="2.5rem"
-                borderRadius="5px"
-                fontSize="1rem"
-                type="submit"
-              />
-            )}
+            <Button
+              isLoading={isLading}
+              loadingText="Submitting"
+              colorScheme="whatsapp"
+              type="submit"
+            >
+              Submit
+            </Button>
           </div>
         </form>
       </UniversalModal>

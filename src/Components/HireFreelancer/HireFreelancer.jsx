@@ -21,9 +21,10 @@ const HireFreelancerPage = () => {
     // Organized API request body
     const body = {};
     body.freelancer_id = info?.targetedFreelancer?.user_id;
-    body.job_id = info?.targetedFreelancer?.jobDetails?._id;
-    body.budget = info?.targetedFreelancer?.jobDetails?.amount;
+    body.job_id = info?.targetedFreelancer.jobId;
+    body.budget = info?.targetedFreelancer?.desiredPrice;
     body.accept_terms_condition = isChecked;
+
     for (const key in info) {
       if (
         typeof info[key] === "object" &&

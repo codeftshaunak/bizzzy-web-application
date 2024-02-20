@@ -75,9 +75,7 @@ const Login = ({ setPage }) => {
       getUserDetails();
       setLoading(true);
       const res = await getAllDetailsOfUser();
-      console.log("userData", res);
       const data = res;
-      console.log({ data });
       const detailsFound =
         data?.categories?.length > 0 &&
         data?.skills?.length > 0 &&

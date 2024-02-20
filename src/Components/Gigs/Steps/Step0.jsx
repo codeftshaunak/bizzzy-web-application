@@ -255,6 +255,7 @@ const Step0 = ({ submitCallback, onBack, afterSubmit, formValues }) => {
                     isMulti
                     {...field}
                     options={skillOptions}
+                    closeMenuOnSelect={false}
                   />
                   {fieldState.error && (
                     <p style={{ color: "red", marginTop: "5px" }}>

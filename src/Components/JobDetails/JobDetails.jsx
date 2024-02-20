@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getAllJobsProposal } from "../../helpers/jobApis";
 import { getSingleJobDetails } from "../../helpers/jobApis";
 import StarRatings from "react-star-ratings";
@@ -44,8 +44,8 @@ const JobDetails = ({ setPage, setDetails }) => {
     days > 0
       ? `${days} day${days !== 1 ? "s" : ""} ago`
       : hours > 0
-        ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
-        : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+      ? `${hours} hour${hours !== 1 ? "s" : ""} ago`
+      : `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
 
   const getJobDetails = async () => {
     try {
@@ -61,7 +61,18 @@ const JobDetails = ({ setPage, setDetails }) => {
     getJobDetails();
   }, []);
 
-  const clientDetails = jobDetails[0]?.client_details[0];
+  const clientDetails = jobDetails[0]?.client_details[0] || {};
+  const {
+    location,
+    active_freelancers,
+    hired_freelancers,
+    total_amount_spend,
+    job_open,
+    avg_review,
+    total_hours,
+    job_posted,
+  } = clientDetails;
+
   const hiredPercentage =
     (clientDetails?.hired_freelancers / clientDetails?.job_open) * 100;
   const clientHistory = jobDetails[0]?.client_history;
@@ -115,10 +126,23 @@ const JobDetails = ({ setPage, setDetails }) => {
           </div>
           <div className="w-full flex justify-between">
             <div className="w-[68%] border border-tertiary rounded-2xl p-6 capitalize">
+              <p className="text-lg font-semibold mb-2">Details:</p>
               <div
                 dangerouslySetInnerHTML={{ __html: jobDetails[0]?.description }}
-              />
-            </div>
+              />{" "}
+              <div className="mt-10">
+                <p className="text-lg font-semibold mb-2">Attachments:</p>
+                <div>
+                  <Link
+                    to={jobDetails[0].file}
+                    target="_blank"
+                    className="text-[var(--primarycolor)]"
+                  >
+                    Attachment 1
+                  </Link>
+                </div>
+              </div>
+            </div>{" "}
             <div className="w-[30%] border border-tertiary rounded-2xl p-6">
               <div className="font-semibold mb2">About the client</div>
               <div className="font-semibold">Payment method verified</div>
@@ -134,25 +158,25 @@ const JobDetails = ({ setPage, setDetails }) => {
                     starEmptyColor="#8ab89b"
                   />
                 )}
-                {clientDetails?.avg_review} of{" "}
-                {clientDetails?.hired_freelancers} reviews
+                {avg_review} of {hired_freelancers} reviews
               </div>
-              <div className="font-semibold">United States</div>
-              <div className="mb-4">1:18 am</div>
+              {console.log(clientDetails)}
+              <div className="font-semibold">{location}</div>
+              <div className="mb-4">01:18 am</div>
+              <div className="font-semibold">{job_posted} jobs posted</div>
+              <div className="mb-4">
+                {hiredPercentage.toFixed()}% hire rate, {job_open} open job
+              </div>
               <div className="font-semibold">
-                {clientDetails?.job_posted} jobs posted
+                ${total_amount_spend} total spent
               </div>
               <div className="mb-4">
-                {hiredPercentage.toFixed()}% hire rate,{" "}
-                {clientDetails?.job_open} open job
+                {hired_freelancers} hire, {active_freelancers} active
               </div>
-              <div className="font-semibold">$6.3K total spent</div>
-              <div className="mb-4">1 hire, 1 active</div>
               <div className="font-semibold">
-                {clientDetails?.hired_freelancers} hire,{" "}
-                {clientDetails?.active_freelancers} active
+                {hired_freelancers} hire, {active_freelancers} active
               </div>
-              <div>{clientDetails?.total_hours} hours</div>
+              <div>{total_hours} hours</div>
             </div>
           </div>
           <div className="w-[68%] border border-tertiary rounded-2xl mt-4">

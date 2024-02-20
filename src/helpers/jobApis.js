@@ -22,18 +22,28 @@ export const getAllJobs = async () => {
   }
 };
 
-export const getJobs = async ( category, searchTerm,experience, contractType,  hourlyRateMin,
-  hourlyRateMax, fixedRateMin,fixedRateMax) => {
+export const getJobs = async (
+  category,
+  searchTerm,
+  experience,
+  contractType,
+  hourlyRateMin,
+  hourlyRateMax,
+  fixedRateMin,
+  fixedRateMax
+) => {
   try {
     // const authtoken = localStorage.getItem("authtoken");
-    const experienceValues = experience ? experience.map((exp) => exp).join(",") : "";
-    const contractValue = contractType ? contractType.map((contact) => contact).join(",") : "";
+    const experienceValues = experience
+      ? experience.map((exp) => exp).join(",")
+      : "";
+    const contractValue = contractType
+      ? contractType.map((contact) => contact).join(",")
+      : "";
 
+    console.log(hourlyRateMin, hourlyRateMax, "hourlyRateMin================");
 
-    console.log(hourlyRateMin, hourlyRateMax , "hourlyRateMin================")
-
-    console.log(fixedRateMin, fixedRateMax, "fixedRateMax ============")
-
+    console.log(fixedRateMin, fixedRateMax, "fixedRateMax ============");
 
     const response = await API.get("/job/search", {
       headers: {
@@ -158,3 +168,6 @@ export const userAllJobs = async () => makeApiRequest("get", "/users/jobs");
 
 export const getSingleJobDetails = async (id) =>
   makeApiRequest("get", `/job/get-job?job_id=${id}`);
+
+export const getAgencyAllJobs = async () =>
+  makeApiRequest("get", "/agency/jobs/data");

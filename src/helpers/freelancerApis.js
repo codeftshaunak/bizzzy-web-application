@@ -53,7 +53,7 @@ export const invitationDetails = async (invite_id) =>
   );
 
 export const acceptAgencyInvitation = (data) =>
-  makeApiRequest("put", '/freelancer/invite/update', data)
+  makeApiRequest("put", "/freelancer/invite/update", data);
 
 export const getMessageList = async () =>
   makeApiRequest("get", "/user-chat-list");
@@ -115,3 +115,6 @@ export const getFreelancers = async (
 export const getCategories = async () => makeApiRequest("get", "/categories");
 
 export const getCountries = async () => makeApiRequest("get", "/get-countries");
+
+export const deleteExperience = async (data) =>
+  makeApiRequest("delete", "/delete-experience", data);

@@ -17,7 +17,6 @@ import { getSubCategory } from "../../helpers/freelancerApis";
 import { createAgency } from "../../helpers/agencyApis";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../../Contexts/CurrentUser";
-import LoadingButton from "../LoadingComponent/LoadingButton";
 
 const CreateForm = () => {
   const { handleSubmit, watch, register } = useForm();
@@ -95,7 +94,7 @@ const CreateForm = () => {
         });
         getUserDetails();
 
-        // navigate("/profile");
+        navigate(-1);
       }
     } catch (error) {
       setLoading(false);
@@ -192,25 +191,17 @@ const CreateForm = () => {
               </Select>
             </FormControl>
           )}
-          {loading ? (
-            <LoadingButton />
-          ) : (
+          <Box textAlign={"right"}>
             <Button
+              isLoading={loading}
+              loadingText="Submitting"
+              colorScheme="whatsapp"
               type="submit"
-              backgroundColor="var(--primarycolor)"
-              color={"white"}
-              borderRadius={"10px"}
-              border={"2px solid white"}
-              transition={"0.5s ease-in-out"}
-              _hover={{
-                border: "2px solid var(--primarycolor)",
-                background: "white",
-                color: "var(--primarycolor)",
-              }}
+              marginTop={3}
             >
-              Continue
+              Submit
             </Button>
-          )}
+          </Box>
         </form>
       </Box>
     </HStack>
