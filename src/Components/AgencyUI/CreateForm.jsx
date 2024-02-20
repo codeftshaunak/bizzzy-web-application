@@ -66,10 +66,8 @@ const CreateForm = () => {
     getSubCategoryList(selectedCategory);
   }, [selectedCategory]);
 
-  console.log({ countries });
   const onSubmit = async (data) => {
-    console.log({ data });
-    setLoading(false);
+    setLoading(true);
 
     try {
       const response = await createAgency({
@@ -97,10 +95,9 @@ const CreateForm = () => {
         navigate(-1);
       }
     } catch (error) {
-      setLoading(false);
       console.log(error);
     }
-    // setLoading(false);
+    setLoading(false);
   };
 
   return (

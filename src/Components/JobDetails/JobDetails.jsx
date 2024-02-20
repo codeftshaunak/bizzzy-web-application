@@ -160,7 +160,6 @@ const JobDetails = ({ setPage, setDetails }) => {
                 )}
                 {avg_review} of {hired_freelancers} reviews
               </div>
-              {console.log(clientDetails)}
               <div className="font-semibold">{location}</div>
               <div className="mb-4">01:18 am</div>
               <div className="font-semibold">{job_posted} jobs posted</div>
