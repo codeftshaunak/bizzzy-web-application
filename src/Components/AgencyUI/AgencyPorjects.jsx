@@ -43,7 +43,7 @@ const AgencyProjects = ({ agency, setAgency }) => {
       const portfolio = response.agency_portfolio.slice(-1)[0];
       if (response?._id) {
         imagesFormData.append("ref", "agency_project_portfolio");
-        imagesFormData.append("agency_id", response._id);
+        imagesFormData.append("ref_id", response._id);
         if (portfolio?._id) {
           const response = await uploadImages(
             imagesFormData,

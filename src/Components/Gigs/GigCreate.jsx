@@ -34,8 +34,8 @@ export const GigCreate = ({ activeStep, goForward, goBackward }) => {
           if (!sf.file) return;
           imagesFormData.append(`imageFiles`, sf.file);
         });
-        imagesFormData.append("gig_id", ref_id);
-        imagesFormData.append("ref", "gig");
+        imagesFormData.append("ref_id", ref_id);
+        imagesFormData.append("ref", "create_gig");
         try {
           const response = await uploadImages(imagesFormData);
           uploadResponse.images = response?.body;
@@ -48,6 +48,8 @@ export const GigCreate = ({ activeStep, goForward, goBackward }) => {
         // prepare uploading form state
         const videoFormData = new FormData();
         videoFormData.append("videoFile", formData.video.file);
+        videoFormData.append("ref_id", ref_id);
+        videoFormData.append("ref", "gig");
 
         try {
           const response = await uploadMedia(videoFormData);
