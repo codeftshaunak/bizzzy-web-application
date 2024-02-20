@@ -40,10 +40,10 @@ const HireFreelancerPage = () => {
 
     try {
       const response = await sendHireFreelancer(body);
-
-      if (response?.code === 200) {
+      console.log(response);
+      if (response) {
         toast({
-          title: response.msg,
+          title: "job proposal submitted successfully",
           duration: 3000,
           isClosable: true,
           colorScheme: "green",
@@ -51,7 +51,6 @@ const HireFreelancerPage = () => {
         });
         navigate("/client-dashboard");
       }
-      setIsContinue(false);
     } catch (error) {
       toast({
         title: error?.response?.data?.msg,
@@ -61,8 +60,8 @@ const HireFreelancerPage = () => {
         position: "top-right",
       });
       console.error("Error fetching search results:", error);
-      setIsContinue(false);
     }
+    setIsContinue(false);
   };
 
   const handleCheckboxChange = (e) => {
@@ -93,7 +92,12 @@ const HireFreelancerPage = () => {
             </p>
           </div>
           <div className="font-semibold text-right flex items-center justify-end gap-10 mt-10">
-            <button className="text-green-500">Cancel</button>
+            <div
+              className="text-green-500 cursor-pointer"
+              onClick={() => navigate(-1)}
+            >
+              Cancel
+            </div>
             <button
               className={`py-2 px-5 text-white cursor-pointer rounded-full bg-green-500 w-fit flex items-center ${
                 (!isChecked || isContinue) && "opacity-50 cursor-not-allowed"

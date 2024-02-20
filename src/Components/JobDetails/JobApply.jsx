@@ -174,10 +174,11 @@ const JobApply = ({ setPage, details }) => {
   }, [quill]);
 
   const handleFileChange = (e) => {
+    console.log("click");
     const file = e.target.files[0];
     setSelectedFile(file);
   };
-
+  console.log(selectedFile);
   // check file types and generate file icon
   const getFileTypeIcon = (fileName) => {
     const extension = fileName.split(".").pop().toLowerCase();
@@ -322,6 +323,12 @@ const JobApply = ({ setPage, details }) => {
                     Attachments
                   </Box>
                   <Box className="max-w-xl">
+                    {selectedFile && (
+                      <div className="bg-white w-full p-3 rounded-lg shadow my-4 flex items-center justify-start gap-3">
+                        {fileIcon}
+                        <p>{selectedFile?.name}</p>
+                      </div>
+                    )}
                     <label className="flex justify-center w-full h-20 px-4 transition bg-green-200 border-2 border-green-600 border-dashed rounded-md appearance-none cursor-pointer">
                       <span className="flex items-center space-x-2">
                         <span>
@@ -409,6 +416,7 @@ const JobApply = ({ setPage, details }) => {
                 <Box fontWeight="semibold" mt={4}>
                   Attachments:
                 </Box>
+
                 <Box className="max-w-xl">
                   {selectedFile && (
                     <div className="bg-white w-full p-3 rounded-lg shadow my-4 flex items-center justify-start gap-3">
@@ -476,7 +484,7 @@ const BidDetailsSection = ({
 
     <HStack margin="5px 0" justify="space-between">
       <Box fontWeight="semibold">5% Freelancer Service Fee</Box>
-      <Box fontWeight="semibold">-${(bidAmount - serviceFee).toFixed(2)}</Box>
+      <Box fontWeight="semibold">${(bidAmount - serviceFee).toFixed(2)}</Box>
     </HStack>
 
     <HStack marginBottom="5px" justify="space-between">
